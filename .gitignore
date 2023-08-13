@@ -21,6 +21,7 @@ target/
 /target
 /src/main/resources/application-prod.yml
 /src/main/resources/sql/fast.sql
+/script/Dockerfile
 
 ### NetBeans ###
 /nbproject/private/
