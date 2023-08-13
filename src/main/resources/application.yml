@@ -1,0 +1,129 @@
+fast:
+  no-repeat-submit:
+    enable: true
+    timeout: 500
+  log:
+    enable: true
+    request-save-max-length: 1000
+    response-save-max-length: 1000
+    error-save-max-length: 1000
+    filter:
+      fields: password,token,salt,oldPassword,newPassword
+  lock:
+    key: fast:redis:lock
+    lease-time: 30
+    wait-time: 5
+  file:
+    prefix: 127.0.0.1:${server.port}
+    file-map-path: /file
+    image-map-path: /image
+    max-file-size: 10
+    max-image-size: 10
+    file-type: doc,docx,ppt,pptx,wps,xls,xlsx,pdf
+    image-type: jpg,jpeg,png,gif
+
+
+server:
+  # 端口号
+  port: 9000
+  servlet:
+    # 接口访问路径
+    contextPath: /
+  # springboot 2.3新特性，优雅停机，注意不要使用kill -9 ，使用kill -2 才能触发
+  shutdown: GRACEFUL
+
+#spring配置
+spring:
+  servlet:
+    # 不在这里不限制最大文件上传大小
+    multipart:
+      # 单个文件上传大小限制
+      max-file-size: 20MB
+      # 总请求大小限制
+      max-request-size: 100MB
+  profiles:
+    # 指定配置文件
+    active: dev
+  lifecycle:
+    # 优雅停机等待时长
+    timeout-per-shutdown-phase: 10s
+  quartz:
+    # 将任务保存化到数据库
+    job-store-type: jdbc
+    # 程序结束时会等待quartz相关的内容结束
+    wait-for-jobs-to-complete-on-shutdown: true
+    # QuartzScheduler启动时更新己存在的Job
+    overwrite-existing-jobs: true
+    properties:
+      org:
+        quartz:
+          # scheduler相关
+          scheduler:
+            # scheduler的实例名
+            instance-name: FastScheduler
+            instance-id: AUTO
+          # 持久化相关
+          job-store:
+            # 最大能忍受的触发超时时间/ms
+            misfire-threshold: 30000
+            class: org.quartz.impl.jdbcjobstore.JobStoreTX
+            driver-delegate-class: org.quartz.impl.jdbcjobstore.StdJDBCDelegate
+            # 表示数据库中相关表是QRTZ_开头的
+            table-prefix: QRTZ_
+            use-properties: false
+            #设置此实例“检入”*与群集的其他实例的频率（以毫秒为单位）。影响检测失败实例的速度。
+            cluster-checkin-interval: 5000
+            # 是否开启集群功能,开启集群只需要配置相同的 instanceName 实例名称
+            is-clustered: false
+          # 线程池相关
+          thread-pool:
+            class: org.quartz.simpl.SimpleThreadPool
+            # 线程数
+            thread-count: 10
+            # 线程优先级
+            thread-priority: 5
+            threads-inherit-context-class-loader-of-initializing-thread: true
+
+
+# 配置文档 https://baomidou.com/#tablename
+mybatis-plus:
+  type-aliases-package: com.fast.start.admin.user.dos.*
+  # 配置mapper的扫描，找到所有的mapper.xml映射文件
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    # 开启数据库字段驼峰式命名映射
+    map-underscore-to-camel-case: true
+  global-config:
+    # 限制分页最高条数
+    max-limit: 5000
+    # 关闭控制台 mybatis-plus logo打印
+    banner: false
+    db-config:
+      # 主键类型  AUTO:"数据库ID自增", INPUT:"用户输入ID",ID_WORKER:"全局唯一ID (数字类型唯一ID)", UUID:"全局唯一ID UUID";
+      id-type: AUTO
+      # 逻辑删除 - 未删除
+      logic-not-delete-value: 0
+      # 逻辑删除 - 已删除
+      logic-delete-value: 1
+
+# 配置文档 https://doc.xiaominfo.com/docs/features/enhance
+knife4j:
+  enable: true
+  openapi:
+    title: Fast-Start官方文档
+    description: "基于SpringBoot2x的快速启动脚手架"
+    email: 2259965328@qq.com
+    concat: zoe
+    #    url: https://docs.xiaominfo.com
+    version: v1.0
+    group:
+      test1:
+        group-name: 后台管理接口
+        api-rule: package
+        api-rule-resources:
+          - com.fast.start.admin
+      test2:
+        group-name: 移动端接口
+        api-rule: package
+        api-rule-resources:
+          - com.fast.start.api

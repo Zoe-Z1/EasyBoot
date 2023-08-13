@@ -1,0 +1,26 @@
+pipeline {
+    agent any
+    environment {
+        MVN_HOME = "/Users/zoe/Desktop/开发工具/maven/apache-maven-3.6.3"
+        PATH = "$MVN_HOME/bin:$PATH"
+    }
+    stages {
+        // 切代码分支 可省略这一步
+        //stage('拉取代码') {
+            //steps {
+                //git branch: 'master', credentialsId: '117af67f-3976-4b81-a718-ce31c685170f', url: 'https://gitee.com/thisZhuMy_admin/fast-start.git'
+            //}
+        //}
+        stage('编译构建') {
+            steps {
+                sh "mvn clean package -Dmaven.test.skip=true"
+            }
+        }
+    }
+    post {
+        success {
+            echo '上传jar包和脚本'
+            sshPublisher(publishers: [sshPublisherDesc(configName: '本人服务器', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: 'sh /data/java/fast.sh backup', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: 'script', sourceFiles: 'script/fast.sh'), sshTransfer(cleanRemote: false, excludes: '', execCommand: 'nohup sh /data/java/fast.sh restart > /dev/null 2>&1 &', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: 'target', sourceFiles: 'target/fast-start.jar')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: true)])
+        }
+    }
+}
