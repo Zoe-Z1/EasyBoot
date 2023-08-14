@@ -9,13 +9,13 @@ import org.springframework.stereotype.Controller;
 <#if superControllerClassPackage??>
 import ${superControllerClassPackage};
 </#if>
-import com.fast.start.common.base.Result;
+import com.easy.boot.common.base.Result;
 import ${package.Entity}.${entity};
 import ${package.Entity}.${entity}Query;
 import ${package.Entity}.${entity}CreateDTO;
 import ${package.Entity}.${entity}UpdateDTO;
-import com.fast.start.common.log.FastLog;
-import com.fast.start.admin.operationLog.enums.OperateTypeEnum;
+import com.easy.boot.common.log.EasyLog;
+import com.easy.boot.admin.operationLog.enums.OperateTypeEnum;
 <#if swagger>
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.annotations.Api;
@@ -58,7 +58,7 @@ public class ${table.controllerName} {
 
     @ApiOperationSupport(author = "${author}")
     @ApiOperation(value = "获取${table.comment!}列表")
-    @FastLog(module = "获取${table.comment!}列表", operateType = OperateTypeEnum.SELECT)
+    @EasyLog(module = "获取${table.comment!}列表", operateType = OperateTypeEnum.SELECT)
     @GetMapping("/page")
     public Result<IPage<${entity}>> page(@Validated ${entity}Query query) {
         return Result.success(${package.ModuleName}Service.selectPage(query));
@@ -66,7 +66,7 @@ public class ${table.controllerName} {
 
     @ApiOperationSupport(author = "${author}")
     @ApiOperation(value = "获取${table.comment!}详情")
-    @FastLog(module = "获取${table.comment!}详情", operateType = OperateTypeEnum.SELECT)
+    @EasyLog(module = "获取${table.comment!}详情", operateType = OperateTypeEnum.SELECT)
     @GetMapping("/detail/{id}")
     public Result<${entity}> detail(@PathVariable Long id) {
         return Result.success(${package.ModuleName}Service.detail(id));
@@ -74,7 +74,7 @@ public class ${table.controllerName} {
 
     @ApiOperationSupport(author = "${author}")
     @ApiOperation(value = "创建${table.comment!}")
-    @FastLog(module = "创建${table.comment!}", operateType = OperateTypeEnum.INSERT)
+    @EasyLog(module = "创建${table.comment!}", operateType = OperateTypeEnum.INSERT)
     @PostMapping(value = "/create")
     public Result create(@Validated @RequestBody ${entity}CreateDTO dto) {
         return Result.r(${package.ModuleName}Service.create(dto));
@@ -82,7 +82,7 @@ public class ${table.controllerName} {
 
     @ApiOperationSupport(author = "${author}")
     @ApiOperation(value = "编辑${table.comment!}")
-    @FastLog(module = "编辑${table.comment!}", operateType = OperateTypeEnum.UPDATE)
+    @EasyLog(module = "编辑${table.comment!}", operateType = OperateTypeEnum.UPDATE)
     @PostMapping(value = "/update")
     public Result update(@Validated @RequestBody ${entity}UpdateDTO dto) {
         return Result.r(${package.ModuleName}Service.updateById(dto));
@@ -90,7 +90,7 @@ public class ${table.controllerName} {
 
     @ApiOperationSupport(author = "${author}")
     @ApiOperation(value = "删除${table.comment!}")
-    @FastLog(module = "删除${table.comment!}", operateType = OperateTypeEnum.DELETE)
+    @EasyLog(module = "删除${table.comment!}", operateType = OperateTypeEnum.DELETE)
     @PostMapping("/delete/{id}")
     public Result delete(@PathVariable Long id) {
         return Result.r(${package.ModuleName}Service.deleteById(id));
@@ -98,7 +98,7 @@ public class ${table.controllerName} {
 
     @ApiOperationSupport(author = "${author}")
     @ApiOperation(value = "批量删除${table.comment!}")
-    @FastLog(module = "批量删除${table.comment!}", operateType = OperateTypeEnum.DELETE)
+    @EasyLog(module = "批量删除${table.comment!}", operateType = OperateTypeEnum.DELETE)
     @PostMapping("/batchDel/{ids}")
     public Result batchDel(@PathVariable List<Long> ids) {
         return Result.r(${package.ModuleName}Service.deleteBatchByIds(ids));

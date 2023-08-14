@@ -11,8 +11,8 @@ import ${package.Mapper}.${table.mapperName};
 import ${package.Service}.${table.serviceName};
 </#if>
 import ${superServiceImplClassPackage};
-import com.fast.start.common.base.BaseEntity;
-import com.fast.start.utils.BeanUtil;
+import com.easy.boot.common.base.BaseEntity;
+import com.easy.boot.utils.BeanUtil;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

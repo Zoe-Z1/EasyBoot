@@ -1,4 +1,4 @@
-fast:
+easy:
   no-repeat-submit:
     enable: true
     timeout: 500
@@ -10,7 +10,7 @@ fast:
     filter:
       fields: password,token,salt,oldPassword,newPassword
   lock:
-    key: fast:redis:lock
+    key: easy:redis:lock
     lease-time: 30
     wait-time: 5
   file:
@@ -60,7 +60,7 @@ spring:
           # scheduler相关
           scheduler:
             # scheduler的实例名
-            instance-name: FastScheduler
+            instance-name: EasyScheduler
             instance-id: AUTO
           # 持久化相关
           job-store:
@@ -87,7 +87,7 @@ spring:
 
 # 配置文档 https://baomidou.com/#tablename
 mybatis-plus:
-  type-aliases-package: com.fast.start.admin.user.dos.*
+  type-aliases-package: com.easy.boot.admin.user.dos.*
   # 配置mapper的扫描，找到所有的mapper.xml映射文件
   mapper-locations: classpath:mapper/*.xml
   configuration:
@@ -110,7 +110,7 @@ mybatis-plus:
 knife4j:
   enable: true
   openapi:
-    title: Fast-Start官方文档
+    title: EasyBoot官方文档
     description: "基于SpringBoot2x的快速启动脚手架"
     email: 2259965328@qq.com
     concat: zoe
@@ -121,9 +121,9 @@ knife4j:
         group-name: 后台管理接口
         api-rule: package
         api-rule-resources:
-          - com.fast.start.admin
+          - com.easy.boot.admin
       test2:
         group-name: 移动端接口
         api-rule: package
         api-rule-resources:
-          - com.fast.start.api
+          - com.easy.boot.api

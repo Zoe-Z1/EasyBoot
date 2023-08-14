@@ -8,11 +8,11 @@
         <version>2.7.15-SNAPSHOT</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.fast.start</groupId>
-    <artifactId>fast-start</artifactId>
+    <groupId>com.easy.boot</groupId>
+    <artifactId>easyboot</artifactId>
     <version>1.0.0</version>
-    <name>fast-start</name>
-    <description>fast-start for Spring Boot</description>
+    <name>EasyBoot</name>
+    <description>EasyBoot for Spring Boot</description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -217,7 +217,7 @@
     </dependencies>
 
     <build>
-        <finalName>fast-start</finalName>
+        <finalName>EasyBoot</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

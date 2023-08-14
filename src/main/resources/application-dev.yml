@@ -1,4 +1,4 @@
-fast:
+easy:
   file:
     file-path: /Users/zoe/Downloads/file
     image-path: /Users/zoe/Downloads/image
@@ -31,7 +31,7 @@ spring:
 
 logging:
   level:
-    com.fast.start: debug
+    com.easy.boot: debug
 
 
 mybatis-plus:
@@ -42,6 +42,6 @@ mybatis-plus:
 
 # 配置文档 https://sa-token.cc/doc.html#/use/config
 sa-token:
-  token-name: start-token
+  token-name: easy-token
   tokenPrefix: "Bearer"
   is-print: false
