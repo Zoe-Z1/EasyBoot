@@ -6,7 +6,7 @@ easy:
 
 spring:
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/fast?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B8&remarks=true&useInformationSchema=true&rewriteBatchedStatements=true
+    url: jdbc:mysql://127.0.0.1:3306/easyboot?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B8&remarks=true&useInformationSchema=true&rewriteBatchedStatements=true
     username: root
     password: zz123456
     driver-class-name: com.mysql.cj.jdbc.Driver
