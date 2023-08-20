@@ -21,14 +21,13 @@ public class EasyCommandRunner implements CommandLineRunner {
     @Value("${server.port}")
     private String port;
 
-    @Value("${os.name}")
-    private String os;
-
     @Override
     public void run(String... args) throws Exception {
         if (enable){
+            String os = System.getProperty("os.name");
             String path = "http://localhost:" + port + "/doc.html";
             log.info("knife4j addr --->>  " + path);
+
 //            if (os.toLowerCase().contains("mac")) {
 //                Runtime.getRuntime().exec("open " + path);
 //            }

@@ -3,15 +3,12 @@ package com.easy.boot.utils;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.easy.boot.admin.login.entity.LoginDTO;
-import com.easy.boot.admin.sysConfig.entity.SysConfig;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
-import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
@@ -59,12 +56,12 @@ public class JsonUtil {
                 .build();
         list.add(loginDTO);
 
-        String str = toJsonStr(list, "");
-        String exStr = toJsonStr(loginDTO, "password");
-        System.out.println("exStr = " + exStr);
-        System.out.println("str = " + str);
-        List<SysConfig> sysConfigs = toList(str, SysConfig.class);
-        System.out.println("sysConfigs = " + sysConfigs);
+//        String str = toJsonStr(list, "");
+//        String exStr = toJsonStr(loginDTO, "password");
+//        System.out.println("exStr = " + exStr);
+//        System.out.println("str = " + str);
+//        List<SysConfig> sysConfigs = toList(str, SysConfig.class);
+//        System.out.println("sysConfigs = " + sysConfigs);
     }
 
     /**
@@ -85,31 +82,21 @@ public class JsonUtil {
     }
 
     /**
-     * 对象 => json字符串
+     * 对象 => 对象
      *
      * @param obj 源对象
-     * @param filters 要忽略的属性
+     * @param clazz 对象class
      */
-    public static <T> String toJsonStr(T obj, String... filters) {
-        String json = null;
-        if (obj != null) {
-            try {
-                SimpleFilterProvider filterProvider = new SimpleFilterProvider();
-                filterProvider.addFilter("EasyLogFilter", SimpleBeanPropertyFilter.serializeAllExcept(filters));
-                OBJECT_MAPPER.setFilterProvider(filterProvider);
-                json = OBJECT_MAPPER.writeValueAsString(obj);
-            } catch (JsonProcessingException e) {
-                log.error("Json转换异常 e -> ", e);
-            }
-        }
-        return json;
+    public static <T> T toBean(T obj, Class<T> clazz) {
+        String json = toJsonStr(obj);
+        return toBean(json, clazz);
     }
 
     /**
      * json字符串 => 对象
      *
      * @param json  源json串
-     * @param clazz 对象类
+     * @param clazz 对象class
      * @param <T>   泛型
      */
     public static <T> T toBean(String json, Class<T> clazz) {

@@ -52,11 +52,6 @@ public class RoleController extends BaseController {
     @Resource
     private IUserRoleService userRoleService;
 
-    @Resource
-    private EasyFile easyFile;
-
-    @Value("${mybatis-plus.global-config.max-limit}")
-    private Integer maxLimit;
 
 
     @ApiOperationSupport(author = "zoe")

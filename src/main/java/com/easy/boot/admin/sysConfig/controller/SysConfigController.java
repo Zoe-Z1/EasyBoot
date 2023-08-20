@@ -55,11 +55,6 @@ public class SysConfigController extends BaseController {
     @Resource
     private ISysConfigDomainService configDomainService;
 
-    @Resource
-    private EasyFile easyFile;
-
-    @Value("${mybatis-plus.global-config.max-limit}")
-    private Integer maxLimit;
 
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "获取系统配置列表")

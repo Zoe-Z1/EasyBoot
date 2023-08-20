@@ -16,7 +16,6 @@ import com.easy.boot.common.excel.ImportVO;
 import com.easy.boot.common.excel.UploadDTO;
 import com.easy.boot.common.excel.handler.ImportErrorCellWriteHandler;
 import com.easy.boot.common.log.EasyLog;
-import com.easy.boot.common.properties.EasyFile;
 import com.easy.boot.exception.BusinessException;
 import com.easy.boot.exception.FileException;
 import com.easy.boot.utils.BeanUtil;
@@ -25,7 +24,6 @@ import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.Assert;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -55,11 +53,6 @@ public class DataDictController extends BaseController {
     @Resource
     private DataDictDomainService dataDictionaryDomainService;
 
-    @Resource
-    private EasyFile easyFile;
-
-    @Value("${mybatis-plus.global-config.max-limit}")
-    private Integer maxLimit;
 
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "获取数据字典列表")

@@ -40,11 +40,6 @@ public class TaskLogController extends BaseController {
     @Resource
     private ITaskLogService taskLogService;
 
-    @Resource
-    private EasyFile easyFile;
-
-    @Value("${mybatis-plus.global-config.max-limit}")
-    private Integer maxLimit;
 
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "获取调度日志列表")

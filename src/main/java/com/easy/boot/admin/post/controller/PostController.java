@@ -50,11 +50,6 @@ public class PostController extends BaseController {
     @Resource
     private IPostService postService;
 
-    @Resource
-    private EasyFile easyFile;
-
-    @Value("${mybatis-plus.global-config.max-limit}")
-    private Integer maxLimit;
 
 
     @ApiOperationSupport(author = "zoe")

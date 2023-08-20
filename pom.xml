@@ -43,16 +43,10 @@
         <thumbnailator.version>0.4.20</thumbnailator.version>
         <fastjson2.version>2.0.38</fastjson2.version>
         <oshi.version>6.4.4</oshi.version>
-        <reflections.version>0.10.2</reflections.version>
 
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>org.reflections</groupId>
-            <artifactId>reflections</artifactId>
-            <version>${reflections.version}</version>
-        </dependency>
         <!-- 获取系统信息 -->
         <dependency>
             <groupId>com.github.oshi</groupId>

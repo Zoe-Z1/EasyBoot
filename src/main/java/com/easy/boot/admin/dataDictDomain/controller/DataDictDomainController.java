@@ -50,11 +50,6 @@ public class DataDictDomainController extends BaseController {
     @Resource
     private DataDictDomainService dataDictionaryDomainService;
 
-    @Resource
-    private EasyFile easyFile;
-
-    @Value("${mybatis-plus.global-config.max-limit}")
-    private Integer maxLimit;
 
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "获取数据字典域列表")

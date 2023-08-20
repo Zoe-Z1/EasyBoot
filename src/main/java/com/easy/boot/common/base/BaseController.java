@@ -2,8 +2,11 @@ package com.easy.boot.common.base;
 
 
 import com.easy.boot.common.noRepeatSubmit.EasyNoRepeatSubmit;
+import com.easy.boot.common.properties.EasyFile;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -14,6 +17,12 @@ import javax.servlet.http.HttpServletResponse;
  */
 @EasyNoRepeatSubmit
 public class BaseController {
+
+    @Resource
+    protected EasyFile easyFile;
+
+    @Value("${mybatis-plus.global-config.max-limit}")
+    protected Integer maxLimit;
 
     @Autowired
     protected HttpServletRequest request;

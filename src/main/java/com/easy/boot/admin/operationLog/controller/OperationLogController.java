@@ -46,11 +46,6 @@ public class OperationLogController extends BaseController {
     @Resource
     private IOperationLogService operationLogService;
 
-    @Resource
-    private EasyFile easyFile;
-
-    @Value("${mybatis-plus.global-config.max-limit}")
-    private Integer maxLimit;
 
 
     @ApiOperationSupport(author = "zoe")

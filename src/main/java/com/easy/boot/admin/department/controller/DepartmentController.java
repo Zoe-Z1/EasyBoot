@@ -33,11 +33,6 @@ public class DepartmentController extends BaseController {
     @Resource
     private IDepartmentService departmentService;
 
-    @Resource
-    private EasyFile easyFile;
-
-    @Value("${mybatis-plus.global-config.max-limit}")
-    private Integer maxLimit;
 
 
     @ApiOperationSupport(author = "zoe")

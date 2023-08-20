@@ -37,16 +37,16 @@ public enum SystemErrorEnum {
     NOT_FOUND(404, "找不到请求的路径"),
 
     /** 系统出错 */
-    SYSTEM_ERROR(500, "系统出错"),
+    SYSTEM_ERROR(500, "系统异常"),
 
     /** 调用方法出错 */
-    CALL_ERROR(501,"调用方法出错"),
+    CALL_ERROR(501,"调用方法异常"),
 
     /** 字段效验出错 */
-    FIELD_ERROR(502,"字段效验出错"),
+    FIELD_ERROR(502,"字段效验异常"),
 
     /** 定时任务执行错误 */
-    SCHEDULER_ERROR(503,"定时任务执行出错"),
+    SCHEDULER_ERROR(503,"定时任务执行异常"),
 
     /** 数据解析出错 */
     JSON_PARSE_ERROR(504,"数据解析异常"),
@@ -60,8 +60,11 @@ public enum SystemErrorEnum {
     /** 下载文件出错 */
     DOWNLOAD_ERROR(507,"下载文件异常"),
 
+    /** 代码生成出错 */
+    GENERATOR_ERROR(508, "代码生成异常"),
+
     /** 业务逻辑出错 */
-    BUSINESS_ERROR(600,"业务逻辑出错"),
+    BUSINESS_ERROR(600,"业务逻辑异常"),
 
     /** http请求异常 */
     HTTP_REQUEST_ERROR(700,"http请求异常"),

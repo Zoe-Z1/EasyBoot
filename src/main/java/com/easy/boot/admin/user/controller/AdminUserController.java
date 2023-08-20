@@ -47,11 +47,6 @@ public class AdminUserController extends BaseController {
     @Resource
     private AdminUserService adminUserService;
 
-    @Resource
-    private EasyFile easyFile;
-
-    @Value("${mybatis-plus.global-config.max-limit}")
-    private Integer maxLimit;
 
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "获取用户列表")

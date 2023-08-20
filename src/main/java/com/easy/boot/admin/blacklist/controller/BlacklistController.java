@@ -4,23 +4,21 @@ import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.ExcelWriter;
 import com.alibaba.excel.write.metadata.WriteSheet;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.easy.boot.admin.operationLog.enums.OperateTypeEnum;
 import com.easy.boot.admin.blacklist.entity.Blacklist;
 import com.easy.boot.admin.blacklist.entity.BlacklistCreateDTO;
 import com.easy.boot.admin.blacklist.entity.BlacklistQuery;
 import com.easy.boot.admin.blacklist.entity.BlacklistUpdateDTO;
 import com.easy.boot.admin.blacklist.service.IBlacklistService;
+import com.easy.boot.admin.operationLog.enums.OperateTypeEnum;
 import com.easy.boot.common.base.BaseController;
 import com.easy.boot.common.base.Result;
 import com.easy.boot.common.log.EasyLog;
-import com.easy.boot.common.properties.EasyFile;
 import com.easy.boot.exception.FileException;
 import com.easy.boot.utils.FileUtil;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,11 +40,6 @@ public class BlacklistController extends BaseController {
     @Resource
     private IBlacklistService blacklistService;
 
-    @Resource
-    private EasyFile easyFile;
-
-    @Value("${mybatis-plus.global-config.max-limit}")
-    private Integer maxLimit;
 
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "获取黑名单列表")
