@@ -7,7 +7,7 @@ import lombok.*;
 /**
  * @author zoe
  * @date 2023/8/15
- * @description 控制层模板配置
+ * @description 测试模板配置
  */
 @Setter
 @Builder
@@ -17,8 +17,6 @@ import lombok.*;
 public class TestTemplate extends AbstractTemplate {
 
     private String modulePath;
-
-    private String className;
 
     public Class<?> superClass;
 
@@ -34,11 +32,6 @@ public class TestTemplate extends AbstractTemplate {
             modulePath = "/test";
         }
         return modulePath;
-    }
-
-    @Override
-    protected String getClassName() {
-        return className;
     }
 
     @Override

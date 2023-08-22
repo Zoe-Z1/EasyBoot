@@ -52,7 +52,7 @@ public class Field {
     private Integer nullable;
 
     /**
-     * 字段备注
+     * 字段注释
      */
     private String remarks;
 }

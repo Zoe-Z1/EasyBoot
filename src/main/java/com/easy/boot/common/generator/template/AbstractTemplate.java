@@ -1,9 +1,8 @@
 package com.easy.boot.common.generator.template;
 
 import cn.hutool.core.map.MapUtil;
-
-import java.util.HashMap;
-import java.util.Map;
+import com.easy.boot.common.generator.DataMap;
+import com.easy.boot.common.generator.db.MetaTable;
 
 /**
  * @author zoe
@@ -20,17 +19,17 @@ public abstract class AbstractTemplate {
     }
 
     /**
-     * 生成的Java类名，需要自定义时子类重写该方法即可，
-     * 返回null则根据表名生成
+     * 父类class
      */
-    protected String getClassName() {
+    protected Class<?> getSuperClass() {
         return null;
     }
 
     /**
-     * 父类class
+     * 模板文件名
+     * @param javaName 实体类Java名称
      */
-    protected Class<?> getSuperClass() {
+    protected String getFileName(String javaName) {
         return null;
     }
 
@@ -63,17 +62,46 @@ public abstract class AbstractTemplate {
      * @param dataMap  自定义的参数
      * @return dataMap
      */
-    public Map<String, Object> buildDataMap(Map<String, Object> dataMap) {
+    public DataMap buildDataMap(DataMap dataMap) {
         // 这里需要深拷贝一个新对象才能确保不会复用到之前的map中的属性
-        Map<String, Object> buildDataMap = new HashMap<>(16);
+        DataMap buildDataMap = new DataMap();
         if (MapUtil.isNotEmpty(dataMap)) {
             buildDataMap.putAll(dataMap);
         }
         buildDataMap.put("modulePath", getModulePath());
-        buildDataMap.put("className", getClassName());
         buildDataMap.put("superClass", getSuperClass());
         buildDataMap.put("templateName", getTemplateName());
         buildDataMap.put("isOverride", getIsOverride());
+        // 构建其他参数
+        buildGenDataMap(buildDataMap);
         return buildDataMap;
     };
+
+    /**
+     * 构建代码生成需要用的数据
+     * @param buildDataMap 已构建过的参数
+     */
+    private void buildGenDataMap(DataMap buildDataMap) {
+        MetaTable metaTable = (MetaTable) buildDataMap.get("table");
+        String javaName = metaTable.getJavaName();
+        String controllerName = javaName + "Controller";
+        String serviceName = "I" + javaName + "Service";
+        String serviceImplName = javaName + "ServiceImpl";
+        String mapperName = javaName + "Mapper";
+        String entityName = javaName;
+        String createDTOName = javaName + "CreateDTO";
+        String updateDTOName = javaName + "UpdateDTO";
+        String queryName = javaName + "Query";
+        String voName = javaName + "VO";
+        buildDataMap.put("controllerName", controllerName);
+        buildDataMap.put("serviceName", serviceName);
+        buildDataMap.put("serviceImplName", serviceImplName);
+        buildDataMap.put("mapperName", mapperName);
+        buildDataMap.put("entityName", entityName);
+        buildDataMap.put("createDTOName", createDTOName);
+        buildDataMap.put("updateDTOName", updateDTOName);
+        buildDataMap.put("queryName", queryName);
+        buildDataMap.put("voName", voName);
+    }
+
 }

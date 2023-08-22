@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 /**
  * @author zoe
  * @date 2023/8/15
- * @description 控制层模板配置
+ * @description DTO模板配置
  */
 @Builder
 @NoArgsConstructor
@@ -18,8 +18,6 @@ import lombok.NoArgsConstructor;
 public class CreateDTOTemplate extends AbstractTemplate {
 
     private String modulePath;
-
-    private String className;
 
     public Class<?> superClass;
 
@@ -35,11 +33,6 @@ public class CreateDTOTemplate extends AbstractTemplate {
             modulePath = "/entity";
         }
         return modulePath;
-    }
-
-    @Override
-    protected String getClassName() {
-        return className;
     }
 
     @Override

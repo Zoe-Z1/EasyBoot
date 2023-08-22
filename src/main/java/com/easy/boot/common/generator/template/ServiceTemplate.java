@@ -7,14 +7,14 @@ import lombok.*;
 /**
  * @author zoe
  * @date 2023/8/15
- * @description 控制层模板配置
+ * @description 服务层模板配置
  */
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class ControllerTemplate extends AbstractTemplate {
+public class ServiceTemplate extends AbstractTemplate {
 
     private String modulePath;
 
@@ -29,7 +29,7 @@ public class ControllerTemplate extends AbstractTemplate {
     @Override
     protected String getModulePath() {
         if (StrUtil.isEmpty(modulePath)) {
-            modulePath = "/controller";
+            modulePath = "/service";
         }
         return modulePath;
     }
@@ -42,11 +42,6 @@ public class ControllerTemplate extends AbstractTemplate {
     @Override
     public String getTemplateName() {
         return "controller.ftl";
-    }
-
-    @Override
-    protected String getFileName(String javaName) {
-        return javaName + "Controller";
     }
 
     @Override

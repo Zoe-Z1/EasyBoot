@@ -7,7 +7,7 @@ import lombok.*;
 /**
  * @author zoe
  * @date 2023/8/15
- * @description 控制层模板配置
+ * @description 实体类模板配置
  */
 @Data
 @Builder
@@ -17,8 +17,6 @@ import lombok.*;
 public class EntityTemplate extends AbstractTemplate {
 
     private String modulePath;
-
-    private String className;
 
     public Class<?> superClass;
 
@@ -34,11 +32,6 @@ public class EntityTemplate extends AbstractTemplate {
             modulePath = "/entity";
         }
         return modulePath;
-    }
-
-    @Override
-    protected String getClassName() {
-        return className;
     }
 
     @Override

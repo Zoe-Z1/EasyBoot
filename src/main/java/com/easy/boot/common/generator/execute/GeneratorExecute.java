@@ -2,6 +2,7 @@ package com.easy.boot.common.generator.execute;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DateUtil;
+import com.easy.boot.common.generator.DataMap;
 import com.easy.boot.common.generator.config.GeneratorConfig;
 import com.easy.boot.common.generator.config.GlobalConfig;
 import com.easy.boot.common.generator.config.TemplateConfig;
@@ -117,9 +118,22 @@ public class GeneratorExecute {
      */
     private void eachMetaTables(List<AbstractTemplate> templates, List<MetaTable> metaTables) {
         for (MetaTable metaTable : metaTables) {
-            Map<String, Object> dataMap = getDataMap(metaTable);
+            DataMap dataMap = getDataMap(metaTable);
             eachTemplates(templates, dataMap);
         }
+    }
+
+    /**
+     * 获取配置数据map
+     * @param metaTable 表数据信息
+     * @return DataMap
+     */
+    private DataMap getDataMap(MetaTable metaTable) {
+        DataMap dataMap = new DataMap();
+        dataMap.put("table", metaTable);
+        dataMap.put("config", generatorConfig);
+        dataMap.put("date", DateUtil.format(new Date(), globalConfig.getCommentDateFormat()));
+        return dataMap;
     }
 
     /**
@@ -127,12 +141,12 @@ public class GeneratorExecute {
      * @param templates 模板列表
      * @param dataMap 配置数据map
      */
-    private void eachTemplates(List<AbstractTemplate> templates, Map<String, Object> dataMap) {
+    private void eachTemplates(List<AbstractTemplate> templates, DataMap dataMap) {
         for (AbstractTemplate template : templates) {
             // 创建数据模型
-            Map<String, Object> buildDataMap = template.buildDataMap(dataMap);
+            DataMap buildDataMap = template.buildDataMap(dataMap);
             if (!template.isEnable()) {
-                log.info(buildDataMap.get("className") + ".java 已跳过代码生成!");
+                log.info(buildDataMap.get("javaName") + ".java 已跳过代码生成!");
                 continue;
             }
             try {
@@ -145,25 +159,12 @@ public class GeneratorExecute {
     }
 
     /**
-     * 获取配置数据map
-     * @param metaTable 表数据信息
-     * @return
-     */
-    private Map<String, Object> getDataMap(MetaTable metaTable) {
-        Map<String, Object> dataMap = new HashMap<>();
-        dataMap.put("table", metaTable);
-        dataMap.put("config", generatorConfig);
-        dataMap.put("date", DateUtil.format(new Date(), globalConfig.getCommentDateFormat()));
-        return dataMap;
-    }
-
-    /**
      * 生成代码
      *
      * @param dataMap 代码生成参数
      * @throws Exception
      */
-    private void generator(Map<String, Object> dataMap) throws Exception {
+    private void generator(DataMap dataMap) throws Exception {
         // 创建freeMarker配置实例
         Configuration configuration = new Configuration(Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
         // 获取模版路径
@@ -172,7 +173,7 @@ public class GeneratorExecute {
         // 加载模版文件
         Template easyTemplate = configuration.getTemplate(String.valueOf(dataMap.get("templateName")));
         // 生成数据
-        String javaName = dataMap.get("className") + ".java";
+        String javaName = dataMap.get("javaName") + ".java";
         File file = new File(globalConfig.getOutputPath() + dataMap.get("modulePath"), javaName);
         // 文件存在时根据配置不覆盖代码
         if (file.exists() && !isOverride(dataMap)) {

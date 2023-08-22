@@ -27,7 +27,7 @@ public class Table {
     /**
      * 表名匹配模式，默认精确匹配
      */
-    private MatchPatternEnum matchPattern = MatchPatternEnum.EQUALS;
+    private MatchPatternEnum matchPattern;
 
     /**
      * 获取表名
@@ -37,10 +37,7 @@ public class Table {
         if (StrUtil.isEmpty(tableName)) {
             throw new GeneratorException("表名不能为空");
         }
-        if (matchPattern == null) {
-            throw new GeneratorException("表名匹配模式不能为空");
-        }
-        return matchPattern.formatTableName(tableName);
+        return getMatchPattern().formatTableName(tableName);
     }
 
     public String getModuleName() {
@@ -48,11 +45,19 @@ public class Table {
     }
 
     public MatchPatternEnum getMatchPattern() {
+        if (matchPattern == null) {
+            matchPattern = MatchPatternEnum.EQUALS;
+        }
         return matchPattern;
     }
 
     public Table(String tableName) {
         this.tableName = tableName;
+    }
+
+    public Table(String tableName, String moduleName) {
+        this.tableName = tableName;
+        this.moduleName = moduleName;
     }
 
     public Table(String tableName, MatchPatternEnum matchPattern) {
