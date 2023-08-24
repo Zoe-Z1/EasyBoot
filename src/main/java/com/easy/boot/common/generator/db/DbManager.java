@@ -2,6 +2,7 @@ package com.easy.boot.common.generator.db;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.text.NamingCase;
+import cn.hutool.core.util.StrUtil;
 import com.easy.boot.common.generator.config.DataSourceConfig;
 import com.easy.boot.common.generator.db.convert.ColumnConvertHandler;
 import com.easy.boot.exception.GeneratorException;
@@ -107,10 +108,14 @@ public class DbManager {
                 MetaTable metaTable = MetaTable.builder()
                         .name(name)
                         .beanName(NamingCase.toPascalCase(name))
-                        .javaName(NamingCase.toCamelCase(name))
+                        .camelName(NamingCase.toCamelCase(name))
+                        .moduleName(table.getModuleName())
                         .type(rs.getString(DbConstant.TABLE_TYPE))
                         .remarks(rs.getString(DbConstant.TABLE_REMARKS))
                         .build();
+                if (StrUtil.isEmpty(table.getModuleName())) {
+                    metaTable.setModuleName(NamingCase.toCamelCase(name));
+                }
                 tables.add(metaTable);
             }
             return new ArrayList<>(tables);

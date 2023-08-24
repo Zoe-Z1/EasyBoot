@@ -20,7 +20,7 @@ public class Table {
     private String tableName;
 
     /**
-     * 表对应的模块名称，可不填，不填不按模块生成
+     * 表对应的模块名称，可不填，不填则使用驼峰名
      */
     private String moduleName;
 

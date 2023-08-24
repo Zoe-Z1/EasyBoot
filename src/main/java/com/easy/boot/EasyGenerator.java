@@ -3,7 +3,6 @@ package com.easy.boot;
 import com.easy.boot.common.generator.config.*;
 import com.easy.boot.common.generator.db.convert.EasyColumnConvertHandler;
 import com.easy.boot.common.generator.execute.GeneratorExecute;
-import com.easy.boot.common.generator.template.ControllerTemplate;
 import com.easy.boot.common.generator.template.TestTemplate;
 import lombok.extern.slf4j.Slf4j;
 
@@ -23,7 +22,7 @@ public class EasyGenerator {
                 GeneratorConfig.builder()
                         .global(
                                 GlobalConfig.builder()
-                                        .packageName("com.easy.boot")
+                                        .packageName("com.easy.boot.admin")
                                         .templateRootPath(System.getProperty("user.dir") + "/src/main/resources/templates")
                                         .outputPath("/Users/zoe/Downloads/template/")
                                         .isOverride(true)
@@ -43,14 +42,14 @@ public class EasyGenerator {
                         )
                         .annotation(
                                 AnnotationConfig.builder()
-                                        .enableSwagger(true)
                                         .enableLog(true)
                                         .enableBuilder(true)
                                         .build())
                         .template(
                                 TemplateConfig.builder()
-                                        .controller(ControllerTemplate.builder().className("Aaaaa").build())
-                                        .addTemplate(Arrays.asList(new TestTemplate()))
+                                        .enableImport(true)
+                                        .enableExport(true)
+                                        .addTemplate(Arrays.asList(TestTemplate.builder().fileName("Testaaa").build()))
                                         .build())
                         .build()
         )

@@ -31,7 +31,12 @@ public class MetaTable {
     /**
      * Java驼峰名称
      */
-    private String javaName;
+    private String camelName;
+
+    /**
+     * 模块名
+     */
+    private String moduleName;
 
     /**
      * 表类型

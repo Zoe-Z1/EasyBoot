@@ -2,6 +2,7 @@ package com.easy.boot.common.generator.template;
 
 import cn.hutool.core.util.StrUtil;
 import com.easy.boot.common.base.BaseController;
+import com.easy.boot.common.generator.GenConstant;
 import lombok.*;
 
 /**
@@ -16,22 +17,24 @@ import lombok.*;
 @EqualsAndHashCode(callSuper = true)
 public class TestTemplate extends AbstractTemplate {
 
-    private String modulePath;
+    private String moduleName;
 
     public Class<?> superClass;
 
     public String templateName;
+
+    public String fileName;
 
     public Boolean enable;
 
     public Boolean isOverride;
 
     @Override
-    protected String getModulePath() {
-        if (StrUtil.isEmpty(modulePath)) {
-            modulePath = "/test";
+    protected String getModuleName() {
+        if (StrUtil.isEmpty(moduleName)) {
+            moduleName = "test";
         }
-        return modulePath;
+        return moduleName;
     }
 
     @Override
@@ -42,6 +45,14 @@ public class TestTemplate extends AbstractTemplate {
     @Override
     public String getTemplateName() {
         return "test.ftl";
+    }
+
+    @Override
+    protected String getFileName(String javaName) {
+        if (StrUtil.isNotEmpty(this.fileName)) {
+            return this.fileName + GenConstant.SUFFIX;
+        }
+        return javaName + GenConstant.TEST + GenConstant.SUFFIX;
     }
 
     @Override

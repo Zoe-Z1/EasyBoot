@@ -21,7 +21,7 @@ import java.util.Map;
 public class GlobalConfig {
 
     /**
-     * 包名 例：com.easy.boot
+     * 包名 例：com.easy.boot.admin
      */
     private String packageName;
 

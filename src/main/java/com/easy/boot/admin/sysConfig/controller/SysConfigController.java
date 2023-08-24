@@ -16,7 +16,6 @@ import com.easy.boot.common.excel.ImportVO;
 import com.easy.boot.common.excel.UploadDTO;
 import com.easy.boot.common.excel.handler.ImportErrorCellWriteHandler;
 import com.easy.boot.common.log.EasyLog;
-import com.easy.boot.common.properties.EasyFile;
 import com.easy.boot.exception.BusinessException;
 import com.easy.boot.exception.FileException;
 import com.easy.boot.utils.BeanUtil;
@@ -25,13 +24,11 @@ import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.Assert;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -184,7 +181,7 @@ public class SysConfigController extends BaseController {
     @ApiOperation(value = "下载系统配置导入模板")
     @EasyLog(module = "下载系统配置导入模板", operateType = OperateTypeEnum.DOWNLOAD)
     @PostMapping("/download")
-    public void downloadTemplate(HttpServletResponse response) {
+    public void downloadTemplate() {
         String filePath = FileUtil.getFullPath(easyFile.getExcelPath(), "系统配置导入模板");
         EasyExcel.write(filePath, SysConfig.class)
                 .excludeColumnFieldNames(Collections.singletonList("createTime"))

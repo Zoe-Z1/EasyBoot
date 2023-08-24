@@ -2,6 +2,8 @@ package com.easy.boot.common.generator.template;
 
 import cn.hutool.core.map.MapUtil;
 import com.easy.boot.common.generator.DataMap;
+import com.easy.boot.common.generator.GenConstant;
+import com.easy.boot.common.generator.config.GeneratorConfig;
 import com.easy.boot.common.generator.db.MetaTable;
 
 /**
@@ -12,9 +14,9 @@ import com.easy.boot.common.generator.db.MetaTable;
 public abstract class AbstractTemplate {
 
     /**
-     * 包路径，与模块名拼接得到最终目录
+     * 模块名
      */
-    protected String getModulePath() {
+    protected String getModuleName() {
         return null;
     }
 
@@ -27,16 +29,16 @@ public abstract class AbstractTemplate {
 
     /**
      * 模板文件名
-     * @param javaName 实体类Java名称
      */
-    protected String getFileName(String javaName) {
+    protected String getTemplateName() {
         return null;
     }
 
     /**
-     * 模板文件名
+     * 生成文件名
+     * @param javaName 实体类Java名称
      */
-    protected String getTemplateName() {
+    protected String getFileName(String javaName) {
         return null;
     }
 
@@ -68,40 +70,21 @@ public abstract class AbstractTemplate {
         if (MapUtil.isNotEmpty(dataMap)) {
             buildDataMap.putAll(dataMap);
         }
-        buildDataMap.put("modulePath", getModulePath());
+        MetaTable metaTable = (MetaTable) dataMap.get(GenConstant.DATA_MAP_KEY_TABLE);
+        GeneratorConfig generator = (GeneratorConfig) dataMap.get(GenConstant.DATA_MAP_KEY_CONFIG);
+        buildDataMap.put("moduleName", getModuleName());
         buildDataMap.put("superClass", getSuperClass());
+        buildDataMap.put("fileName", getFileName(metaTable.getBeanName()));
         buildDataMap.put("templateName", getTemplateName());
-        buildDataMap.put("isOverride", getIsOverride());
-        // 构建其他参数
-        buildGenDataMap(buildDataMap);
+        Boolean isOverride = getIsOverride();
+        if (isOverride == null) {
+            isOverride = generator.getGlobalConfig().getIsOverride();
+        }
+        buildDataMap.put("isOverride", isOverride);
+        String genPath = generator.getGlobalConfig().getOutputPath() + "/" + metaTable.getModuleName()
+                + "/" + getModuleName();
+        buildDataMap.put("genPath", genPath);
         return buildDataMap;
-    };
-
-    /**
-     * 构建代码生成需要用的数据
-     * @param buildDataMap 已构建过的参数
-     */
-    private void buildGenDataMap(DataMap buildDataMap) {
-        MetaTable metaTable = (MetaTable) buildDataMap.get("table");
-        String javaName = metaTable.getJavaName();
-        String controllerName = javaName + "Controller";
-        String serviceName = "I" + javaName + "Service";
-        String serviceImplName = javaName + "ServiceImpl";
-        String mapperName = javaName + "Mapper";
-        String entityName = javaName;
-        String createDTOName = javaName + "CreateDTO";
-        String updateDTOName = javaName + "UpdateDTO";
-        String queryName = javaName + "Query";
-        String voName = javaName + "VO";
-        buildDataMap.put("controllerName", controllerName);
-        buildDataMap.put("serviceName", serviceName);
-        buildDataMap.put("serviceImplName", serviceImplName);
-        buildDataMap.put("mapperName", mapperName);
-        buildDataMap.put("entityName", entityName);
-        buildDataMap.put("createDTOName", createDTOName);
-        buildDataMap.put("updateDTOName", updateDTOName);
-        buildDataMap.put("queryName", queryName);
-        buildDataMap.put("voName", voName);
     }
 
 }

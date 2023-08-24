@@ -1,13 +1,8 @@
 package com.easy.boot.common.generator.config;
 
 import cn.hutool.core.collection.CollUtil;
-import com.easy.boot.common.generator.template.AbstractTemplate;
-import com.easy.boot.common.generator.template.ControllerTemplate;
-import com.easy.boot.common.generator.template.CreateDTOTemplate;
-import com.easy.boot.common.generator.template.EntityTemplate;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.easy.boot.common.generator.template.*;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,15 +13,19 @@ import java.util.List;
  * @description 模板配置
  */
 @Data
-@Builder
 @NoArgsConstructor
-//@AllArgsConstructor
+@AllArgsConstructor
 public class TemplateConfig {
 
     /**
      * controller模板配置
      */
     private ControllerTemplate controller;
+
+    /**
+     * service模板配置
+     */
+    private ServiceTemplate service;
 
     /**
      * entity模板配置
@@ -41,12 +40,12 @@ public class TemplateConfig {
     /**
      * 生成导入
      */
-    private Boolean enableUpload;
+    private Boolean enableImport;
 
     /**
      * 生成导出
      */
-    private Boolean enableDownload;
+    private Boolean enableExport;
 
     /**
      * 增加自定义模板
@@ -56,70 +55,59 @@ public class TemplateConfig {
     /**
      * 需要生成的模板列表
      */
+    @Setter(AccessLevel.NONE)
     private List<AbstractTemplate> templates;
 
-
-    public Boolean getEnableUpload() {
-        if (enableUpload == null) {
-            enableUpload = false;
-        }
-        return enableUpload;
+    public ControllerTemplate getController() {
+        return controller == null ? new ControllerTemplate() : controller;
     }
 
-    public Boolean getEnableDownload() {
-        if (enableDownload == null) {
-            enableDownload = false;
-        }
-        return enableDownload;
+    public ServiceTemplate getService() {
+        return service == null ? new ServiceTemplate() : service;
     }
 
-    public TemplateConfig(ControllerTemplate controller, EntityTemplate entity, CreateDTOTemplate createDTO, Boolean enableUpload, Boolean enableDownload, List<AbstractTemplate> addTemplate, List<AbstractTemplate> templates) {
-        this.controller = controller;
-        this.entity = entity;
-        this.createDTO = createDTO;
-        this.enableUpload = enableUpload;
-        this.enableDownload = enableDownload;
-        this.addTemplate = addTemplate;
+    public EntityTemplate getEntity() {
+        return entity == null ? new EntityTemplate() : entity;
+    }
+
+    public CreateDTOTemplate getCreateDTO() {
+        return createDTO == null ? new CreateDTOTemplate() : createDTO;
+    }
+
+    public Boolean getEnableImport() {
+        if (enableImport == null) {
+            enableImport = false;
+        }
+        return enableImport;
+    }
+    public Boolean getEnableExport() {
+        if (enableExport == null) {
+            enableExport = false;
+        }
+        return enableExport;
+    }
+
+    public List<AbstractTemplate> getTemplates() {
         List<AbstractTemplate> list = new ArrayList<>();
-        list.add(controller == null ? new ControllerTemplate() : controller);
-        list.add(entity == null ? new EntityTemplate() : entity);
-        list.add(createDTO == null ? new CreateDTOTemplate() : createDTO);
+        list.add(getController());
+        list.add(getService());
+        list.add(getEntity());
+        list.add(getCreateDTO());
         if (CollUtil.isNotEmpty(addTemplate)) {
             list.addAll(addTemplate);
         }
         this.templates = list;
+        return templates;
     }
 
-    //    public static TemplateConfig.TemplateBuilder builder() {
-//        return new TemplateConfig.TemplateBuilder();
-//    }
-//
-//    @ToString
-//    public static class TemplateBuilder {
-//        private ControllerTemplate controller;
-//        private EntityTemplate entity;
-//        private CreateDTOTemplate createDTO;
-//
-//        TemplateBuilder() {
-//        }
-//
-//        public TemplateConfig.TemplateBuilder controller(final ControllerTemplate controller) {
-//            this.controller = controller;
-//            return this;
-//        }
-//
-//        public TemplateConfig.TemplateBuilder entity(final EntityTemplate entity) {
-//            this.entity = entity;
-//            return this;
-//        }
-//
-//        public TemplateConfig.TemplateBuilder createDTO(final CreateDTOTemplate createDTO) {
-//            this.createDTO = createDTO;
-//            return this;
-//        }
-//
-//        public TemplateConfig build() {
-//            return new TemplateConfig(this.controller, this.entity, this.createDTO);
-//        }
-//    }
+    @Builder
+    public TemplateConfig(ControllerTemplate controller, ServiceTemplate service, EntityTemplate entity, CreateDTOTemplate createDTO, Boolean enableImport, Boolean enableExport, List<AbstractTemplate> addTemplate) {
+        this.controller = controller;
+        this.service = service;
+        this.entity = entity;
+        this.createDTO = createDTO;
+        this.enableImport = enableImport;
+        this.enableExport = enableExport;
+        this.addTemplate = addTemplate;
+    }
 }

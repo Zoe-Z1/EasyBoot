@@ -3,6 +3,7 @@ package com.easy.boot.common.generator.execute;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DateUtil;
 import com.easy.boot.common.generator.DataMap;
+import com.easy.boot.common.generator.GenConstant;
 import com.easy.boot.common.generator.config.GeneratorConfig;
 import com.easy.boot.common.generator.config.GlobalConfig;
 import com.easy.boot.common.generator.config.TemplateConfig;
@@ -130,8 +131,8 @@ public class GeneratorExecute {
      */
     private DataMap getDataMap(MetaTable metaTable) {
         DataMap dataMap = new DataMap();
-        dataMap.put("table", metaTable);
-        dataMap.put("config", generatorConfig);
+        dataMap.put(GenConstant.DATA_MAP_KEY_TABLE, metaTable);
+        dataMap.put(GenConstant.DATA_MAP_KEY_CONFIG, generatorConfig);
         dataMap.put("date", DateUtil.format(new Date(), globalConfig.getCommentDateFormat()));
         return dataMap;
     }
@@ -146,13 +147,13 @@ public class GeneratorExecute {
             // 创建数据模型
             DataMap buildDataMap = template.buildDataMap(dataMap);
             if (!template.isEnable()) {
-                log.info(buildDataMap.get("javaName") + ".java 已跳过代码生成!");
+                log.info(buildDataMap.get("fileName") + " 已跳过代码生成!");
                 continue;
             }
             try {
                 this.generator(buildDataMap);
             } catch (Exception e) {
-                log.error("代码生成出错 templateConfig -> {},  e ->", template, e);
+                log.error(buildDataMap.get("fileName") + "代码生成出错,  e -> ", e);
             }
             buildDataMap.clear();
         }
@@ -173,11 +174,12 @@ public class GeneratorExecute {
         // 加载模版文件
         Template easyTemplate = configuration.getTemplate(String.valueOf(dataMap.get("templateName")));
         // 生成数据
-        String javaName = dataMap.get("javaName") + ".java";
-        File file = new File(globalConfig.getOutputPath() + dataMap.get("modulePath"), javaName);
+        String fileName = String.valueOf(dataMap.get("fileName"));
+        File file = new File(String.valueOf(dataMap.get("genPath")), fileName);
+        boolean isOverride = (boolean) dataMap.get("isOverride");
         // 文件存在时根据配置不覆盖代码
-        if (file.exists() && !isOverride(dataMap)) {
-            log.info(javaName + " 已存在，已根据配置不覆盖!");
+        if (file.exists() && !isOverride) {
+            log.info(fileName + " 已存在，已根据配置不覆盖!");
             return;
         }
         // 目录不存在则创建
@@ -187,21 +189,7 @@ public class GeneratorExecute {
         Writer out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file)));
         // 输出文件
         easyTemplate.process(dataMap, out);
-        log.info(javaName + " 生成成功!");
-    }
-
-    /**
-     * 是否覆盖原本生成的代码
-     *
-     * @param dataMap 模板数据集
-     * @return isOverride
-     */
-    private boolean isOverride(Map<String, Object> dataMap) {
-        Boolean isOverride = (Boolean) dataMap.get("isOverride");
-        if (isOverride == null) {
-            isOverride = globalConfig.getIsOverride();
-        }
-        return isOverride;
+        log.info(fileName + " 生成成功!");
     }
 
     /**

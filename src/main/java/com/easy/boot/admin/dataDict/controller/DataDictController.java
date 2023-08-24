@@ -29,7 +29,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -190,7 +189,7 @@ public class DataDictController extends BaseController {
     @ApiOperation(value = "下载数据字典导入模板")
     @EasyLog(module = "下载数据字典导入模板", operateType = OperateTypeEnum.DOWNLOAD)
     @PostMapping("/download")
-    public void downloadTemplate(HttpServletResponse response) {
+    public void downloadTemplate() {
         String filePath = FileUtil.getFullPath(easyFile.getExcelPath(), "数据字典导入模板");
         EasyExcel.write(filePath, DataDict.class)
                 .excludeColumnFieldNames(Collections.singletonList("createTime"))

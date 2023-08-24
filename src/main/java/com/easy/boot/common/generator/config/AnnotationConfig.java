@@ -17,11 +17,6 @@ import lombok.NoArgsConstructor;
 public class AnnotationConfig {
 
     /**
-     * 开启swagger
-     */
-    private Boolean enableSwagger;
-
-    /**
      * 开启log注解
      */
     private Boolean enableLog;
@@ -30,13 +25,6 @@ public class AnnotationConfig {
      * 开启builder模式
      */
     private Boolean enableBuilder;
-
-    public Boolean getEnableSwagger() {
-        if (enableSwagger == null) {
-            enableSwagger = true;
-        }
-        return enableSwagger;
-    }
 
     public Boolean getEnableLog() {
         if (enableLog == null) {
