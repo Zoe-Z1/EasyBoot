@@ -97,14 +97,14 @@ public class ControllerTemplate extends AbstractTemplate {
 
     @Override
     public DataMap buildDataMap(DataMap dataMap) {
-        dataMap = super.buildDataMap(dataMap);
+        DataMap buildDataMap = super.buildDataMap(dataMap);
         // 构建类名
-        buildClassName(dataMap);
+        buildClassName(buildDataMap);
         // 构建父类名
-        buildSuperClassName(dataMap);
+        buildSuperClassName(buildDataMap);
         // 构建需要导入的包
-        buildPkgDataMap(dataMap);
-        return dataMap;
+        buildPkgDataMap(buildDataMap);
+        return buildDataMap;
     }
 
     /**
@@ -112,20 +112,20 @@ public class ControllerTemplate extends AbstractTemplate {
      * @param buildDataMap 已构建过的参数
      */
     private void buildClassName(DataMap buildDataMap) {
-        GeneratorConfig generator = (GeneratorConfig) buildDataMap.get(GenConstant.DATA_MAP_KEY_CONFIG);
+        TemplateConfig template = (TemplateConfig) buildDataMap.get(GenConstant.DATA_MAP_KEY_TEMPLATE);
         MetaTable metaTable = (MetaTable) buildDataMap.get(GenConstant.DATA_MAP_KEY_TABLE);
         String javaName = metaTable.getBeanName();
         String camelName = metaTable.getCamelName();
-        String className = generator.getTemplateConfig().getController().getFileName(javaName).replace(GenConstant.SUFFIX, "");
-        String serviceName = generator.getTemplateConfig().getService().getFileName(javaName).replace(GenConstant.SUFFIX, "");
-        String serviceCamelName = generator.getTemplateConfig().getService().getFileName(camelName).replace(GenConstant.SUFFIX, "");
+        String className = template.getController().getFileName(javaName).replace(GenConstant.SUFFIX, "");
+        String serviceName = template.getService().getFileName(javaName).replace(GenConstant.SUFFIX, "");
+        String serviceCamelName = template.getService().getFileName(camelName).replace(GenConstant.SUFFIX, "");
         if (serviceName.startsWith("I")) {
-            serviceCamelName = generator.getTemplateConfig().getService().getFileName(camelName)
+            serviceCamelName = template.getService().getFileName(camelName)
                     .replaceFirst("I", "").replace(GenConstant.SUFFIX, "");
         }
-        String entityName = generator.getTemplateConfig().getEntity().getFileName(javaName).replace(GenConstant.SUFFIX, "");
-        String entityCamelName = generator.getTemplateConfig().getEntity().getFileName(camelName).replace(GenConstant.SUFFIX, "");
-        String createDTOName = generator.getTemplateConfig().getCreateDTO().getFileName(javaName).replace(GenConstant.SUFFIX, "");
+        String entityName = template.getEntity().getFileName(javaName).replace(GenConstant.SUFFIX, "");
+        String entityCamelName = template.getEntity().getFileName(camelName).replace(GenConstant.SUFFIX, "");
+        String createDTOName = template.getCreateDTO().getFileName(javaName).replace(GenConstant.SUFFIX, "");
         String updateDTOName = javaName + "UpdateDTO";
         String queryName = javaName + "Query";
         String voName = javaName + "VO";
@@ -147,9 +147,8 @@ public class ControllerTemplate extends AbstractTemplate {
      * @param buildDataMap 已构建过的参数
      */
     private void buildSuperClassName(DataMap buildDataMap) {
-        GeneratorConfig generator = (GeneratorConfig) buildDataMap.get(GenConstant.DATA_MAP_KEY_CONFIG);
-        TemplateConfig template = generator.getTemplateConfig();
-        if (template.getController().superClass != null) {
+        TemplateConfig template = (TemplateConfig) buildDataMap.get(GenConstant.DATA_MAP_KEY_TEMPLATE);
+        if (template.getController().getSuperClass() != null) {
             buildDataMap.put("superName", template.getController().getSuperClass().getName());
         }
     }
@@ -160,9 +159,9 @@ public class ControllerTemplate extends AbstractTemplate {
      */
     private void buildPkgDataMap(DataMap buildDataMap) {
         GeneratorConfig generator = (GeneratorConfig) buildDataMap.get(GenConstant.DATA_MAP_KEY_CONFIG);
-        GlobalConfig global = generator.getGlobalConfig();
-        AnnotationConfig annotation = generator.getAnnotationConfig();
-        TemplateConfig template = generator.getTemplateConfig();
+        GlobalConfig global = (GlobalConfig) buildDataMap.get(GenConstant.DATA_MAP_KEY_GLOBAL);
+        AnnotationConfig annotation = (AnnotationConfig) buildDataMap.get(GenConstant.DATA_MAP_KEY_ANNOTATION);
+        TemplateConfig template = (TemplateConfig) buildDataMap.get(GenConstant.DATA_MAP_KEY_TEMPLATE);
         MetaTable metaTable = (MetaTable) buildDataMap.get(GenConstant.DATA_MAP_KEY_TABLE);
         String pkg = global.getPackageName() + "." + metaTable.getModuleName();
         Set<String> pkgs = new HashSet<>();
@@ -190,7 +189,7 @@ public class ControllerTemplate extends AbstractTemplate {
             pkgs.add(IOException.class.getPackage().getName());
             pkgs.add(FileException.class.getPackage().getName());
         }
-        if (template.getController().superClass != null) {
+        if (template.getController().getSuperClass() != null) {
             pkgs.add(template.getController().getSuperClass().getPackage().getName());
         }
         pkgs.add(Api.class.getPackage().getName());

@@ -3,7 +3,7 @@ package com.easy.boot.common.generator.template;
 import cn.hutool.core.map.MapUtil;
 import com.easy.boot.common.generator.DataMap;
 import com.easy.boot.common.generator.GenConstant;
-import com.easy.boot.common.generator.config.GeneratorConfig;
+import com.easy.boot.common.generator.config.GlobalConfig;
 import com.easy.boot.common.generator.db.MetaTable;
 
 /**
@@ -71,17 +71,17 @@ public abstract class AbstractTemplate {
             buildDataMap.putAll(dataMap);
         }
         MetaTable metaTable = (MetaTable) dataMap.get(GenConstant.DATA_MAP_KEY_TABLE);
-        GeneratorConfig generator = (GeneratorConfig) dataMap.get(GenConstant.DATA_MAP_KEY_CONFIG);
+        GlobalConfig global = (GlobalConfig) dataMap.get(GenConstant.DATA_MAP_KEY_GLOBAL);
         buildDataMap.put("moduleName", getModuleName());
         buildDataMap.put("superClass", getSuperClass());
         buildDataMap.put("fileName", getFileName(metaTable.getBeanName()));
         buildDataMap.put("templateName", getTemplateName());
         Boolean isOverride = getIsOverride();
         if (isOverride == null) {
-            isOverride = generator.getGlobalConfig().getIsOverride();
+            isOverride = global.getIsOverride();
         }
         buildDataMap.put("isOverride", isOverride);
-        String genPath = generator.getGlobalConfig().getOutputPath() + "/" + metaTable.getModuleName()
+        String genPath = global.getOutputPath() + "/" + metaTable.getModuleName()
                 + "/" + getModuleName();
         buildDataMap.put("genPath", genPath);
         return buildDataMap;

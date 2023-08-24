@@ -53,7 +53,7 @@ public class EasyGenerator {
                                         .build())
                         .build()
         )
-                .tables("login_log")
+                .tables("login_log1")
                 .execute();
 
     }

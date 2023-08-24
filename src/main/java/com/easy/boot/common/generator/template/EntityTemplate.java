@@ -78,14 +78,14 @@ public class EntityTemplate extends AbstractTemplate {
 
     @Override
     public DataMap buildDataMap(DataMap dataMap) {
-        dataMap =  super.buildDataMap(dataMap);
+        DataMap buildDataMap = super.buildDataMap(dataMap);
         // 构建类名
-        buildClassName(dataMap);
+        buildClassName(buildDataMap);
         // 构建父类名
-        buildSuperClassName(dataMap);
+        buildSuperClassName(buildDataMap);
         // 构建需要导入的包
-        buildPkgDataMap(dataMap);
-        return dataMap;
+        buildPkgDataMap(buildDataMap);
+        return buildDataMap;
     }
 
     /**
@@ -107,7 +107,7 @@ public class EntityTemplate extends AbstractTemplate {
     private void buildSuperClassName(DataMap buildDataMap) {
         GeneratorConfig generator = (GeneratorConfig) buildDataMap.get(GenConstant.DATA_MAP_KEY_CONFIG);
         TemplateConfig template = generator.getTemplateConfig();
-        if (template.getEntity().superClass != null) {
+        if (template.getEntity().getSuperClass() != null) {
             buildDataMap.put("superName", template.getEntity().getSuperClass().getName());
         }
     }
@@ -124,7 +124,7 @@ public class EntityTemplate extends AbstractTemplate {
         MetaTable metaTable = (MetaTable) buildDataMap.get(GenConstant.DATA_MAP_KEY_TABLE);
         String pkg = global.getPackageName() + "." + metaTable.getModuleName();
         Set<String> pkgs = new HashSet<>();
-        if (template.getEntity().superClass != null) {
+        if (template.getEntity().getSuperClass() != null) {
             pkgs.add(template.getEntity().getSuperClass().getPackage().getName());
         }
         if (annotation.getEnableBuilder()) {

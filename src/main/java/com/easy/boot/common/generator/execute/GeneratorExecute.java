@@ -133,6 +133,9 @@ public class GeneratorExecute {
         DataMap dataMap = new DataMap();
         dataMap.put(GenConstant.DATA_MAP_KEY_TABLE, metaTable);
         dataMap.put(GenConstant.DATA_MAP_KEY_CONFIG, generatorConfig);
+        dataMap.put(GenConstant.DATA_MAP_KEY_ANNOTATION, generatorConfig.getAnnotationConfig());
+        dataMap.put(GenConstant.DATA_MAP_KEY_GLOBAL, generatorConfig.getGlobalConfig());
+        dataMap.put(GenConstant.DATA_MAP_KEY_TEMPLATE, generatorConfig.getTemplateConfig());
         dataMap.put("date", DateUtil.format(new Date(), globalConfig.getCommentDateFormat()));
         return dataMap;
     }
@@ -189,6 +192,9 @@ public class GeneratorExecute {
         Writer out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file)));
         // 输出文件
         easyTemplate.process(dataMap, out);
+        //关闭流
+        out.flush();
+        out.close();
         log.info(fileName + " 生成成功!");
     }
 

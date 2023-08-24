@@ -52,7 +52,7 @@ public class ServiceTemplate extends AbstractTemplate {
 
     @Override
     public String getTemplateName() {
-        return "controller.ftl";
+        return "service.ftl";
     }
 
     @Override
@@ -78,14 +78,14 @@ public class ServiceTemplate extends AbstractTemplate {
 
     @Override
     public DataMap buildDataMap(DataMap dataMap) {
-        dataMap =  super.buildDataMap(dataMap);
+        DataMap buildDataMap = super.buildDataMap(dataMap);
         // 构建类名
-        buildClassName(dataMap);
+        buildClassName(buildDataMap);
         // 构建父类名
-        buildSuperClassName(dataMap);
+        buildSuperClassName(buildDataMap);
         // 构建需要导入的包
-        buildPkgDataMap(dataMap);
-        return dataMap;
+        buildPkgDataMap(buildDataMap);
+        return buildDataMap;
     }
 
     /**
@@ -107,7 +107,7 @@ public class ServiceTemplate extends AbstractTemplate {
     private void buildSuperClassName(DataMap buildDataMap) {
         GeneratorConfig generator = (GeneratorConfig) buildDataMap.get(GenConstant.DATA_MAP_KEY_CONFIG);
         TemplateConfig template = generator.getTemplateConfig();
-        if (template.getService().superClass != null) {
+        if (template.getService().getSuperClass() != null) {
             buildDataMap.put("superName", template.getService().getSuperClass().getName());
         }
     }
@@ -124,7 +124,7 @@ public class ServiceTemplate extends AbstractTemplate {
         MetaTable metaTable = (MetaTable) buildDataMap.get(GenConstant.DATA_MAP_KEY_TABLE);
         String pkg = global.getPackageName() + "." + metaTable.getModuleName();
         Set<String> pkgs = new HashSet<>();
-        if (template.getService().superClass != null) {
+        if (template.getService().getSuperClass() != null) {
             pkgs.add(template.getService().getSuperClass().getPackage().getName());
         }
         List<String> list = new ArrayList<>(pkgs);

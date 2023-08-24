@@ -25,6 +25,12 @@ public class GenConstant {
 
     public static final String TEST = "Test";
 
+    public static final String DATA_MAP_KEY_ANNOTATION = "annotation";
+
+    public static final String DATA_MAP_KEY_GLOBAL = "global";
+
+    public static final String DATA_MAP_KEY_TEMPLATE = "template";
+
     public static final String DATA_MAP_KEY_CONFIG = "config";
 
     public static final String DATA_MAP_KEY_TABLE = "table";

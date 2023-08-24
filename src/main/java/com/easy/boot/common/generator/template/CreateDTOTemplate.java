@@ -79,14 +79,14 @@ public class CreateDTOTemplate extends AbstractTemplate {
 
     @Override
     public DataMap buildDataMap(DataMap dataMap) {
-        dataMap =  super.buildDataMap(dataMap);
+        DataMap buildDataMap = super.buildDataMap(dataMap);
         // 构建类名
-        buildClassName(dataMap);
+        buildClassName(buildDataMap);
         // 构建父类名
-        buildSuperClassName(dataMap);
+        buildSuperClassName(buildDataMap);
         // 构建需要导入的包
-        buildPkgDataMap(dataMap);
-        return dataMap;
+        buildPkgDataMap(buildDataMap);
+        return buildDataMap;
     }
 
     /**
@@ -108,7 +108,7 @@ public class CreateDTOTemplate extends AbstractTemplate {
     private void buildSuperClassName(DataMap buildDataMap) {
         GeneratorConfig generator = (GeneratorConfig) buildDataMap.get(GenConstant.DATA_MAP_KEY_CONFIG);
         TemplateConfig template = generator.getTemplateConfig();
-        if (template.getCreateDTO().superClass != null) {
+        if (template.getCreateDTO().getSuperClass() != null) {
             buildDataMap.put("superName", template.getCreateDTO().getSuperClass().getName());
         }
     }
@@ -125,7 +125,7 @@ public class CreateDTOTemplate extends AbstractTemplate {
         MetaTable metaTable = (MetaTable) buildDataMap.get(GenConstant.DATA_MAP_KEY_TABLE);
         String pkg = global.getPackageName() + "." + metaTable.getModuleName();
         Set<String> pkgs = new HashSet<>();
-        if (template.getCreateDTO().superClass != null) {
+        if (template.getCreateDTO().getSuperClass() != null) {
             pkgs.add(template.getCreateDTO().getSuperClass().getPackage().getName());
         }
         if (annotation.getEnableBuilder()) {
