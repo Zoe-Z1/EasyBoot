@@ -1,7 +1,14 @@
 package com.easy.boot.common.generator;
 
+import cn.hutool.core.date.DateUtil;
+import com.easy.boot.common.generator.config.AnnotationConfig;
+import com.easy.boot.common.generator.config.GeneratorConfig;
+import com.easy.boot.common.generator.config.GlobalConfig;
+import com.easy.boot.common.generator.config.TemplateConfig;
+import com.easy.boot.common.generator.db.MetaTable;
 import com.easy.boot.exception.GeneratorException;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -38,10 +45,58 @@ public class DataMap extends HashMap<String, Object> {
         super.putAll(map);
     }
 
+    /**
+     * 获取String类型参数
+     * @param key
+     * @return
+     */
     public String getString(String key) {
-        if (get(key) == null) {
-            throw new GeneratorException("当前key [" + key + "] 值不存在");
-        }
-        return get(key).toString();
+        return (String) get(key);
+    }
+
+    /**
+     * 设置并返回DataMap
+     * @param config 代码生成配置
+     * @return
+     */
+    public static DataMap getAndPutDataMap(GeneratorConfig config) {
+        DataMap dataMap = new DataMap();
+        dataMap.put(GenConstant.DATA_MAP_KEY_ANNOTATION, config.getAnnotationConfig());
+        dataMap.put(GenConstant.DATA_MAP_KEY_GLOBAL, config.getGlobalConfig());
+        dataMap.put(GenConstant.DATA_MAP_KEY_TEMPLATE, config.getTemplateConfig());
+        dataMap.put(GenConstant.DATE, DateUtil.format(new Date(), config.getGlobalConfig().getCommentDateFormat()));
+        return dataMap;
+    }
+
+    /**
+     * 获取全局参数配置
+     * @return
+     */
+    public GlobalConfig getGlobalConfig() {
+        return (GlobalConfig) get(GenConstant.DATA_MAP_KEY_GLOBAL);
+    }
+
+    /**
+     * 获取注解配置
+     * @return
+     */
+    public AnnotationConfig getAnnotationConfig() {
+        return (AnnotationConfig) get(GenConstant.DATA_MAP_KEY_ANNOTATION);
+    }
+
+    /**
+     * 获取模板配置
+     * @return
+     */
+    public TemplateConfig getTemplateConfig() {
+        return (TemplateConfig) get(GenConstant.DATA_MAP_KEY_TEMPLATE);
+    }
+
+    /**
+     * 获取表元数据信息
+     * @return
+     */
+    public MetaTable getMetaTable() {
+        return (MetaTable) get(GenConstant.DATA_MAP_KEY_TABLE);
     }
 }

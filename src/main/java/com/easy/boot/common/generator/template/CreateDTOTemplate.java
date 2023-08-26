@@ -4,7 +4,6 @@ import cn.hutool.core.util.StrUtil;
 import com.easy.boot.common.generator.DataMap;
 import com.easy.boot.common.generator.GenConstant;
 import com.easy.boot.common.generator.config.AnnotationConfig;
-import com.easy.boot.common.generator.config.GeneratorConfig;
 import com.easy.boot.common.generator.config.GlobalConfig;
 import com.easy.boot.common.generator.config.TemplateConfig;
 import com.easy.boot.common.generator.db.MetaTable;
@@ -53,7 +52,7 @@ public class CreateDTOTemplate extends AbstractTemplate {
 
     @Override
     public String getTemplateName() {
-        return "createDTO.ftl";
+        return GenConstant.CREATE_DTO_TEMPLATE_NAME;
     }
 
     @Override
@@ -94,10 +93,10 @@ public class CreateDTOTemplate extends AbstractTemplate {
      * @param buildDataMap 已构建过的参数
      */
     private void buildClassName(DataMap buildDataMap) {
-        GeneratorConfig generator = (GeneratorConfig) buildDataMap.get(GenConstant.DATA_MAP_KEY_CONFIG);
+        TemplateConfig template = buildDataMap.getTemplateConfig();
         MetaTable metaTable = (MetaTable) buildDataMap.get(GenConstant.DATA_MAP_KEY_TABLE);
         String javaName = metaTable.getBeanName();
-        String className = generator.getTemplateConfig().getCreateDTO().getFileName(javaName).replace(GenConstant.SUFFIX, "");
+        String className = template.getCreateDTO().getFileName(javaName).replace(GenConstant.SUFFIX, "");
         buildDataMap.put("className", className);
     }
 
@@ -106,8 +105,7 @@ public class CreateDTOTemplate extends AbstractTemplate {
      * @param buildDataMap 已构建过的参数
      */
     private void buildSuperClassName(DataMap buildDataMap) {
-        GeneratorConfig generator = (GeneratorConfig) buildDataMap.get(GenConstant.DATA_MAP_KEY_CONFIG);
-        TemplateConfig template = generator.getTemplateConfig();
+        TemplateConfig template = buildDataMap.getTemplateConfig();
         if (template.getCreateDTO().getSuperClass() != null) {
             buildDataMap.put("superName", template.getCreateDTO().getSuperClass().getName());
         }
@@ -118,10 +116,9 @@ public class CreateDTOTemplate extends AbstractTemplate {
      * @param buildDataMap 已构建过的参数
      */
     private void buildPkgDataMap(DataMap buildDataMap) {
-        GeneratorConfig generator = (GeneratorConfig) buildDataMap.get(GenConstant.DATA_MAP_KEY_CONFIG);
-        GlobalConfig global = generator.getGlobalConfig();
-        AnnotationConfig annotation = generator.getAnnotationConfig();
-        TemplateConfig template = generator.getTemplateConfig();
+        GlobalConfig global = buildDataMap.getGlobalConfig();
+        AnnotationConfig annotation = buildDataMap.getAnnotationConfig();
+        TemplateConfig template = buildDataMap.getTemplateConfig();
         MetaTable metaTable = (MetaTable) buildDataMap.get(GenConstant.DATA_MAP_KEY_TABLE);
         String pkg = global.getPackageName() + "." + metaTable.getModuleName();
         Set<String> pkgs = new HashSet<>();

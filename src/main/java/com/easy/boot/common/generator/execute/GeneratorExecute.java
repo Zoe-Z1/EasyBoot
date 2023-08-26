@@ -1,7 +1,6 @@
 package com.easy.boot.common.generator.execute;
 
 import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.date.DateUtil;
 import com.easy.boot.common.generator.DataMap;
 import com.easy.boot.common.generator.GenConstant;
 import com.easy.boot.common.generator.config.GeneratorConfig;
@@ -19,8 +18,8 @@ import lombok.extern.slf4j.Slf4j;
 import java.awt.*;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.List;
-import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -119,25 +118,10 @@ public class GeneratorExecute {
      */
     private void eachMetaTables(List<AbstractTemplate> templates, List<MetaTable> metaTables) {
         for (MetaTable metaTable : metaTables) {
-            DataMap dataMap = getDataMap(metaTable);
+            DataMap dataMap = DataMap.getAndPutDataMap(generatorConfig);
+            dataMap.put(GenConstant.DATA_MAP_KEY_TABLE, metaTable);
             eachTemplates(templates, dataMap);
         }
-    }
-
-    /**
-     * 获取配置数据map
-     * @param metaTable 表数据信息
-     * @return DataMap
-     */
-    private DataMap getDataMap(MetaTable metaTable) {
-        DataMap dataMap = new DataMap();
-        dataMap.put(GenConstant.DATA_MAP_KEY_TABLE, metaTable);
-        dataMap.put(GenConstant.DATA_MAP_KEY_CONFIG, generatorConfig);
-        dataMap.put(GenConstant.DATA_MAP_KEY_ANNOTATION, generatorConfig.getAnnotationConfig());
-        dataMap.put(GenConstant.DATA_MAP_KEY_GLOBAL, generatorConfig.getGlobalConfig());
-        dataMap.put(GenConstant.DATA_MAP_KEY_TEMPLATE, generatorConfig.getTemplateConfig());
-        dataMap.put("date", DateUtil.format(new Date(), globalConfig.getCommentDateFormat()));
-        return dataMap;
     }
 
     /**
@@ -156,7 +140,7 @@ public class GeneratorExecute {
             try {
                 this.generator(buildDataMap);
             } catch (Exception e) {
-                log.error(buildDataMap.get("fileName") + "代码生成出错,  e -> ", e);
+                log.error(buildDataMap.getString(GenConstant.DATA_MAP_KEY_FILE_NAME) + "代码生成出错,  e -> ", e);
             }
             buildDataMap.clear();
         }

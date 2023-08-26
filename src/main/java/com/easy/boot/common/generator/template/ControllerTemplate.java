@@ -76,7 +76,7 @@ public class ControllerTemplate extends AbstractTemplate {
 
     @Override
     public String getTemplateName() {
-        return "controller.ftl";
+        return GenConstant.CONTROLLER_TEMPLATE_NAME;
     }
 
     @Override
@@ -115,8 +115,8 @@ public class ControllerTemplate extends AbstractTemplate {
      * @param buildDataMap 已构建过的参数
      */
     private void buildClassName(DataMap buildDataMap) {
-        TemplateConfig template = (TemplateConfig) buildDataMap.get(GenConstant.DATA_MAP_KEY_TEMPLATE);
-        MetaTable metaTable = (MetaTable) buildDataMap.get(GenConstant.DATA_MAP_KEY_TABLE);
+        TemplateConfig template = buildDataMap.getTemplateConfig();
+        MetaTable metaTable = buildDataMap.getMetaTable();
         String javaName = metaTable.getBeanName();
         String camelName = metaTable.getCamelName();
         String className = template.getController().getFileName(javaName).replace(GenConstant.SUFFIX, "");

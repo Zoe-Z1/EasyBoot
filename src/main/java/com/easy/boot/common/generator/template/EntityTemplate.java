@@ -55,7 +55,7 @@ public class EntityTemplate extends AbstractTemplate {
 
     @Override
     public String getTemplateName() {
-        return "entity.ftl";
+        return GenConstant.ENTITY_TEMPLATE_NAME;
     }
 
     @Override
@@ -94,8 +94,8 @@ public class EntityTemplate extends AbstractTemplate {
      * @param buildDataMap 已构建过的参数
      */
     private void buildClassName(DataMap buildDataMap) {
-        TemplateConfig template = (TemplateConfig) buildDataMap.get(GenConstant.DATA_MAP_KEY_TEMPLATE);
-        MetaTable metaTable = (MetaTable) buildDataMap.get(GenConstant.DATA_MAP_KEY_TABLE);
+        TemplateConfig template = buildDataMap.getTemplateConfig();
+        MetaTable metaTable = buildDataMap.getMetaTable();
         String javaName = metaTable.getBeanName();
         String className = template.getEntity().getFileName(javaName).replace(GenConstant.SUFFIX, "");
         buildDataMap.put(GenConstant.DATA_MAP_KEY_CLASS_NAME, className);
@@ -109,30 +109,23 @@ public class EntityTemplate extends AbstractTemplate {
      * @param buildDataMap 已构建过的参数
      */
     private void buildPkgDataMap(DataMap buildDataMap) {
-        GlobalConfig global = (GlobalConfig) buildDataMap.get(GenConstant.DATA_MAP_KEY_GLOBAL);
-        AnnotationConfig annotation = (AnnotationConfig) buildDataMap.get(GenConstant.DATA_MAP_KEY_ANNOTATION);
-        TemplateConfig template = (TemplateConfig) buildDataMap.get(GenConstant.DATA_MAP_KEY_TEMPLATE);
-        MetaTable metaTable = (MetaTable) buildDataMap.get(GenConstant.DATA_MAP_KEY_TABLE);
+        GlobalConfig global = buildDataMap.getGlobalConfig();
+        AnnotationConfig annotation = buildDataMap.getAnnotationConfig();
+        TemplateConfig template = buildDataMap.getTemplateConfig();
+        MetaTable metaTable = buildDataMap.getMetaTable();
         String pkg = buildDataMap.getString(GenConstant.DATA_MAP_KEY_PKG);
         Set<String> pkgs = new HashSet<>();
-        if (template.getEntity().getSuperClass() != null) {
-            pkgs.add(template.getEntity().getSuperClass().getName());
+        if (getSuperClass() != null) {
+            pkgs.add(getSuperClass().getName());
         }
         if (annotation.getEnableBuilder()) {
             pkgs.add(Builder.class.getName());
         }
         List<String> list = new ArrayList<>(pkgs);
         Collections.sort(list);
-        buildDataMap.put("pkgs", list);
-        pkg = pkg + "." + template.getEntity().getModuleName();
-        buildDataMap.put("pkg", pkg);
+        buildDataMap.put(GenConstant.DATA_MAP_KEY_PKGS, list);
+        pkg = String.join(".",pkg, getModuleName());
+        buildDataMap.put(GenConstant.DATA_MAP_KEY_PKG, pkg);
     }
 
-    public static void main(String[] args) {
-        Object a = null;
-        String b = (String) a;
-        System.out.println("b = " + b);
-        System.out.println("b = " + a.toString());
-        System.out.println("b = " + String.valueOf(a));
-    }
 }

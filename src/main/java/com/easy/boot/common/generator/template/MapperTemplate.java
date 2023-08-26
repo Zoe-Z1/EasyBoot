@@ -55,7 +55,7 @@ public class MapperTemplate extends AbstractTemplate {
 
     @Override
     public String getTemplateName() {
-        return "mapper.ftl";
+        return GenConstant.MAPPER_TEMPLATE_NAME;
     }
 
     @Override
@@ -94,8 +94,8 @@ public class MapperTemplate extends AbstractTemplate {
      * @param buildDataMap 已构建过的参数
      */
     private void buildClassName(DataMap buildDataMap) {
-        TemplateConfig template = (TemplateConfig) buildDataMap.get(GenConstant.DATA_MAP_KEY_TEMPLATE);
-        MetaTable metaTable = (MetaTable) buildDataMap.get(GenConstant.DATA_MAP_KEY_TABLE);
+        TemplateConfig template = buildDataMap.getTemplateConfig();
+        MetaTable metaTable = buildDataMap.getMetaTable();
         String javaName = metaTable.getBeanName();
         String className = template.getMapper().getFileName(javaName).replace(GenConstant.SUFFIX, "");
         String entityName = template.getEntity().getFileName(javaName).replace(GenConstant.SUFFIX, "");
@@ -111,9 +111,9 @@ public class MapperTemplate extends AbstractTemplate {
      * @param buildDataMap 已构建过的参数
      */
     private void buildPkgDataMap(DataMap buildDataMap) {
-        GlobalConfig global = (GlobalConfig) buildDataMap.get(GenConstant.DATA_MAP_KEY_GLOBAL);
-        TemplateConfig template = (TemplateConfig) buildDataMap.get(GenConstant.DATA_MAP_KEY_TEMPLATE);
-        MetaTable metaTable = (MetaTable) buildDataMap.get(GenConstant.DATA_MAP_KEY_TABLE);
+        GlobalConfig global = buildDataMap.getGlobalConfig();
+        TemplateConfig template = buildDataMap.getTemplateConfig();
+        MetaTable metaTable = buildDataMap.getMetaTable();
         String pkg = String.join(".", global.getPackageName(), metaTable.getModuleName());
         Set<String> pkgs = new HashSet<>();
         if (getSuperClass() != null) {

@@ -7,6 +7,8 @@ package com.easy.boot.common.generator;
  */
 public class GenConstant {
 
+    public static final String DATE = "date";
+
     public static final String MODULE_CONTROLLER = "controller";
 
     public static final String MODULE_SERVICE = "service";
@@ -21,17 +23,33 @@ public class GenConstant {
 
     public static final String CONTROLLER = "Controller";
 
+    public static final String CONTROLLER_TEMPLATE_NAME = "controller.ftl";
+
     public static final String SERVICE = "Service";
+
+    public static final String SERVICE_TEMPLATE_NAME = "service.ftl";
 
     public static final String SERVICE_IMPL = "ServiceImpl";
 
+    public static final String SERVICE_IMPL_TEMPLATE_NAME = "ServiceImpl";
+
     public static final String MAPPER = "Mapper";
+
+    public static final String MAPPER_TEMPLATE_NAME = "mapper.ftl";
+
+    public static final String ENTITY_TEMPLATE_NAME = "entity.ftl";
 
     public static final String CREATE_DTO = "CreateDTO";
 
+    public static final String CREATE_DTO_TEMPLATE_NAME = "createDTO.ftl";
+
     public static final String UPDATE_DTO = "UpdateDTO";
 
+    public static final String UPDATE_DTO_TEMPLATE_NAME = "UpdateDTO";
+
     public static final String QUERY = "Query";
+
+    public static final String QUERY_TEMPLATE_NAME = "Query";
 
     public static final String SUFFIX = ".java";
 
@@ -42,8 +60,6 @@ public class GenConstant {
     public static final String DATA_MAP_KEY_GLOBAL = "global";
 
     public static final String DATA_MAP_KEY_TEMPLATE = "template";
-
-    public static final String DATA_MAP_KEY_CONFIG = "config";
 
     public static final String DATA_MAP_KEY_TABLE = "table";
 

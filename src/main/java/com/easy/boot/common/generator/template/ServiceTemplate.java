@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.easy.boot.common.generator.DataMap;
 import com.easy.boot.common.generator.GenConstant;
 import com.easy.boot.common.generator.config.AnnotationConfig;
-import com.easy.boot.common.generator.config.GeneratorConfig;
 import com.easy.boot.common.generator.config.GlobalConfig;
 import com.easy.boot.common.generator.config.TemplateConfig;
 import com.easy.boot.common.generator.db.MetaTable;
@@ -56,7 +55,7 @@ public class ServiceTemplate extends AbstractTemplate {
 
     @Override
     public String getTemplateName() {
-        return "service.ftl";
+        return GenConstant.SERVICE_TEMPLATE_NAME;
     }
 
     @Override
@@ -97,10 +96,10 @@ public class ServiceTemplate extends AbstractTemplate {
      * @param buildDataMap 已构建过的参数
      */
     private void buildClassName(DataMap buildDataMap) {
-        GeneratorConfig generator = (GeneratorConfig) buildDataMap.get(GenConstant.DATA_MAP_KEY_CONFIG);
+        TemplateConfig template = buildDataMap.getTemplateConfig();
         MetaTable metaTable = (MetaTable) buildDataMap.get(GenConstant.DATA_MAP_KEY_TABLE);
         String javaName = metaTable.getBeanName();
-        String className = generator.getTemplateConfig().getService().getFileName(javaName).replace(GenConstant.SUFFIX, "");
+        String className = template.getService().getFileName(javaName).replace(GenConstant.SUFFIX, "");
         buildDataMap.put("className", className);
     }
 
@@ -109,8 +108,7 @@ public class ServiceTemplate extends AbstractTemplate {
      * @param buildDataMap 已构建过的参数
      */
     private void buildSuperClassName(DataMap buildDataMap) {
-        GeneratorConfig generator = (GeneratorConfig) buildDataMap.get(GenConstant.DATA_MAP_KEY_CONFIG);
-        TemplateConfig template = generator.getTemplateConfig();
+        TemplateConfig template = buildDataMap.getTemplateConfig();
         if (template.getService().getSuperClass() != null) {
             buildDataMap.put("superName", template.getService().getSuperClass().getName());
         }
@@ -121,10 +119,9 @@ public class ServiceTemplate extends AbstractTemplate {
      * @param buildDataMap 已构建过的参数
      */
     private void buildPkgDataMap(DataMap buildDataMap) {
-        GeneratorConfig generator = (GeneratorConfig) buildDataMap.get(GenConstant.DATA_MAP_KEY_CONFIG);
-        GlobalConfig global = generator.getGlobalConfig();
-        AnnotationConfig annotation = generator.getAnnotationConfig();
-        TemplateConfig template = generator.getTemplateConfig();
+        GlobalConfig global = buildDataMap.getGlobalConfig();
+        AnnotationConfig annotation = buildDataMap.getAnnotationConfig();
+        TemplateConfig template = buildDataMap.getTemplateConfig();
         MetaTable metaTable = (MetaTable) buildDataMap.get(GenConstant.DATA_MAP_KEY_TABLE);
         String pkg = global.getPackageName() + "." + metaTable.getModuleName();
         Set<String> pkgs = new HashSet<>();
