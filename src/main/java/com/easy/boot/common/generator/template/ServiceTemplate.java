@@ -1,7 +1,7 @@
 package com.easy.boot.common.generator.template;
 
 import cn.hutool.core.util.StrUtil;
-import com.easy.boot.common.base.BaseController;
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.easy.boot.common.generator.DataMap;
 import com.easy.boot.common.generator.GenConstant;
 import com.easy.boot.common.generator.config.AnnotationConfig;
@@ -40,14 +40,18 @@ public class ServiceTemplate extends AbstractTemplate {
     @Override
     protected String getModuleName() {
         if (StrUtil.isEmpty(moduleName)) {
-            moduleName = "service";
+            moduleName = GenConstant.MODULE_SERVICE;
         }
         return moduleName;
     }
 
     @Override
     public Class<?> getSuperClass() {
-        return BaseController.class;
+        if (superClass == null) {
+            return IService.class;
+        } else {
+            return superClass;
+        }
     }
 
     @Override

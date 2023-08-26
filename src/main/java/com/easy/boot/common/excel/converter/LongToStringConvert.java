@@ -37,6 +37,6 @@ public class LongToStringConvert implements Converter<Long> {
      */
     @Override
     public WriteCellData<?> convertToExcelData(Long value, ExcelContentProperty contentProperty, GlobalConfiguration globalConfiguration) throws Exception {
-        return new WriteCellData(String.valueOf(value));
+        return new WriteCellData(value.toString());
     }
 }

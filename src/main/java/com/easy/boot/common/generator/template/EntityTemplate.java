@@ -5,7 +5,6 @@ import com.easy.boot.common.base.BaseEntity;
 import com.easy.boot.common.generator.DataMap;
 import com.easy.boot.common.generator.GenConstant;
 import com.easy.boot.common.generator.config.AnnotationConfig;
-import com.easy.boot.common.generator.config.GeneratorConfig;
 import com.easy.boot.common.generator.config.GlobalConfig;
 import com.easy.boot.common.generator.config.TemplateConfig;
 import com.easy.boot.common.generator.db.MetaTable;
@@ -40,14 +39,18 @@ public class EntityTemplate extends AbstractTemplate {
     @Override
     protected String getModuleName() {
         if (StrUtil.isEmpty(moduleName)) {
-            moduleName = "entity";
+            moduleName = GenConstant.MODULE_ENTITY;
         }
         return moduleName;
     }
 
     @Override
     public Class<?> getSuperClass() {
-        return BaseEntity.class;
+        if (superClass == null) {
+            return BaseEntity.class;
+        } else {
+            return superClass;
+        }
     }
 
     @Override
@@ -81,8 +84,6 @@ public class EntityTemplate extends AbstractTemplate {
         DataMap buildDataMap = super.buildDataMap(dataMap);
         // 构建类名
         buildClassName(buildDataMap);
-        // 构建父类名
-        buildSuperClassName(buildDataMap);
         // 构建需要导入的包
         buildPkgDataMap(buildDataMap);
         return buildDataMap;
@@ -93,22 +94,13 @@ public class EntityTemplate extends AbstractTemplate {
      * @param buildDataMap 已构建过的参数
      */
     private void buildClassName(DataMap buildDataMap) {
-        GeneratorConfig generator = (GeneratorConfig) buildDataMap.get(GenConstant.DATA_MAP_KEY_CONFIG);
+        TemplateConfig template = (TemplateConfig) buildDataMap.get(GenConstant.DATA_MAP_KEY_TEMPLATE);
         MetaTable metaTable = (MetaTable) buildDataMap.get(GenConstant.DATA_MAP_KEY_TABLE);
         String javaName = metaTable.getBeanName();
-        String className = generator.getTemplateConfig().getEntity().getFileName(javaName).replace(GenConstant.SUFFIX, "");
-        buildDataMap.put("className", className);
-    }
-
-    /**
-     * 构建父类名称
-     * @param buildDataMap 已构建过的参数
-     */
-    private void buildSuperClassName(DataMap buildDataMap) {
-        GeneratorConfig generator = (GeneratorConfig) buildDataMap.get(GenConstant.DATA_MAP_KEY_CONFIG);
-        TemplateConfig template = generator.getTemplateConfig();
-        if (template.getEntity().getSuperClass() != null) {
-            buildDataMap.put("superName", template.getEntity().getSuperClass().getName());
+        String className = template.getEntity().getFileName(javaName).replace(GenConstant.SUFFIX, "");
+        buildDataMap.put(GenConstant.DATA_MAP_KEY_CLASS_NAME, className);
+        if (getSuperClass() != null) {
+            buildDataMap.put(GenConstant.DATA_MAP_KEY_SUPER_NAME, getSuperClass().getName());
         }
     }
 
@@ -117,12 +109,11 @@ public class EntityTemplate extends AbstractTemplate {
      * @param buildDataMap 已构建过的参数
      */
     private void buildPkgDataMap(DataMap buildDataMap) {
-        GeneratorConfig generator = (GeneratorConfig) buildDataMap.get(GenConstant.DATA_MAP_KEY_CONFIG);
-        GlobalConfig global = generator.getGlobalConfig();
-        AnnotationConfig annotation = generator.getAnnotationConfig();
-        TemplateConfig template = generator.getTemplateConfig();
+        GlobalConfig global = (GlobalConfig) buildDataMap.get(GenConstant.DATA_MAP_KEY_GLOBAL);
+        AnnotationConfig annotation = (AnnotationConfig) buildDataMap.get(GenConstant.DATA_MAP_KEY_ANNOTATION);
+        TemplateConfig template = (TemplateConfig) buildDataMap.get(GenConstant.DATA_MAP_KEY_TEMPLATE);
         MetaTable metaTable = (MetaTable) buildDataMap.get(GenConstant.DATA_MAP_KEY_TABLE);
-        String pkg = global.getPackageName() + "." + metaTable.getModuleName();
+        String pkg = buildDataMap.getString(GenConstant.DATA_MAP_KEY_PKG);
         Set<String> pkgs = new HashSet<>();
         if (template.getEntity().getSuperClass() != null) {
             pkgs.add(template.getEntity().getSuperClass().getName());
@@ -135,5 +126,13 @@ public class EntityTemplate extends AbstractTemplate {
         buildDataMap.put("pkgs", list);
         pkg = pkg + "." + template.getEntity().getModuleName();
         buildDataMap.put("pkg", pkg);
+    }
+
+    public static void main(String[] args) {
+        Object a = null;
+        String b = (String) a;
+        System.out.println("b = " + b);
+        System.out.println("b = " + a.toString());
+        System.out.println("b = " + String.valueOf(a));
     }
 }

@@ -38,6 +38,6 @@ public class LongBlacklistDurationToStringConvert implements Converter<Long> {
      */
     @Override
     public WriteCellData<?> convertToExcelData(Long value, ExcelContentProperty contentProperty, GlobalConfiguration globalConfiguration) throws Exception {
-        return new WriteCellData(value.intValue() == -1 ? STR : String.valueOf(value));
+        return new WriteCellData(value.intValue() == -1 ? STR : value.toString());
     }
 }

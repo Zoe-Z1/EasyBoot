@@ -41,14 +41,14 @@ public class CreateDTOTemplate extends AbstractTemplate {
     @Override
     protected String getModuleName() {
         if (StrUtil.isEmpty(moduleName)) {
-            moduleName = "entity";
+            moduleName = GenConstant.MODULE_ENTITY;
         }
         return moduleName;
     }
 
     @Override
     public Class<?> getSuperClass() {
-        return null;
+        return superClass;
     }
 
     @Override

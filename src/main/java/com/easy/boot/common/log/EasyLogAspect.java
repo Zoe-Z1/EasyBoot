@@ -237,7 +237,7 @@ public class EasyLogAspect {
         RoleTypeEnum roleType = RoleTypeEnum.UNKNOWN;
         Long createBy = EasyMetaObjectHandler.BY;
         if (StpUtil.isLogin()) {
-            createBy = Long.parseLong(String.valueOf(StpUtil.getLoginId()));
+            createBy = Long.parseLong(StpUtil.getLoginId().toString());
             roleType = RoleTypeEnum.valueOf(StpUtil.getLoginType());
         }
         operateLog.setCreateBy(createBy);

@@ -1,7 +1,6 @@
 package com.easy.boot.common.generator.template;
 
 import cn.hutool.core.util.StrUtil;
-import com.easy.boot.common.base.BaseController;
 import com.easy.boot.common.generator.GenConstant;
 import lombok.*;
 
@@ -39,7 +38,7 @@ public class TestTemplate extends AbstractTemplate {
 
     @Override
     public Class<?> getSuperClass() {
-        return BaseController.class;
+        return superClass;
     }
 
     @Override

@@ -37,4 +37,11 @@ public class DataMap extends HashMap<String, Object> {
         }
         super.putAll(map);
     }
+
+    public String getString(String key) {
+        if (get(key) == null) {
+            throw new GeneratorException("当前key [" + key + "] 值不存在");
+        }
+        return get(key).toString();
+    }
 }

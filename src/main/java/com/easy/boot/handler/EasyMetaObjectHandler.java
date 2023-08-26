@@ -30,7 +30,7 @@ public class EasyMetaObjectHandler implements MetaObjectHandler {
             }catch (Exception e) {
             }
             if (isLogin) {
-                createBy = Long.valueOf(String.valueOf(StpUtil.getLoginId()));
+                createBy = Long.valueOf(StpUtil.getLoginId().toString());
             }
             this.setFieldValByName("createBy", createBy, metaObject);
         }
@@ -51,7 +51,7 @@ public class EasyMetaObjectHandler implements MetaObjectHandler {
             }catch (Exception e) {
             }
             if (isLogin) {
-                updateBy = Long.valueOf(String.valueOf(StpUtil.getLoginId()));
+                updateBy = Long.valueOf(StpUtil.getLoginId().toString());
             }
             this.setFieldValByName("updateBy", updateBy, metaObject);
         }

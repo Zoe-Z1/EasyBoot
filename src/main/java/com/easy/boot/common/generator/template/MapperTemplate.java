@@ -4,7 +4,6 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.easy.boot.common.generator.DataMap;
 import com.easy.boot.common.generator.GenConstant;
-import com.easy.boot.common.generator.config.GeneratorConfig;
 import com.easy.boot.common.generator.config.GlobalConfig;
 import com.easy.boot.common.generator.config.TemplateConfig;
 import com.easy.boot.common.generator.db.MetaTable;
@@ -40,14 +39,18 @@ public class MapperTemplate extends AbstractTemplate {
     @Override
     protected String getModuleName() {
         if (StrUtil.isEmpty(moduleName)) {
-            moduleName = "mapper";
+            moduleName = GenConstant.MODULE_MAPPER;
         }
         return moduleName;
     }
 
     @Override
     public Class<?> getSuperClass() {
-        return BaseMapper.class;
+        if (superClass == null) {
+            return BaseMapper.class;
+        } else {
+            return superClass;
+        }
     }
 
     @Override
@@ -81,8 +84,6 @@ public class MapperTemplate extends AbstractTemplate {
         DataMap buildDataMap = super.buildDataMap(dataMap);
         // 构建类名
         buildClassName(buildDataMap);
-        // 构建父类名
-        buildSuperClassName(buildDataMap);
         // 构建需要导入的包
         buildPkgDataMap(buildDataMap);
         return buildDataMap;
@@ -98,19 +99,10 @@ public class MapperTemplate extends AbstractTemplate {
         String javaName = metaTable.getBeanName();
         String className = template.getMapper().getFileName(javaName).replace(GenConstant.SUFFIX, "");
         String entityName = template.getEntity().getFileName(javaName).replace(GenConstant.SUFFIX, "");
-        buildDataMap.put("className", className);
-        buildDataMap.put("entityName", entityName);
-    }
-
-    /**
-     * 构建父类名称
-     * @param buildDataMap 已构建过的参数
-     */
-    private void buildSuperClassName(DataMap buildDataMap) {
-        GeneratorConfig generator = (GeneratorConfig) buildDataMap.get(GenConstant.DATA_MAP_KEY_CONFIG);
-        TemplateConfig template = generator.getTemplateConfig();
-        if (template.getMapper().getSuperClass() != null) {
-            buildDataMap.put("superName", template.getMapper().getSuperClass().getName());
+        buildDataMap.put(GenConstant.DATA_MAP_KEY_CLASS_NAME, className);
+        buildDataMap.put(GenConstant.DATA_MAP_KEY_ENTITY_NAME, entityName);
+        if (getSuperClass() != null) {
+            buildDataMap.put(GenConstant.DATA_MAP_KEY_SUPER_NAME, getSuperClass().getName());
         }
     }
 
@@ -124,16 +116,16 @@ public class MapperTemplate extends AbstractTemplate {
         MetaTable metaTable = (MetaTable) buildDataMap.get(GenConstant.DATA_MAP_KEY_TABLE);
         String pkg = String.join(".", global.getPackageName(), metaTable.getModuleName());
         Set<String> pkgs = new HashSet<>();
-        if (template.getMapper().getSuperClass() != null) {
-            pkgs.add(template.getMapper().getSuperClass().getName());
+        if (getSuperClass() != null) {
+            pkgs.add(getSuperClass().getName());
         }
         pkgs.add(Mapper.class.getName());
-        String entityPkg = String.join(".", pkg, template.getEntity().getModuleName(), String.valueOf(buildDataMap.get("entityName")));
+        String entityPkg = String.join(".", pkg, template.getEntity().getModuleName(), buildDataMap.getString(GenConstant.DATA_MAP_KEY_ENTITY_NAME));
         pkgs.add(entityPkg);
         List<String> list = new ArrayList<>(pkgs);
         Collections.sort(list);
-        buildDataMap.put("pkgs", list);
-        pkg = String.join(".",pkg, template.getMapper().getModuleName());
-        buildDataMap.put("pkg", pkg);
+        buildDataMap.put(GenConstant.DATA_MAP_KEY_PKGS, list);
+        pkg = String.join(".",pkg, getModuleName());
+        buildDataMap.put(GenConstant.DATA_MAP_KEY_PKG, pkg);
     }
 }

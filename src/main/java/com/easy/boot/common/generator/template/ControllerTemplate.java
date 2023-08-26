@@ -60,14 +60,18 @@ public class ControllerTemplate extends AbstractTemplate {
     @Override
     protected String getModuleName() {
         if (StrUtil.isEmpty(moduleName)) {
-            moduleName = "controller";
+            moduleName = GenConstant.MODULE_CONTROLLER;
         }
         return moduleName;
     }
 
     @Override
     public Class<?> getSuperClass() {
-        return BaseController.class;
+        if (superClass == null) {
+            return BaseController.class;
+        } else {
+            return superClass;
+        }
     }
 
     @Override
@@ -101,8 +105,6 @@ public class ControllerTemplate extends AbstractTemplate {
         DataMap buildDataMap = super.buildDataMap(dataMap);
         // 构建类名
         buildClassName(buildDataMap);
-        // 构建父类名
-        buildSuperClassName(buildDataMap);
         // 构建需要导入的包
         buildPkgDataMap(buildDataMap);
         return buildDataMap;
@@ -141,16 +143,8 @@ public class ControllerTemplate extends AbstractTemplate {
         buildDataMap.put("queryName", queryName);
         buildDataMap.put("voName", voName);
         buildDataMap.put("voCamelName", voCamelName);
-    }
-
-    /**
-     * 构建父类名称
-     * @param buildDataMap 已构建过的参数
-     */
-    private void buildSuperClassName(DataMap buildDataMap) {
-        TemplateConfig template = (TemplateConfig) buildDataMap.get(GenConstant.DATA_MAP_KEY_TEMPLATE);
-        if (template.getController().getSuperClass() != null) {
-            buildDataMap.put("superName", template.getController().getSuperClass().getName());
+        if (getSuperClass() != null) {
+            buildDataMap.put("superName", getSuperClass().getName());
         }
     }
 
@@ -190,8 +184,8 @@ public class ControllerTemplate extends AbstractTemplate {
             pkgs.add(IOException.class.getName());
             pkgs.add(FileException.class.getName());
         }
-        if (template.getController().getSuperClass() != null) {
-            pkgs.add(template.getController().getSuperClass().getName());
+        if (getSuperClass() != null) {
+            pkgs.add(getSuperClass().getName());
         }
         pkgs.add(Api.class.getName());
         pkgs.add(ApiOperation.class.getName());
@@ -204,9 +198,9 @@ public class ControllerTemplate extends AbstractTemplate {
         pkgs.add("org.springframework.web.bind.annotation.*");
         List<String> list = new ArrayList<>(pkgs);
         Collections.sort(list);
-        buildDataMap.put("pkgs", list);
+        buildDataMap.put(GenConstant.DATA_MAP_KEY_PKGS, list);
         String pkg = global.getPackageName() + "." + metaTable.getModuleName();
         pkg = pkg + "." + template.getController().getModuleName();
-        buildDataMap.put("pkg", pkg);
+        buildDataMap.put(GenConstant.DATA_MAP_KEY_PKG, pkg);
     }
 }

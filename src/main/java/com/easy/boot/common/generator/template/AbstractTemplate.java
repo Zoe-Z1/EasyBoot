@@ -72,18 +72,19 @@ public abstract class AbstractTemplate {
         }
         MetaTable metaTable = (MetaTable) dataMap.get(GenConstant.DATA_MAP_KEY_TABLE);
         GlobalConfig global = (GlobalConfig) dataMap.get(GenConstant.DATA_MAP_KEY_GLOBAL);
-        buildDataMap.put("moduleName", getModuleName());
-        buildDataMap.put("superClass", getSuperClass());
-        buildDataMap.put("fileName", getFileName(metaTable.getBeanName()));
-        buildDataMap.put("templateName", getTemplateName());
+        String pkg = String.join(".", global.getPackageName(), metaTable.getModuleName());
+        buildDataMap.put(GenConstant.DATA_MAP_KEY_PKG, pkg);
+        buildDataMap.put(GenConstant.DATA_MAP_KEY_MODULE_NAME, getModuleName());
+        buildDataMap.put(GenConstant.DATA_MAP_KEY_SUPER_CLASS, getSuperClass());
+        buildDataMap.put(GenConstant.DATA_MAP_KEY_FILE_NAME, getFileName(metaTable.getBeanName()));
+        buildDataMap.put(GenConstant.DATA_MAP_KEY_TEMPLATE_NAME, getTemplateName());
         Boolean isOverride = getIsOverride();
         if (isOverride == null) {
             isOverride = global.getIsOverride();
         }
-        buildDataMap.put("isOverride", isOverride);
-        String genPath = global.getOutputPath() + "/" + metaTable.getModuleName()
-                + "/" + getModuleName();
-        buildDataMap.put("genPath", genPath);
+        buildDataMap.put(GenConstant.DATA_MAP_KEY_IS_OVERRIDE, isOverride);
+        String genPath = String.join("/",global.getOutputPath(), metaTable.getModuleName(), getModuleName());
+        buildDataMap.put(GenConstant.DATA_MAP_KEY_GEN_PATH, genPath);
         return buildDataMap;
     }
 

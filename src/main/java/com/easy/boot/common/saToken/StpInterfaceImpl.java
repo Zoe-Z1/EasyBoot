@@ -32,14 +32,14 @@ public class StpInterfaceImpl implements StpInterface {
 
     @Override
     public List<String> getPermissionList(Object loginId, String loginType) {
-        List<Long> roleIds = userRoleService.selectListByUserId(Long.valueOf(String.valueOf(loginId)));
+        List<Long> roleIds = userRoleService.selectListByUserId(Long.valueOf(loginId.toString()));
         List<Long> menuIds = roleMenuService.selectMenuIdsByRoleIds(roleIds);
         return menuService.selectPermissionsByIds(menuIds);
     }
 
     @Override
     public List<String> getRoleList(Object loginId, String loginType) {
-        List<Long> roleIds = userRoleService.selectListByUserId(Long.valueOf(String.valueOf(loginId)));
+        List<Long> roleIds = userRoleService.selectListByUserId(Long.valueOf(loginId.toString()));
         return roleService.selectCodesInRoleIds(roleIds);
     }
 }

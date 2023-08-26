@@ -175,11 +175,11 @@ public class GeneratorExecute {
         configuration.setDirectoryForTemplateLoading(new File(globalConfig.getTemplateRootPath()));
         configuration.setDefaultEncoding(StandardCharsets.UTF_8.name());
         // 加载模版文件
-        Template easyTemplate = configuration.getTemplate(String.valueOf(dataMap.get("templateName")));
+        Template easyTemplate = configuration.getTemplate(dataMap.getString(GenConstant.DATA_MAP_KEY_TEMPLATE_NAME));
         // 生成数据
-        String fileName = String.valueOf(dataMap.get("fileName"));
-        File file = new File(String.valueOf(dataMap.get("genPath")), fileName);
-        boolean isOverride = (boolean) dataMap.get("isOverride");
+        String fileName = dataMap.getString(GenConstant.DATA_MAP_KEY_FILE_NAME);
+        File file = new File(dataMap.getString(GenConstant.DATA_MAP_KEY_GEN_PATH), fileName);
+        boolean isOverride = (boolean) dataMap.get(GenConstant.DATA_MAP_KEY_IS_OVERRIDE);
         // 文件存在时根据配置不覆盖代码
         if (file.exists() && !isOverride) {
             log.info(fileName + " 已存在，已根据配置不覆盖!");

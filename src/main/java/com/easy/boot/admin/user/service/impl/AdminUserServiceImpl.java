@@ -200,7 +200,7 @@ public class AdminUserServiceImpl extends ServiceImpl<AdminUserMapper, AdminUser
 
     @Override
     public AdminUserInfo getInfo() {
-        Long id = Long.valueOf(String.valueOf(StpUtil.getLoginId()));
+        Long id = Long.valueOf(StpUtil.getLoginId().toString());
         AdminUser adminUser = this.detail(id);
         AdminUserInfo info = BeanUtil.copyBean(adminUser, AdminUserInfo.class);
         // 获取角色编码
