@@ -1,24 +1,26 @@
 package com.easy.boot.common.generator.template;
 
 import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.easy.boot.common.generator.DataMap;
 import com.easy.boot.common.generator.GenConstant;
 import com.easy.boot.common.generator.config.AnnotationConfig;
-import com.easy.boot.common.generator.config.GlobalConfig;
-import com.easy.boot.common.generator.config.TemplateConfig;
+import com.easy.boot.common.generator.db.Field;
 import com.easy.boot.common.generator.db.MetaTable;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author zoe
  * @date 2023/8/15
  * @description DTO模板配置
  */
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -27,15 +29,15 @@ public class CreateDTOTemplate extends AbstractTemplate {
 
     private String moduleName;
 
-    public Class<?> superClass;
+    private Class<?> superClass;
 
-    public String templateName;
+    private String templateName;
 
-    public String fileName;
+    private String fileName;
 
-    public Boolean enable;
+    private Boolean enable;
 
-    public Boolean isOverride;
+    private Boolean isOverride;
 
     @Override
     protected String getModuleName() {
@@ -46,13 +48,13 @@ public class CreateDTOTemplate extends AbstractTemplate {
     }
 
     @Override
-    public Class<?> getSuperClass() {
+    protected Class<?> getSuperClass() {
         return superClass;
     }
 
     @Override
-    public String getTemplateName() {
-        return GenConstant.CREATE_DTO_TEMPLATE_NAME;
+    protected String getTemplateName() {
+        return GenConstant.ENTITY_TEMPLATE_NAME;
     }
 
     @Override
@@ -81,8 +83,6 @@ public class CreateDTOTemplate extends AbstractTemplate {
         DataMap buildDataMap = super.buildDataMap(dataMap);
         // 构建类名
         buildClassName(buildDataMap);
-        // 构建父类名
-        buildSuperClassName(buildDataMap);
         // 构建需要导入的包
         buildPkgDataMap(buildDataMap);
         return buildDataMap;
@@ -93,21 +93,12 @@ public class CreateDTOTemplate extends AbstractTemplate {
      * @param buildDataMap 已构建过的参数
      */
     private void buildClassName(DataMap buildDataMap) {
-        TemplateConfig template = buildDataMap.getTemplateConfig();
-        MetaTable metaTable = (MetaTable) buildDataMap.get(GenConstant.DATA_MAP_KEY_TABLE);
+        MetaTable metaTable = buildDataMap.getMetaTable();
         String javaName = metaTable.getBeanName();
-        String className = template.getCreateDTO().getFileName(javaName).replace(GenConstant.SUFFIX, "");
-        buildDataMap.put("className", className);
-    }
-
-    /**
-     * 构建父类名称
-     * @param buildDataMap 已构建过的参数
-     */
-    private void buildSuperClassName(DataMap buildDataMap) {
-        TemplateConfig template = buildDataMap.getTemplateConfig();
-        if (template.getCreateDTO().getSuperClass() != null) {
-            buildDataMap.put("superName", template.getCreateDTO().getSuperClass().getName());
+        String className = getFileName(javaName).replace(GenConstant.SUFFIX, "");
+        buildDataMap.put(GenConstant.DATA_MAP_KEY_CLASS_NAME, className);
+        if (getSuperClass() != null) {
+            buildDataMap.put(GenConstant.DATA_MAP_KEY_SUPER_NAME, getSuperClass().getName());
         }
     }
 
@@ -116,17 +107,24 @@ public class CreateDTOTemplate extends AbstractTemplate {
      * @param buildDataMap 已构建过的参数
      */
     private void buildPkgDataMap(DataMap buildDataMap) {
-        GlobalConfig global = buildDataMap.getGlobalConfig();
         AnnotationConfig annotation = buildDataMap.getAnnotationConfig();
-        TemplateConfig template = buildDataMap.getTemplateConfig();
-        MetaTable metaTable = (MetaTable) buildDataMap.get(GenConstant.DATA_MAP_KEY_TABLE);
+        MetaTable metaTable = buildDataMap.getMetaTable();
         Set<String> pkgs = new HashSet<>();
-        if (template.getCreateDTO().getSuperClass() != null) {
-            pkgs.add(template.getCreateDTO().getSuperClass().getName());
+        if (getSuperClass() != null) {
+            pkgs.add(getSuperClass().getName());
         }
         if (annotation.getEnableBuilder()) {
-            pkgs.add(Builder.class.getName());
+            if (getSuperClass() != null) {
+                pkgs.add(SuperBuilder.class.getName());
+            } else {
+                pkgs.add(Builder.class.getName());
+            }
         }
+        pkgs.add(TableName.class.getName());
+        pkgs.add(ApiModel.class.getName());
+        pkgs.add(ApiModelProperty.class.getName());
+        pkgs.addAll(metaTable.getFields().stream().map(Field::getJavaTypePackageName).collect(Collectors.toSet()));
+        pkgs.add("lombok.*");
         List<String> list = new ArrayList<>(pkgs);
         Collections.sort(list);
         buildDataMap.put(GenConstant.DATA_MAP_KEY_PKGS, list);

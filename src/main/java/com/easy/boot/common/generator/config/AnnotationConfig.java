@@ -1,16 +1,13 @@
 package com.easy.boot.common.generator.config;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 /**
  * @author zoe
  * @date 2023/8/19
  * @description 注解配置
  */
-@Data
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor

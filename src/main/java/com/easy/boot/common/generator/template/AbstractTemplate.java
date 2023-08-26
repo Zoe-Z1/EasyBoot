@@ -72,7 +72,7 @@ public abstract class AbstractTemplate {
         }
         MetaTable metaTable = dataMap.getMetaTable();
         GlobalConfig global = dataMap.getGlobalConfig();
-        String pkg = String.join(".", global.getPackageName(), metaTable.getModuleName());
+        String pkg = String.join(".", global.getPackageName(), metaTable.getModuleName(), getModuleName());
         buildDataMap.put(GenConstant.DATA_MAP_KEY_PKG, pkg);
         buildDataMap.put(GenConstant.DATA_MAP_KEY_MODULE_NAME, getModuleName());
         buildDataMap.put(GenConstant.DATA_MAP_KEY_SUPER_CLASS, getSuperClass());

@@ -26,15 +26,15 @@ public class ServiceTemplate extends AbstractTemplate {
 
     private String moduleName;
 
-    public Class<?> superClass;
+    private Class<?> superClass;
 
-    public String templateName;
+    private String templateName;
 
-    public String fileName;
+    private String fileName;
 
-    public Boolean enable;
+    private Boolean enable;
 
-    public Boolean isOverride;
+    private Boolean isOverride;
 
     @Override
     protected String getModuleName() {
@@ -45,7 +45,7 @@ public class ServiceTemplate extends AbstractTemplate {
     }
 
     @Override
-    public Class<?> getSuperClass() {
+    protected Class<?> getSuperClass() {
         if (superClass == null) {
             return IService.class;
         } else {
@@ -54,7 +54,7 @@ public class ServiceTemplate extends AbstractTemplate {
     }
 
     @Override
-    public String getTemplateName() {
+    protected String getTemplateName() {
         return GenConstant.SERVICE_TEMPLATE_NAME;
     }
 

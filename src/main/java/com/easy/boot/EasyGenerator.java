@@ -4,9 +4,8 @@ import com.easy.boot.common.generator.config.*;
 import com.easy.boot.common.generator.db.convert.EasyColumnConvertHandler;
 import com.easy.boot.common.generator.execute.GeneratorExecute;
 import com.easy.boot.common.generator.template.TestTemplate;
+import com.easy.boot.common.generator.template.UpdateDTOTemplate;
 import lombok.extern.slf4j.Slf4j;
-
-import java.util.Arrays;
 
 /**
  * @author zoe
@@ -47,9 +46,15 @@ public class EasyGenerator {
                                         .build())
                         .template(
                                 TemplateConfig.builder()
+                                        .updateDTO(
+                                                UpdateDTOTemplate.builder()
+                                                        .enableExtendsCreateDTO(true)
+                                                        .includeField("id")
+                                                        .build()
+                                        )
                                         .enableImport(true)
                                         .enableExport(true)
-                                        .addTemplate(Arrays.asList(TestTemplate.builder().fileName("Testaaa").build()))
+                                        .addTemplate(TestTemplate.builder().fileName("Testaaa").build(), TestTemplate.builder().fileName("Testaaa").build())
                                         .build())
                         .build()
         )

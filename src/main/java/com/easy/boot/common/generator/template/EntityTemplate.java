@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
  * @date 2023/8/15
  * @description 实体类模板配置
  */
-@Data
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -30,15 +30,15 @@ public class EntityTemplate extends AbstractTemplate {
 
     private String moduleName;
 
-    public Class<?> superClass;
+    private Class<?> superClass;
 
-    public String templateName;
+    private String templateName;
 
-    public String fileName;
+    private String fileName;
 
-    public Boolean enable;
+    private Boolean enable;
 
-    public Boolean isOverride;
+    private Boolean isOverride;
 
     @Override
     protected String getModuleName() {
@@ -49,7 +49,7 @@ public class EntityTemplate extends AbstractTemplate {
     }
 
     @Override
-    public Class<?> getSuperClass() {
+    protected Class<?> getSuperClass() {
         if (superClass == null) {
             return BaseEntity.class;
         } else {
@@ -58,7 +58,7 @@ public class EntityTemplate extends AbstractTemplate {
     }
 
     @Override
-    public String getTemplateName() {
+    protected String getTemplateName() {
         return GenConstant.ENTITY_TEMPLATE_NAME;
     }
 

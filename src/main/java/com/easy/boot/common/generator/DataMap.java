@@ -99,4 +99,12 @@ public class DataMap extends HashMap<String, Object> {
     public MetaTable getMetaTable() {
         return (MetaTable) get(GenConstant.DATA_MAP_KEY_TABLE);
     }
+
+    /**
+     * 修改表元数据信息
+     * @return
+     */
+    public void updateMetaTable(MetaTable metaTable) {
+        super.put(GenConstant.DATA_MAP_KEY_TABLE, metaTable);
+    }
 }

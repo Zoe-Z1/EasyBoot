@@ -16,19 +16,19 @@ import ${pkg};
 @AllArgsConstructor
 @NoArgsConstructor
 <#if superName??>
-<#if annotation.enableBuilder>
+    <#if annotation.enableBuilder>
 @SuperBuilder
-</#if>
+    </#if>
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
 public class ${className} extends ${superName} {
 <#else>
-<#if annotation.enableBuilder>
+    <#if annotation.enableBuilder>
 @Builder
-</#if>
+    </#if>
 @ToString
 @EqualsAndHashCode
-public class ${clssName} {
+public class ${className} {
 </#if>
 
 <#-- ----------  BEGIN 字段循环遍历  ---------->

@@ -41,15 +41,9 @@ public class GenConstant {
 
     public static final String CREATE_DTO = "CreateDTO";
 
-    public static final String CREATE_DTO_TEMPLATE_NAME = "createDTO.ftl";
-
     public static final String UPDATE_DTO = "UpdateDTO";
 
-    public static final String UPDATE_DTO_TEMPLATE_NAME = "UpdateDTO";
-
     public static final String QUERY = "Query";
-
-    public static final String QUERY_TEMPLATE_NAME = "Query";
 
     public static final String SUFFIX = ".java";
 
@@ -84,4 +78,5 @@ public class GenConstant {
     public static final String DATA_MAP_KEY_CLASS_NAME = "className";
 
     public static final String DATA_MAP_KEY_ENTITY_NAME = "entityName";
+
 }

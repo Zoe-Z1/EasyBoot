@@ -5,6 +5,7 @@ import com.easy.boot.common.generator.template.*;
 import lombok.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -12,7 +13,7 @@ import java.util.List;
  * @date 2023/8/19
  * @description 模板配置
  */
-@Data
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class TemplateConfig {
@@ -43,6 +44,11 @@ public class TemplateConfig {
     private CreateDTOTemplate createDTO;
 
     /**
+     * updateDTO模板配置
+     */
+    private UpdateDTOTemplate updateDTO;
+
+    /**
      * 生成导入
      */
     private Boolean enableImport;
@@ -53,14 +59,8 @@ public class TemplateConfig {
     private Boolean enableExport;
 
     /**
-     * 增加自定义模板
-     */
-    private List<AbstractTemplate> addTemplate;
-
-    /**
      * 需要生成的模板列表
      */
-    @Setter(AccessLevel.NONE)
     private List<AbstractTemplate> templates;
 
     public ControllerTemplate getController() {
@@ -83,6 +83,10 @@ public class TemplateConfig {
         return createDTO == null ? new CreateDTOTemplate() : createDTO;
     }
 
+    public UpdateDTOTemplate getUpdateDTO() {
+        return updateDTO == null ? new UpdateDTOTemplate() : updateDTO;
+    }
+
     public Boolean getEnableImport() {
         if (enableImport == null) {
             enableImport = false;
@@ -103,22 +107,80 @@ public class TemplateConfig {
         list.add(getMapper());
         list.add(getEntity());
         list.add(getCreateDTO());
-        if (CollUtil.isNotEmpty(addTemplate)) {
-            list.addAll(addTemplate);
+        list.add(getUpdateDTO());
+        if (CollUtil.isNotEmpty(templates)) {
+            list.addAll(templates);
         }
         this.templates = list;
         return templates;
     }
 
-    @Builder
-    public TemplateConfig(ControllerTemplate controller, ServiceTemplate service, MapperTemplate mapper, EntityTemplate entity, CreateDTOTemplate createDTO, Boolean enableImport, Boolean enableExport, List<AbstractTemplate> addTemplate) {
-        this.controller = controller;
-        this.service = service;
-        this.mapper = mapper;
-        this.entity = entity;
-        this.createDTO = createDTO;
-        this.enableImport = enableImport;
-        this.enableExport = enableExport;
-        this.addTemplate = addTemplate;
+    public static TemplateConfig.TemplateConfigBuilder builder() {
+        return new TemplateConfig.TemplateConfigBuilder();
+    }
+
+    @ToString
+    public static class TemplateConfigBuilder {
+        private ControllerTemplate controller;
+        private ServiceTemplate service;
+        private MapperTemplate mapper;
+        private EntityTemplate entity;
+        private CreateDTOTemplate createDTO;
+        private UpdateDTOTemplate updateDTO;
+        private Boolean enableImport;
+        private Boolean enableExport;
+        private List<AbstractTemplate> templates;
+
+        TemplateConfigBuilder() {
+        }
+
+        public TemplateConfig.TemplateConfigBuilder addTemplate(AbstractTemplate... templates) {
+            this.templates = Arrays.asList(templates);
+            return this;
+        }
+
+        public TemplateConfig.TemplateConfigBuilder controller(final ControllerTemplate controller) {
+            this.controller = controller;
+            return this;
+        }
+
+        public TemplateConfig.TemplateConfigBuilder service(final ServiceTemplate service) {
+            this.service = service;
+            return this;
+        }
+
+        public TemplateConfig.TemplateConfigBuilder mapper(final MapperTemplate mapper) {
+            this.mapper = mapper;
+            return this;
+        }
+
+        public TemplateConfig.TemplateConfigBuilder entity(final EntityTemplate entity) {
+            this.entity = entity;
+            return this;
+        }
+
+        public TemplateConfig.TemplateConfigBuilder createDTO(final CreateDTOTemplate createDTO) {
+            this.createDTO = createDTO;
+            return this;
+        }
+
+        public TemplateConfig.TemplateConfigBuilder updateDTO(final UpdateDTOTemplate updateDTO) {
+            this.updateDTO = updateDTO;
+            return this;
+        }
+
+        public TemplateConfig.TemplateConfigBuilder enableImport(final Boolean enableImport) {
+            this.enableImport = enableImport;
+            return this;
+        }
+
+        public TemplateConfig.TemplateConfigBuilder enableExport(final Boolean enableExport) {
+            this.enableExport = enableExport;
+            return this;
+        }
+
+        public TemplateConfig build() {
+            return new TemplateConfig(this.controller, this.service, this.mapper, this.entity, this.createDTO, this.updateDTO, this.enableImport, this.enableExport, this.templates);
+        }
     }
 }

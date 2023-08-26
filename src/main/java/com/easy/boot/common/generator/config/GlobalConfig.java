@@ -2,10 +2,7 @@ package com.easy.boot.common.generator.config;
 
 import cn.hutool.core.util.StrUtil;
 import com.easy.boot.exception.GeneratorException;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Map;
 
@@ -14,7 +11,7 @@ import java.util.Map;
  * @date 2023/8/15
  * @description 全局参数配置
  */
-@Data
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
