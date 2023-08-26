@@ -5,7 +5,9 @@ import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.ExcelWriter;
 import com.alibaba.excel.write.metadata.WriteSheet;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.easy.boot.admin.operationLog.enums.OperateTypeEnum;
 import com.easy.boot.common.base.BaseController;
+import com.easy.boot.common.base.Result;
 import com.easy.boot.common.excel.ImportExcelError;
 import com.easy.boot.common.excel.ImportVO;
 import com.easy.boot.common.excel.UploadDTO;
@@ -13,7 +15,6 @@ import com.easy.boot.common.excel.handler.ImportErrorCellWriteHandler;
 import com.easy.boot.common.generator.DataMap;
 import com.easy.boot.common.generator.GenConstant;
 import com.easy.boot.common.generator.config.AnnotationConfig;
-import com.easy.boot.common.generator.config.GeneratorConfig;
 import com.easy.boot.common.generator.config.GlobalConfig;
 import com.easy.boot.common.generator.config.TemplateConfig;
 import com.easy.boot.common.generator.db.MetaTable;
@@ -158,51 +159,53 @@ public class ControllerTemplate extends AbstractTemplate {
      * @param buildDataMap 已构建过的参数
      */
     private void buildPkgDataMap(DataMap buildDataMap) {
-        GeneratorConfig generator = (GeneratorConfig) buildDataMap.get(GenConstant.DATA_MAP_KEY_CONFIG);
         GlobalConfig global = (GlobalConfig) buildDataMap.get(GenConstant.DATA_MAP_KEY_GLOBAL);
         AnnotationConfig annotation = (AnnotationConfig) buildDataMap.get(GenConstant.DATA_MAP_KEY_ANNOTATION);
         TemplateConfig template = (TemplateConfig) buildDataMap.get(GenConstant.DATA_MAP_KEY_TEMPLATE);
         MetaTable metaTable = (MetaTable) buildDataMap.get(GenConstant.DATA_MAP_KEY_TABLE);
-        String pkg = global.getPackageName() + "." + metaTable.getModuleName();
         Set<String> pkgs = new HashSet<>();
         if (annotation.getEnableLog()) {
-            pkgs.add(EasyLog.class.getPackage().getName());
+            pkgs.add(EasyLog.class.getName());
+            pkgs.add(OperateTypeEnum.class.getName());
         }
         if (template.getEnableImport()) {
-            pkgs.add(UploadDTO.class.getPackage().getName());
-            pkgs.add(EasyExcel.class.getPackage().getName());
-            pkgs.add(Assert.class.getPackage().getName());
-            pkgs.add(ArrayList.class.getPackage().getName());
-            pkgs.add(Collections.class.getPackage().getName());
-            pkgs.add(ImportExcelError.class.getPackage().getName());
-            pkgs.add(ImportErrorCellWriteHandler.class.getPackage().getName());
-            pkgs.add(ImportVO.class.getPackage().getName());
-            pkgs.add(FileUtil.class.getPackage().getName());
-            pkgs.add(IOException.class.getPackage().getName());
-            pkgs.add(FileException.class.getPackage().getName());
+            pkgs.add(UploadDTO.class.getName());
+            pkgs.add(EasyExcel.class.getName());
+            pkgs.add(Assert.class.getName());
+            pkgs.add(List.class.getName());
+            pkgs.add(ArrayList.class.getName());
+            pkgs.add(Collections.class.getName());
+            pkgs.add(ImportExcelError.class.getName());
+            pkgs.add(ImportErrorCellWriteHandler.class.getName());
+            pkgs.add(ImportVO.class.getName());
+            pkgs.add(FileUtil.class.getName());
+            pkgs.add(IOException.class.getName());
+            pkgs.add(FileException.class.getName());
         }
         if (template.getEnableExport()) {
-            pkgs.add(EasyExcel.class.getPackage().getName());
-            pkgs.add(ExcelWriter.class.getPackage().getName());
-            pkgs.add(WriteSheet.class.getPackage().getName());
-            pkgs.add(FileUtil.class.getPackage().getName());
-            pkgs.add(IOException.class.getPackage().getName());
-            pkgs.add(FileException.class.getPackage().getName());
+            pkgs.add(EasyExcel.class.getName());
+            pkgs.add(ExcelWriter.class.getName());
+            pkgs.add(WriteSheet.class.getName());
+            pkgs.add(FileUtil.class.getName());
+            pkgs.add(IOException.class.getName());
+            pkgs.add(FileException.class.getName());
         }
         if (template.getController().getSuperClass() != null) {
-            pkgs.add(template.getController().getSuperClass().getPackage().getName());
+            pkgs.add(template.getController().getSuperClass().getName());
         }
-        pkgs.add(Api.class.getPackage().getName());
-        pkgs.add(ApiOperation.class.getPackage().getName());
-        pkgs.add(ApiOperationSupport.class.getPackage().getName());
-        pkgs.add(Slf4j.class.getPackage().getName());
-        pkgs.add(Validated.class.getPackage().getName());
-        pkgs.add(Resource.class.getPackage().getName());
-        pkgs.add(IPage.class.getPackage().getName());
+        pkgs.add(Api.class.getName());
+        pkgs.add(ApiOperation.class.getName());
+        pkgs.add(ApiOperationSupport.class.getName());
+        pkgs.add(Slf4j.class.getName());
+        pkgs.add(Validated.class.getName());
+        pkgs.add(Resource.class.getName());
+        pkgs.add(Result.class.getName());
+        pkgs.add(IPage.class.getName());
         pkgs.add("org.springframework.web.bind.annotation.*");
         List<String> list = new ArrayList<>(pkgs);
         Collections.sort(list);
         buildDataMap.put("pkgs", list);
+        String pkg = global.getPackageName() + "." + metaTable.getModuleName();
         pkg = pkg + "." + template.getController().getModuleName();
         buildDataMap.put("pkg", pkg);
     }

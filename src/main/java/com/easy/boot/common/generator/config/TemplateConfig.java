@@ -28,6 +28,11 @@ public class TemplateConfig {
     private ServiceTemplate service;
 
     /**
+     * mapper模板配置
+     */
+    private MapperTemplate mapper;
+
+    /**
      * entity模板配置
      */
     private EntityTemplate entity;
@@ -66,6 +71,10 @@ public class TemplateConfig {
         return service == null ? new ServiceTemplate() : service;
     }
 
+    public MapperTemplate getMapper() {
+        return mapper == null ? new MapperTemplate() : mapper;
+    }
+
     public EntityTemplate getEntity() {
         return entity == null ? new EntityTemplate() : entity;
     }
@@ -91,6 +100,7 @@ public class TemplateConfig {
         List<AbstractTemplate> list = new ArrayList<>();
         list.add(getController());
         list.add(getService());
+        list.add(getMapper());
         list.add(getEntity());
         list.add(getCreateDTO());
         if (CollUtil.isNotEmpty(addTemplate)) {
@@ -101,9 +111,10 @@ public class TemplateConfig {
     }
 
     @Builder
-    public TemplateConfig(ControllerTemplate controller, ServiceTemplate service, EntityTemplate entity, CreateDTOTemplate createDTO, Boolean enableImport, Boolean enableExport, List<AbstractTemplate> addTemplate) {
+    public TemplateConfig(ControllerTemplate controller, ServiceTemplate service, MapperTemplate mapper, EntityTemplate entity, CreateDTOTemplate createDTO, Boolean enableImport, Boolean enableExport, List<AbstractTemplate> addTemplate) {
         this.controller = controller;
         this.service = service;
+        this.mapper = mapper;
         this.entity = entity;
         this.createDTO = createDTO;
         this.enableImport = enableImport;

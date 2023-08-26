@@ -125,10 +125,10 @@ public class EntityTemplate extends AbstractTemplate {
         String pkg = global.getPackageName() + "." + metaTable.getModuleName();
         Set<String> pkgs = new HashSet<>();
         if (template.getEntity().getSuperClass() != null) {
-            pkgs.add(template.getEntity().getSuperClass().getPackage().getName());
+            pkgs.add(template.getEntity().getSuperClass().getName());
         }
         if (annotation.getEnableBuilder()) {
-            pkgs.add(Builder.class.getPackage().getName());
+            pkgs.add(Builder.class.getName());
         }
         List<String> list = new ArrayList<>(pkgs);
         Collections.sort(list);

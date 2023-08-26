@@ -1,15 +1,15 @@
 package com.easy.boot.common.generator.template;
 
 import cn.hutool.core.util.StrUtil;
-import com.easy.boot.common.base.BaseController;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.easy.boot.common.generator.DataMap;
 import com.easy.boot.common.generator.GenConstant;
-import com.easy.boot.common.generator.config.AnnotationConfig;
 import com.easy.boot.common.generator.config.GeneratorConfig;
 import com.easy.boot.common.generator.config.GlobalConfig;
 import com.easy.boot.common.generator.config.TemplateConfig;
 import com.easy.boot.common.generator.db.MetaTable;
 import lombok.*;
+import org.apache.ibatis.annotations.Mapper;
 
 import java.util.*;
 
@@ -23,7 +23,7 @@ import java.util.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class ServiceTemplate extends AbstractTemplate {
+public class MapperTemplate extends AbstractTemplate {
 
     private String moduleName;
 
@@ -40,19 +40,19 @@ public class ServiceTemplate extends AbstractTemplate {
     @Override
     protected String getModuleName() {
         if (StrUtil.isEmpty(moduleName)) {
-            moduleName = "service";
+            moduleName = "mapper";
         }
         return moduleName;
     }
 
     @Override
     public Class<?> getSuperClass() {
-        return BaseController.class;
+        return BaseMapper.class;
     }
 
     @Override
     public String getTemplateName() {
-        return "service.ftl";
+        return "mapper.ftl";
     }
 
     @Override
@@ -60,7 +60,7 @@ public class ServiceTemplate extends AbstractTemplate {
         if (StrUtil.isNotEmpty(this.fileName)) {
             return this.fileName + GenConstant.SUFFIX;
         }
-        return "I" + javaName + GenConstant.SERVICE + GenConstant.SUFFIX;
+        return javaName + GenConstant.MAPPER + GenConstant.SUFFIX;
     }
 
     @Override
@@ -93,11 +93,13 @@ public class ServiceTemplate extends AbstractTemplate {
      * @param buildDataMap 已构建过的参数
      */
     private void buildClassName(DataMap buildDataMap) {
-        GeneratorConfig generator = (GeneratorConfig) buildDataMap.get(GenConstant.DATA_MAP_KEY_CONFIG);
+        TemplateConfig template = (TemplateConfig) buildDataMap.get(GenConstant.DATA_MAP_KEY_TEMPLATE);
         MetaTable metaTable = (MetaTable) buildDataMap.get(GenConstant.DATA_MAP_KEY_TABLE);
         String javaName = metaTable.getBeanName();
-        String className = generator.getTemplateConfig().getService().getFileName(javaName).replace(GenConstant.SUFFIX, "");
+        String className = template.getMapper().getFileName(javaName).replace(GenConstant.SUFFIX, "");
+        String entityName = template.getEntity().getFileName(javaName).replace(GenConstant.SUFFIX, "");
         buildDataMap.put("className", className);
+        buildDataMap.put("entityName", entityName);
     }
 
     /**
@@ -107,8 +109,8 @@ public class ServiceTemplate extends AbstractTemplate {
     private void buildSuperClassName(DataMap buildDataMap) {
         GeneratorConfig generator = (GeneratorConfig) buildDataMap.get(GenConstant.DATA_MAP_KEY_CONFIG);
         TemplateConfig template = generator.getTemplateConfig();
-        if (template.getService().getSuperClass() != null) {
-            buildDataMap.put("superName", template.getService().getSuperClass().getName());
+        if (template.getMapper().getSuperClass() != null) {
+            buildDataMap.put("superName", template.getMapper().getSuperClass().getName());
         }
     }
 
@@ -117,20 +119,21 @@ public class ServiceTemplate extends AbstractTemplate {
      * @param buildDataMap 已构建过的参数
      */
     private void buildPkgDataMap(DataMap buildDataMap) {
-        GeneratorConfig generator = (GeneratorConfig) buildDataMap.get(GenConstant.DATA_MAP_KEY_CONFIG);
-        GlobalConfig global = generator.getGlobalConfig();
-        AnnotationConfig annotation = generator.getAnnotationConfig();
-        TemplateConfig template = generator.getTemplateConfig();
+        GlobalConfig global = (GlobalConfig) buildDataMap.get(GenConstant.DATA_MAP_KEY_GLOBAL);
+        TemplateConfig template = (TemplateConfig) buildDataMap.get(GenConstant.DATA_MAP_KEY_TEMPLATE);
         MetaTable metaTable = (MetaTable) buildDataMap.get(GenConstant.DATA_MAP_KEY_TABLE);
-        String pkg = global.getPackageName() + "." + metaTable.getModuleName();
+        String pkg = String.join(".", global.getPackageName(), metaTable.getModuleName());
         Set<String> pkgs = new HashSet<>();
-        if (template.getService().getSuperClass() != null) {
-            pkgs.add(template.getService().getSuperClass().getName());
+        if (template.getMapper().getSuperClass() != null) {
+            pkgs.add(template.getMapper().getSuperClass().getName());
         }
+        pkgs.add(Mapper.class.getName());
+        String entityPkg = String.join(".", pkg, template.getEntity().getModuleName(), String.valueOf(buildDataMap.get("entityName")));
+        pkgs.add(entityPkg);
         List<String> list = new ArrayList<>(pkgs);
         Collections.sort(list);
         buildDataMap.put("pkgs", list);
-        pkg = pkg + "." + template.getService().getModuleName();
+        pkg = String.join(".",pkg, template.getMapper().getModuleName());
         buildDataMap.put("pkg", pkg);
     }
 }
