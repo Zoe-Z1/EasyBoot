@@ -1,6 +1,7 @@
 package com.easy.boot.common.generator.template;
 
 import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.easy.boot.common.base.BaseEntity;
 import com.easy.boot.common.generator.DataMap;
 import com.easy.boot.common.generator.GenConstant;
@@ -113,7 +114,6 @@ public class EntityTemplate extends AbstractTemplate {
     private void buildPkgDataMap(DataMap buildDataMap) {
         AnnotationConfig annotation = buildDataMap.getAnnotationConfig();
         MetaTable metaTable = buildDataMap.getMetaTable();
-        String pkg = buildDataMap.getString(GenConstant.DATA_MAP_KEY_PKG);
         Set<String> pkgs = new HashSet<>();
         if (getSuperClass() != null) {
             pkgs.add(getSuperClass().getName());
@@ -125,6 +125,7 @@ public class EntityTemplate extends AbstractTemplate {
                 pkgs.add(Builder.class.getName());
             }
         }
+        pkgs.add(TableName.class.getName());
         pkgs.add(ApiModel.class.getName());
         pkgs.add(ApiModelProperty.class.getName());
         pkgs.addAll(metaTable.getFields().stream().map(Field::getJavaTypePackageName).collect(Collectors.toSet()));
