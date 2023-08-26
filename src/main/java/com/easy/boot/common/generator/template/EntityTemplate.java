@@ -5,12 +5,15 @@ import com.easy.boot.common.base.BaseEntity;
 import com.easy.boot.common.generator.DataMap;
 import com.easy.boot.common.generator.GenConstant;
 import com.easy.boot.common.generator.config.AnnotationConfig;
-import com.easy.boot.common.generator.config.GlobalConfig;
-import com.easy.boot.common.generator.config.TemplateConfig;
+import com.easy.boot.common.generator.db.Field;
 import com.easy.boot.common.generator.db.MetaTable;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author zoe
@@ -94,10 +97,9 @@ public class EntityTemplate extends AbstractTemplate {
      * @param buildDataMap 已构建过的参数
      */
     private void buildClassName(DataMap buildDataMap) {
-        TemplateConfig template = buildDataMap.getTemplateConfig();
         MetaTable metaTable = buildDataMap.getMetaTable();
         String javaName = metaTable.getBeanName();
-        String className = template.getEntity().getFileName(javaName).replace(GenConstant.SUFFIX, "");
+        String className = getFileName(javaName).replace(GenConstant.SUFFIX, "");
         buildDataMap.put(GenConstant.DATA_MAP_KEY_CLASS_NAME, className);
         if (getSuperClass() != null) {
             buildDataMap.put(GenConstant.DATA_MAP_KEY_SUPER_NAME, getSuperClass().getName());
@@ -109,9 +111,7 @@ public class EntityTemplate extends AbstractTemplate {
      * @param buildDataMap 已构建过的参数
      */
     private void buildPkgDataMap(DataMap buildDataMap) {
-        GlobalConfig global = buildDataMap.getGlobalConfig();
         AnnotationConfig annotation = buildDataMap.getAnnotationConfig();
-        TemplateConfig template = buildDataMap.getTemplateConfig();
         MetaTable metaTable = buildDataMap.getMetaTable();
         String pkg = buildDataMap.getString(GenConstant.DATA_MAP_KEY_PKG);
         Set<String> pkgs = new HashSet<>();
@@ -119,13 +119,19 @@ public class EntityTemplate extends AbstractTemplate {
             pkgs.add(getSuperClass().getName());
         }
         if (annotation.getEnableBuilder()) {
-            pkgs.add(Builder.class.getName());
+            if (getSuperClass() != null) {
+                pkgs.add(SuperBuilder.class.getName());
+            } else {
+                pkgs.add(Builder.class.getName());
+            }
         }
+        pkgs.add(ApiModel.class.getName());
+        pkgs.add(ApiModelProperty.class.getName());
+        pkgs.addAll(metaTable.getFields().stream().map(Field::getJavaTypePackageName).collect(Collectors.toSet()));
+        pkgs.add("lombok.*");
         List<String> list = new ArrayList<>(pkgs);
         Collections.sort(list);
         buildDataMap.put(GenConstant.DATA_MAP_KEY_PKGS, list);
-        pkg = String.join(".",pkg, getModuleName());
-        buildDataMap.put(GenConstant.DATA_MAP_KEY_PKG, pkg);
     }
 
 }

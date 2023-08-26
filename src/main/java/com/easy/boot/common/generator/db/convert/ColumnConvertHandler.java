@@ -20,5 +20,5 @@ public interface ColumnConvertHandler {
      * @param columnType 数据库表列类型
      * @return javaType
      */
-    String convert(String columnType);
+    JavaTypeEnum convert(String columnType);
 }

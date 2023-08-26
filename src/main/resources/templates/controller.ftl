@@ -5,10 +5,10 @@ import ${pkg};
 </#list>
 
 /**
-* @author ${global.author}
-* @date ${date}
-* @description ${table.remarks!}接口
-*/
+ * @author ${global.author}
+ * @date ${date}
+ * @description ${table.remarks!}接口
+ */
 @Slf4j
 @Api(tags = "${table.remarks!}接口")
 @RestController

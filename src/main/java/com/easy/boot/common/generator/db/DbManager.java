@@ -5,6 +5,7 @@ import cn.hutool.core.text.NamingCase;
 import cn.hutool.core.util.StrUtil;
 import com.easy.boot.common.generator.config.DataSourceConfig;
 import com.easy.boot.common.generator.db.convert.ColumnConvertHandler;
+import com.easy.boot.common.generator.db.convert.JavaTypeEnum;
 import com.easy.boot.exception.GeneratorException;
 import lombok.extern.slf4j.Slf4j;
 
@@ -160,13 +161,14 @@ public class DbManager {
                 String columnName = rs.getString(DbConstant.COLUMN_NAME);
                 String javaName = NamingCase.toCamelCase(columnName);
                 String columnType = rs.getString(DbConstant.COLUMN_TYPE);
-                String javaType = columnConvertHandler.convert(columnType);
+                JavaTypeEnum javaType = columnConvertHandler.convert(columnType);
                 Field field = Field.builder()
                         .isPrimaryKey(primaryKeyNames.contains(columnName))
                         .name(columnName)
                         .javaName(javaName)
                         .columnType(columnType)
-                        .javaType(javaType)
+                        .javaType(javaType.getValue())
+                        .javaTypePackageName(javaType.getPackageName())
                         .size(rs.getInt(DbConstant.COLUMN_SIZE))
                         .nullable(rs.getInt(DbConstant.COLUMN_NULLABLE))
                         .remarks(rs.getString(DbConstant.COLUMN_REMARKS))

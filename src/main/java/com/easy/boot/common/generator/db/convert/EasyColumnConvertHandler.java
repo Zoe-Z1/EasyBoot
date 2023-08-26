@@ -9,7 +9,7 @@ public class EasyColumnConvertHandler implements ColumnConvertHandler {
 
 
     @Override
-    public String convert(String columnType) {
-        return DbColumnTypeEnum.toJavaTypeValue(columnType);
+    public JavaTypeEnum convert(String columnType) {
+        return DbColumnTypeEnum.toJavaType(columnType);
     }
 }

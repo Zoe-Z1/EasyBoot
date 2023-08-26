@@ -7,6 +7,9 @@ package com.easy.boot.common.generator.db.convert;
  */
 public enum DbColumnTypeEnum {
 
+    /**
+     * BIGINT
+     */
     BIGINT("BIGINT", JavaTypeEnum.LONG),
 
     DECIMAL("DECIMAL", JavaTypeEnum.BIG_DECIMAL),
@@ -61,5 +64,13 @@ public enum DbColumnTypeEnum {
      */
     public static String toJavaTypeValue(String columnType) {
         return toJavaType(columnType).getValue();
+    }
+
+    /**
+     * 转换为包名
+     * @return packageName
+     */
+    public static String toJavaTypePackageName(String columnType) {
+        return toJavaType(columnType).getPackageName();
     }
 }

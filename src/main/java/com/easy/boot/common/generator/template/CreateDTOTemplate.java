@@ -120,7 +120,6 @@ public class CreateDTOTemplate extends AbstractTemplate {
         AnnotationConfig annotation = buildDataMap.getAnnotationConfig();
         TemplateConfig template = buildDataMap.getTemplateConfig();
         MetaTable metaTable = (MetaTable) buildDataMap.get(GenConstant.DATA_MAP_KEY_TABLE);
-        String pkg = global.getPackageName() + "." + metaTable.getModuleName();
         Set<String> pkgs = new HashSet<>();
         if (template.getCreateDTO().getSuperClass() != null) {
             pkgs.add(template.getCreateDTO().getSuperClass().getName());
@@ -130,8 +129,6 @@ public class CreateDTOTemplate extends AbstractTemplate {
         }
         List<String> list = new ArrayList<>(pkgs);
         Collections.sort(list);
-        buildDataMap.put("pkgs", list);
-        pkg = pkg + "." + template.getCreateDTO().getModuleName();
-        buildDataMap.put("pkg", pkg);
+        buildDataMap.put(GenConstant.DATA_MAP_KEY_PKGS, list);
     }
 }

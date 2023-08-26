@@ -199,8 +199,5 @@ public class ControllerTemplate extends AbstractTemplate {
         List<String> list = new ArrayList<>(pkgs);
         Collections.sort(list);
         buildDataMap.put(GenConstant.DATA_MAP_KEY_PKGS, list);
-        String pkg = global.getPackageName() + "." + metaTable.getModuleName();
-        pkg = pkg + "." + template.getController().getModuleName();
-        buildDataMap.put(GenConstant.DATA_MAP_KEY_PKG, pkg);
     }
 }

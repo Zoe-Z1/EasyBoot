@@ -1,5 +1,11 @@
 package com.easy.boot.common.generator.db.convert;
 
+import java.math.BigDecimal;
+import java.sql.Blob;
+import java.sql.Time;
+import java.sql.Timestamp;
+import java.util.Date;
+
 /**
  * @author zoe
  * @date 2023/8/19
@@ -7,43 +13,58 @@ package com.easy.boot.common.generator.db.convert;
  */
 public enum JavaTypeEnum {
 
-    STRING("String"),
+    STRING("String", String.class.getName()),
 
-    INTEGER("Integer"),
+    INTEGER("Integer", Integer.class.getName()),
 
-    LONG("Long"),
+    LONG("Long", Long.class.getName()),
 
-    SHORT("Short"),
+    SHORT("Short", Short.class.getName()),
 
-    DOUBLE("Double"),
+    DOUBLE("Double", Double.class.getName()),
 
-    BYTE("Byte"),
+    BYTE("Byte", Byte.class.getName()),
 
-    BOOLEAN("Boolean"),
+    BOOLEAN("Boolean", Boolean.class.getName()),
 
-    FLOAT("Float"),
+    FLOAT("Float", Float.class.getName()),
 
-    CHAR("Character"),
+    CHAR("Character", Character.class.getName()),
 
-    DATE("Date"),
+    DATE("Date", Date.class.getName()),
 
-    BIG_DECIMAL("BigDecimal"),
+    BIG_DECIMAL("BigDecimal", BigDecimal.class.getName()),
 
-    TIMESTAMP("Timestamp"),
+    TIMESTAMP("Timestamp", Timestamp.class.getName()),
 
-    TIME("Time"),
+    TIME("Time", Time.class.getName()),
 
-    BLOB("Blob"),
+    BLOB("Blob", Blob.class.getName()),
 
     ;
 
     private final String value;
 
-    JavaTypeEnum(String value) {
+    private final String packageName;
+
+    JavaTypeEnum(String value, String packageName) {
         this.value = value;
+        this.packageName = packageName;
     }
 
+    /**
+     * 获取类型
+     * @return
+     */
     public String getValue() {
         return value;
+    }
+
+    /**
+     * 获取包名
+     * @return
+     */
+    public String getPackageName() {
+        return packageName;
     }
 }

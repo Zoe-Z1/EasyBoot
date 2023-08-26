@@ -42,6 +42,11 @@ public class Field {
     private String javaType;
 
     /**
+     * 转换后的Java类型
+     */
+    private String javaTypePackageName;
+
+    /**
      * 字段长度
      */
     private Integer size;

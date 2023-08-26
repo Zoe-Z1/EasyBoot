@@ -125,7 +125,5 @@ public class MapperTemplate extends AbstractTemplate {
         List<String> list = new ArrayList<>(pkgs);
         Collections.sort(list);
         buildDataMap.put(GenConstant.DATA_MAP_KEY_PKGS, list);
-        pkg = String.join(".",pkg, getModuleName());
-        buildDataMap.put(GenConstant.DATA_MAP_KEY_PKG, pkg);
     }
 }

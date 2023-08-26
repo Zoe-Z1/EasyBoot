@@ -6,10 +6,10 @@ import ${pkg};
 
 
 /**
-* @author ${global.author}
-* @date ${date}
-* @description ${table.remarks!}实体
-*/
+ * @author ${global.author}
+ * @date ${date}
+ * @description ${table.remarks!}实体
+ */
 @TableName("${table.name}")
 @ApiModel(value = "${table.remarks!}实体")
 @Data
@@ -21,7 +21,7 @@ import ${pkg};
 </#if>
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
-public class ${clssName} extends ${superName} {
+public class ${className} extends ${superName} {
 <#else>
 <#if annotation.enableBuilder>
 @Builder
@@ -35,7 +35,7 @@ public class ${clssName} {
 <#list table.fields as field>
 
     <#if field.remarks!?length gt 0>
-        @ApiModelProperty("${field.remarks}")
+    @ApiModelProperty("${field.remarks}")
     </#if>
     <#-- 遍历字段 -->
     private ${field.javaType} ${field.javaName};
