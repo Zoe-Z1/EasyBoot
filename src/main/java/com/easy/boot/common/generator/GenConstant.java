@@ -57,6 +57,10 @@ public class GenConstant {
 
     public static final String DATA_MAP_KEY_TABLE = "table";
 
+    public static final String DATA_MAP_KEY_FIELDS = "fields";
+
+    public static final String DATA_MAP_KEY_REMARKS = "remarks";
+
     public static final String DATA_MAP_KEY_PKG = "pkg";
 
     public static final String DATA_MAP_KEY_PKGS = "pkgs";

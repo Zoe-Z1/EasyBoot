@@ -16,6 +16,8 @@ import lombok.*;
 @EqualsAndHashCode(callSuper = true)
 public class TestTemplate extends AbstractTemplate {
 
+    private String remarks;
+
     private String moduleName;
 
     private Class<?> superClass;
@@ -27,6 +29,14 @@ public class TestTemplate extends AbstractTemplate {
     private Boolean enable;
 
     private Boolean isOverride;
+
+    @Override
+    protected String getRemarks(String tableRemarks) {
+        if (StrUtil.isNotEmpty(remarks)) {
+            return remarks;
+        }
+        return tableRemarks;
+    }
 
     @Override
     protected String getModuleName() {

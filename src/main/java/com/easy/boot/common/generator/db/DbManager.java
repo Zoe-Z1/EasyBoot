@@ -106,13 +106,14 @@ public class DbManager {
             Set<MetaTable> tables = new HashSet<>();
             while (rs.next()) {
                 String name = rs.getString(DbConstant.TABLE_NAME);
+                String remarks = StrUtil.isEmpty(table.getRemarks()) ? rs.getString(DbConstant.TABLE_REMARKS) : table.getRemarks();
                 MetaTable metaTable = MetaTable.builder()
                         .name(name)
                         .beanName(NamingCase.toPascalCase(name))
                         .camelName(NamingCase.toCamelCase(name))
                         .moduleName(table.getModuleName())
                         .type(rs.getString(DbConstant.TABLE_TYPE))
-                        .remarks(rs.getString(DbConstant.TABLE_REMARKS))
+                        .remarks(remarks)
                         .build();
                 if (StrUtil.isEmpty(table.getModuleName())) {
                     metaTable.setModuleName(NamingCase.toCamelCase(name));
@@ -156,7 +157,6 @@ public class DbManager {
             }
             // 处理字段信息
             ResultSet rs = dbMetaData.getColumns(connection.getCatalog(), null, metaTable.getName(), null);
-            System.out.println("rs.getMetaData().getColumnCount() = " + rs.getMetaData().getColumnCount());
             while (rs.next()) {
                 String columnName = rs.getString(DbConstant.COLUMN_NAME);
                 String javaName = NamingCase.toCamelCase(columnName);

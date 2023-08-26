@@ -28,6 +28,8 @@ import java.util.stream.Collectors;
 @EqualsAndHashCode(callSuper = true)
 public class UpdateDTOTemplate extends AbstractTemplate {
 
+    private String remarks;
+
     private String moduleName;
 
     private Class<?> superClass;
@@ -51,6 +53,14 @@ public class UpdateDTOTemplate extends AbstractTemplate {
     private Boolean enable;
 
     private Boolean isOverride;
+
+    @Override
+    protected String getRemarks(String tableRemarks) {
+        if (StrUtil.isNotEmpty(remarks)) {
+            return remarks;
+        }
+        return tableRemarks + "编辑";
+    }
 
     @Override
     protected String getModuleName() {
@@ -86,7 +96,7 @@ public class UpdateDTOTemplate extends AbstractTemplate {
         return enableExtendsCreateDTO;
     }
 
-    public Set<String> getGenField() {
+    public Set<String> getIncludeField() {
         return includeField;
     }
 
@@ -152,12 +162,13 @@ public class UpdateDTOTemplate extends AbstractTemplate {
      * @param buildDataMap 已构建过的参数
      */
     private void handleField(DataMap buildDataMap) {
+        MetaTable metaTable = buildDataMap.getMetaTable();
+        List<Field> fields = new ArrayList<>(metaTable.getFields());
         if (getEnableExtendsCreateDTO()) {
-            MetaTable metaTable = buildDataMap.getMetaTable();
-            Set<String> fields = getGenField();
-            metaTable.getFields().removeIf(item -> !fields.contains(item.getJavaName()));
-            buildDataMap.updateMetaTable(metaTable);
+            Set<String> includeFields = getIncludeField();
+            fields.removeIf(item -> !includeFields.contains(item.getJavaName()));
         }
+        buildDataMap.put(GenConstant.DATA_MAP_KEY_FIELDS, fields);
     }
 
     /**
@@ -206,6 +217,7 @@ public class UpdateDTOTemplate extends AbstractTemplate {
 
     @ToString
     public static class UpdateDTOTemplateBuilder {
+        private String remarks;
         private String moduleName;
         private Class<?> superClass;
         private Boolean enableExtendsCreateDTO;
@@ -218,8 +230,8 @@ public class UpdateDTOTemplate extends AbstractTemplate {
         UpdateDTOTemplateBuilder() {
         }
 
-        public UpdateDTOTemplate.UpdateDTOTemplateBuilder includeField(String... field) {
-            this.includeField = CollUtil.newHashSet(field);
+        public UpdateDTOTemplate.UpdateDTOTemplateBuilder remarks(final String remarks) {
+            this.remarks = remarks;
             return this;
         }
 
@@ -264,8 +276,13 @@ public class UpdateDTOTemplate extends AbstractTemplate {
             return this;
         }
 
+        public UpdateDTOTemplate.UpdateDTOTemplateBuilder includeField(String... field) {
+            this.includeField = CollUtil.newHashSet(field);
+            return this;
+        }
+
         public UpdateDTOTemplate build() {
-            return new UpdateDTOTemplate(this.moduleName, this.superClass, this.enableExtendsCreateDTO, this.includeField, this.templateName, this.fileName, this.enable, this.isOverride);
+            return new UpdateDTOTemplate(this.remarks, this.moduleName, this.superClass, this.enableExtendsCreateDTO, this.includeField, this.templateName, this.fileName, this.enable, this.isOverride);
         }
     }
 }

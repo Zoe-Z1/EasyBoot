@@ -49,6 +49,11 @@ public class TemplateConfig {
     private UpdateDTOTemplate updateDTO;
 
     /**
+     * updateDTO模板配置
+     */
+    private QueryTemplate query;
+
+    /**
      * 生成导入
      */
     private Boolean enableImport;
@@ -87,6 +92,10 @@ public class TemplateConfig {
         return updateDTO == null ? new UpdateDTOTemplate() : updateDTO;
     }
 
+    public QueryTemplate getQuery() {
+        return query == null ? new QueryTemplate() : query;
+    }
+
     public Boolean getEnableImport() {
         if (enableImport == null) {
             enableImport = false;
@@ -108,6 +117,7 @@ public class TemplateConfig {
         list.add(getEntity());
         list.add(getCreateDTO());
         list.add(getUpdateDTO());
+        list.add(getQuery());
         if (CollUtil.isNotEmpty(templates)) {
             list.addAll(templates);
         }
@@ -127,6 +137,7 @@ public class TemplateConfig {
         private EntityTemplate entity;
         private CreateDTOTemplate createDTO;
         private UpdateDTOTemplate updateDTO;
+        private QueryTemplate query;
         private Boolean enableImport;
         private Boolean enableExport;
         private List<AbstractTemplate> templates;
@@ -169,6 +180,11 @@ public class TemplateConfig {
             return this;
         }
 
+        public TemplateConfig.TemplateConfigBuilder query(final QueryTemplate query) {
+            this.query = query;
+            return this;
+        }
+
         public TemplateConfig.TemplateConfigBuilder enableImport(final Boolean enableImport) {
             this.enableImport = enableImport;
             return this;
@@ -180,7 +196,7 @@ public class TemplateConfig {
         }
 
         public TemplateConfig build() {
-            return new TemplateConfig(this.controller, this.service, this.mapper, this.entity, this.createDTO, this.updateDTO, this.enableImport, this.enableExport, this.templates);
+            return new TemplateConfig(this.controller, this.service, this.mapper, this.entity, this.createDTO, this.updateDTO, this.query, this.enableImport, this.enableExport, this.templates);
         }
     }
 }

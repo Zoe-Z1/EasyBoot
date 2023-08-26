@@ -27,6 +27,8 @@ import java.util.stream.Collectors;
 @EqualsAndHashCode(callSuper = true)
 public class CreateDTOTemplate extends AbstractTemplate {
 
+    private String remarks;
+
     private String moduleName;
 
     private Class<?> superClass;
@@ -38,6 +40,14 @@ public class CreateDTOTemplate extends AbstractTemplate {
     private Boolean enable;
 
     private Boolean isOverride;
+
+    @Override
+    protected String getRemarks(String tableRemarks) {
+        if (StrUtil.isNotEmpty(remarks)) {
+            return remarks;
+        }
+        return tableRemarks + "创建";
+    }
 
     @Override
     protected String getModuleName() {
@@ -83,6 +93,8 @@ public class CreateDTOTemplate extends AbstractTemplate {
         DataMap buildDataMap = super.buildDataMap(dataMap);
         // 构建类名
         buildClassName(buildDataMap);
+        // 处理实体类属性
+        handleField(buildDataMap);
         // 构建需要导入的包
         buildPkgDataMap(buildDataMap);
         return buildDataMap;
@@ -100,6 +112,16 @@ public class CreateDTOTemplate extends AbstractTemplate {
         if (getSuperClass() != null) {
             buildDataMap.put(GenConstant.DATA_MAP_KEY_SUPER_NAME, getSuperClass().getName());
         }
+    }
+
+    /**
+     * 处理实体类属性
+     * @param buildDataMap 已构建过的参数
+     */
+    private void handleField(DataMap buildDataMap) {
+        MetaTable metaTable = buildDataMap.getMetaTable();
+        List<Field> fields = metaTable.getFields();
+        buildDataMap.put(GenConstant.DATA_MAP_KEY_FIELDS, fields);
     }
 
     /**

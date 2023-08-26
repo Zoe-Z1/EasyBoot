@@ -8,10 +8,10 @@ import ${pkg};
 /**
  * @author ${global.author}
  * @date ${date}
- * @description ${table.remarks!}实体
+ * @description ${remarks!}实体
  */
 @TableName("${table.name}")
-@ApiModel(value = "${table.remarks!}实体")
+@ApiModel(value = "${remarks!}实体")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -32,7 +32,7 @@ public class ${className} {
 </#if>
 
 <#-- ----------  BEGIN 字段循环遍历  ---------->
-<#list table.fields as field>
+<#list fields as field>
 
     <#if field.remarks!?length gt 0>
     @ApiModelProperty("${field.remarks}")

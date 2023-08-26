@@ -3,6 +3,7 @@ package com.easy.boot;
 import com.easy.boot.common.generator.config.*;
 import com.easy.boot.common.generator.db.convert.EasyColumnConvertHandler;
 import com.easy.boot.common.generator.execute.GeneratorExecute;
+import com.easy.boot.common.generator.template.CreateDTOTemplate;
 import com.easy.boot.common.generator.template.TestTemplate;
 import com.easy.boot.common.generator.template.UpdateDTOTemplate;
 import lombok.extern.slf4j.Slf4j;
@@ -46,6 +47,11 @@ public class EasyGenerator {
                                         .build())
                         .template(
                                 TemplateConfig.builder()
+                                        .createDTO(
+                                                CreateDTOTemplate.builder()
+//                                                        .remarks()
+                                                        .build()
+                                        )
                                         .updateDTO(
                                                 UpdateDTOTemplate.builder()
                                                         .enableExtendsCreateDTO(true)
@@ -54,7 +60,7 @@ public class EasyGenerator {
                                         )
                                         .enableImport(true)
                                         .enableExport(true)
-                                        .addTemplate(TestTemplate.builder().fileName("Testaaa").build(), TestTemplate.builder().fileName("Testaaa").build())
+                                        .addTemplate(TestTemplate.builder().fileName("Testaaa").build())
                                         .build())
                         .build()
         )

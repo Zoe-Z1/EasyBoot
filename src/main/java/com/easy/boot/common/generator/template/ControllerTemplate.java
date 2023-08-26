@@ -45,6 +45,8 @@ import java.util.*;
 @EqualsAndHashCode(callSuper = true)
 public class ControllerTemplate extends AbstractTemplate {
 
+    private String remarks;
+
     private String moduleName;
 
     private Class<?> superClass;
@@ -56,6 +58,14 @@ public class ControllerTemplate extends AbstractTemplate {
     private Boolean enable;
 
     private Boolean isOverride;
+
+    @Override
+    protected String getRemarks(String tableRemarks) {
+        if (StrUtil.isNotEmpty(remarks)) {
+            return remarks;
+        }
+        return tableRemarks;
+    }
 
     @Override
     protected String getModuleName() {

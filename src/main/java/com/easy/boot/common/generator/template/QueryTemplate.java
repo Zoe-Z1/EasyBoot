@@ -2,7 +2,6 @@ package com.easy.boot.common.generator.template;
 
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.easy.boot.common.base.BaseEntity;
 import com.easy.boot.common.generator.DataMap;
 import com.easy.boot.common.generator.GenConstant;
 import com.easy.boot.common.generator.config.AnnotationConfig;
@@ -18,15 +17,15 @@ import java.util.stream.Collectors;
 
 /**
  * @author zoe
- * @date 2023/8/15
- * @description 实体类模板配置
+ * @date 2023/8/26
+ * @description Query模板配置
  */
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class EntityTemplate extends AbstractTemplate {
+public class QueryTemplate extends AbstractTemplate {
 
     private String remarks;
 
@@ -47,7 +46,7 @@ public class EntityTemplate extends AbstractTemplate {
         if (StrUtil.isNotEmpty(remarks)) {
             return remarks;
         }
-        return tableRemarks;
+        return tableRemarks + "查询";
     }
 
     @Override
@@ -60,11 +59,7 @@ public class EntityTemplate extends AbstractTemplate {
 
     @Override
     protected Class<?> getSuperClass() {
-        if (superClass == null) {
-            return BaseEntity.class;
-        } else {
-            return superClass;
-        }
+        return superClass;
     }
 
     @Override
@@ -77,7 +72,7 @@ public class EntityTemplate extends AbstractTemplate {
         if (StrUtil.isNotEmpty(this.fileName)) {
             return this.fileName + GenConstant.SUFFIX;
         }
-        return javaName + GenConstant.SUFFIX;
+        return javaName + GenConstant.QUERY + GenConstant.SUFFIX;
     }
 
     @Override
@@ -156,5 +151,4 @@ public class EntityTemplate extends AbstractTemplate {
         Collections.sort(list);
         buildDataMap.put(GenConstant.DATA_MAP_KEY_PKGS, list);
     }
-
 }

@@ -7,7 +7,7 @@ import ${pkg};
 /**
  * @author ${global.author}
  * @date ${date}
- * @description ${table.remarks!} Mapper接口
+ * @description ${remarks!} Mapper接口
  */
 @Mapper
 public interface ${className} extends ${superName}<${entityName}> {

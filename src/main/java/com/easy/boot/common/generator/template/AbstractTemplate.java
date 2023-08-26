@@ -14,6 +14,15 @@ import com.easy.boot.common.generator.db.MetaTable;
 public abstract class AbstractTemplate {
 
     /**
+     * 备注
+     * @param tableRemarks 表备注
+     * @return
+     */
+    protected String getRemarks(String tableRemarks) {
+        return tableRemarks;
+    }
+
+    /**
      * 模块名
      */
     protected String getModuleName() {
@@ -83,6 +92,8 @@ public abstract class AbstractTemplate {
             isOverride = global.getIsOverride();
         }
         buildDataMap.put(GenConstant.DATA_MAP_KEY_IS_OVERRIDE, isOverride);
+        String remarks = getRemarks(metaTable.getRemarks());
+        buildDataMap.put(GenConstant.DATA_MAP_KEY_REMARKS, remarks);
         String genPath = String.join("/",global.getOutputPath(), metaTable.getModuleName(), getModuleName());
         buildDataMap.put(GenConstant.DATA_MAP_KEY_GEN_PATH, genPath);
         return buildDataMap;

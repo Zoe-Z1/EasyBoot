@@ -20,6 +20,11 @@ public class Table {
     private String tableName;
 
     /**
+     * 表备注
+     */
+    private String remarks;
+
+    /**
      * 表对应的模块名称，可不填，不填则使用驼峰名
      */
     private String moduleName;
@@ -29,15 +34,15 @@ public class Table {
      */
     private MatchPatternEnum matchPattern;
 
-    /**
-     * 获取表名
-     * @return tableName
-     */
     public String getTableName() {
         if (StrUtil.isEmpty(tableName)) {
             throw new GeneratorException("表名不能为空");
         }
         return getMatchPattern().formatTableName(tableName);
+    }
+
+    public String getRemarks() {
+        return remarks;
     }
 
     public String getModuleName() {
@@ -53,15 +58,5 @@ public class Table {
 
     public Table(String tableName) {
         this.tableName = tableName;
-    }
-
-    public Table(String tableName, String moduleName) {
-        this.tableName = tableName;
-        this.moduleName = moduleName;
-    }
-
-    public Table(String tableName, MatchPatternEnum matchPattern) {
-        this.tableName = tableName;
-        this.matchPattern = matchPattern;
     }
 }
