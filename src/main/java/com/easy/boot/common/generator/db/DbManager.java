@@ -132,8 +132,8 @@ public class DbManager {
      * @param tables 表数据集合
      * @return List<MetaTable>
      */
-    private List<MetaTable> distinctTables(List<MetaTable> tables) {
-        return tables.stream()
+    private void distinctTables(List<MetaTable> tables) {
+        tables.stream()
                 .collect(
                         Collectors.collectingAndThen(Collectors.toCollection(() ->
                                 new TreeSet<>(Comparator.comparing(MetaTable::getName))),
@@ -146,7 +146,7 @@ public class DbManager {
      * @param metaTable 表数据
      */
     private void handleTableFields(MetaTable metaTable) {
-        Set<Field> fields = new HashSet<>();
+        List<Field> fields = new ArrayList<>();
         try {
             DatabaseMetaData dbMetaData = connection.getMetaData();
             List<String> primaryKeyNames = new ArrayList<>();
@@ -175,7 +175,7 @@ public class DbManager {
                         .build();
                 fields.add(field);
             }
-            metaTable.setFields(new ArrayList<>(fields));
+            metaTable.setFields(fields);
         } catch (Exception e) {
             log.error("加载 {} 表字段信息异常 e-> ", metaTable.getName(), e);
             throw new GeneratorException("加载表字段信息异常");
