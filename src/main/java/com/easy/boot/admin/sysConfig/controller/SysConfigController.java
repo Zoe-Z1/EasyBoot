@@ -71,7 +71,7 @@ public class SysConfigController extends BaseController {
 
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "创建系统配置")
-    @EasyLog(module = "创建系统配置", operateType = OperateTypeEnum.INSERT)
+    @EasyLog(module = "创建系统配置", operateType = OperateTypeEnum.CREATE)
     @PostMapping(value = "/create")
     public Result create(@Validated @RequestBody SysConfigCreateDTO dto) {
         return Result.r(configService.create(dto));

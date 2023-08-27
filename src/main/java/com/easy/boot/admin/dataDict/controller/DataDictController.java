@@ -79,7 +79,7 @@ public class DataDictController extends BaseController {
 
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "创建数据字典")
-    @EasyLog(module = "创建数据字典", operateType = OperateTypeEnum.INSERT)
+    @EasyLog(module = "创建数据字典", operateType = OperateTypeEnum.CREATE)
     @PostMapping(value = "/create")
     public Result create(@Validated @RequestBody DataDictCreateDTO dto) {
         return Result.r(dataDictionaryService.create(dto));

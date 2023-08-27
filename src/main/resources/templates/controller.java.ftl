@@ -74,7 +74,7 @@ public class ${table.controllerName} {
 
     @ApiOperationSupport(author = "${author}")
     @ApiOperation(value = "创建${table.comment!}")
-    @EasyLog(module = "创建${table.comment!}", operateType = OperateTypeEnum.INSERT)
+    @EasyLog(module = "创建${table.comment!}", operateType = OperateTypeEnum.CREATE)
     @PostMapping(value = "/create")
     public Result create(@Validated @RequestBody ${entity}CreateDTO dto) {
         return Result.r(${package.ModuleName}Service.create(dto));

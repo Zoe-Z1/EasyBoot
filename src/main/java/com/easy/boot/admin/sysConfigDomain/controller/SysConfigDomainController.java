@@ -66,7 +66,7 @@ public class SysConfigDomainController extends BaseController {
 
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "创建系统配置域")
-    @EasyLog(module = "创建系统配置域", operateType = OperateTypeEnum.INSERT)
+    @EasyLog(module = "创建系统配置域", operateType = OperateTypeEnum.CREATE)
     @PostMapping(value = "/create")
     public Result create(@Validated @RequestBody SysConfigDomainCreateDTO dto) {
         return Result.r(configurationDomainService.create(dto));

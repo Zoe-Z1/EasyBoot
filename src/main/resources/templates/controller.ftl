@@ -45,7 +45,7 @@ public class ${className} {
 
     @ApiOperationSupport(author = "${global.author}")
     @ApiOperation(value = "创建${remarks!}")
-    @EasyLog(module = "创建${remarks!}", operateType = OperateTypeEnum.INSERT)
+    @EasyLog(module = "创建${remarks!}", operateType = OperateTypeEnum.CREATE)
     @PostMapping(value = "/create")
     public Result create(@Validated @RequestBody ${entityName}CreateDTO dto) {
         return Result.r(${serviceCamelName}.create(dto));

@@ -30,7 +30,7 @@ public enum OperateTypeEnum {
     /**
      * 创建
      */
-    INSERT("创建"),
+    CREATE("创建"),
 
     /**
      * 修改

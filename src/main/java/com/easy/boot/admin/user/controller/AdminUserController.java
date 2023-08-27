@@ -71,7 +71,7 @@ public class AdminUserController extends BaseController {
 
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "创建用户")
-    @EasyLog(module = "创建用户", operateType = OperateTypeEnum.INSERT)
+    @EasyLog(module = "创建用户", operateType = OperateTypeEnum.CREATE)
     @PostMapping(value = "/create")
     public Result create(@Validated @RequestBody AdminUserCreateDTO dto) {
         return Result.r(adminUserService.create(dto));

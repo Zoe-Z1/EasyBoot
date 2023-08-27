@@ -67,7 +67,7 @@ public class PostController extends BaseController {
 
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "创建岗位")
-    @EasyLog(module = "创建岗位", operateType = OperateTypeEnum.INSERT)
+    @EasyLog(module = "创建岗位", operateType = OperateTypeEnum.CREATE)
     @PostMapping(value = "/create")
     public Result create(@Validated @RequestBody PostCreateDTO dto) {
         return Result.r(postService.create(dto));

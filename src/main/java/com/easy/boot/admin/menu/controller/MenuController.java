@@ -56,7 +56,7 @@ public class MenuController extends BaseController {
 
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "创建菜单")
-    @EasyLog(module = "创建菜单", operateType = OperateTypeEnum.INSERT)
+    @EasyLog(module = "创建菜单", operateType = OperateTypeEnum.CREATE)
     @PostMapping(value = "/create")
     public Result create(@Validated @RequestBody MenuCreateDTO dto) {
         return Result.r(menuService.create(dto));

@@ -69,7 +69,7 @@ public class RoleController extends BaseController {
 
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "创建角色")
-    @EasyLog(module = "创建角色", operateType = OperateTypeEnum.INSERT)
+    @EasyLog(module = "创建角色", operateType = OperateTypeEnum.CREATE)
     @PostMapping(value = "/create")
     public Result create(@Validated @RequestBody RoleCreateDTO dto) {
         return Result.r(roleService.create(dto));
@@ -77,7 +77,7 @@ public class RoleController extends BaseController {
 
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "角色分配用户")
-    @EasyLog(module = "角色分配用户", operateType = OperateTypeEnum.INSERT)
+    @EasyLog(module = "角色分配用户", operateType = OperateTypeEnum.CREATE)
     @PostMapping(value = "/roleAllotUser")
     public Result roleAllotUser(@Validated @RequestBody RoleAllotUserDTO dto) {
         return Result.r(userRoleService.roleAllotUser(dto.getUserIds(), dto.getRoleId()));

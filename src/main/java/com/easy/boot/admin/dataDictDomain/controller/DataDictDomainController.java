@@ -66,7 +66,7 @@ public class DataDictDomainController extends BaseController {
 
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "创建数据字典域")
-    @EasyLog(module = "创建数据字典域", operateType = OperateTypeEnum.INSERT)
+    @EasyLog(module = "创建数据字典域", operateType = OperateTypeEnum.CREATE)
     @PostMapping(value = "/create")
     public Result create(@Validated @RequestBody DataDictDomainCreateDTO dto) {
         return Result.r(dataDictionaryDomainService.create(dto));

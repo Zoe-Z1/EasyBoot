@@ -65,7 +65,7 @@ public class ScheduledTaskController extends BaseController {
 
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "创建定时任务")
-    @EasyLog(module = "创建定时任务", operateType = OperateTypeEnum.INSERT)
+    @EasyLog(module = "创建定时任务", operateType = OperateTypeEnum.CREATE)
     @PostMapping(value = "/create")
     public Result create(@Validated @RequestBody ScheduledTaskCreateDTO dto) {
         return Result.r(scheduledTaskService.create(dto));

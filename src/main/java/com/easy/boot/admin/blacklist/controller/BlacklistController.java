@@ -59,7 +59,7 @@ public class BlacklistController extends BaseController {
 
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "创建黑名单")
-    @EasyLog(module = "创建黑名单", operateType = OperateTypeEnum.INSERT)
+    @EasyLog(module = "创建黑名单", operateType = OperateTypeEnum.CREATE)
     @PostMapping(value = "/create")
     public Result create(@Validated @RequestBody BlacklistCreateDTO dto) {
         return Result.r(blacklistService.create(dto));

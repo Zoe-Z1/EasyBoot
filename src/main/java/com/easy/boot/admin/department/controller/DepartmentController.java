@@ -61,7 +61,7 @@ public class DepartmentController extends BaseController {
 
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "创建部门")
-    @EasyLog(module = "创建部门", operateType = OperateTypeEnum.INSERT)
+    @EasyLog(module = "创建部门", operateType = OperateTypeEnum.CREATE)
     @PostMapping(value = "/create")
     public Result create(@Validated @RequestBody DepartmentCreateDTO dto) {
         return Result.r(departmentService.create(dto));
