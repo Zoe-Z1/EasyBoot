@@ -64,7 +64,7 @@ public class DataMap extends HashMap<String, Object> {
         dataMap.put(GenConstant.DATA_MAP_KEY_ANNOTATION, config.getAnnotationConfig());
         dataMap.put(GenConstant.DATA_MAP_KEY_GLOBAL, config.getGlobalConfig());
         dataMap.put(GenConstant.DATA_MAP_KEY_TEMPLATE, config.getTemplateConfig());
-        dataMap.put(GenConstant.DATE, DateUtil.format(new Date(), config.getGlobalConfig().getCommentDateFormat()));
+        dataMap.put(GenConstant.DATA_MAP_KEY_DATE, DateUtil.format(new Date(), config.getGlobalConfig().getCommentDateFormat()));
         return dataMap;
     }
 

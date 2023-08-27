@@ -1,10 +1,11 @@
 package com.easy.boot.common.generator.template;
 
 import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.easy.boot.common.excel.ImportExcelError;
 import com.easy.boot.common.generator.DataMap;
 import com.easy.boot.common.generator.GenConstant;
-import com.easy.boot.common.generator.config.AnnotationConfig;
 import com.easy.boot.common.generator.config.GlobalConfig;
 import com.easy.boot.common.generator.config.TemplateConfig;
 import com.easy.boot.common.generator.db.MetaTable;
@@ -94,8 +95,6 @@ public class ServiceTemplate extends AbstractTemplate {
         DataMap buildDataMap = super.buildDataMap(dataMap);
         // 构建类名
         buildClassName(buildDataMap);
-        // 构建父类名
-        buildSuperClassName(buildDataMap);
         // 构建需要导入的包
         buildPkgDataMap(buildDataMap);
         return buildDataMap;
@@ -107,20 +106,23 @@ public class ServiceTemplate extends AbstractTemplate {
      */
     private void buildClassName(DataMap buildDataMap) {
         TemplateConfig template = buildDataMap.getTemplateConfig();
-        MetaTable metaTable = (MetaTable) buildDataMap.get(GenConstant.DATA_MAP_KEY_TABLE);
+        MetaTable metaTable = buildDataMap.getMetaTable();
         String javaName = metaTable.getBeanName();
-        String className = template.getService().getFileName(javaName).replace(GenConstant.SUFFIX, "");
-        buildDataMap.put("className", className);
-    }
-
-    /**
-     * 构建父类名称
-     * @param buildDataMap 已构建过的参数
-     */
-    private void buildSuperClassName(DataMap buildDataMap) {
-        TemplateConfig template = buildDataMap.getTemplateConfig();
-        if (template.getService().getSuperClass() != null) {
-            buildDataMap.put("superName", template.getService().getSuperClass().getName());
+        String className = getFileName(javaName).replace(GenConstant.SUFFIX, "");
+        String entityName = template.getEntity().getFileName(javaName).replace(GenConstant.SUFFIX, "");
+        String createDTOName = template.getCreateDTO().getFileName(javaName).replace(GenConstant.SUFFIX, "");
+        String updateDTOName = template.getUpdateDTO().getFileName(javaName).replace(GenConstant.SUFFIX, "");
+        String queryName = template.getQuery().getFileName(javaName).replace(GenConstant.SUFFIX, "");
+        buildDataMap.put(GenConstant.DATA_MAP_KEY_CLASS_NAME, className);
+        buildDataMap.put(GenConstant.DATA_MAP_KEY_ENTITY_NAME, entityName);
+        buildDataMap.put(GenConstant.DATA_MAP_KEY_CREATE_DTO_NAME, createDTOName);
+        buildDataMap.put(GenConstant.DATA_MAP_KEY_UPDATE_DTO_NAME, updateDTOName);
+        buildDataMap.put(GenConstant.DATA_MAP_KEY_QUERY_NAME, queryName);
+        if (getSuperClass() != null) {
+            buildDataMap.put(GenConstant.DATA_MAP_KEY_SUPER_NAME, getSuperClass().getName());
+        }
+        if (template.getEnableImport()) {
+            buildDataMap.put(GenConstant.DATA_MAP_KEY_IMPORT_EXCEL_ERROR_NAME, ImportExcelError.class.getSimpleName());
         }
     }
 
@@ -130,13 +132,35 @@ public class ServiceTemplate extends AbstractTemplate {
      */
     private void buildPkgDataMap(DataMap buildDataMap) {
         GlobalConfig global = buildDataMap.getGlobalConfig();
-        AnnotationConfig annotation = buildDataMap.getAnnotationConfig();
         TemplateConfig template = buildDataMap.getTemplateConfig();
         MetaTable metaTable = (MetaTable) buildDataMap.get(GenConstant.DATA_MAP_KEY_TABLE);
         Set<String> pkgs = new HashSet<>();
-        if (template.getService().getSuperClass() != null) {
-            pkgs.add(template.getService().getSuperClass().getName());
+        if (getSuperClass() != null) {
+            pkgs.add(getSuperClass().getName());
         }
+        if (template.getEnableImport()) {
+            pkgs.add(ImportExcelError.class.getName());
+        }
+        pkgs.add(IPage.class.getName());
+        pkgs.add(List.class.getName());
+        String pkgName = String.join(".", global.getPackageName(), metaTable.getModuleName());
+        String entityName = buildDataMap.getString(GenConstant.DATA_MAP_KEY_ENTITY_NAME);
+        String createDTOName = buildDataMap.getString(GenConstant.DATA_MAP_KEY_CREATE_DTO_NAME);
+        String updateDTOName = buildDataMap.getString(GenConstant.DATA_MAP_KEY_UPDATE_DTO_NAME);
+        String queryName = buildDataMap.getString(GenConstant.DATA_MAP_KEY_QUERY_NAME);
+        EntityTemplate entityTemplate = buildDataMap.getTemplateConfig().getEntity();
+        CreateDTOTemplate createDTOTemplate = buildDataMap.getTemplateConfig().getCreateDTO();
+        UpdateDTOTemplate updateDTOTemplate = buildDataMap.getTemplateConfig().getUpdateDTO();
+        QueryTemplate queryTemplate = buildDataMap.getTemplateConfig().getQuery();
+        String entityPkgTemplate = String.join(".", pkgName, entityTemplate.getModuleName(), entityName);
+        String createDTOPkgName = String.join(".", pkgName, createDTOTemplate.getModuleName(), createDTOName);
+        String updateDTOPkgName = String.join(".", pkgName, updateDTOTemplate.getModuleName(), updateDTOName);
+        String queryPkgName = String.join(".", pkgName, queryTemplate.getModuleName(), queryName);
+        pkgs.add(entityPkgTemplate);
+        pkgs.add(createDTOPkgName);
+        pkgs.add(updateDTOPkgName);
+        pkgs.add(queryPkgName);
+
         List<String> list = new ArrayList<>(pkgs);
         Collections.sort(list);
         buildDataMap.put(GenConstant.DATA_MAP_KEY_PKGS, list);

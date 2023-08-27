@@ -7,7 +7,7 @@ package com.easy.boot.common.generator;
  */
 public class GenConstant {
 
-    public static final String DATE = "date";
+    /*------------------------- 模块名 -------------------------*/
 
     public static final String MODULE_CONTROLLER = "controller";
 
@@ -21,13 +21,12 @@ public class GenConstant {
 
     public static final String MODULE_ENTITY = "entity";
 
+
+    /*------------------------- 类名称后缀 -------------------------*/
+
     public static final String CONTROLLER = "Controller";
 
-    public static final String CONTROLLER_TEMPLATE_NAME = "controller.ftl";
-
     public static final String SERVICE = "Service";
-
-    public static final String SERVICE_TEMPLATE_NAME = "service.ftl";
 
     public static final String SERVICE_IMPL = "ServiceImpl";
 
@@ -35,19 +34,31 @@ public class GenConstant {
 
     public static final String MAPPER = "Mapper";
 
-    public static final String MAPPER_TEMPLATE_NAME = "mapper.ftl";
-
-    public static final String ENTITY_TEMPLATE_NAME = "entity.ftl";
-
     public static final String CREATE_DTO = "CreateDTO";
 
     public static final String UPDATE_DTO = "UpdateDTO";
 
     public static final String QUERY = "Query";
 
+    public static final String TEST = "Test";
+
     public static final String SUFFIX = ".java";
 
-    public static final String TEST = "Test";
+    /*------------------------- 模板引擎名称 -------------------------*/
+
+    public static final String CONTROLLER_TEMPLATE_NAME = "controller.ftl";
+
+    public static final String SERVICE_TEMPLATE_NAME = "service.ftl";
+
+    public static final String MAPPER_TEMPLATE_NAME = "mapper.ftl";
+
+    public static final String ENTITY_TEMPLATE_NAME = "entity.ftl";
+
+
+
+    /*------------------------- DataMap中的参数key -------------------------*/
+
+    public static final String DATA_MAP_KEY_DATE = "date";
 
     public static final String DATA_MAP_KEY_ANNOTATION = "annotation";
 
@@ -82,5 +93,13 @@ public class GenConstant {
     public static final String DATA_MAP_KEY_CLASS_NAME = "className";
 
     public static final String DATA_MAP_KEY_ENTITY_NAME = "entityName";
+
+    public static final String DATA_MAP_KEY_CREATE_DTO_NAME = "createDTOName";
+
+    public static final String DATA_MAP_KEY_UPDATE_DTO_NAME = "updateDTOName";
+
+    public static final String DATA_MAP_KEY_QUERY_NAME = "queryName";
+
+    public static final String DATA_MAP_KEY_IMPORT_EXCEL_ERROR_NAME = "ImportExcelError";
 
 }
