@@ -75,6 +75,7 @@ public class ${className} {
         return Result.r(${serviceCamelName}.deleteBatchByIds(ids));
     }
 
+<#if template.enableImport>
     @ApiOperationSupport(author = "${global.author}")
     @ApiOperation(value = "导入${remarks!}")
     @EasyLog(module = "导入${remarks!}", operateType = OperateTypeEnum.IMPORT)
@@ -112,7 +113,9 @@ public class ${className} {
             throw new FileException("导入Excel失败");
         }
     }
+</#if>
 
+<#if template.enableExport>
     @ApiOperationSupport(author = "${global.author}")
     @ApiOperation(value = "导出${remarks!}")
     @EasyLog(module = "导出${remarks!}", operateType = OperateTypeEnum.EXPORT)
@@ -140,7 +143,9 @@ public class ${className} {
             throw new FileException("导出Excel失败");
         }
     }
+</#if>
 
+<#if template.enableImport>
     @ApiOperationSupport(author = "${global.author}")
     @ApiOperation(value = "下载${remarks!}导入模板")
     @EasyLog(module = "下载${remarks!}导入模板", operateType = OperateTypeEnum.DOWNLOAD)
@@ -158,4 +163,6 @@ public class ${className} {
             throw new FileException("下载${remarks!}导入模板失败");
         }
     }
+</#if>
+
 }

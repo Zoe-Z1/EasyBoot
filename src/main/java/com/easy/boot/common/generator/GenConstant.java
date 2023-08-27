@@ -92,13 +92,21 @@ public class GenConstant {
 
     public static final String DATA_MAP_KEY_CLASS_NAME = "className";
 
+    public static final String DATA_MAP_KEY_SERVICE_NAME = "serviceName";
+
+    public static final String DATA_MAP_KEY_SERVICE_CAMEL_NAME = "serviceCamelName";
+
     public static final String DATA_MAP_KEY_ENTITY_NAME = "entityName";
+
+    public static final String DATA_MAP_KEY_ENTITY_CAMEL_NAME = "entityCamelName";
 
     public static final String DATA_MAP_KEY_CREATE_DTO_NAME = "createDTOName";
 
     public static final String DATA_MAP_KEY_UPDATE_DTO_NAME = "updateDTOName";
 
     public static final String DATA_MAP_KEY_QUERY_NAME = "queryName";
+
+    public static final String DATA_MAP_KEY_VO_NAME = "voName";
 
     public static final String DATA_MAP_KEY_IMPORT_EXCEL_ERROR_NAME = "ImportExcelError";
 

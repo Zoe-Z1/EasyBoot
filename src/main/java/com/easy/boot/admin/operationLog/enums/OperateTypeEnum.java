@@ -28,9 +28,9 @@ public enum OperateTypeEnum {
     SELECT("查询"),
 
     /**
-     * 新增
+     * 创建
      */
-    INSERT("新增"),
+    INSERT("创建"),
 
     /**
      * 修改

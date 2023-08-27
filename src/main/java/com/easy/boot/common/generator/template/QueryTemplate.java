@@ -2,6 +2,7 @@ package com.easy.boot.common.generator.template;
 
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.easy.boot.common.base.BasePageQuery;
 import com.easy.boot.common.generator.DataMap;
 import com.easy.boot.common.generator.GenConstant;
 import com.easy.boot.common.generator.config.AnnotationConfig;
@@ -59,6 +60,9 @@ public class QueryTemplate extends AbstractTemplate {
 
     @Override
     protected Class<?> getSuperClass() {
+        if (superClass == null) {
+            superClass = BasePageQuery.class;
+        }
         return superClass;
     }
 

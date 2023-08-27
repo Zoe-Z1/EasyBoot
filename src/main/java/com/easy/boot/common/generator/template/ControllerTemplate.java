@@ -139,22 +139,20 @@ public class ControllerTemplate extends AbstractTemplate {
         String entityName = template.getEntity().getFileName(javaName).replace(GenConstant.SUFFIX, "");
         String entityCamelName = template.getEntity().getFileName(camelName).replace(GenConstant.SUFFIX, "");
         String createDTOName = template.getCreateDTO().getFileName(javaName).replace(GenConstant.SUFFIX, "");
-        String updateDTOName = javaName + "UpdateDTO";
-        String queryName = javaName + "Query";
+        String updateDTOName = template.getUpdateDTO().getFileName(javaName).replace(GenConstant.SUFFIX, "");
+        String queryName = template.getQuery().getFileName(javaName).replace(GenConstant.SUFFIX, "");
         String voName = javaName + "VO";
-        String voCamelName = camelName + "VO";
-        buildDataMap.put("className", className);
-        buildDataMap.put("serviceName", serviceName);
-        buildDataMap.put("serviceCamelName", serviceCamelName);
-        buildDataMap.put("entityName", entityName);
-        buildDataMap.put("entityCamelName", entityCamelName);
-        buildDataMap.put("createDTOName", createDTOName);
-        buildDataMap.put("updateDTOName", updateDTOName);
-        buildDataMap.put("queryName", queryName);
-        buildDataMap.put("voName", voName);
-        buildDataMap.put("voCamelName", voCamelName);
+        buildDataMap.put(GenConstant.DATA_MAP_KEY_CLASS_NAME, className);
+        buildDataMap.put(GenConstant.DATA_MAP_KEY_SERVICE_NAME, serviceName);
+        buildDataMap.put(GenConstant.DATA_MAP_KEY_SERVICE_CAMEL_NAME, serviceCamelName);
+        buildDataMap.put(GenConstant.DATA_MAP_KEY_ENTITY_NAME, entityName);
+        buildDataMap.put(GenConstant.DATA_MAP_KEY_ENTITY_CAMEL_NAME, entityCamelName);
+        buildDataMap.put(GenConstant.DATA_MAP_KEY_CREATE_DTO_NAME, createDTOName);
+        buildDataMap.put(GenConstant.DATA_MAP_KEY_UPDATE_DTO_NAME, updateDTOName);
+        buildDataMap.put(GenConstant.DATA_MAP_KEY_QUERY_NAME, queryName);
+        buildDataMap.put(GenConstant.DATA_MAP_KEY_VO_NAME, voName);
         if (getSuperClass() != null) {
-            buildDataMap.put("superName", getSuperClass().getName());
+            buildDataMap.put(GenConstant.DATA_MAP_KEY_SUPER_NAME, getSuperClass().getName());
         }
     }
 
@@ -176,7 +174,6 @@ public class ControllerTemplate extends AbstractTemplate {
             pkgs.add(UploadDTO.class.getName());
             pkgs.add(EasyExcel.class.getName());
             pkgs.add(Assert.class.getName());
-            pkgs.add(List.class.getName());
             pkgs.add(ArrayList.class.getName());
             pkgs.add(Collections.class.getName());
             pkgs.add(ImportExcelError.class.getName());
@@ -205,7 +202,30 @@ public class ControllerTemplate extends AbstractTemplate {
         pkgs.add(Resource.class.getName());
         pkgs.add(Result.class.getName());
         pkgs.add(IPage.class.getName());
+        pkgs.add(List.class.getName());
         pkgs.add("org.springframework.web.bind.annotation.*");
+        String pkgName = String.join(".", global.getPackageName(), metaTable.getModuleName());
+        String serviceName = buildDataMap.getString(GenConstant.DATA_MAP_KEY_SERVICE_NAME);
+        String entityName = buildDataMap.getString(GenConstant.DATA_MAP_KEY_ENTITY_NAME);
+        String createDTOName = buildDataMap.getString(GenConstant.DATA_MAP_KEY_CREATE_DTO_NAME);
+        String updateDTOName = buildDataMap.getString(GenConstant.DATA_MAP_KEY_UPDATE_DTO_NAME);
+        String queryName = buildDataMap.getString(GenConstant.DATA_MAP_KEY_QUERY_NAME);
+        String voName = buildDataMap.getString(GenConstant.DATA_MAP_KEY_VO_NAME);
+        ServiceTemplate serviceTemplate = buildDataMap.getTemplateConfig().getService();
+        EntityTemplate entityTemplate = buildDataMap.getTemplateConfig().getEntity();
+        CreateDTOTemplate createDTOTemplate = buildDataMap.getTemplateConfig().getCreateDTO();
+        UpdateDTOTemplate updateDTOTemplate = buildDataMap.getTemplateConfig().getUpdateDTO();
+        QueryTemplate queryTemplate = buildDataMap.getTemplateConfig().getQuery();
+        String servicePkgName = String.join(".", pkgName, serviceTemplate.getModuleName(), serviceName);
+        String entityPkgTemplate = String.join(".", pkgName, entityTemplate.getModuleName(), entityName);
+        String createDTOPkgName = String.join(".", pkgName, createDTOTemplate.getModuleName(), createDTOName);
+        String updateDTOPkgName = String.join(".", pkgName, updateDTOTemplate.getModuleName(), updateDTOName);
+        String queryPkgName = String.join(".", pkgName, queryTemplate.getModuleName(), queryName);
+        pkgs.add(servicePkgName);
+        pkgs.add(entityPkgTemplate);
+        pkgs.add(createDTOPkgName);
+        pkgs.add(updateDTOPkgName);
+        pkgs.add(queryPkgName);
         List<String> list = new ArrayList<>(pkgs);
         Collections.sort(list);
         buildDataMap.put(GenConstant.DATA_MAP_KEY_PKGS, list);
