@@ -1,6 +1,8 @@
 package com.easy.boot.common.generator.template;
 
 import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.easy.boot.common.base.BaseEntity;
 import com.easy.boot.common.generator.DataMap;
@@ -156,6 +158,8 @@ public class EntityTemplate extends AbstractTemplate {
         if (annotation.getEnableBuilder()) {
             pkgs.add(SuperBuilder.class.getName());
         }
+        pkgs.add(TableId.class.getName());
+        pkgs.add(TableField.class.getName());
         pkgs.add(TableName.class.getName());
         pkgs.add(ApiModel.class.getName());
         pkgs.add(ApiModelProperty.class.getName());

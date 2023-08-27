@@ -37,13 +37,13 @@ public class ${className} {
     <#if field.remarks!?length gt 0>
     @ApiModelProperty("${field.remarks}")
     </#if>
-    <#if enableTableField>
-        <#if field.isPrimaryKey>
-            @TableId
-        <#else >
-            @TableField("${field.name}")
-        </#if>
+<#if enableTableField>
+    <#if field.isPrimaryKey>
+    @TableId
+    <#else >
+    @TableField("${field.name}")
     </#if>
+</#if>
     <#-- 遍历字段 -->
     private ${field.javaType} ${field.javaName};
 </#list>
