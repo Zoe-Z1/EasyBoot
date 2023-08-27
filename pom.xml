@@ -33,7 +33,6 @@
         <mybatis-plus.version>3.5.3.1</mybatis-plus.version>
         <hutool.version>5.8.20</hutool.version>
         <spring-boot-starter-aop.version>2.7.14</spring-boot-starter-aop.version>
-        <mybatis-plus-generator.version>3.5.3.1</mybatis-plus-generator.version>
         <spring-boot-starter-freemarker.version>2.7.14</spring-boot-starter-freemarker.version>
         <devtools.version>2.7.14</devtools.version>
         <lock4j-redisson.version>2.2.5</lock4j-redisson.version>
@@ -108,12 +107,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-freemarker</artifactId>
             <version>${spring-boot-starter-freemarker.version}</version>
-        </dependency>
-        <!--Java代码生成-->
-        <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-generator</artifactId>
-            <version>${mybatis-plus-generator.version}</version>
         </dependency>
         <!--springboot核心包-->
         <dependency>
