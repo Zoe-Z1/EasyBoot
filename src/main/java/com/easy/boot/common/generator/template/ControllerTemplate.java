@@ -154,6 +154,10 @@ public class ControllerTemplate extends AbstractTemplate {
         if (getSuperClass() != null) {
             buildDataMap.put(GenConstant.DATA_MAP_KEY_SUPER_NAME, getSuperClass().getName());
         }
+        if (template.getEnableImport()) {
+            buildDataMap.put(GenConstant.DATA_MAP_KEY_IMPORT_EXCEL_ERROR_NAME, ImportExcelError.class.getSimpleName());
+            buildDataMap.put(GenConstant.DATA_MAP_KEY_IMPORT_VO_NAME, ImportVO.class.getSimpleName());
+        }
     }
 
     /**

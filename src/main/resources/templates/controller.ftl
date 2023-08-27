@@ -80,7 +80,7 @@ public class ${className} {
     @ApiOperation(value = "导入${remarks!}")
     @EasyLog(module = "导入${remarks!}", operateType = OperateTypeEnum.IMPORT)
     @PostMapping("/import")
-    public Result<ImportVO> importExcel(UploadDTO dto) {
+    public Result<${ImportVO}> importExcel(UploadDTO dto) {
         Assert.notNull(dto.getFile(), "文件不能为空");
         try {
             List<${entityName}> list = EasyExcel.read(dto.getFile().getInputStream())
@@ -88,7 +88,7 @@ public class ${className} {
                     .excelType(FileUtil.getExcelType(dto.getFile()))
                     .sheet()
                     .doReadSync();
-            List<ImportExcelError> errors = new ArrayList<>();
+            List<${ImportExcelError}> errors = new ArrayList<>();
             List<${entityName}> errorList = new ArrayList<>();
             // 导入Excel处理
             ${serviceCamelName}.importExcel(list, errorList, errors);
@@ -102,7 +102,7 @@ public class ${className} {
                 filePath = FileUtil.getMapPath(filePath, easyFile.getFilePath(),
                 easyFile.getFileMapPath());
             }
-            ImportVO importVO = ImportVO.builder()
+            ${ImportVO} importVO = ${ImportVO}.builder()
                     .count(list.size())
                     .errorCount(errorList.size())
                     .errorFilePath(filePath)

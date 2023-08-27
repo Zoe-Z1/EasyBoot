@@ -110,4 +110,6 @@ public class GenConstant {
 
     public static final String DATA_MAP_KEY_IMPORT_EXCEL_ERROR_NAME = "ImportExcelError";
 
+    public static final String DATA_MAP_KEY_IMPORT_VO_NAME = "ImportVO";
+
 }
