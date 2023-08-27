@@ -54,6 +54,11 @@ public class UpdateDTOTemplate extends AbstractTemplate {
 
     private Boolean isOverride;
 
+    /**
+     * 是否生成@TableField
+     */
+    private Boolean enableTableField;
+
     @Override
     protected String getRemarks(String tableRemarks) {
         if (StrUtil.isNotEmpty(remarks)) {
@@ -126,6 +131,13 @@ public class UpdateDTOTemplate extends AbstractTemplate {
         return isOverride;
     }
 
+    public Boolean getEnableTableField() {
+        if (enableTableField == null) {
+            enableTableField = false;
+        }
+        return enableTableField;
+    }
+
     @Override
     public DataMap buildDataMap(DataMap dataMap) {
         DataMap buildDataMap = super.buildDataMap(dataMap);
@@ -169,6 +181,7 @@ public class UpdateDTOTemplate extends AbstractTemplate {
             fields.removeIf(item -> !includeFields.contains(item.getJavaName()));
         }
         buildDataMap.put(GenConstant.DATA_MAP_KEY_FIELDS, fields);
+        buildDataMap.put(GenConstant.DATA_MAP_KEY_ENABLE_TABLE_FIELD, getEnableTableField());
     }
 
     /**
@@ -183,15 +196,7 @@ public class UpdateDTOTemplate extends AbstractTemplate {
             pkgs.add(getSuperClass().getName());
         }
         if (annotation.getEnableBuilder()) {
-            if (getSuperClass() != null) {
-                pkgs.add(SuperBuilder.class.getName());
-            } else {
-                if (getEnableExtendsCreateDTO()) {
-                    pkgs.add(SuperBuilder.class.getName());
-                } else {
-                    pkgs.add(Builder.class.getName());
-                }
-            }
+            pkgs.add(SuperBuilder.class.getName());
         }
         if (getEnableExtendsCreateDTO()) {
             GlobalConfig global = buildDataMap.getGlobalConfig();

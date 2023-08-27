@@ -18,14 +18,14 @@ import java.util.stream.Collectors;
 /**
  * @author zoe
  * @date 2023/8/15
- * @description DTO模板配置
+ * @description 实体类模板配置
  */
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class CreateDTOTemplate extends AbstractTemplate {
+public class VOTemplate extends AbstractTemplate {
 
     private String remarks;
 
@@ -51,7 +51,7 @@ public class CreateDTOTemplate extends AbstractTemplate {
         if (StrUtil.isNotEmpty(remarks)) {
             return remarks;
         }
-        return tableRemarks + "创建";
+        return tableRemarks + "视图";
     }
 
     @Override
@@ -77,7 +77,7 @@ public class CreateDTOTemplate extends AbstractTemplate {
         if (StrUtil.isNotEmpty(this.fileName)) {
             return this.fileName + GenConstant.SUFFIX;
         }
-        return javaName + GenConstant.CREATE_DTO + GenConstant.SUFFIX;
+        return javaName + GenConstant.VO + GenConstant.SUFFIX;
     }
 
     @Override
@@ -160,4 +160,5 @@ public class CreateDTOTemplate extends AbstractTemplate {
         Collections.sort(list);
         buildDataMap.put(GenConstant.DATA_MAP_KEY_PKGS, list);
     }
+
 }

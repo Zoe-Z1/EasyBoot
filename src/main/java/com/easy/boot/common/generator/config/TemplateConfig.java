@@ -29,6 +29,11 @@ public class TemplateConfig {
     private ServiceTemplate service;
 
     /**
+     * serviceImpl模板配置
+     */
+    private ServiceImplTemplate serviceImpl;
+
+    /**
      * mapper模板配置
      */
     private MapperTemplate mapper;
@@ -54,6 +59,11 @@ public class TemplateConfig {
     private QueryTemplate query;
 
     /**
+     * vo模板配置
+     */
+    private VOTemplate vo;
+
+    /**
      * 生成导入
      */
     private Boolean enableImport;
@@ -76,6 +86,10 @@ public class TemplateConfig {
         return service == null ? new ServiceTemplate() : service;
     }
 
+    public ServiceImplTemplate getServiceImpl() {
+        return serviceImpl == null ? new ServiceImplTemplate() : serviceImpl;
+    }
+
     public MapperTemplate getMapper() {
         return mapper == null ? new MapperTemplate() : mapper;
     }
@@ -96,6 +110,10 @@ public class TemplateConfig {
         return query == null ? new QueryTemplate() : query;
     }
 
+    public VOTemplate getVo() {
+        return vo == null ? new VOTemplate() : vo;
+    }
+
     public Boolean getEnableImport() {
         if (enableImport == null) {
             enableImport = false;
@@ -113,11 +131,13 @@ public class TemplateConfig {
         List<AbstractTemplate> list = new ArrayList<>();
         list.add(getController());
         list.add(getService());
+        list.add(getServiceImpl());
         list.add(getMapper());
         list.add(getEntity());
         list.add(getCreateDTO());
         list.add(getUpdateDTO());
         list.add(getQuery());
+        list.add(getVo());
         if (CollUtil.isNotEmpty(templates)) {
             list.addAll(templates);
         }
@@ -133,11 +153,13 @@ public class TemplateConfig {
     public static class TemplateConfigBuilder {
         private ControllerTemplate controller;
         private ServiceTemplate service;
+        private ServiceImplTemplate serviceImpl;
         private MapperTemplate mapper;
         private EntityTemplate entity;
         private CreateDTOTemplate createDTO;
         private UpdateDTOTemplate updateDTO;
         private QueryTemplate query;
+        private VOTemplate vo;
         private Boolean enableImport;
         private Boolean enableExport;
         private List<AbstractTemplate> templates;
@@ -157,6 +179,11 @@ public class TemplateConfig {
 
         public TemplateConfig.TemplateConfigBuilder service(final ServiceTemplate service) {
             this.service = service;
+            return this;
+        }
+
+        public TemplateConfig.TemplateConfigBuilder serviceImpl(final ServiceImplTemplate serviceImpl) {
+            this.serviceImpl = serviceImpl;
             return this;
         }
 
@@ -185,6 +212,11 @@ public class TemplateConfig {
             return this;
         }
 
+        public TemplateConfig.TemplateConfigBuilder vo(final VOTemplate vo) {
+            this.vo = vo;
+            return this;
+        }
+
         public TemplateConfig.TemplateConfigBuilder enableImport(final Boolean enableImport) {
             this.enableImport = enableImport;
             return this;
@@ -196,7 +228,7 @@ public class TemplateConfig {
         }
 
         public TemplateConfig build() {
-            return new TemplateConfig(this.controller, this.service, this.mapper, this.entity, this.createDTO, this.updateDTO, this.query, this.enableImport, this.enableExport, this.templates);
+            return new TemplateConfig(this.controller, this.service, this.serviceImpl, this.mapper, this.entity, this.createDTO, this.updateDTO, this.query, this.vo, this.enableImport, this.enableExport, this.templates);
         }
     }
 }

@@ -95,6 +95,7 @@ public abstract class AbstractTemplate {
         String remarks = getRemarks(metaTable.getRemarks());
         buildDataMap.put(GenConstant.DATA_MAP_KEY_REMARKS, remarks);
         String genPath = String.join("/",global.getOutputPath(), metaTable.getModuleName(), getModuleName());
+        genPath = genPath.replaceAll("\\.", "/");
         buildDataMap.put(GenConstant.DATA_MAP_KEY_GEN_PATH, genPath);
         return buildDataMap;
     }

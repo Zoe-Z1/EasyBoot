@@ -42,6 +42,11 @@ public class EntityTemplate extends AbstractTemplate {
 
     private Boolean isOverride;
 
+    /**
+     * 是否生成@TableField
+     */
+    private Boolean enableTableField;
+
     @Override
     protected String getRemarks(String tableRemarks) {
         if (StrUtil.isNotEmpty(remarks)) {
@@ -93,6 +98,13 @@ public class EntityTemplate extends AbstractTemplate {
         return isOverride;
     }
 
+    public Boolean getEnableTableField() {
+        if (enableTableField == null) {
+            enableTableField = false;
+        }
+        return enableTableField;
+    }
+
     @Override
     public DataMap buildDataMap(DataMap dataMap) {
         DataMap buildDataMap = super.buildDataMap(dataMap);
@@ -127,6 +139,7 @@ public class EntityTemplate extends AbstractTemplate {
         MetaTable metaTable = buildDataMap.getMetaTable();
         List<Field> fields = metaTable.getFields();
         buildDataMap.put(GenConstant.DATA_MAP_KEY_FIELDS, fields);
+        buildDataMap.put(GenConstant.DATA_MAP_KEY_ENABLE_TABLE_FIELD, getEnableTableField());
     }
 
     /**
@@ -141,11 +154,7 @@ public class EntityTemplate extends AbstractTemplate {
             pkgs.add(getSuperClass().getName());
         }
         if (annotation.getEnableBuilder()) {
-            if (getSuperClass() != null) {
-                pkgs.add(SuperBuilder.class.getName());
-            } else {
-                pkgs.add(Builder.class.getName());
-            }
+            pkgs.add(SuperBuilder.class.getName());
         }
         pkgs.add(TableName.class.getName());
         pkgs.add(ApiModel.class.getName());

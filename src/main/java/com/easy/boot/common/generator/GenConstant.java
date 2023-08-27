@@ -30,8 +30,6 @@ public class GenConstant {
 
     public static final String SERVICE_IMPL = "ServiceImpl";
 
-    public static final String SERVICE_IMPL_TEMPLATE_NAME = "ServiceImpl";
-
     public static final String MAPPER = "Mapper";
 
     public static final String CREATE_DTO = "CreateDTO";
@@ -39,6 +37,8 @@ public class GenConstant {
     public static final String UPDATE_DTO = "UpdateDTO";
 
     public static final String QUERY = "Query";
+
+    public static final String VO = "VO";
 
     public static final String TEST = "Test";
 
@@ -49,6 +49,8 @@ public class GenConstant {
     public static final String CONTROLLER_TEMPLATE_NAME = "controller.ftl";
 
     public static final String SERVICE_TEMPLATE_NAME = "service.ftl";
+
+    public static final String SERVICE_IMPL_TEMPLATE_NAME = "serviceImpl.ftl";
 
     public static final String MAPPER_TEMPLATE_NAME = "mapper.ftl";
 
@@ -69,6 +71,8 @@ public class GenConstant {
     public static final String DATA_MAP_KEY_TABLE = "table";
 
     public static final String DATA_MAP_KEY_FIELDS = "fields";
+
+    public static final String DATA_MAP_KEY_ENABLE_TABLE_FIELD = "enableTableField";
 
     public static final String DATA_MAP_KEY_REMARKS = "remarks";
 
@@ -95,6 +99,8 @@ public class GenConstant {
     public static final String DATA_MAP_KEY_SERVICE_NAME = "serviceName";
 
     public static final String DATA_MAP_KEY_SERVICE_CAMEL_NAME = "serviceCamelName";
+
+    public static final String DATA_MAP_KEY_MAPPER_NAME = "mapperName";
 
     public static final String DATA_MAP_KEY_ENTITY_NAME = "entityName";
 

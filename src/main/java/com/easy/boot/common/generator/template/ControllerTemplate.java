@@ -221,12 +221,12 @@ public class ControllerTemplate extends AbstractTemplate {
         UpdateDTOTemplate updateDTOTemplate = buildDataMap.getTemplateConfig().getUpdateDTO();
         QueryTemplate queryTemplate = buildDataMap.getTemplateConfig().getQuery();
         String servicePkgName = String.join(".", pkgName, serviceTemplate.getModuleName(), serviceName);
-        String entityPkgTemplate = String.join(".", pkgName, entityTemplate.getModuleName(), entityName);
+        String entityentityPkgName = String.join(".", pkgName, entityTemplate.getModuleName(), entityName);
         String createDTOPkgName = String.join(".", pkgName, createDTOTemplate.getModuleName(), createDTOName);
         String updateDTOPkgName = String.join(".", pkgName, updateDTOTemplate.getModuleName(), updateDTOName);
         String queryPkgName = String.join(".", pkgName, queryTemplate.getModuleName(), queryName);
         pkgs.add(servicePkgName);
-        pkgs.add(entityPkgTemplate);
+        pkgs.add(entityentityPkgName);
         pkgs.add(createDTOPkgName);
         pkgs.add(updateDTOPkgName);
         pkgs.add(queryPkgName);

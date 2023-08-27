@@ -8,8 +8,10 @@ package com.easy.boot.common.generator.db.convert;
 public enum DbColumnTypeEnum {
 
     /**
-     * BIGINT
+     * INT
      */
+    INT("INT", JavaTypeEnum.INTEGER),
+
     BIGINT("BIGINT", JavaTypeEnum.LONG),
 
     DECIMAL("DECIMAL", JavaTypeEnum.BIG_DECIMAL),

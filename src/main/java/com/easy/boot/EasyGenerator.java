@@ -3,6 +3,7 @@ package com.easy.boot;
 import com.easy.boot.common.generator.config.*;
 import com.easy.boot.common.generator.db.convert.EasyColumnConvertHandler;
 import com.easy.boot.common.generator.execute.GeneratorExecute;
+import com.easy.boot.common.generator.template.EntityTemplate;
 import com.easy.boot.common.generator.template.UpdateDTOTemplate;
 import lombok.extern.slf4j.Slf4j;
 
@@ -45,6 +46,11 @@ public class EasyGenerator {
                                         .build())
                         .template(
                                 TemplateConfig.builder()
+                                        .entity(
+                                                EntityTemplate.builder()
+                                                        .enableTableField(true)
+                                                        .build()
+                                        )
                                         .updateDTO(
                                                 UpdateDTOTemplate.builder()
                                                         .enableExtendsCreateDTO(true)

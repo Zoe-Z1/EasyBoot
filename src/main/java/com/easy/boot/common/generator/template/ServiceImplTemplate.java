@@ -1,15 +1,19 @@
 package com.easy.boot.common.generator.template;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.service.IService;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.easy.boot.common.excel.ImportExcelError;
 import com.easy.boot.common.generator.DataMap;
 import com.easy.boot.common.generator.GenConstant;
 import com.easy.boot.common.generator.config.GlobalConfig;
 import com.easy.boot.common.generator.config.TemplateConfig;
 import com.easy.boot.common.generator.db.MetaTable;
+import com.easy.boot.utils.BeanUtil;
 import lombok.*;
+import org.springframework.stereotype.Service;
 
 import java.util.*;
 
@@ -23,7 +27,7 @@ import java.util.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class ServiceTemplate extends AbstractTemplate {
+public class ServiceImplTemplate extends AbstractTemplate {
 
     private String remarks;
 
@@ -50,7 +54,7 @@ public class ServiceTemplate extends AbstractTemplate {
     @Override
     protected String getModuleName() {
         if (StrUtil.isEmpty(moduleName)) {
-            moduleName = GenConstant.MODULE_SERVICE;
+            moduleName = GenConstant.MODULE_SERVICE_IMPL;
         }
         return moduleName;
     }
@@ -58,7 +62,7 @@ public class ServiceTemplate extends AbstractTemplate {
     @Override
     protected Class<?> getSuperClass() {
         if (superClass == null) {
-            return IService.class;
+            return ServiceImpl.class;
         } else {
             return superClass;
         }
@@ -66,7 +70,7 @@ public class ServiceTemplate extends AbstractTemplate {
 
     @Override
     protected String getTemplateName() {
-        return GenConstant.SERVICE_TEMPLATE_NAME;
+        return GenConstant.SERVICE_IMPL_TEMPLATE_NAME;
     }
 
     @Override
@@ -74,7 +78,7 @@ public class ServiceTemplate extends AbstractTemplate {
         if (StrUtil.isNotEmpty(this.fileName)) {
             return this.fileName + GenConstant.SUFFIX;
         }
-        return "I" + javaName + GenConstant.SERVICE + GenConstant.SUFFIX;
+        return javaName + GenConstant.SERVICE_IMPL + GenConstant.SUFFIX;
     }
 
     @Override
@@ -108,13 +112,20 @@ public class ServiceTemplate extends AbstractTemplate {
         TemplateConfig template = buildDataMap.getTemplateConfig();
         MetaTable metaTable = buildDataMap.getMetaTable();
         String javaName = metaTable.getBeanName();
+        String camelName = metaTable.getCamelName();
         String className = getFileName(javaName).replace(GenConstant.SUFFIX, "");
+        String serviceName = template.getService().getFileName(javaName).replace(GenConstant.SUFFIX, "");
+        String mapperName = template.getMapper().getFileName(javaName).replace(GenConstant.SUFFIX, "");
         String entityName = template.getEntity().getFileName(javaName).replace(GenConstant.SUFFIX, "");
+        String entityCamelName = template.getEntity().getFileName(camelName).replace(GenConstant.SUFFIX, "");
         String createDTOName = template.getCreateDTO().getFileName(javaName).replace(GenConstant.SUFFIX, "");
         String updateDTOName = template.getUpdateDTO().getFileName(javaName).replace(GenConstant.SUFFIX, "");
         String queryName = template.getQuery().getFileName(javaName).replace(GenConstant.SUFFIX, "");
         buildDataMap.put(GenConstant.DATA_MAP_KEY_CLASS_NAME, className);
+        buildDataMap.put(GenConstant.DATA_MAP_KEY_SERVICE_NAME, serviceName);
+        buildDataMap.put(GenConstant.DATA_MAP_KEY_MAPPER_NAME, mapperName);
         buildDataMap.put(GenConstant.DATA_MAP_KEY_ENTITY_NAME, entityName);
+        buildDataMap.put(GenConstant.DATA_MAP_KEY_ENTITY_CAMEL_NAME, entityCamelName);
         buildDataMap.put(GenConstant.DATA_MAP_KEY_CREATE_DTO_NAME, createDTOName);
         buildDataMap.put(GenConstant.DATA_MAP_KEY_UPDATE_DTO_NAME, updateDTOName);
         buildDataMap.put(GenConstant.DATA_MAP_KEY_QUERY_NAME, queryName);
@@ -140,23 +151,40 @@ public class ServiceTemplate extends AbstractTemplate {
         }
         if (template.getEnableImport()) {
             pkgs.add(ImportExcelError.class.getName());
+            pkgs.add(CollUtil.class.getName());
+            pkgs.add(Iterator.class.getName());
         }
+        pkgs.add(Service.class.getName());
+        pkgs.add(Page.class.getName());
+        pkgs.add(BeanUtil.class.getName());
+
+        pkgs.add(IPage.class.getName());
+
+
         pkgs.add(IPage.class.getName());
         pkgs.add(List.class.getName());
         String pkgName = String.join(".", global.getPackageName(), metaTable.getModuleName());
+        String serviceName = buildDataMap.getString(GenConstant.DATA_MAP_KEY_SERVICE_NAME);
+        String mapperName = buildDataMap.getString(GenConstant.DATA_MAP_KEY_MAPPER_NAME);
         String entityName = buildDataMap.getString(GenConstant.DATA_MAP_KEY_ENTITY_NAME);
         String createDTOName = buildDataMap.getString(GenConstant.DATA_MAP_KEY_CREATE_DTO_NAME);
         String updateDTOName = buildDataMap.getString(GenConstant.DATA_MAP_KEY_UPDATE_DTO_NAME);
         String queryName = buildDataMap.getString(GenConstant.DATA_MAP_KEY_QUERY_NAME);
+        ServiceTemplate serviceTemplate = buildDataMap.getTemplateConfig().getService();
+        MapperTemplate mapperTemplate = buildDataMap.getTemplateConfig().getMapper();
         EntityTemplate entityTemplate = buildDataMap.getTemplateConfig().getEntity();
         CreateDTOTemplate createDTOTemplate = buildDataMap.getTemplateConfig().getCreateDTO();
         UpdateDTOTemplate updateDTOTemplate = buildDataMap.getTemplateConfig().getUpdateDTO();
         QueryTemplate queryTemplate = buildDataMap.getTemplateConfig().getQuery();
-        String entityentityPkgName = String.join(".", pkgName, entityTemplate.getModuleName(), entityName);
+        String servicePkgName = String.join(".", pkgName, serviceTemplate.getModuleName(), serviceName);
+        String mapperPkgName = String.join(".", pkgName, mapperTemplate.getModuleName(), mapperName);
+        String entityPkgName = String.join(".", pkgName, entityTemplate.getModuleName(), entityName);
         String createDTOPkgName = String.join(".", pkgName, createDTOTemplate.getModuleName(), createDTOName);
         String updateDTOPkgName = String.join(".", pkgName, updateDTOTemplate.getModuleName(), updateDTOName);
         String queryPkgName = String.join(".", pkgName, queryTemplate.getModuleName(), queryName);
-        pkgs.add(entityentityPkgName);
+        pkgs.add(servicePkgName);
+        pkgs.add(mapperPkgName);
+        pkgs.add(entityPkgName);
         pkgs.add(createDTOPkgName);
         pkgs.add(updateDTOPkgName);
         pkgs.add(queryPkgName);
