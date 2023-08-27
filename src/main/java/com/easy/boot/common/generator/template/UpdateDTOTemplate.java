@@ -230,6 +230,7 @@ public class UpdateDTOTemplate extends AbstractTemplate {
         private String fileName;
         private Boolean enable;
         private Boolean isOverride;
+        private Boolean enableTableField;
         private Set<String> includeField;
 
         UpdateDTOTemplateBuilder() {
@@ -281,13 +282,18 @@ public class UpdateDTOTemplate extends AbstractTemplate {
             return this;
         }
 
+        public UpdateDTOTemplate.UpdateDTOTemplateBuilder enableTableField(final Boolean enableTableField) {
+            this.enableTableField = enableTableField;
+            return this;
+        }
+
         public UpdateDTOTemplate.UpdateDTOTemplateBuilder includeField(String... field) {
             this.includeField = CollUtil.newHashSet(field);
             return this;
         }
 
         public UpdateDTOTemplate build() {
-            return new UpdateDTOTemplate(this.remarks, this.moduleName, this.superClass, this.enableExtendsCreateDTO, this.includeField, this.templateName, this.fileName, this.enable, this.isOverride);
+            return new UpdateDTOTemplate(this.remarks, this.moduleName, this.superClass, this.enableExtendsCreateDTO, this.includeField, this.templateName, this.fileName, this.enable, this.isOverride, this.enableTableField);
         }
     }
 }
