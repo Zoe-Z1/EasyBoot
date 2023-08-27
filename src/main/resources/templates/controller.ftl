@@ -12,7 +12,7 @@ import ${pkg};
 @Slf4j
 @Api(tags = "${remarks!}接口")
 @RestController
-@RequestMapping("/${table.camelName}")
+@RequestMapping("${global.requestMappingPrefix!}/${table.moduleName}")
 <#if superClass??>
 public class ${className} extends ${superName} {
 <#else>
@@ -43,7 +43,7 @@ public class ${className} {
     <#if voName??>
         return Result.success(BeanUtil.copyBean(${serviceCamelName}.detail(id), ${voName}.class));
     <#else >
-        return Result.success(${serviceCamelName}.detail(query));
+        return Result.success(${serviceCamelName}.detail(id));
     </#if>
     }
 

@@ -5,6 +5,7 @@ import com.easy.boot.common.generator.db.convert.EasyColumnConvertHandler;
 import com.easy.boot.common.generator.execute.GeneratorExecute;
 import com.easy.boot.common.generator.template.EntityTemplate;
 import com.easy.boot.common.generator.template.UpdateDTOTemplate;
+import com.easy.boot.common.generator.template.VOTemplate;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -22,10 +23,11 @@ public class EasyGenerator {
                         .global(
                                 GlobalConfig.builder()
                                         .packageName("com.easy.boot.admin")
+                                        .requestMappingPrefix("/admin/")
                                         .templateRootPath(System.getProperty("user.dir") + "/src/main/resources/templates")
                                         .outputPath("/Users/zoe/Downloads/template/")
                                         .isOverride(true)
-                                        .isOpen(false)
+                                        .isOpen(true)
                                         .enableComment(true)
                                         .author("zoe")
                                         .commentDateFormat("yyyy/MM/dd")
@@ -55,6 +57,11 @@ public class EasyGenerator {
                                                 UpdateDTOTemplate.builder()
                                                         .enableExtendsCreateDTO(true)
                                                         .includeField("id")
+                                                        .build()
+                                        )
+                                        .vo(
+                                                VOTemplate.builder()
+                                                        .enable(false)
                                                         .build()
                                         )
                                         .enableImport(true)

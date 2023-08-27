@@ -25,7 +25,7 @@ public class Table {
     private String remarks;
 
     /**
-     * 表对应的模块名称，可不填，不填则使用驼峰名
+     * 表对应的模块名称，可不填，不填则使用驼峰命名
      */
     private String moduleName;
 

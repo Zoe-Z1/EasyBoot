@@ -23,6 +23,11 @@ public class GlobalConfig {
     private String packageName;
 
     /**
+     * RequestMapping 路径前缀
+     */
+    private String requestMappingPrefix;
+
+    /**
      * 模板引擎根路径
      */
     private String templateRootPath;
@@ -67,6 +72,18 @@ public class GlobalConfig {
             throw new GeneratorException("包名不能为空");
         }
         return packageName;
+    }
+
+    public String getRequestMappingPrefix() {
+        if (StrUtil.isNotEmpty(requestMappingPrefix)) {
+            if (!requestMappingPrefix.startsWith("/")) {
+                requestMappingPrefix = "/" + requestMappingPrefix;
+            }
+            if (requestMappingPrefix.endsWith("/")) {
+                requestMappingPrefix = requestMappingPrefix.substring(0, requestMappingPrefix.length() - 1);
+            }
+        }
+        return requestMappingPrefix;
     }
 
     public String getTemplateRootPath() {
