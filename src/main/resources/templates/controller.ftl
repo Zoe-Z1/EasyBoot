@@ -39,8 +39,12 @@ public class ${className} {
     @EasyLog(module = "获取${remarks!}详情", operateType = OperateTypeEnum.SELECT)
     </#if>
     @GetMapping("/detail/{id}")
-    public Result<${entityName}> detail(@PathVariable Long id) {
-        return Result.success(${serviceCamelName}.detail(id));
+    public Result<<#if voName??>${voName}<#else >${entityName}</#if>> detail(@PathVariable Long id) {
+    <#if voName??>
+        return Result.success(BeanUtil.copyBean(${serviceCamelName}.detail(id), ${voName}.class));
+    <#else >
+        return Result.success(${serviceCamelName}.detail(query));
+    </#if>
     }
 
     @ApiOperationSupport(author = "${global.author}")

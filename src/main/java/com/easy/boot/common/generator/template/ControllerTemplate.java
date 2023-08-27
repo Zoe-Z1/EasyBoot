@@ -20,6 +20,7 @@ import com.easy.boot.common.generator.config.TemplateConfig;
 import com.easy.boot.common.generator.db.MetaTable;
 import com.easy.boot.common.log.EasyLog;
 import com.easy.boot.exception.FileException;
+import com.easy.boot.utils.BeanUtil;
 import com.easy.boot.utils.FileUtil;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.annotations.Api;
@@ -141,7 +142,6 @@ public class ControllerTemplate extends AbstractTemplate {
         String createDTOName = template.getCreateDTO().getFileName(javaName).replace(GenConstant.SUFFIX, "");
         String updateDTOName = template.getUpdateDTO().getFileName(javaName).replace(GenConstant.SUFFIX, "");
         String queryName = template.getQuery().getFileName(javaName).replace(GenConstant.SUFFIX, "");
-        String voName = javaName + "VO";
         buildDataMap.put(GenConstant.DATA_MAP_KEY_CLASS_NAME, className);
         buildDataMap.put(GenConstant.DATA_MAP_KEY_SERVICE_NAME, serviceName);
         buildDataMap.put(GenConstant.DATA_MAP_KEY_SERVICE_CAMEL_NAME, serviceCamelName);
@@ -150,7 +150,10 @@ public class ControllerTemplate extends AbstractTemplate {
         buildDataMap.put(GenConstant.DATA_MAP_KEY_CREATE_DTO_NAME, createDTOName);
         buildDataMap.put(GenConstant.DATA_MAP_KEY_UPDATE_DTO_NAME, updateDTOName);
         buildDataMap.put(GenConstant.DATA_MAP_KEY_QUERY_NAME, queryName);
-        buildDataMap.put(GenConstant.DATA_MAP_KEY_VO_NAME, voName);
+        if (template.getVo().isEnable()) {
+            String voName = template.getVo().getFileName(javaName).replace(GenConstant.SUFFIX, "");
+            buildDataMap.put(GenConstant.DATA_MAP_KEY_VO_NAME, voName);
+        }
         if (getSuperClass() != null) {
             buildDataMap.put(GenConstant.DATA_MAP_KEY_SUPER_NAME, getSuperClass().getName());
         }
@@ -230,6 +233,12 @@ public class ControllerTemplate extends AbstractTemplate {
         pkgs.add(createDTOPkgName);
         pkgs.add(updateDTOPkgName);
         pkgs.add(queryPkgName);
+        VOTemplate voTemplate = buildDataMap.getTemplateConfig().getVo();
+        if (voTemplate.isEnable()) {
+            String voPkgName = String.join(".", pkgName, voTemplate.getModuleName(), voName);
+            pkgs.add(voPkgName);
+            pkgs.add(BeanUtil.class.getName());
+        }
         List<String> list = new ArrayList<>(pkgs);
         Collections.sort(list);
         buildDataMap.put(GenConstant.DATA_MAP_KEY_PKGS, list);
