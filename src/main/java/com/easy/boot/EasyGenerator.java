@@ -24,7 +24,6 @@ public class EasyGenerator {
                                 GlobalConfig.builder()
                                         .packageName("com.easy.boot.admin")
                                         .requestMappingPrefix("/admin/")
-                                        .templateRootPath(System.getProperty("user.dir") + "/src/main/resources/templates")
                                         .outputPath("/Users/zoe/Downloads/template/")
                                         .isOverride(true)
                                         .isOpen(true)
@@ -48,6 +47,7 @@ public class EasyGenerator {
                                         .build())
                         .template(
                                 TemplateConfig.builder()
+                                        .templateRootPath(System.getProperty("user.dir") + "/src/main/resources/templates")
                                         .entity(
                                                 EntityTemplate.builder()
                                                         .enableTableField(true)

@@ -172,7 +172,7 @@ public class GeneratorExecute {
         // 创建freeMarker配置实例
         Configuration configuration = new Configuration(Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
         // 获取模版路径
-        configuration.setDirectoryForTemplateLoading(new File(globalConfig.getTemplateRootPath()));
+        configuration.setDirectoryForTemplateLoading(new File(templateConfig.getTemplateRootPath()));
         configuration.setDefaultEncoding(StandardCharsets.UTF_8.name());
         // 加载模版文件
         Template easyTemplate = configuration.getTemplate(dataMap.getString(GenConstant.DATA_MAP_KEY_TEMPLATE_NAME));

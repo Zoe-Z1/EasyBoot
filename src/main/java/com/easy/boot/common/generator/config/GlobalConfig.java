@@ -28,11 +28,6 @@ public class GlobalConfig {
     private String requestMappingPrefix;
 
     /**
-     * 模板引擎根路径
-     */
-    private String templateRootPath;
-
-    /**
      * 生成代码路径
      */
     private String outputPath;
@@ -84,13 +79,6 @@ public class GlobalConfig {
             }
         }
         return requestMappingPrefix;
-    }
-
-    public String getTemplateRootPath() {
-        if (StrUtil.isEmpty(templateRootPath)) {
-            throw new GeneratorException("模板引擎根路径不能为空");
-        }
-        return templateRootPath;
     }
 
     public String getOutputPath() {

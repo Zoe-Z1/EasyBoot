@@ -1,8 +1,13 @@
 package com.easy.boot.common.generator.config;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.StrUtil;
 import com.easy.boot.common.generator.template.*;
-import lombok.*;
+import com.easy.boot.exception.GeneratorException;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -64,6 +69,11 @@ public class TemplateConfig {
     private VOTemplate vo;
 
     /**
+     * 模板引擎根路径
+     */
+    private String templateRootPath;
+
+    /**
      * 生成导入
      */
     private Boolean enableImport;
@@ -114,6 +124,13 @@ public class TemplateConfig {
         return vo == null ? new VOTemplate() : vo;
     }
 
+    public String getTemplateRootPath() {
+        if (StrUtil.isEmpty(templateRootPath)) {
+            throw new GeneratorException("模板引擎根路径不能为空");
+        }
+        return templateRootPath;
+    }
+
     public Boolean getEnableImport() {
         if (enableImport == null) {
             enableImport = false;
@@ -160,6 +177,7 @@ public class TemplateConfig {
         private UpdateDTOTemplate updateDTO;
         private QueryTemplate query;
         private VOTemplate vo;
+        private String templateRootPath;
         private Boolean enableImport;
         private Boolean enableExport;
         private List<AbstractTemplate> templates;
@@ -217,6 +235,11 @@ public class TemplateConfig {
             return this;
         }
 
+        public TemplateConfig.TemplateConfigBuilder templateRootPath(final String templateRootPath) {
+            this.templateRootPath = templateRootPath;
+            return this;
+        }
+
         public TemplateConfig.TemplateConfigBuilder enableImport(final Boolean enableImport) {
             this.enableImport = enableImport;
             return this;
@@ -228,7 +251,7 @@ public class TemplateConfig {
         }
 
         public TemplateConfig build() {
-            return new TemplateConfig(this.controller, this.service, this.serviceImpl, this.mapper, this.entity, this.createDTO, this.updateDTO, this.query, this.vo, this.enableImport, this.enableExport, this.templates);
+            return new TemplateConfig(this.controller, this.service, this.serviceImpl, this.mapper, this.entity, this.createDTO, this.updateDTO, this.query, this.vo, this.templateRootPath, this.enableImport, this.enableExport, this.templates);
         }
     }
 }
