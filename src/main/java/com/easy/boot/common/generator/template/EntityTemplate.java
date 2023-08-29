@@ -1,6 +1,7 @@
 package com.easy.boot.common.generator.template;
 
 import cn.hutool.core.util.StrUtil;
+import com.alibaba.excel.annotation.ExcelProperty;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -8,6 +9,7 @@ import com.easy.boot.common.base.BaseEntity;
 import com.easy.boot.common.generator.DataMap;
 import com.easy.boot.common.generator.GenConstant;
 import com.easy.boot.common.generator.config.AnnotationConfig;
+import com.easy.boot.common.generator.config.TemplateConfig;
 import com.easy.boot.common.generator.db.Field;
 import com.easy.boot.common.generator.db.MetaTable;
 import io.swagger.annotations.ApiModel;
@@ -140,8 +142,12 @@ public class EntityTemplate extends AbstractTemplate {
     private void handleField(DataMap buildDataMap) {
         MetaTable metaTable = buildDataMap.getMetaTable();
         List<Field> fields = metaTable.getFields();
+        TemplateConfig template = buildDataMap.getTemplateConfig();
         buildDataMap.put(GenConstant.DATA_MAP_KEY_FIELDS, fields);
         buildDataMap.put(GenConstant.DATA_MAP_KEY_ENABLE_TABLE_FIELD, getEnableTableField());
+        if (template.getEnableExport() || template.getEnableImport()) {
+            buildDataMap.put(GenConstant.DATA_MAP_KEY_ENABLE_EXCEL, true);
+        }
     }
 
     /**
@@ -151,12 +157,16 @@ public class EntityTemplate extends AbstractTemplate {
     private void buildPkgDataMap(DataMap buildDataMap) {
         AnnotationConfig annotation = buildDataMap.getAnnotationConfig();
         MetaTable metaTable = buildDataMap.getMetaTable();
+        TemplateConfig template = buildDataMap.getTemplateConfig();
         Set<String> pkgs = new HashSet<>();
         if (getSuperClass() != null) {
             pkgs.add(getSuperClass().getName());
         }
         if (annotation.getEnableBuilder()) {
             pkgs.add(SuperBuilder.class.getName());
+        }
+        if (template.getEnableExport() || template.getEnableImport()) {
+            pkgs.add(ExcelProperty.class.getName());
         }
         pkgs.add(TableId.class.getName());
         pkgs.add(TableField.class.getName());

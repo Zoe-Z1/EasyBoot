@@ -37,13 +37,16 @@ public class ${className} {
     <#if field.remarks!?length gt 0>
     @ApiModelProperty("${field.remarks}")
     </#if>
-<#if enableTableField>
-    <#if field.isPrimaryKey>
+    <#if enableTableField>
+        <#if field.isPrimaryKey>
     @TableId
-    <#else >
+        <#else >
     @TableField("${field.name}")
+        </#if>
     </#if>
-</#if>
+    <#if enableExcel??>
+    @ExcelProperty(value = "${field.remarks!}")
+    </#if>
     <#-- 遍历字段 -->
     private ${field.javaType} ${field.javaName};
 </#list>

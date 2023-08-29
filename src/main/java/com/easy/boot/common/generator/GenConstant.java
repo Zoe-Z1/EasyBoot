@@ -76,6 +76,8 @@ public class GenConstant {
 
     public static final String DATA_MAP_KEY_ENABLE_TABLE_FIELD = "enableTableField";
 
+    public static final String DATA_MAP_KEY_ENABLE_EXCEL = "enableExcel";
+
     public static final String DATA_MAP_KEY_REMARKS = "remarks";
 
     public static final String DATA_MAP_KEY_PKG = "pkg";

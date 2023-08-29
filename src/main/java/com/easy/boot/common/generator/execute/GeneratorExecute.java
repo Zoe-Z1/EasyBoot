@@ -3,9 +3,7 @@ package com.easy.boot.common.generator.execute;
 import cn.hutool.core.collection.CollUtil;
 import com.easy.boot.common.generator.DataMap;
 import com.easy.boot.common.generator.GenConstant;
-import com.easy.boot.common.generator.config.GeneratorConfig;
-import com.easy.boot.common.generator.config.GlobalConfig;
-import com.easy.boot.common.generator.config.TemplateConfig;
+import com.easy.boot.common.generator.config.*;
 import com.easy.boot.common.generator.db.DbManager;
 import com.easy.boot.common.generator.db.MetaTable;
 import com.easy.boot.common.generator.db.Table;
@@ -41,9 +39,24 @@ public class GeneratorExecute {
     private final GlobalConfig globalConfig;
 
     /**
+     * 数据源配置
+     */
+    private final DataSourceConfig dataSourceConfig;
+
+    /**
+     * 注解配置
+     */
+    private final AnnotationConfig annotationConfig;
+
+    /**
      * 模板配置
      */
     private final TemplateConfig templateConfig;
+
+    /**
+     * 过滤配置
+     */
+    private final FilterConfig filterConfig;
 
     /**
      * 要生存的表信息
@@ -53,7 +66,10 @@ public class GeneratorExecute {
     private GeneratorExecute(GeneratorConfig generatorConfig) {
         this.generatorConfig = generatorConfig;
         this.globalConfig = generatorConfig.getGlobalConfig();
+        this.dataSourceConfig = generatorConfig.getDataSourceConfig();
+        this.annotationConfig = generatorConfig.getAnnotationConfig();
         this.templateConfig = generatorConfig.getTemplateConfig();
+        this.filterConfig = generatorConfig.getFilterConfig();
     }
 
     /**
@@ -94,8 +110,7 @@ public class GeneratorExecute {
             throw new GeneratorException("需要生成的表不能为空");
         }
         // 获取要生成的所有表的信息
-        List<MetaTable> metaTables = DbManager.init(generatorConfig.getDataSourceConfig(), generatorConfig.getFilterConfig())
-                .getTables(tables);
+        List<MetaTable> metaTables = DbManager.init(dataSourceConfig, filterConfig).getTables(tables);
         // 获取所有的模板
         List<AbstractTemplate> templates = templateConfig.getTemplates();
         // 未找到表或未找到模板类，直接结束

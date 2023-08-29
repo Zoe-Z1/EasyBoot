@@ -69,8 +69,7 @@ public class EasyGenerator {
                                         .build())
                         .filter(
                                 FilterConfig.builder()
-                                        .addTablePrefix("login")
-                                        .addTableSuffix("log1")
+                                        .addTablePrefix("login_")
                                         .build()
                         )
                         .build()
