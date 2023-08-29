@@ -51,7 +51,7 @@ public class Table {
 
     public MatchPatternEnum getMatchPattern() {
         if (matchPattern == null) {
-            matchPattern = MatchPatternEnum.EQUALS;
+            matchPattern = MatchPatternEnum.ALL_LIKE;
         }
         return matchPattern;
     }

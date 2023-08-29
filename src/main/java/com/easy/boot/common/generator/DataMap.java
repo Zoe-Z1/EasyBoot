@@ -1,10 +1,7 @@
 package com.easy.boot.common.generator;
 
 import cn.hutool.core.date.DateUtil;
-import com.easy.boot.common.generator.config.AnnotationConfig;
-import com.easy.boot.common.generator.config.GeneratorConfig;
-import com.easy.boot.common.generator.config.GlobalConfig;
-import com.easy.boot.common.generator.config.TemplateConfig;
+import com.easy.boot.common.generator.config.*;
 import com.easy.boot.common.generator.db.MetaTable;
 import com.easy.boot.exception.GeneratorException;
 
@@ -64,6 +61,7 @@ public class DataMap extends HashMap<String, Object> {
         dataMap.put(GenConstant.DATA_MAP_KEY_ANNOTATION, config.getAnnotationConfig());
         dataMap.put(GenConstant.DATA_MAP_KEY_GLOBAL, config.getGlobalConfig());
         dataMap.put(GenConstant.DATA_MAP_KEY_TEMPLATE, config.getTemplateConfig());
+        dataMap.put(GenConstant.DATA_MAP_KEY_FILTER, config.getFilterConfig());
         dataMap.put(GenConstant.DATA_MAP_KEY_DATE, DateUtil.format(new Date(), config.getGlobalConfig().getCommentDateFormat()));
         return dataMap;
     }
@@ -82,6 +80,14 @@ public class DataMap extends HashMap<String, Object> {
      */
     public AnnotationConfig getAnnotationConfig() {
         return (AnnotationConfig) get(GenConstant.DATA_MAP_KEY_ANNOTATION);
+    }
+
+    /**
+     * 获取过滤配置
+     * @return
+     */
+    public FilterConfig getFilterConfig() {
+        return (FilterConfig) get(GenConstant.DATA_MAP_KEY_FILTER);
     }
 
     /**

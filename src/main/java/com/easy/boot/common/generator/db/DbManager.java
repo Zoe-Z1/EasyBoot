@@ -4,6 +4,7 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.text.NamingCase;
 import cn.hutool.core.util.StrUtil;
 import com.easy.boot.common.generator.config.DataSourceConfig;
+import com.easy.boot.common.generator.config.FilterConfig;
 import com.easy.boot.common.generator.db.convert.ColumnConvertHandler;
 import com.easy.boot.common.generator.db.convert.JavaTypeEnum;
 import com.easy.boot.exception.GeneratorException;
@@ -28,21 +29,28 @@ public class DbManager {
     private final Connection connection;
 
     /**
+     * 过滤配置
+     */
+    private final FilterConfig filter;
+
+    /**
      * 数据库字段转换处理器
      */
     private final ColumnConvertHandler columnConvertHandler;
 
-    private DbManager(Connection connection, ColumnConvertHandler columnConvertHandler) {
+    private DbManager(Connection connection, FilterConfig filterConfig, ColumnConvertHandler columnConvertHandler) {
         this.columnConvertHandler = columnConvertHandler;
         this.connection = connection;
+        this.filter = filterConfig;
     }
 
     /**
      * 初始化
      * @param dataSourceConfig 数据源配置
+     * @param filterConfig 过滤配置
      * @return DbManager
      */
-    public static DbManager init(DataSourceConfig dataSourceConfig) {
+    public static DbManager init(DataSourceConfig dataSourceConfig, FilterConfig filterConfig) {
         Connection connection = null;
         try {
             connection = DriverManager.getConnection(dataSourceConfig.getUrl(), dataSourceConfig.getUsername(), dataSourceConfig.getPassword());
@@ -50,7 +58,7 @@ public class DbManager {
             log.error("获取连接信息异常 e -> ", e);
             throw new GeneratorException("获取连接信息异常");
         }
-        return new DbManager(connection, dataSourceConfig.getColumnConvertHandler());
+        return new DbManager(connection, filterConfig, dataSourceConfig.getColumnConvertHandler());
     }
 
     /**
@@ -59,7 +67,7 @@ public class DbManager {
      * @param columnConvertHandler 数据库类型转换处理器
      * @return DbManager
      */
-    public static DbManager init(DataSource dataSource, ColumnConvertHandler columnConvertHandler) {
+    public static DbManager init(DataSource dataSource, FilterConfig filterConfig, ColumnConvertHandler columnConvertHandler) {
         Connection connection = null;
         try {
             connection = dataSource.getConnection();
@@ -67,7 +75,7 @@ public class DbManager {
             log.error("获取连接信息异常 e -> ", e);
             throw new GeneratorException("获取连接信息异常");
         }
-        return new DbManager(connection, columnConvertHandler);
+        return new DbManager(connection, filterConfig, columnConvertHandler);
     }
 
     /**
@@ -106,17 +114,18 @@ public class DbManager {
             Set<MetaTable> tables = new HashSet<>();
             while (rs.next()) {
                 String name = rs.getString(DbConstant.TABLE_NAME);
+                String filterName = filterTableName(name);
                 String remarks = StrUtil.isEmpty(table.getRemarks()) ? rs.getString(DbConstant.TABLE_REMARKS) : table.getRemarks();
                 MetaTable metaTable = MetaTable.builder()
                         .name(name)
-                        .beanName(NamingCase.toPascalCase(name))
-                        .camelName(NamingCase.toCamelCase(name))
+                        .beanName(NamingCase.toPascalCase(filterName))
+                        .camelName(NamingCase.toCamelCase(filterName))
                         .moduleName(table.getModuleName())
                         .type(rs.getString(DbConstant.TABLE_TYPE))
                         .remarks(remarks)
                         .build();
                 if (StrUtil.isEmpty(table.getModuleName())) {
-                    metaTable.setModuleName(NamingCase.toCamelCase(name));
+                    metaTable.setModuleName(NamingCase.toCamelCase(filterName));
                 }
                 tables.add(metaTable);
             }
@@ -125,6 +134,30 @@ public class DbManager {
             log.error("加载表数据异常 e -> ", e);
             throw new GeneratorException("加载表数据异常");
         }
+    }
+
+    /**
+     * 表名过滤
+     * @param tableName 表名
+     * @return
+     */
+    private String filterTableName(String tableName) {
+        for (String tablePrefix : filter.getTablePrefix()) {
+            if (tableName.startsWith(tablePrefix)) {
+                tableName = tableName.replace(tablePrefix, "");
+                break;
+            }
+        }
+        for (String tableSuffix : filter.getTableSuffix()) {
+            if (tableName.endsWith(tableSuffix)) {
+                tableName = tableName.replace(tableSuffix, "");
+                break;
+            }
+        }
+        if (StrUtil.isEmpty(tableName)) {
+            throw new GeneratorException("过滤后的表名称不能为空");
+        }
+        return tableName;
     }
 
     /**

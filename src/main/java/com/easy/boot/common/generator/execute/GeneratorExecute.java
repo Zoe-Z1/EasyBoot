@@ -94,7 +94,8 @@ public class GeneratorExecute {
             throw new GeneratorException("需要生成的表不能为空");
         }
         // 获取要生成的所有表的信息
-        List<MetaTable> metaTables = DbManager.init(generatorConfig.getDataSourceConfig()).getTables(tables);
+        List<MetaTable> metaTables = DbManager.init(generatorConfig.getDataSourceConfig(), generatorConfig.getFilterConfig())
+                .getTables(tables);
         // 获取所有的模板
         List<AbstractTemplate> templates = templateConfig.getTemplates();
         // 未找到表或未找到模板类，直接结束

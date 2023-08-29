@@ -67,6 +67,12 @@ public class EasyGenerator {
                                         .enableImport(true)
                                         .enableExport(true)
                                         .build())
+                        .filter(
+                                FilterConfig.builder()
+                                        .addTablePrefix("login")
+                                        .addTableSuffix("log1")
+                                        .build()
+                        )
                         .build()
         )
                 .tables("login_log1")

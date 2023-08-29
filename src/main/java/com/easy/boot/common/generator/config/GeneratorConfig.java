@@ -30,6 +30,9 @@ public class GeneratorConfig {
     @ApiModelProperty(value = "注解参数配置")
     private TemplateConfig template;
 
+    @ApiModelProperty(value = "过滤配置")
+    private FilterConfig filter;
+
     public GlobalConfig getGlobalConfig() {
         if (global == null) {
             throw new GeneratorException("全局参数配置不能为空");
@@ -52,6 +55,16 @@ public class GeneratorConfig {
     }
 
     public TemplateConfig getTemplateConfig() {
+        if (template == null) {
+            template = new TemplateConfig();
+        }
         return template;
+    }
+
+    public FilterConfig getFilterConfig() {
+        if (filter == null) {
+            filter = new FilterConfig();
+        }
+        return filter;
     }
 }
