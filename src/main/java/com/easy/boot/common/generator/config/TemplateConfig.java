@@ -44,6 +44,11 @@ public class TemplateConfig {
     private MapperTemplate mapper;
 
     /**
+     * mapper.xml模板配置
+     */
+    private MapperXmlTemplate xml;
+
+    /**
      * entity模板配置
      */
     private EntityTemplate entity;
@@ -104,6 +109,10 @@ public class TemplateConfig {
         return mapper == null ? new MapperTemplate() : mapper;
     }
 
+    public MapperXmlTemplate getXml() {
+        return xml == null ? new MapperXmlTemplate() : xml;
+    }
+
     public EntityTemplate getEntity() {
         return entity == null ? new EntityTemplate() : entity;
     }
@@ -150,6 +159,7 @@ public class TemplateConfig {
         list.add(getService());
         list.add(getServiceImpl());
         list.add(getMapper());
+        list.add(getXml());
         list.add(getEntity());
         list.add(getCreateDTO());
         list.add(getUpdateDTO());
@@ -172,6 +182,7 @@ public class TemplateConfig {
         private ServiceTemplate service;
         private ServiceImplTemplate serviceImpl;
         private MapperTemplate mapper;
+        private MapperXmlTemplate xml;
         private EntityTemplate entity;
         private CreateDTOTemplate createDTO;
         private UpdateDTOTemplate updateDTO;
@@ -207,6 +218,11 @@ public class TemplateConfig {
 
         public TemplateConfig.TemplateConfigBuilder mapper(final MapperTemplate mapper) {
             this.mapper = mapper;
+            return this;
+        }
+
+        public TemplateConfig.TemplateConfigBuilder xml(final MapperXmlTemplate xml) {
+            this.xml = xml;
             return this;
         }
 
@@ -251,7 +267,7 @@ public class TemplateConfig {
         }
 
         public TemplateConfig build() {
-            return new TemplateConfig(this.controller, this.service, this.serviceImpl, this.mapper, this.entity, this.createDTO, this.updateDTO, this.query, this.vo, this.templateRootPath, this.enableImport, this.enableExport, this.templates);
+            return new TemplateConfig(this.controller, this.service, this.serviceImpl, this.mapper, this.xml, this.entity, this.createDTO, this.updateDTO, this.query, this.vo, this.templateRootPath, this.enableImport, this.enableExport, this.templates);
         }
     }
 }

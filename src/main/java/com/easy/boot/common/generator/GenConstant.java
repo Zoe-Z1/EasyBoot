@@ -17,8 +17,6 @@ public class GenConstant {
 
     public static final String MODULE_MAPPER = "mapper";
 
-    public static final String MODULE_MAPPER_XML = "xml";
-
     public static final String MODULE_ENTITY = "entity";
 
 
@@ -44,6 +42,8 @@ public class GenConstant {
 
     public static final String SUFFIX = ".java";
 
+    public static final String XML_SUFFIX = ".xml";
+
     /*------------------------- 模板引擎名称 -------------------------*/
 
     public static final String CONTROLLER_TEMPLATE_NAME = "controller.ftl";
@@ -53,6 +53,8 @@ public class GenConstant {
     public static final String SERVICE_IMPL_TEMPLATE_NAME = "serviceImpl.ftl";
 
     public static final String MAPPER_TEMPLATE_NAME = "mapper.ftl";
+
+    public static final String MAPPER_XML_TEMPLATE_NAME = "mapper.xml.ftl";
 
     public static final String ENTITY_TEMPLATE_NAME = "entity.ftl";
 
@@ -121,5 +123,15 @@ public class GenConstant {
     public static final String DATA_MAP_KEY_IMPORT_EXCEL_ERROR_NAME = "ImportExcelError";
 
     public static final String DATA_MAP_KEY_IMPORT_VO_NAME = "ImportVO";
+
+    public static final String DATA_MAP_KEY_MAPPER_PKG_NAME = "mapperPkgName";
+
+    public static final String DATA_MAP_KEY_ENTITY_PKG_NAME = "entityPkgName";
+
+    public static final String DATA_MAP_KEY_GEN_BASE_RESULT_MAP_NAME = "genBaseResultMap";
+
+    public static final String DATA_MAP_KEY_GEN_BASE_COLUMN_LIST_NAME = "genBaseColumnList";
+
+    public static final String DATA_MAP_KEY_BASE_COLUMN_LIST_NAME = "baseColumnList";
 
 }

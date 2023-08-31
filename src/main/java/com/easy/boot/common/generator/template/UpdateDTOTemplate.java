@@ -200,10 +200,10 @@ public class UpdateDTOTemplate extends AbstractTemplate {
         }
         if (getEnableExtendsCreateDTO()) {
             GlobalConfig global = buildDataMap.getGlobalConfig();
-            String createDTOPkgName = String.join(".", global.getPackageName(), metaTable.getModuleName());
+            String pkgName = String.join(".", global.getPackageName(), metaTable.getModuleName());
             String createDTOName = buildDataMap.getString(GenConstant.DATA_MAP_KEY_SUPER_NAME);
             CreateDTOTemplate template = buildDataMap.getTemplateConfig().getCreateDTO();
-            createDTOPkgName = String.join(".", createDTOPkgName, template.getModuleName(), createDTOName);
+            String createDTOPkgName = String.join(".", pkgName, template.getModuleName(), createDTOName);
             pkgs.add(createDTOPkgName);
         }
         pkgs.add(TableName.class.getName());
