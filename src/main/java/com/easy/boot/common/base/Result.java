@@ -2,7 +2,6 @@ package com.easy.boot.common.base;
 
 
 import com.easy.boot.exception.BaseException;
-import com.easy.boot.exception.FieldErrorException;
 import com.easy.boot.exception.enums.SystemErrorEnum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -78,10 +77,6 @@ public class Result<T> implements Serializable {
 
     public Result(BaseException e, String path, String method) {
         this(e.getCode(), e.getMessage(), path, method);
-    }
-
-    public Result(FieldErrorException e, String path, String method) {
-        this(e.getCode(), e.getMessage(), (T) e.getErrors(), path, method);
     }
 
     public Result(Integer code, String message, String path, String method) {

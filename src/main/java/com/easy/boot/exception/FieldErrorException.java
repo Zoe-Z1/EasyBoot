@@ -14,14 +14,7 @@ import java.util.List;
  */
 public class FieldErrorException extends BaseException {
 
-    private List<GlobalExceptionHandler.FieldError> errors;
-
-    public List<GlobalExceptionHandler.FieldError> getErrors() {
-        return errors;
-    }
-
     public FieldErrorException(List<GlobalExceptionHandler.FieldError> errors) {
-        super(SystemErrorEnum.FIELD_ERROR.getCode(), SystemErrorEnum.FIELD_ERROR.getMessage());
-        this.errors = errors;
+        super(SystemErrorEnum.FIELD_ERROR.getCode(), errors.get(0).getMessage());
     }
 }
