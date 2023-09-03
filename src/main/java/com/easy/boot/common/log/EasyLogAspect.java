@@ -49,12 +49,6 @@ public class EasyLogAspect {
     @Resource
     private IOperationLogService logService;
 
-    private Long startTime;
-
-    private Object[] args;
-
-    private OperationLog operateLog;
-
     /**
      * 配置织入点
      */
@@ -72,18 +66,27 @@ public class EasyLogAspect {
     public Object around(ProceedingJoinPoint point) {
         Object result = null;
         Throwable t = null;
+        OperationLog operateLog = new OperationLog();
         try {
-            args = point.getArgs();
+            Object[] args = point.getArgs();
+            // 请求参数
+            if (args != null) {
+//            String reqParam = JsonUtil.toJsonStr(args);
+                String reqParam = JSON.toJSONString(args, getSimplePropertyPreFilter(filter.getFields()));
+                if (reqParam.length() <= easyLog.getRequestSaveMaxLength()) {
+                    operateLog.setRequestParam(reqParam);
+                }
+            }
             // 前置操作
-            beforeHandle(point);
+            beforeHandle(point, operateLog);
             // 执行目标方法
             result = point.proceed(args);
             // 方法正常返回处理
-            afterHandle(point, null, result);
+            afterHandle(point, null, result, operateLog);
         } catch (Throwable e) {
             t = e;
             // 方法异常返回处理
-            afterHandle(point, e, null);
+            afterHandle(point, e, null, operateLog);
         } finally {
             if (t != null) {
                 throw t;
@@ -92,7 +95,7 @@ public class EasyLogAspect {
         return result;
     }
 
-    private void beforeHandle(ProceedingJoinPoint joinPoint) {
+    private void beforeHandle(ProceedingJoinPoint joinPoint, OperationLog operateLog) {
         // 判断日志记录注解是否开启
         if (!this.easyLog.getEnable()) {
             return;
@@ -102,14 +105,12 @@ public class EasyLogAspect {
         if (easyLog == null) {
             return;
         }
-        startTime = DateUtil.current();
-        operateLog = OperationLog.builder()
-                .startTime(startTime)
-                .build();
+        long startTime = DateUtil.current();
+        operateLog.setStartTime(startTime);
         // 处理注解上设置的参数
-        handleLogParam(easyLog);
+        handleLogParam(easyLog, operateLog);
         // 处理请求参数
-        handleLogRequestParam(joinPoint);
+        handleLogRequestParam(joinPoint, operateLog);
     }
 
     /**
@@ -118,8 +119,9 @@ public class EasyLogAspect {
      * @param joinPoint
      * @param e
      * @param result
+     * @param operateLog
      */
-    private void afterHandle(ProceedingJoinPoint joinPoint, Throwable e, Object result) {
+    private void afterHandle(ProceedingJoinPoint joinPoint, Throwable e, Object result, OperationLog operateLog) {
         // 判断日志记录注解是否开启
         if (!this.easyLog.getEnable()) {
             return;
@@ -130,11 +132,11 @@ public class EasyLogAspect {
             return;
         }
         Long endTime = DateUtil.current();
-        Long handleTime = endTime - startTime;
+        Long handleTime = endTime - operateLog.getStartTime();
         operateLog.setEndTime(endTime);
         operateLog.setHandleTime(handleTime);
         // 处理返回参数
-        handleLogResponseParam(e, result);
+        handleLogResponseParam(e, result, operateLog);
         // 保存数据库
         logService.asyncSaveLog(operateLog);
     }
@@ -143,8 +145,9 @@ public class EasyLogAspect {
      * 处理请求参数
      *
      * @param joinPoint
+     * @param operateLog
      */
-    private void handleLogRequestParam(JoinPoint joinPoint) {
+    private void handleLogRequestParam(JoinPoint joinPoint, OperationLog operateLog) {
         // ip地址
         String ip = IpUtil.getIp(request);
         operateLog.setIp(ip);
@@ -155,14 +158,7 @@ public class EasyLogAspect {
         operateLog.setRequestWay(request.getMethod());
         // 请求url
         operateLog.setRequestUrl(request.getRequestURI());
-        // 请求参数
-        if (args != null) {
-//            String reqParam = JsonUtil.toJsonStr(args);
-            String reqParam = JSON.toJSONString(args, getSimplePropertyPreFilter(filter.getFields()));
-            if (reqParam.length() <= easyLog.getRequestSaveMaxLength()) {
-                operateLog.setRequestParam(reqParam);
-            }
-        }
+
     }
 
     /**
@@ -170,8 +166,9 @@ public class EasyLogAspect {
      *
      * @param e
      * @param result
+     * @param operateLog
      */
-    private void handleLogResponseParam(Throwable e, Object result) {
+    private void handleLogResponseParam(Throwable e, Object result, OperationLog operateLog) {
         operateLog.setOperateStatus(String.valueOf(OperateStatusEnum.SUCCESS));
         if (e != null) {
             operateLog.setOperateStatus(String.valueOf(OperateStatusEnum.FAIL));
@@ -203,22 +200,24 @@ public class EasyLogAspect {
     /**
      * 获取注解中对方法的描述信息
      *
-     * @param easyLog        日志注解
+     * @param easyLog 日志注解
+     * @param operateLog
      */
-    public void handleLogParam(EasyLog easyLog) {
+    public void handleLogParam(EasyLog easyLog, OperationLog operateLog) {
         // 操作模块
         operateLog.setOperateModule(easyLog.module());
         // 操作类别
-        handleOperateType(easyLog);
+        handleOperateType(easyLog, operateLog);
         // 操作人类型
-        handleOperatorType();
+        handleOperatorType(operateLog);
     }
 
     /**
      * 处理操作类别
      * @param easyLog
+     * @param operateLog
      */
-    private void handleOperateType(EasyLog easyLog) {
+    private void handleOperateType(EasyLog easyLog, OperationLog operateLog) {
         if (StrUtil.isNotBlank(easyLog.operateTypeStr())) {
             operateLog.setOperateType(easyLog.operateTypeStr());
             return;
@@ -232,8 +231,9 @@ public class EasyLogAspect {
 
     /**
      * 处理操作人类型
+     * @param operateLog
      */
-    private void handleOperatorType() {
+    private void handleOperatorType(OperationLog operateLog) {
         RoleTypeEnum roleType = RoleTypeEnum.UNKNOWN;
         Long createBy = EasyMetaObjectHandler.BY;
         if (StpUtil.isLogin()) {
