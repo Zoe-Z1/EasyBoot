@@ -3,7 +3,6 @@ package com.easy.boot.admin.department.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.easy.boot.admin.department.entity.*;
-import com.easy.boot.admin.department.entity.*;
 import lombok.NonNull;
 
 import java.util.List;
@@ -47,6 +46,13 @@ public interface IDepartmentService extends IService<Department> {
     * @return
     */
     IPage<Department> selectPage(DepartmentQuery query);
+
+    /**
+     * 查询部门
+     * @param query
+     * @return
+     */
+    List<DepartmentLazyVO> selectList(DepartmentLazyQuery query);
 
     /**
      * 获取部门详情

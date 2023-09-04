@@ -3,9 +3,9 @@ package com.easy.boot.common.noRepeatSubmit;
 import cn.hutool.core.net.NetUtil;
 import cn.hutool.core.util.StrUtil;
 import com.easy.boot.common.redis.EasyRedisManager;
+import com.easy.boot.common.redis.RedisKeyEnum;
 import com.easy.boot.exception.BusinessException;
 import com.easy.boot.exception.enums.SystemErrorEnum;
-import com.easy.boot.common.redis.RedisKeyEnum;
 import com.easy.boot.utils.IpUtil;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
@@ -17,8 +17,6 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 
 /**
  * @author zoe
@@ -66,6 +64,10 @@ public class EasyNoRepeatSubmitAspect {
         if (easyNoRepeatSubmit == null){
             return;
         }
+        EasyNoRepeatIgnore easyNoRepeatIgnore = getNoRepeatIgnore(joinPoint);
+        if (easyNoRepeatIgnore != null) {
+            return;
+        }
         // 获取key
         String key = getKey(joinPoint);
         // 重复提交判定时间
@@ -98,15 +100,6 @@ public class EasyNoRepeatSubmitAspect {
         return key;
     }
 
-    private static String getIp() {
-        String ip = null;
-        try {
-            ip = InetAddress.getLocalHost().getHostAddress();
-        } catch (UnknownHostException ignored) {
-        }
-        return ip;
-    }
-
     /**
      * 获取调用方法路径
      * @param joinPoint
@@ -127,5 +120,18 @@ public class EasyNoRepeatSubmitAspect {
             easyNoRepeatSubmit = joinPoint.getTarget().getClass().getAnnotation(EasyNoRepeatSubmit.class);
         }
         return easyNoRepeatSubmit;
+    }
+
+    /**
+     * 获取注解
+     */
+    private EasyNoRepeatIgnore getNoRepeatIgnore(JoinPoint joinPoint) {
+        MethodSignature sign = (MethodSignature) joinPoint.getSignature();
+        Method method = sign.getMethod();
+        EasyNoRepeatIgnore easyNoRepeatIgnore = method.getAnnotation(EasyNoRepeatIgnore.class);
+        if (easyNoRepeatIgnore == null) {
+            easyNoRepeatIgnore = joinPoint.getTarget().getClass().getAnnotation(EasyNoRepeatIgnore.class);
+        }
+        return easyNoRepeatIgnore;
     }
 }

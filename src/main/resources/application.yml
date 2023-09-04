@@ -1,7 +1,7 @@
 easy:
   no-repeat-submit:
     enable: true
-    timeout: 500
+    timeout: 300
   log:
     enable: true
     request-save-max-length: 1000

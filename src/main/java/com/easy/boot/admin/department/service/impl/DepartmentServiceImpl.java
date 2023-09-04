@@ -6,12 +6,12 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.easy.boot.admin.department.entity.*;
-import com.easy.boot.admin.department.entity.*;
 import com.easy.boot.admin.department.mapper.DepartmentMapper;
 import com.easy.boot.admin.department.service.IDepartmentService;
 import com.easy.boot.common.base.BaseEntity;
 import com.easy.boot.exception.BusinessException;
 import com.easy.boot.utils.BeanUtil;
+import com.easy.boot.utils.JsonUtil;
 import lombok.NonNull;
 import org.springframework.stereotype.Service;
 
@@ -86,6 +86,25 @@ public class DepartmentServiceImpl extends ServiceImpl<DepartmentMapper, Departm
                 .orderByAsc(Department::getSort)
                 .orderByDesc(BaseEntity::getCreateTime)
                 .page(page);
+    }
+
+    @Override
+    public List<DepartmentLazyVO> selectList(DepartmentLazyQuery query) {
+        List<Department> list = lambdaQuery()
+                .eq(Department::getParentId, query.getParentId())
+                .like(StrUtil.isNotEmpty(query.getName()), Department::getName, query.getName())
+                .list();
+        if (CollUtil.isEmpty(list)) {
+            return new ArrayList<>();
+        }
+        List<DepartmentLazyVO> voList = JsonUtil.copyList(list, DepartmentLazyVO.class);
+        List<Long> ids = voList.stream().map(BaseEntity::getId).collect(Collectors.toList());
+        List<Department> departments = lambdaQuery().select(Department::getParentId).in(Department::getParentId, ids).list();
+        Set<Long> parentIds = departments.stream().map(Department::getParentId).collect(Collectors.toSet());
+        voList.forEach(item -> {
+            item.setIsLeaf(!parentIds.contains(item.getId()));
+        });
+        return voList;
     }
 
     @Override
