@@ -71,7 +71,7 @@ public class LoginLog extends BaseEntity {
 
     @ExcelProperty(value = "市编码")
     @ApiModelProperty("市编码")
-    @TableField("cityCode")
+    @TableField("city_code")
     private String cityCode;
 
     @ExcelProperty(value = "地址")
