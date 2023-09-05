@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author zoe
@@ -90,6 +91,16 @@ public class JsonUtil {
     public static <T> T toBean(T obj, Class<T> clazz) {
         String json = toJsonStr(obj);
         return toBean(json, clazz);
+    }
+
+    /**
+     * 对象 => Map
+     *
+     * @param obj 源对象
+     */
+    public static <T> Map toMap(T obj) {
+        String json = toJsonStr(obj);
+        return toBean(json, Map.class);
     }
 
     /**
