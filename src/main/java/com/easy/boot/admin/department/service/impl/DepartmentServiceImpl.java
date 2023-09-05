@@ -91,7 +91,7 @@ public class DepartmentServiceImpl extends ServiceImpl<DepartmentMapper, Departm
     @Override
     public List<DepartmentLazyVO> selectList(DepartmentLazyQuery query) {
         List<Department> list = lambdaQuery()
-                .eq(Department::getParentId, query.getParentId())
+                .eq(query.getParentId() != null, Department::getParentId, query.getParentId())
                 .like(StrUtil.isNotEmpty(query.getName()), Department::getName, query.getName())
                 .list();
         if (CollUtil.isEmpty(list)) {

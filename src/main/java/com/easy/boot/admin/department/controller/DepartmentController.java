@@ -7,6 +7,7 @@ import com.easy.boot.admin.operationLog.enums.OperateTypeEnum;
 import com.easy.boot.common.base.BaseController;
 import com.easy.boot.common.base.Result;
 import com.easy.boot.common.log.EasyLog;
+import com.easy.boot.common.noRepeatSubmit.EasyNoRepeatIgnore;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -34,16 +35,17 @@ public class DepartmentController extends BaseController {
 
 
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "获取树部门")
-    @EasyLog(module = "获取树部门", operateType = OperateTypeEnum.SELECT)
+    @ApiOperation(value = "获取部门树")
+    @EasyLog(module = "获取部门树", operateType = OperateTypeEnum.SELECT)
     @GetMapping("/tree")
     public Result<List<DepartmentTree>> tree(@Validated DepartmentTreeQuery query) {
         return Result.success(departmentService.treeList(query));
     }
 
+    @EasyNoRepeatIgnore
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "懒加载部门列表")
-    @EasyLog(module = "懒加载部门列表", operateType = OperateTypeEnum.SELECT)
+    @ApiOperation(value = "懒加载部门树")
+    @EasyLog(module = "懒加载部门树", operateType = OperateTypeEnum.SELECT)
     @GetMapping("/list")
     public Result<List<DepartmentLazyVO>> list(@Validated DepartmentLazyQuery query) {
         return Result.success(departmentService.selectList(query));
