@@ -3,6 +3,8 @@ package com.easy.boot.admin.roleMenu.entity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.easy.boot.common.base.BaseEntity;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -25,10 +27,12 @@ import lombok.experimental.SuperBuilder;
 @ApiModel(value = "RoleMenu对象", description = "角色菜单关联")
 public class RoleMenu extends BaseEntity {
 
+    @JsonSerialize(using = ToStringSerializer.class)
     @ApiModelProperty("菜单ID")
     @TableField("menu_id")
     private Long menuId;
 
+    @JsonSerialize(using = ToStringSerializer.class)
     @ApiModelProperty("角色ID")
     @TableField("role_id")
     private Long roleId;

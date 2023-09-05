@@ -3,6 +3,8 @@ package com.easy.boot.admin.department.entity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.easy.boot.common.base.BaseEntity;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -25,6 +27,7 @@ import lombok.experimental.SuperBuilder;
 @ApiModel(value = "Department对象", description = "部门")
 public class Department extends BaseEntity {
 
+    @JsonSerialize(using = ToStringSerializer.class)
     @ApiModelProperty("父级部门ID，为0则代表最上级部门")
     @TableField("parent_id")
     private Long parentId;

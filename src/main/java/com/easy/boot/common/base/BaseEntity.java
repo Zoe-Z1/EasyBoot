@@ -5,6 +5,8 @@ import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.annotation.write.style.ColumnWidth;
 import com.baomidou.mybatisplus.annotation.*;
 import com.easy.boot.common.excel.converter.LongTimeToStingTimeConvert;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -27,12 +29,14 @@ public class BaseEntity implements Serializable {
     private static final long serialVersionUID = -7074837948698285044L;
 
     /** 主键id */
+    @JsonSerialize(using = ToStringSerializer.class)
     @ExcelIgnore
     @ApiModelProperty("主键id")
     @TableId(type = IdType.ASSIGN_ID)
     private Long id;
 
     /** 创建者 */
+    @JsonSerialize(using = ToStringSerializer.class)
     @ExcelIgnore
     @TableField(fill = FieldFill.INSERT)
     @ApiModelProperty("创建者")
@@ -46,6 +50,7 @@ public class BaseEntity implements Serializable {
     private Long createTime;
 
     /** 更新者 */
+    @JsonSerialize(using = ToStringSerializer.class)
     @ExcelIgnore
     @TableField(fill = FieldFill.INSERT_UPDATE)
     @ApiModelProperty("更新者")

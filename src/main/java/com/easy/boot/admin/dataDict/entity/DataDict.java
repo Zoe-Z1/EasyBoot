@@ -7,6 +7,8 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.easy.boot.common.base.BaseEntity;
 import com.easy.boot.common.excel.converter.IntegerStatusToStringConvert;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -30,6 +32,7 @@ import lombok.experimental.SuperBuilder;
 @ApiModel(value = "DataDict对象", description = "数据字典")
 public class DataDict extends BaseEntity {
 
+    @JsonSerialize(using = ToStringSerializer.class)
     @ExcelIgnore
     @ApiModelProperty("字典域ID")
     @TableField("domain_id")

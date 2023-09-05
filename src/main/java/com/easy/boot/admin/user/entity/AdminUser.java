@@ -9,6 +9,8 @@ import com.easy.boot.common.excel.converter.IntegerSexToStringConvert;
 import com.easy.boot.common.excel.converter.IntegerStatusToStringConvert;
 import com.easy.boot.common.sensitive.EasySensitive;
 import com.easy.boot.common.sensitive.EasySensitiveStrategyEnum;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
@@ -30,6 +32,7 @@ import lombok.experimental.SuperBuilder;
 @ToString(callSuper = true)
 public class AdminUser extends BaseEntity {
 
+    @JsonSerialize(using = ToStringSerializer.class)
     @ExcelIgnore
     @ApiModelProperty("部门ID")
     private Long departmentId;

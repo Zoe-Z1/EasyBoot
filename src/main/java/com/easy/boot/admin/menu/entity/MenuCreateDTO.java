@@ -38,7 +38,7 @@ public class MenuCreateDTO {
 
     @Length(min = 1, max = 30, message = "路由地址在{min}-{max}个字符之间")
     @ApiModelProperty(required = false, value = "路由地址")
-    private String routePath;
+    private String component;
 
     @Length(min = 1, max = 30, message = "组件路径在{min}-{max}个字符之间")
     @ApiModelProperty(required = false, value = "组件路径")

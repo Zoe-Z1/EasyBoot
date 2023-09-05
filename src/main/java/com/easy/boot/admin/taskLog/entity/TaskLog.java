@@ -9,6 +9,8 @@ import com.easy.boot.common.base.BaseEntity;
 import com.easy.boot.common.excel.converter.IntegerInstructionToStringConvert;
 import com.easy.boot.common.excel.converter.LongTimeToStingTimeConvert;
 import com.easy.boot.common.excel.converter.StringStatusToStringConvert;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -32,6 +34,7 @@ import lombok.experimental.SuperBuilder;
 @ApiModel(value = "TaskLog对象", description = "调度日志实体")
 public class TaskLog extends BaseEntity {
 
+    @JsonSerialize(using = ToStringSerializer.class)
     @ExcelIgnore
     @ApiModelProperty("定时任务ID")
     @TableField("task_id")

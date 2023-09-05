@@ -3,6 +3,8 @@ package com.easy.boot.admin.userPost.entity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.easy.boot.common.base.BaseEntity;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -25,10 +27,12 @@ import lombok.experimental.SuperBuilder;
 @ApiModel(value = "UserPost对象", description = "用户岗位关联")
 public class UserPost extends BaseEntity {
 
+    @JsonSerialize(using = ToStringSerializer.class)
     @ApiModelProperty("用户ID")
     @TableField("user_id")
     private Long userId;
 
+    @JsonSerialize(using = ToStringSerializer.class)
     @ApiModelProperty("岗位ID")
     @TableField("post_id")
     private Long postId;

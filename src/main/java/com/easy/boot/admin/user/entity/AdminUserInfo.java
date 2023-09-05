@@ -1,6 +1,8 @@
 package com.easy.boot.admin.user.entity;
 
 import com.easy.boot.admin.menu.entity.MenuTree;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -22,6 +24,7 @@ import java.util.List;
 @ApiModel("用户信息实体")
 public class AdminUserInfo {
 
+    @JsonSerialize(using = ToStringSerializer.class)
     @ApiModelProperty("id")
     private Long id;
 

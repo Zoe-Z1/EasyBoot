@@ -3,6 +3,8 @@ package com.easy.boot.admin.menu.entity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.easy.boot.common.base.BaseEntity;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -25,6 +27,7 @@ import lombok.experimental.SuperBuilder;
 @ApiModel(value = "Menu对象", description = "菜单")
 public class Menu extends BaseEntity {
 
+    @JsonSerialize(using = ToStringSerializer.class)
     @ApiModelProperty("父级菜单ID，为0则代表最上级菜单")
     @TableField("parent_id")
     private Long parentId;
@@ -38,8 +41,8 @@ public class Menu extends BaseEntity {
     private String label;
 
     @ApiModelProperty("路由地址")
-    @TableField("route_path")
-    private String routePath;
+    @TableField("component")
+    private String component;
 
     @ApiModelProperty("组件路径")
     @TableField("path")
