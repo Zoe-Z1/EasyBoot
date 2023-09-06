@@ -1,6 +1,6 @@
 easy:
   no-repeat-submit:
-    enable: true
+    enable: false
     timeout: 300
   log:
     enable: true
