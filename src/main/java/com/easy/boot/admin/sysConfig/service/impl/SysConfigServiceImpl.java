@@ -103,6 +103,8 @@ public class SysConfigServiceImpl extends ServiceImpl<SysConfigMapper, SysConfig
                 .select(BaseEntity::getId, SysConfig::getCode, SysConfig::getValue)
                 .eq(SysConfig::getStatus, 1)
                 .eq(SysConfig::getDomainId, domainId)
+                .orderByAsc(SysConfig::getSort)
+                .orderByDesc(BaseEntity::getCreateTime)
                 .list();
     }
 

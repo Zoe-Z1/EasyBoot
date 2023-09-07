@@ -61,13 +61,13 @@ public class SysConfigController extends BaseController {
         return Result.success(sysConfigService.selectPage(query));
     }
 
-//    @ApiOperationSupport(author = "zoe")
-//    @ApiOperation(value = "获取全局系统配置")
-//    @EasyLog(module = "获取全局系统配置", operateType = OperateTypeEnum.SELECT)
-//    @GetMapping("/global")
-//    public Result<IPage<SysConfigDomain>> global() {
-//        return Result.success(configDomainService.getGlobal());
-//    }
+    @ApiOperationSupport(author = "zoe")
+    @ApiOperation(value = "使用编码获取系统配置列表")
+    @EasyLog(module = "使用编码获取系统配置列表", operateType = OperateTypeEnum.SELECT)
+    @GetMapping("/listByCode")
+    public Result<List<SysConfig>> listByCode(@Validated ListQuery query) {
+        return Result.success(sysConfigDomainService.selectListByDomainCode(query.getCode()));
+    }
 
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "获取系统配置详情")
