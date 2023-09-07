@@ -63,6 +63,6 @@ public class CancelBlacklistTaskManager implements EasyJobTaskInterface {
         blacklistService.deleteBatchByIds(cancelIds);
         // 剩下的重新加入缓存
         String key = RedisKeyEnum.NOT_FOREVER_BLACKLIST.getKey();
-        easyRedisManager.put(key, easyRedisManager);
+        easyRedisManager.put(key, list);
     }
 }
