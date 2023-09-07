@@ -48,10 +48,10 @@ import java.util.stream.Collectors;
 public class DataDictController extends BaseController {
 
     @Resource
-    private IDataDictService dataDictionaryService;
+    private IDataDictService dataDictService;
 
     @Resource
-    private DataDictDomainService dataDictionaryDomainService;
+    private DataDictDomainService dataDictDomainService;
 
 
     @ApiOperationSupport(author = "zoe")
@@ -59,7 +59,7 @@ public class DataDictController extends BaseController {
     @EasyLog(module = "获取数据字典列表", operateType = OperateTypeEnum.SELECT)
     @GetMapping("/page")
     public Result<IPage<DataDict>> page(@Validated DataDictQuery query) {
-        return Result.success(dataDictionaryService.selectPage(query));
+        return Result.success(dataDictService.selectPage(query));
     }
 
 
@@ -68,7 +68,7 @@ public class DataDictController extends BaseController {
     @EasyLog(module = "获取全部数据字典", operateType = OperateTypeEnum.SELECT)
     @GetMapping("/all")
     public Result<Map<String, List<DataDict>>> all() {
-        Map<String, List<DataDict>> map = dataDictionaryDomainService.selectAll();
+        Map<String, List<DataDict>> map = dataDictDomainService.selectAll();
         return Result.success(map);
     }
 
@@ -77,7 +77,7 @@ public class DataDictController extends BaseController {
     @EasyLog(module = "使用编码获取数据字典列表", operateType = OperateTypeEnum.SELECT)
     @GetMapping("/listByCode")
     public Result<List<DataDict>> listByCode(@Validated ListQuery query) {
-        return Result.success(dataDictionaryDomainService.selectListByDomainCode(query.getCode()));
+        return Result.success(dataDictDomainService.selectListByDomainCode(query.getCode()));
     }
 
     @ApiOperationSupport(author = "zoe")
@@ -85,7 +85,7 @@ public class DataDictController extends BaseController {
     @EasyLog(module = "获取数据字典详情", operateType = OperateTypeEnum.SELECT)
     @GetMapping("/detail/{id}")
     public Result<DataDict> detail(@PathVariable Long id) {
-        return Result.success(dataDictionaryService.detail(id));
+        return Result.success(dataDictService.detail(id));
     }
 
     @ApiOperationSupport(author = "zoe")
@@ -93,7 +93,7 @@ public class DataDictController extends BaseController {
     @EasyLog(module = "创建数据字典", operateType = OperateTypeEnum.CREATE)
     @PostMapping(value = "/create")
     public Result create(@Validated @RequestBody DataDictCreateDTO dto) {
-        return Result.r(dataDictionaryService.create(dto));
+        return Result.r(dataDictService.create(dto));
     }
 
     @ApiOperationSupport(author = "zoe")
@@ -101,7 +101,7 @@ public class DataDictController extends BaseController {
     @EasyLog(module = "编辑数据字典", operateType = OperateTypeEnum.UPDATE)
     @PostMapping(value = "/update")
     public Result update(@Validated @RequestBody DataDictUpdateDTO dto) {
-        return Result.r(dataDictionaryService.updateById(dto));
+        return Result.r(dataDictService.updateById(dto));
     }
 
     @ApiOperationSupport(author = "zoe")
@@ -109,7 +109,7 @@ public class DataDictController extends BaseController {
     @EasyLog(module = "删除数据字典", operateType = OperateTypeEnum.DELETE)
     @PostMapping("/delete/{ids}")
     public Result delete(@PathVariable Long id) {
-        return Result.r(dataDictionaryService.deleteById(id));
+        return Result.r(dataDictService.deleteById(id));
     }
 
     @ApiOperationSupport(author = "zoe")
@@ -117,7 +117,7 @@ public class DataDictController extends BaseController {
     @EasyLog(module = "批量删除数据字典", operateType = OperateTypeEnum.DELETE)
     @PostMapping("/batchDel/{ids}")
     public Result batchDel(@PathVariable List<Long> ids) {
-        return Result.r(dataDictionaryService.deleteBatchByIds(ids));
+        return Result.r(dataDictService.deleteBatchByIds(ids));
     }
 
     @ApiOperationSupport(author = "zoe")
@@ -137,7 +137,7 @@ public class DataDictController extends BaseController {
             List<ImportExcelError> errors = new ArrayList<>();
             List<DataDict> errorList = new ArrayList<>();
             // 导入Excel处理
-            dataDictionaryService.importExcel(list, errorList, errors);
+            dataDictService.importExcel(list, errorList, errors);
             String filePath = "";
             if (!errorList.isEmpty()) {
                 // 将错误数据写到Excel文件
@@ -170,8 +170,8 @@ public class DataDictController extends BaseController {
         ExcelWriter build = EasyExcel.write(filePath, DataDictExcelDO.class).build();
         WriteSheet writeSheet = EasyExcel.writerSheet("数据字典").build();
         while (true) {
-            IPage<DataDict> page = dataDictionaryService.selectPage(query);
-            DataDictDomain dictDomain = dataDictionaryDomainService.getById(query.getDomainId());
+            IPage<DataDict> page = dataDictService.selectPage(query);
+            DataDictDomain dictDomain = dataDictDomainService.getById(query.getDomainId());
             if (dictDomain == null) {
                 throw new BusinessException("数据字典域不存在");
             }

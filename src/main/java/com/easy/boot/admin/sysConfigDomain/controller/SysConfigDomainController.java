@@ -45,7 +45,7 @@ import java.util.List;
 public class SysConfigDomainController extends BaseController {
 
     @Resource
-    private ISysConfigDomainService configurationDomainService;
+    private ISysConfigDomainService sysConfigDomainService;
 
 
     @ApiOperationSupport(author = "zoe")
@@ -53,7 +53,7 @@ public class SysConfigDomainController extends BaseController {
     @EasyLog(module = "获取系统配置域列表", operateType = OperateTypeEnum.SELECT)
     @GetMapping("/page")
     public Result<IPage<SysConfigDomain>> page(@Validated SysConfigDomainQuery query) {
-        return Result.success(configurationDomainService.selectPage(query));
+        return Result.success(sysConfigDomainService.selectPage(query));
     }
 
     @ApiOperationSupport(author = "zoe")
@@ -61,7 +61,7 @@ public class SysConfigDomainController extends BaseController {
     @EasyLog(module = "获取系统配置域详情", operateType = OperateTypeEnum.SELECT)
     @GetMapping("/detail/{id}")
     public Result<SysConfigDomain> detail(@PathVariable Long id) {
-        return Result.success(configurationDomainService.detail(id));
+        return Result.success(sysConfigDomainService.detail(id));
     }
 
     @ApiOperationSupport(author = "zoe")
@@ -69,7 +69,7 @@ public class SysConfigDomainController extends BaseController {
     @EasyLog(module = "创建系统配置域", operateType = OperateTypeEnum.CREATE)
     @PostMapping(value = "/create")
     public Result create(@Validated @RequestBody SysConfigDomainCreateDTO dto) {
-        return Result.r(configurationDomainService.create(dto));
+        return Result.r(sysConfigDomainService.create(dto));
     }
 
     @ApiOperationSupport(author = "zoe")
@@ -77,7 +77,7 @@ public class SysConfigDomainController extends BaseController {
     @EasyLog(module = "编辑系统配置域", operateType = OperateTypeEnum.UPDATE)
     @PostMapping(value = "/update")
     public Result update(@Validated @RequestBody SysConfigDomainUpdateDTO dto) {
-        return Result.r(configurationDomainService.updateById(dto));
+        return Result.r(sysConfigDomainService.updateById(dto));
     }
 
     @ApiOperationSupport(author = "zoe")
@@ -85,7 +85,7 @@ public class SysConfigDomainController extends BaseController {
     @EasyLog(module = "删除系统配置域", operateType = OperateTypeEnum.DELETE)
     @PostMapping("/delete/{id}")
     public Result delete(@PathVariable Long id) {
-        return Result.r(configurationDomainService.deleteById(id));
+        return Result.r(sysConfigDomainService.deleteById(id));
     }
 
     @ApiOperationSupport(author = "zoe")
@@ -103,7 +103,7 @@ public class SysConfigDomainController extends BaseController {
             List<ImportExcelError> errors = new ArrayList<>();
             List<SysConfigDomain> errorList = new ArrayList<>();
             // 导入Excel处理
-            configurationDomainService.importExcel(list, errorList, errors);
+            sysConfigDomainService.importExcel(list, errorList, errors);
             String filePath = "";
             if (!errorList.isEmpty()) {
                 // 将错误数据写到Excel文件
@@ -136,7 +136,7 @@ public class SysConfigDomainController extends BaseController {
         ExcelWriter build = EasyExcel.write(filePath, SysConfigDomain.class).build();
         WriteSheet writeSheet = EasyExcel.writerSheet("系统配置域").build();
         while (true) {
-            IPage<SysConfigDomain> page = configurationDomainService.selectPage(query);
+            IPage<SysConfigDomain> page = sysConfigDomainService.selectPage(query);
             build.write(page.getRecords(), writeSheet);
             if (page.getCurrent() >= page.getPages()) {
                 break;

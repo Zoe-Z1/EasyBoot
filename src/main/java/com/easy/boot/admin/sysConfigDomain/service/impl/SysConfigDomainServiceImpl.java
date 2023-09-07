@@ -35,7 +35,7 @@ import java.util.stream.Collectors;
 public class SysConfigDomainServiceImpl extends ServiceImpl<SysConfigDomainMapper, SysConfigDomain> implements ISysConfigDomainService {
 
     @Resource
-    private ISysConfigService systemConfigurationService;
+    private ISysConfigService sysConfigService;
 
     @Override
     public IPage<SysConfigDomain> selectPage(SysConfigDomainQuery query) {
@@ -68,7 +68,7 @@ public class SysConfigDomainServiceImpl extends ServiceImpl<SysConfigDomainMappe
         if (domain == null || domain.getStatus() == 2) {
             return new ArrayList<>();
         }
-        return systemConfigurationService.getByDomainId(domain.getId());
+        return sysConfigService.getByDomainId(domain.getId());
     }
 
     @Override
@@ -95,7 +95,7 @@ public class SysConfigDomainServiceImpl extends ServiceImpl<SysConfigDomainMappe
 
     @Override
     public Boolean deleteById(Long id) {
-        List<SysConfig> list = systemConfigurationService.getByDomainId(id);
+        List<SysConfig> list = sysConfigService.getByDomainId(id);
         if (CollUtil.isNotEmpty(list)) {
             throw new BusinessException("存在下级系统配置，不允许删除");
         }

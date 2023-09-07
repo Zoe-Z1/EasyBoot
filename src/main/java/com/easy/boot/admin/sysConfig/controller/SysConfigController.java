@@ -47,10 +47,10 @@ import java.util.stream.Collectors;
 public class SysConfigController extends BaseController {
 
     @Resource
-    private ISysConfigService configService;
+    private ISysConfigService sysConfigService;
 
     @Resource
-    private ISysConfigDomainService configDomainService;
+    private ISysConfigDomainService sysConfigDomainService;
 
 
     @ApiOperationSupport(author = "zoe")
@@ -58,15 +58,23 @@ public class SysConfigController extends BaseController {
     @EasyLog(module = "获取系统配置列表", operateType = OperateTypeEnum.SELECT)
     @GetMapping("/page")
     public Result<IPage<SysConfig>> page(@Validated SysConfigQuery query) {
-        return Result.success(configService.selectPage(query));
+        return Result.success(sysConfigService.selectPage(query));
     }
+
+//    @ApiOperationSupport(author = "zoe")
+//    @ApiOperation(value = "获取全局系统配置")
+//    @EasyLog(module = "获取全局系统配置", operateType = OperateTypeEnum.SELECT)
+//    @GetMapping("/global")
+//    public Result<IPage<SysConfigDomain>> global() {
+//        return Result.success(configDomainService.getGlobal());
+//    }
 
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "获取系统配置详情")
     @EasyLog(module = "获取系统配置详情", operateType = OperateTypeEnum.SELECT)
     @GetMapping("/detail/{id}")
     public Result<SysConfig> detail(@PathVariable Long id) {
-        return Result.success(configService.detail(id));
+        return Result.success(sysConfigService.detail(id));
     }
 
     @ApiOperationSupport(author = "zoe")
@@ -74,7 +82,7 @@ public class SysConfigController extends BaseController {
     @EasyLog(module = "创建系统配置", operateType = OperateTypeEnum.CREATE)
     @PostMapping(value = "/create")
     public Result create(@Validated @RequestBody SysConfigCreateDTO dto) {
-        return Result.r(configService.create(dto));
+        return Result.r(sysConfigService.create(dto));
     }
 
     @ApiOperationSupport(author = "zoe")
@@ -82,7 +90,7 @@ public class SysConfigController extends BaseController {
     @EasyLog(module = "编辑系统配置", operateType = OperateTypeEnum.UPDATE)
     @PostMapping(value = "/update")
     public Result update(@Validated @RequestBody SysConfigUpdateDTO dto) {
-        return Result.r(configService.updateById(dto));
+        return Result.r(sysConfigService.updateById(dto));
     }
 
     @ApiOperationSupport(author = "zoe")
@@ -90,7 +98,7 @@ public class SysConfigController extends BaseController {
     @EasyLog(module = "删除系统配置", operateType = OperateTypeEnum.DELETE)
     @PostMapping("/delete/{id}")
     public Result delete(@PathVariable Long id) {
-        return Result.r(configService.deleteById(id));
+        return Result.r(sysConfigService.deleteById(id));
     }
 
     @ApiOperationSupport(author = "zoe")
@@ -98,7 +106,7 @@ public class SysConfigController extends BaseController {
     @EasyLog(module = "批量删除系统配置", operateType = OperateTypeEnum.DELETE)
     @PostMapping("/batchDel/{ids}")
     public Result batchDel(@PathVariable List<Long> ids) {
-        return Result.r(configService.deleteBatchByIds(ids));
+        return Result.r(sysConfigService.deleteBatchByIds(ids));
     }
 
     @ApiOperationSupport(author = "zoe")
@@ -118,7 +126,7 @@ public class SysConfigController extends BaseController {
             List<ImportExcelError> errors = new ArrayList<>();
             List<SysConfig> errorList = new ArrayList<>();
             // 导入Excel处理
-            configService.importExcel(list, errorList, errors);
+            sysConfigService.importExcel(list, errorList, errors);
             String filePath = "";
             if (!errorList.isEmpty()) {
                 // 将错误数据写到Excel文件
@@ -151,8 +159,8 @@ public class SysConfigController extends BaseController {
         ExcelWriter build = EasyExcel.write(filePath, SysConfigExcelDO.class).build();
         WriteSheet writeSheet = EasyExcel.writerSheet("系统配置").build();
         while (true) {
-            IPage<SysConfig> page = configService.selectPage(query);
-            SysConfigDomain configDomain = configDomainService.getById(query.getDomainId());
+            IPage<SysConfig> page = sysConfigService.selectPage(query);
+            SysConfigDomain configDomain = sysConfigDomainService.getById(query.getDomainId());
             if (configDomain == null) {
                 throw new BusinessException("系统配置域不存在");
             }
