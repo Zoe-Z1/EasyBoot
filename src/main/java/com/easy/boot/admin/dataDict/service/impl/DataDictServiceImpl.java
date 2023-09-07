@@ -74,6 +74,18 @@ public class DataDictServiceImpl extends ServiceImpl<DataDictMapper, DataDict> i
     }
 
     @Override
+    public List<DataDict> selectByDomainIds(List<Long> domainIds) {
+        if (CollUtil.isEmpty(domainIds)) {
+            return new ArrayList<>();
+        }
+        return lambdaQuery()
+                .select(DataDict::getDomainId, DataDict::getCode, DataDict::getLabel)
+                .eq(DataDict::getStatus, 1)
+                .in(DataDict::getDomainId, domainIds)
+                .list();
+    }
+
+    @Override
     public Boolean create(DataDictCreateDTO dto) {
         DataDict dataDict = this.getByDomainIdAndCode(dto.getDomainId(), dto.getCode());
         if (dataDict != null) {

@@ -54,6 +54,13 @@ public interface IDataDictService extends IService<DataDict> {
     List<DataDict> getByDomainId(Long domainId);
 
     /**
+     * 根据字典域ID集合获取字典列表
+     * @param domainIds
+     * @return
+     */
+    List<DataDict> selectByDomainIds(List<Long> domainIds);
+
+    /**
     * 创建数据字典
     * @param dto
     * @return

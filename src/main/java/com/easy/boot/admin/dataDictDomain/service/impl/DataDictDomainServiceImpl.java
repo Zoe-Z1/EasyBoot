@@ -20,10 +20,7 @@ import com.easy.boot.utils.BeanUtil;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -47,6 +44,24 @@ public class DataDictDomainServiceImpl extends ServiceImpl<DataDictDomainMapper,
                 .orderByAsc(DataDictDomain::getSort)
                 .orderByDesc(BaseEntity::getCreateTime)
                 .page(page);
+    }
+
+
+    @Override
+    public Map<String, List<DataDict>> selectAll() {
+        List<DataDictDomain> list = lambdaQuery()
+                .select(DataDictDomain::getId, DataDictDomain::getCode)
+                .eq(DataDictDomain::getStatus, 1)
+                .list();
+        if (CollUtil.isEmpty(list)) {
+            return new HashMap<>();
+        }
+        List<Long> ids = list.stream().map(DataDictDomain::getId).collect(Collectors.toList());
+        List<DataDict> dataDicts = dataDictionaryService.selectByDomainIds(ids);
+        Map<Long, List<DataDict>> dataDictMap = dataDicts.stream().collect(Collectors.groupingBy(DataDict::getDomainId));
+        Map<String, List<DataDict>> resMap = list.stream()
+                .collect(Collectors.toMap(DataDictDomain::getCode, x -> dataDictMap.get(x.getId())));
+        return resMap;
     }
 
     @Override

@@ -10,6 +10,7 @@ import com.easy.boot.common.excel.ImportExcelError;
 import com.easy.boot.admin.dataDictDomain.entity.DataDictDomainQuery;
 
 import java.util.List;
+import java.util.Map;
 
 /**
 * @author zoe
@@ -24,6 +25,12 @@ public interface DataDictDomainService extends IService<DataDictDomain> {
     * @return
     */
     IPage<DataDictDomain> selectPage(DataDictDomainQuery query);
+
+    /**
+     * 获取全部数据字典，以字典域编码为key
+     * @return
+     */
+    Map<String, List<DataDict>> selectAll();
 
     /**
      * 获取数据字典域详情
