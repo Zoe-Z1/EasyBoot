@@ -57,7 +57,7 @@ public class DataDictDomainServiceImpl extends ServiceImpl<DataDictDomainMapper,
             return new HashMap<>();
         }
         List<Long> ids = list.stream().map(DataDictDomain::getId).collect(Collectors.toList());
-        List<DataDict> dataDicts = dataDictionaryService.selectByDomainIds(ids);
+        List<DataDict> dataDicts = dataDictionaryService.selectListByDomainIds(ids);
         Map<Long, List<DataDict>> dataDictMap = dataDicts.stream().collect(Collectors.groupingBy(DataDict::getDomainId));
         Map<String, List<DataDict>> resMap = list.stream()
                 .collect(Collectors.toMap(DataDictDomain::getCode, x -> dataDictMap.get(x.getId())));

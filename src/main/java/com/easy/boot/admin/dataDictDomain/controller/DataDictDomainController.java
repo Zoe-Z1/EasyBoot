@@ -4,7 +4,6 @@ import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.ExcelWriter;
 import com.alibaba.excel.write.metadata.WriteSheet;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.easy.boot.admin.dataDict.entity.DataDict;
 import com.easy.boot.admin.dataDictDomain.entity.DataDictDomain;
 import com.easy.boot.admin.dataDictDomain.entity.DataDictDomainCreateDTO;
 import com.easy.boot.admin.dataDictDomain.entity.DataDictDomainQuery;
@@ -33,7 +32,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author zoe
@@ -56,15 +54,6 @@ public class DataDictDomainController extends BaseController {
     @GetMapping("/page")
     public Result<IPage<DataDictDomain>> page(@Validated DataDictDomainQuery query) {
         return Result.success(dataDictionaryDomainService.selectPage(query));
-    }
-
-    @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "获取全部数据字典")
-    @EasyLog(module = "获取全部数据字典", operateType = OperateTypeEnum.SELECT)
-    @GetMapping("/all")
-    public Result<Map<String, List<DataDict>>> all() {
-        Map<String, List<DataDict>> map = dataDictionaryDomainService.selectAll();
-        return Result.success(map);
     }
 
     @ApiOperationSupport(author = "zoe")

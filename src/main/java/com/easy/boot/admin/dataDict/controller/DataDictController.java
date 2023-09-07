@@ -33,6 +33,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -59,6 +60,16 @@ public class DataDictController extends BaseController {
     @GetMapping("/page")
     public Result<IPage<DataDict>> page(@Validated DataDictQuery query) {
         return Result.success(dataDictionaryService.selectPage(query));
+    }
+
+
+    @ApiOperationSupport(author = "zoe")
+    @ApiOperation(value = "获取全部数据字典")
+    @EasyLog(module = "获取全部数据字典", operateType = OperateTypeEnum.SELECT)
+    @GetMapping("/all")
+    public Result<Map<String, List<DataDict>>> all() {
+        Map<String, List<DataDict>> map = dataDictionaryDomainService.selectAll();
+        return Result.success(map);
     }
 
     @ApiOperationSupport(author = "zoe")

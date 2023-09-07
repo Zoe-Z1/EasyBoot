@@ -49,7 +49,13 @@ public class DataDictServiceImpl extends ServiceImpl<DataDictMapper, DataDict> i
         if (CollUtil.isEmpty(ids)) {
             return new ArrayList<>();
         }
-        return lambdaQuery().in(DataDict::getDomainId, ids).list();
+        return lambdaQuery()
+                .select(DataDict::getDomainId, DataDict::getCode, DataDict::getLabel)
+                .eq(DataDict::getStatus, 1)
+                .in(DataDict::getDomainId, ids)
+                .orderByAsc(DataDict::getSort)
+                .orderByDesc(BaseEntity::getCreateTime)
+                .list();
     }
 
     @Override
@@ -70,20 +76,6 @@ public class DataDictServiceImpl extends ServiceImpl<DataDictMapper, DataDict> i
                 .select(DataDict::getCode, DataDict::getLabel)
                 .eq(DataDict::getStatus, 1)
                 .eq(DataDict::getDomainId, domainId)
-                .orderByAsc(DataDict::getSort)
-                .orderByDesc(BaseEntity::getCreateTime)
-                .list();
-    }
-
-    @Override
-    public List<DataDict> selectByDomainIds(List<Long> domainIds) {
-        if (CollUtil.isEmpty(domainIds)) {
-            return new ArrayList<>();
-        }
-        return lambdaQuery()
-                .select(DataDict::getDomainId, DataDict::getCode, DataDict::getLabel)
-                .eq(DataDict::getStatus, 1)
-                .in(DataDict::getDomainId, domainIds)
                 .orderByAsc(DataDict::getSort)
                 .orderByDesc(BaseEntity::getCreateTime)
                 .list();
