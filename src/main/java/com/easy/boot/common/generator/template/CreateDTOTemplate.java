@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.easy.boot.common.generator.DataMap;
 import com.easy.boot.common.generator.GenConstant;
 import com.easy.boot.common.generator.config.AnnotationConfig;
+import com.easy.boot.common.generator.config.FilterConfig;
 import com.easy.boot.common.generator.db.Field;
 import com.easy.boot.common.generator.db.MetaTable;
 import com.easy.boot.utils.JsonUtil;
@@ -146,7 +147,9 @@ public class CreateDTOTemplate extends AbstractTemplate {
      */
     private void handleField(DataMap buildDataMap) {
         MetaTable metaTable = buildDataMap.getMetaTable();
+        FilterConfig filter = buildDataMap.getFilterConfig();
         List<Field> fields = JsonUtil.copyList(metaTable.getFields(), Field.class);
+        fields.removeIf(item -> filter.getExcludeField().contains(item.getJavaName()));
         Class<?> clazz = getSuperClass();
         if (getEnableExcludeSuperField() && clazz != null) {
             java.lang.reflect.Field[] superFields = clazz.getDeclaredFields();

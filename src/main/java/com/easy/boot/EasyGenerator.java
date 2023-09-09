@@ -4,6 +4,7 @@ import com.easy.boot.common.generator.config.*;
 import com.easy.boot.common.generator.db.convert.EasyColumnConvertHandler;
 import com.easy.boot.common.generator.execute.GeneratorExecute;
 import com.easy.boot.common.generator.template.EntityTemplate;
+import com.easy.boot.common.generator.template.UpdateDTOTemplate;
 import com.easy.boot.common.generator.template.VOTemplate;
 import lombok.extern.slf4j.Slf4j;
 
@@ -52,15 +53,22 @@ public class EasyGenerator {
                                                         .enableTableField(true)
                                                         .build()
                                         )
+                                        .updateDTO(
+                                                UpdateDTOTemplate.builder()
+                                                        .enableExtendsCreateDTO(true)
+                                                        .addIncludeField("id")
+                                                        .build()
+                                        )
                                         .vo(
                                                 VOTemplate.builder()
-                                                        .enable(false)
+                                                        .enable(true)
                                                         .build()
                                         )
                                         .build())
                         .filter(
                                 FilterConfig.builder()
                                         .addExcludeTablePrefix("login_")
+                                        .addExcludeField("id","createBy","createTime","updateBy","updateTime","isDel")
                                         .build()
                         )
                         .build()

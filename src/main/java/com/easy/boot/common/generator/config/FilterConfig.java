@@ -31,6 +31,11 @@ public class FilterConfig {
      */
     private Set<String> excludeTableSuffix;
 
+    /**
+     * 排除实体类属性
+     */
+    private Set<String> excludeField;
+
     public Set<String> getExcludeTablePrefix() {
         if (excludeTablePrefix == null) {
             excludeTablePrefix = new HashSet<>();
@@ -45,6 +50,13 @@ public class FilterConfig {
         return excludeTableSuffix;
     }
 
+    public Set<String> getExcludeField() {
+        if (excludeField == null) {
+            excludeField = new HashSet<>();
+        }
+        return excludeField;
+    }
+
     public static FilterConfig.FilterConfigBuilder builder() {
         return new FilterConfig.FilterConfigBuilder();
     }
@@ -53,6 +65,7 @@ public class FilterConfig {
     public static class FilterConfigBuilder {
         private Set<String> excludeTablePrefix;
         private Set<String> excludeTableSuffix;
+        private Set<String> excludeField;
 
         FilterConfigBuilder() {
         }
@@ -67,8 +80,13 @@ public class FilterConfig {
             return this;
         }
 
+        public FilterConfig.FilterConfigBuilder addExcludeField(String... excludeField) {
+            this.excludeField = CollUtil.newHashSet(excludeField);
+            return this;
+        }
+
         public FilterConfig build() {
-            return new FilterConfig(this.excludeTablePrefix, this.excludeTableSuffix);
+            return new FilterConfig(this.excludeTablePrefix, this.excludeTableSuffix, this.excludeField);
         }
     }
 }

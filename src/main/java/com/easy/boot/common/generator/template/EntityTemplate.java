@@ -9,6 +9,7 @@ import com.easy.boot.common.base.BaseEntity;
 import com.easy.boot.common.generator.DataMap;
 import com.easy.boot.common.generator.GenConstant;
 import com.easy.boot.common.generator.config.AnnotationConfig;
+import com.easy.boot.common.generator.config.FilterConfig;
 import com.easy.boot.common.generator.config.GlobalConfig;
 import com.easy.boot.common.generator.db.Field;
 import com.easy.boot.common.generator.db.MetaTable;
@@ -155,8 +156,10 @@ public class EntityTemplate extends AbstractTemplate {
      */
     private void handleField(DataMap buildDataMap) {
         GlobalConfig global = buildDataMap.getGlobalConfig();
+        FilterConfig filter = buildDataMap.getFilterConfig();
         MetaTable metaTable = buildDataMap.getMetaTable();
         List<Field> fields = JsonUtil.copyList(metaTable.getFields(), Field.class);
+        fields.removeIf(item -> filter.getExcludeField().contains(item.getJavaName()));
         Class<?> clazz = getSuperClass();
         if (getEnableExcludeSuperField() && clazz != null) {
             java.lang.reflect.Field[] superFields = clazz.getDeclaredFields();

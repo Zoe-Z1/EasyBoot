@@ -6,8 +6,10 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.easy.boot.common.generator.DataMap;
 import com.easy.boot.common.generator.GenConstant;
 import com.easy.boot.common.generator.config.AnnotationConfig;
+import com.easy.boot.common.generator.config.FilterConfig;
 import com.easy.boot.common.generator.db.Field;
 import com.easy.boot.common.generator.db.MetaTable;
+import com.easy.boot.utils.JsonUtil;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -36,9 +38,16 @@ public class UpdateDTOTemplate extends AbstractTemplate {
     private Class<?> superClass;
 
     /**
-     * 排除属性
+     * 是否开启继承createDTO模式，
+     * 开启此模式后，superClass设置将无效，updateDTO将继承createDTO
+     * 实体类仅生成指定属性，使用 includeField 指定需要生成的属性
      */
-    private Set<String> excludeField;
+    private Boolean enableExtendsCreateDTO;
+
+    /**
+     * 全局排除时保留的属性
+     */
+    private Set<String> includeField;
 
     private String templateName;
 
@@ -75,17 +84,23 @@ public class UpdateDTOTemplate extends AbstractTemplate {
         return moduleName;
     }
 
-    public void setSuperClass(Class<?> superClass) {
-        this.superClass = superClass;
-    }
-
     @Override
     protected Class<?> getSuperClass() {
         return superClass;
     }
 
-    public Set<String> getExcludeField() {
-        return excludeField;
+    protected Boolean getEnableExtendsCreateDTO() {
+        if (enableExtendsCreateDTO == null) {
+            enableExtendsCreateDTO = true;
+        }
+        return enableExtendsCreateDTO;
+    }
+
+    protected Set<String> getIncludeField() {
+        if (includeField == null) {
+            includeField = new HashSet<>();
+        }
+        return includeField;
     }
 
     @Override
@@ -149,9 +164,13 @@ public class UpdateDTOTemplate extends AbstractTemplate {
         CreateDTOTemplate template = buildDataMap.getTemplateConfig().getCreateDTO();
         String javaName = metaTable.getBeanName();
         String className = getFileName(javaName).replace(GenConstant.SUFFIX, "");
+        String createDTOName = template.getFileName(javaName).replace(GenConstant.SUFFIX, "");
         buildDataMap.put(GenConstant.DATA_MAP_KEY_CLASS_NAME, className);
         if (getSuperClass() != null) {
             buildDataMap.put(GenConstant.DATA_MAP_KEY_SUPER_NAME, getSuperClass().getSimpleName());
+        }
+        if (getEnableExtendsCreateDTO()) {
+            buildDataMap.put(GenConstant.DATA_MAP_KEY_SUPER_NAME, createDTOName);
         }
     }
 
@@ -161,12 +180,19 @@ public class UpdateDTOTemplate extends AbstractTemplate {
      */
     private void handleField(DataMap buildDataMap) {
         MetaTable metaTable = buildDataMap.getMetaTable();
-        List<Field> fields = new ArrayList<>(metaTable.getFields());
-        Class<?> clazz = getSuperClass();
-        if (getEnableExcludeSuperField() && clazz != null) {
-            java.lang.reflect.Field[] superFields = clazz.getDeclaredFields();
-            Set<String> superFieldSet = Arrays.stream(superFields).map(java.lang.reflect.Field::getName).collect(Collectors.toSet());
-            fields.removeIf(item -> superFieldSet.contains(item.getJavaName()));
+        FilterConfig filter = buildDataMap.getFilterConfig();
+        List<Field> fields = JsonUtil.copyList(metaTable.getFields(), Field.class);
+        if (getEnableExtendsCreateDTO()) {
+            Set<String> includeFields = getIncludeField();
+            fields.removeIf(item -> !includeFields.contains(item.getJavaName()));
+        } else {
+            fields.removeIf(item -> filter.getExcludeField().contains(item.getJavaName()) && !getIncludeField().contains(item.getJavaName()));
+            Class<?> clazz = getSuperClass();
+            if (getEnableExcludeSuperField() && clazz != null) {
+                java.lang.reflect.Field[] superFields = clazz.getDeclaredFields();
+                Set<String> superFieldSet = Arrays.stream(superFields).map(java.lang.reflect.Field::getName).collect(Collectors.toSet());
+                fields.removeIf(item -> superFieldSet.contains(item.getJavaName()));
+            }
         }
         buildDataMap.put(GenConstant.DATA_MAP_KEY_FIELDS, fields);
         buildDataMap.put(GenConstant.DATA_MAP_KEY_ENABLE_TABLE_FIELD, getEnableTableField());
@@ -205,7 +231,8 @@ public class UpdateDTOTemplate extends AbstractTemplate {
         private String remarks;
         private String moduleName;
         private Class<?> superClass;
-        private Set<String> excludeField;
+        private Boolean enableExtendsCreateDTO;
+        private Set<String> includeField;
         private String templateName;
         private String fileName;
         private Boolean enable;
@@ -228,6 +255,11 @@ public class UpdateDTOTemplate extends AbstractTemplate {
 
         public UpdateDTOTemplate.UpdateDTOTemplateBuilder superClass(final Class<?> superClass) {
             this.superClass = superClass;
+            return this;
+        }
+
+        public UpdateDTOTemplate.UpdateDTOTemplateBuilder enableExtendsCreateDTO(final Boolean enableExtendsCreateDTO) {
+            this.enableExtendsCreateDTO = enableExtendsCreateDTO;
             return this;
         }
 
@@ -261,13 +293,13 @@ public class UpdateDTOTemplate extends AbstractTemplate {
             return this;
         }
 
-        public UpdateDTOTemplate.UpdateDTOTemplateBuilder addExcludeField(String... excludeField) {
-            this.excludeField = CollUtil.newHashSet(excludeField);
+        public UpdateDTOTemplate.UpdateDTOTemplateBuilder addIncludeField(String... includeField) {
+            this.includeField = CollUtil.newHashSet(includeField);
             return this;
         }
 
         public UpdateDTOTemplate build() {
-            return new UpdateDTOTemplate(this.remarks, this.moduleName, this.superClass, this.excludeField, this.templateName, this.fileName, this.enable, this.isOverride, this.enableTableField, this.enableExcludeSuperField);
+            return new UpdateDTOTemplate(this.remarks, this.moduleName, this.superClass, this.enableExtendsCreateDTO, this.includeField, this.templateName, this.fileName, this.enable, this.isOverride, this.enableTableField, this.enableExcludeSuperField);
         }
     }
 }
