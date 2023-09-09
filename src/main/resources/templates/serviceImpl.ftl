@@ -46,7 +46,7 @@ public class ${className} extends ${superName}<${mapperName}, ${entityName}> imp
         return removeBatchByIds(ids);
     }
 
-<#if template.enableImport>
+<#if global.enableImport>
     @Override
     public void importExcel(List<${entityName}> list, List<${entityName}> errorList, List<${ImportExcelError}> errors) {
         if (CollUtil.isEmpty(list)) {

@@ -53,7 +53,7 @@ public interface ${className} extends ${superName}<${entityName}> {
      */
     Boolean deleteBatchByIds(List<Long> ids);
 
-<#if template.enableImport>
+<#if global.enableImport>
     /**
      * 导入Excel
      * @param list 要导入的数据集合

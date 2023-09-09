@@ -79,16 +79,6 @@ public class TemplateConfig {
     private String templateRootPath;
 
     /**
-     * 生成导入
-     */
-    private Boolean enableImport;
-
-    /**
-     * 生成导出
-     */
-    private Boolean enableExport;
-
-    /**
      * 需要生成的模板列表
      */
     private List<AbstractTemplate> templates;
@@ -140,19 +130,6 @@ public class TemplateConfig {
         return templateRootPath;
     }
 
-    public Boolean getEnableImport() {
-        if (enableImport == null) {
-            enableImport = false;
-        }
-        return enableImport;
-    }
-    public Boolean getEnableExport() {
-        if (enableExport == null) {
-            enableExport = false;
-        }
-        return enableExport;
-    }
-
     public List<AbstractTemplate> getTemplates() {
         List<AbstractTemplate> list = new ArrayList<>();
         list.add(getController());
@@ -189,16 +166,9 @@ public class TemplateConfig {
         private QueryTemplate query;
         private VOTemplate vo;
         private String templateRootPath;
-        private Boolean enableImport;
-        private Boolean enableExport;
         private List<AbstractTemplate> templates;
 
         TemplateConfigBuilder() {
-        }
-
-        public TemplateConfig.TemplateConfigBuilder addTemplate(AbstractTemplate... templates) {
-            this.templates = Arrays.asList(templates);
-            return this;
         }
 
         public TemplateConfig.TemplateConfigBuilder controller(final ControllerTemplate controller) {
@@ -256,18 +226,13 @@ public class TemplateConfig {
             return this;
         }
 
-        public TemplateConfig.TemplateConfigBuilder enableImport(final Boolean enableImport) {
-            this.enableImport = enableImport;
-            return this;
-        }
-
-        public TemplateConfig.TemplateConfigBuilder enableExport(final Boolean enableExport) {
-            this.enableExport = enableExport;
+        public TemplateConfig.TemplateConfigBuilder addTemplate(AbstractTemplate... templates) {
+            this.templates = Arrays.asList(templates);
             return this;
         }
 
         public TemplateConfig build() {
-            return new TemplateConfig(this.controller, this.service, this.serviceImpl, this.mapper, this.xml, this.entity, this.createDTO, this.updateDTO, this.query, this.vo, this.templateRootPath, this.enableImport, this.enableExport, this.templates);
+            return new TemplateConfig(this.controller, this.service, this.serviceImpl, this.mapper, this.xml, this.entity, this.createDTO, this.updateDTO, this.query, this.vo, this.templateRootPath, this.templates);
         }
     }
 }

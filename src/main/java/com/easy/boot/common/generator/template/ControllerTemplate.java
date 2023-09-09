@@ -126,6 +126,7 @@ public class ControllerTemplate extends AbstractTemplate {
      * @param buildDataMap 已构建过的参数
      */
     private void buildClassName(DataMap buildDataMap) {
+        GlobalConfig global = buildDataMap.getGlobalConfig();
         TemplateConfig template = buildDataMap.getTemplateConfig();
         MetaTable metaTable = buildDataMap.getMetaTable();
         String javaName = metaTable.getBeanName();
@@ -157,7 +158,7 @@ public class ControllerTemplate extends AbstractTemplate {
         if (getSuperClass() != null) {
             buildDataMap.put(GenConstant.DATA_MAP_KEY_SUPER_NAME, getSuperClass().getName());
         }
-        if (template.getEnableImport()) {
+        if (global.getEnableImport()) {
             buildDataMap.put(GenConstant.DATA_MAP_KEY_IMPORT_EXCEL_ERROR_NAME, ImportExcelError.class.getSimpleName());
             buildDataMap.put(GenConstant.DATA_MAP_KEY_IMPORT_VO_NAME, ImportVO.class.getSimpleName());
         }
@@ -177,7 +178,7 @@ public class ControllerTemplate extends AbstractTemplate {
             pkgs.add(EasyLog.class.getName());
             pkgs.add(OperateTypeEnum.class.getName());
         }
-        if (template.getEnableImport()) {
+        if (global.getEnableImport()) {
             pkgs.add(UploadDTO.class.getName());
             pkgs.add(EasyExcel.class.getName());
             pkgs.add(Assert.class.getName());
@@ -190,7 +191,7 @@ public class ControllerTemplate extends AbstractTemplate {
             pkgs.add(IOException.class.getName());
             pkgs.add(FileException.class.getName());
         }
-        if (template.getEnableExport()) {
+        if (global.getEnableExport()) {
             pkgs.add(EasyExcel.class.getName());
             pkgs.add(ExcelWriter.class.getName());
             pkgs.add(WriteSheet.class.getName());

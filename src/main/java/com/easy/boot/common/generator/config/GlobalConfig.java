@@ -53,6 +53,16 @@ public class GlobalConfig {
     private String commentDateFormat;
 
     /**
+     * 生成导入
+     */
+    private Boolean enableImport;
+
+    /**
+     * 生成导出
+     */
+    private Boolean enableExport;
+
+    /**
      * 自定义的全局附加参数
      */
     private Map<String, Object> dataMap;
@@ -109,5 +119,18 @@ public class GlobalConfig {
             commentDateFormat = "yyyy/MM/dd";
         }
         return commentDateFormat;
+    }
+
+    public Boolean getEnableImport() {
+        if (enableImport == null) {
+            enableImport = false;
+        }
+        return enableImport;
+    }
+    public Boolean getEnableExport() {
+        if (enableExport == null) {
+            enableExport = false;
+        }
+        return enableExport;
     }
 }

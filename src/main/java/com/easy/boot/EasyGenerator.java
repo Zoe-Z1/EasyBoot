@@ -29,6 +29,8 @@ public class EasyGenerator {
                                         .isOpen(true)
                                         .author("zoe")
                                         .commentDateFormat("yyyy/MM/dd")
+                                        .enableImport(true)
+                                        .enableExport(true)
                                         .build()
                         )
                         .dataSource(
@@ -63,8 +65,6 @@ public class EasyGenerator {
                                                         .enable(false)
                                                         .build()
                                         )
-                                        .enableImport(true)
-                                        .enableExport(true)
                                         .build())
                         .filter(
                                 FilterConfig.builder()

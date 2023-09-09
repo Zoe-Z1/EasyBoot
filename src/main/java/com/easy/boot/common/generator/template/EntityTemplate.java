@@ -9,6 +9,7 @@ import com.easy.boot.common.base.BaseEntity;
 import com.easy.boot.common.generator.DataMap;
 import com.easy.boot.common.generator.GenConstant;
 import com.easy.boot.common.generator.config.AnnotationConfig;
+import com.easy.boot.common.generator.config.GlobalConfig;
 import com.easy.boot.common.generator.config.TemplateConfig;
 import com.easy.boot.common.generator.db.Field;
 import com.easy.boot.common.generator.db.MetaTable;
@@ -140,12 +141,13 @@ public class EntityTemplate extends AbstractTemplate {
      * @param buildDataMap 已构建过的参数
      */
     private void handleField(DataMap buildDataMap) {
+        GlobalConfig global = buildDataMap.getGlobalConfig();
         MetaTable metaTable = buildDataMap.getMetaTable();
         List<Field> fields = metaTable.getFields();
         TemplateConfig template = buildDataMap.getTemplateConfig();
         buildDataMap.put(GenConstant.DATA_MAP_KEY_FIELDS, fields);
         buildDataMap.put(GenConstant.DATA_MAP_KEY_ENABLE_TABLE_FIELD, getEnableTableField());
-        if (template.getEnableExport() || template.getEnableImport()) {
+        if (global.getEnableExport() || global.getEnableImport()) {
             buildDataMap.put(GenConstant.DATA_MAP_KEY_ENABLE_EXCEL, true);
         }
     }
@@ -155,9 +157,9 @@ public class EntityTemplate extends AbstractTemplate {
      * @param buildDataMap 已构建过的参数
      */
     private void buildPkgDataMap(DataMap buildDataMap) {
+        GlobalConfig global = buildDataMap.getGlobalConfig();
         AnnotationConfig annotation = buildDataMap.getAnnotationConfig();
         MetaTable metaTable = buildDataMap.getMetaTable();
-        TemplateConfig template = buildDataMap.getTemplateConfig();
         Set<String> pkgs = new HashSet<>();
         if (getSuperClass() != null) {
             pkgs.add(getSuperClass().getName());
@@ -165,7 +167,7 @@ public class EntityTemplate extends AbstractTemplate {
         if (annotation.getEnableBuilder()) {
             pkgs.add(SuperBuilder.class.getName());
         }
-        if (template.getEnableExport() || template.getEnableImport()) {
+        if (global.getEnableExport() || global.getEnableImport()) {
             pkgs.add(ExcelProperty.class.getName());
         }
         pkgs.add(TableId.class.getName());

@@ -105,6 +105,7 @@ public class ServiceTemplate extends AbstractTemplate {
      * @param buildDataMap 已构建过的参数
      */
     private void buildClassName(DataMap buildDataMap) {
+        GlobalConfig global = buildDataMap.getGlobalConfig();
         TemplateConfig template = buildDataMap.getTemplateConfig();
         MetaTable metaTable = buildDataMap.getMetaTable();
         String javaName = metaTable.getBeanName();
@@ -121,7 +122,7 @@ public class ServiceTemplate extends AbstractTemplate {
         if (getSuperClass() != null) {
             buildDataMap.put(GenConstant.DATA_MAP_KEY_SUPER_NAME, getSuperClass().getName());
         }
-        if (template.getEnableImport()) {
+        if (global.getEnableImport()) {
             buildDataMap.put(GenConstant.DATA_MAP_KEY_IMPORT_EXCEL_ERROR_NAME, ImportExcelError.class.getSimpleName());
         }
     }
@@ -138,7 +139,7 @@ public class ServiceTemplate extends AbstractTemplate {
         if (getSuperClass() != null) {
             pkgs.add(getSuperClass().getName());
         }
-        if (template.getEnableImport()) {
+        if (global.getEnableImport()) {
             pkgs.add(ImportExcelError.class.getName());
         }
         pkgs.add(IPage.class.getName());

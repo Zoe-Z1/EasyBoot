@@ -79,7 +79,7 @@ public class ${className} {
         return Result.r(${serviceCamelName}.deleteBatchByIds(ids));
     }
 
-<#if template.enableImport>
+<#if global.enableImport>
     @ApiOperationSupport(author = "${global.author}")
     @ApiOperation(value = "导入${remarks!}")
     @EasyLog(module = "导入${remarks!}", operateType = OperateTypeEnum.IMPORT)
@@ -119,7 +119,7 @@ public class ${className} {
     }
 </#if>
 
-<#if template.enableExport>
+<#if global.enableExport>
     @ApiOperationSupport(author = "${global.author}")
     @ApiOperation(value = "导出${remarks!}")
     @EasyLog(module = "导出${remarks!}", operateType = OperateTypeEnum.EXPORT)
