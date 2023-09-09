@@ -27,7 +27,6 @@ public class EasyGenerator {
                                         .outputPath("/Users/zoe/Downloads/template/")
                                         .isOverride(true)
                                         .isOpen(true)
-                                        .enableComment(true)
                                         .author("zoe")
                                         .commentDateFormat("yyyy/MM/dd")
                                         .build()

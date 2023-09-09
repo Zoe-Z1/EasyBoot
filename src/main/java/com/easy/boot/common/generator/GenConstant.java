@@ -134,4 +134,10 @@ public class GenConstant {
 
     public static final String DATA_MAP_KEY_BASE_COLUMN_LIST_NAME = "baseColumnList";
 
+
+
+    /*------------------------- 代码生成查询常量 -------------------------*/
+
+    public static final String TABLE_TYPE_BASE_TABLE = "BASE TABLE";
+
 }

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.easy.boot.admin.generate.mapper.GenerateMapper">
+
+	<resultMap type="com.easy.boot.admin.generate.entity.DatabaseTable" id="BaseResultMap">
+		<result property="tableName"      column="TABLE_NAME"        />
+		<result property="tableRows"      column="TABLE_ROWS"        />
+		<result property="createTime"     column="CREATE_TIME"       />
+		<result property="updateTime"     column="UPDATE_TIME"       />
+		<result property="comment"   column="TABLE_COMMENT"     />
+	</resultMap>
+	
+	<sql id="Base_Column_List">
+		TABLE_NAME,TABLE_ROWS,CREATE_TIME,UPDATE_TIME,TABLE_COMMENT
+	</sql>
+
+	<select id="selectCount" parameterType="com.easy.boot.admin.generate.entity.GenerateTableQuery" resultType="java.lang.Long">
+		select
+		count(1)
+		from INFORMATION_SCHEMA.TABLES
+		where
+		TABLE_TYPE = #{tableType}
+		AND TABLE_SCHEMA = #{dbName}
+		AND TABLE_NAME not like '%QRTZ_%'
+		<if test="startTime != null and endTime != null">
+			AND CREATE_TIME BETWEEN #{startTime} and #{endTime}
+		</if>
+		<if test="tableName != null and tableName != ''">
+			AND TABLE_NAME like concat('%', #{tableName} , '%')
+		</if>
+		<if test="comment != null and comment != ''">
+			AND TABLE_COMMENT like concat('%', #{comment} , '%')
+		</if>
+	</select>
+    
+    <select id="selectPage" parameterType="com.easy.boot.admin.generate.entity.GenerateTableQuery" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List"/>
+		from INFORMATION_SCHEMA.TABLES
+		where
+		TABLE_TYPE = #{tableType}
+		AND TABLE_SCHEMA = #{dbName}
+		AND TABLE_NAME not like '%QRTZ_%'
+		<if test="startTime != null and endTime != null">
+			AND CREATE_TIME BETWEEN #{startTime} and #{endTime}
+		</if>
+		<if test="tableName != null and tableName != ''">
+			AND TABLE_NAME like concat('%', #{tableName} , '%')
+		</if>
+		<if test="comment != null and comment != ''">
+			AND TABLE_COMMENT like concat('%', #{comment} , '%')
+		</if>
+		ORDER BY
+		TABLE_NAME ASC
+		limit ${pageSize * (pageNum - 1)},#{pageSize}
+	</select>
+
+</mapper> 

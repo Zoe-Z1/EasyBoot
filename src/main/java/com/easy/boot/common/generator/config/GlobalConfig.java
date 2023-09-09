@@ -43,11 +43,6 @@ public class GlobalConfig {
     private Boolean isOpen;
 
     /**
-     * 是否生成代码注释
-     */
-    private Boolean enableComment;
-
-    /**
      * 作者
      */
     private String author;
@@ -102,15 +97,8 @@ public class GlobalConfig {
         return isOpen;
     }
 
-    public Boolean getEnableComment() {
-        if (enableComment == null) {
-            enableComment = true;
-        }
-        return enableComment;
-    }
-
     public String getAuthor() {
-        if (enableComment && StrUtil.isEmpty(author)) {
+        if (StrUtil.isEmpty(author)) {
             throw new GeneratorException("作者不能为空");
         }
         return author;
