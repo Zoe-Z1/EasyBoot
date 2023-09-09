@@ -14,7 +14,7 @@ import lombok.*;
 public class AnnotationConfig {
 
     /**
-     * 开启log注解
+     * 生成log注解
      */
     private Boolean enableLog;
 

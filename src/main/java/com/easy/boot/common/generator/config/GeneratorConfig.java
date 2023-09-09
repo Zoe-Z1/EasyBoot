@@ -27,7 +27,7 @@ public class GeneratorConfig {
     @ApiModelProperty(value = "注解参数配置")
     private AnnotationConfig annotation;
 
-    @ApiModelProperty(value = "注解参数配置")
+    @ApiModelProperty(value = "模板配置")
     private TemplateConfig template;
 
     @ApiModelProperty(value = "过滤配置")
