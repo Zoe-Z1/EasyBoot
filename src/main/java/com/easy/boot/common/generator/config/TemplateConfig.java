@@ -64,7 +64,7 @@ public class TemplateConfig {
     private UpdateDTOTemplate updateDTO;
 
     /**
-     * updateDTO模板配置
+     * query模板配置
      */
     private QueryTemplate query;
 

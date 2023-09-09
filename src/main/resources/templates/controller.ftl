@@ -149,7 +149,7 @@ public class ${className} {
     }
 </#if>
 
-<#if template.enableImport>
+<#if global.enableImport>
     @ApiOperationSupport(author = "${global.author}")
     @ApiOperation(value = "下载${remarks!}导入模板")
     @EasyLog(module = "下载${remarks!}导入模板", operateType = OperateTypeEnum.DOWNLOAD)
