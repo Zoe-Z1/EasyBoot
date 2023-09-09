@@ -7,6 +7,7 @@ import com.easy.boot.common.generator.config.GlobalConfig;
 import com.easy.boot.common.generator.config.TemplateConfig;
 import com.easy.boot.common.generator.db.Field;
 import com.easy.boot.common.generator.db.MetaTable;
+import com.easy.boot.utils.JsonUtil;
 import lombok.*;
 
 import java.util.List;
@@ -128,7 +129,7 @@ public class MapperXmlTemplate extends AbstractTemplate {
      */
     private void buildOther(DataMap buildDataMap) {
         MetaTable metaTable = buildDataMap.getMetaTable();
-        List<Field> fields = metaTable.getFields();
+        List<Field> fields = JsonUtil.copyList(metaTable.getFields(), Field.class);
         buildDataMap.put(GenConstant.DATA_MAP_KEY_FIELDS, fields);
         buildDataMap.put(GenConstant.DATA_MAP_KEY_GEN_BASE_RESULT_MAP_NAME, getGenBaseResultMap());
         buildDataMap.put(GenConstant.DATA_MAP_KEY_GEN_BASE_COLUMN_LIST_NAME, getGenBaseColumnList());

@@ -142,13 +142,13 @@ public class DbManager {
      * @return
      */
     private String filterTableName(String tableName) {
-        for (String tablePrefix : filter.getTablePrefix()) {
+        for (String tablePrefix : filter.getExcludeTablePrefix()) {
             if (tableName.startsWith(tablePrefix)) {
                 tableName = tableName.replace(tablePrefix, "");
                 break;
             }
         }
-        for (String tableSuffix : filter.getTableSuffix()) {
+        for (String tableSuffix : filter.getExcludeTableSuffix()) {
             if (tableName.endsWith(tableSuffix)) {
                 tableName = tableName.replace(tableSuffix, "");
                 break;

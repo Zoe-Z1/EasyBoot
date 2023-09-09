@@ -10,9 +10,9 @@ import com.easy.boot.common.generator.DataMap;
 import com.easy.boot.common.generator.GenConstant;
 import com.easy.boot.common.generator.config.AnnotationConfig;
 import com.easy.boot.common.generator.config.GlobalConfig;
-import com.easy.boot.common.generator.config.TemplateConfig;
 import com.easy.boot.common.generator.db.Field;
 import com.easy.boot.common.generator.db.MetaTable;
+import com.easy.boot.utils.JsonUtil;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
@@ -51,6 +51,12 @@ public class EntityTemplate extends AbstractTemplate {
      * 是否生成@TableField
      */
     private Boolean enableTableField;
+
+    /**
+     * 忽略父类已存在的属性
+     * 开启此配置后，父类存在的属性，子类不再生成
+     */
+    private Boolean enableExcludeSuperField;
 
     @Override
     protected String getRemarks(String tableRemarks) {
@@ -110,6 +116,13 @@ public class EntityTemplate extends AbstractTemplate {
         return enableTableField;
     }
 
+    public Boolean getEnableExcludeSuperField() {
+        if (enableExcludeSuperField == null) {
+            enableExcludeSuperField = true;
+        }
+        return enableExcludeSuperField;
+    }
+
     @Override
     public DataMap buildDataMap(DataMap dataMap) {
         DataMap buildDataMap = super.buildDataMap(dataMap);
@@ -132,7 +145,7 @@ public class EntityTemplate extends AbstractTemplate {
         String className = getFileName(javaName).replace(GenConstant.SUFFIX, "");
         buildDataMap.put(GenConstant.DATA_MAP_KEY_CLASS_NAME, className);
         if (getSuperClass() != null) {
-            buildDataMap.put(GenConstant.DATA_MAP_KEY_SUPER_NAME, getSuperClass().getName());
+            buildDataMap.put(GenConstant.DATA_MAP_KEY_SUPER_NAME, getSuperClass().getSimpleName());
         }
     }
 
@@ -143,8 +156,13 @@ public class EntityTemplate extends AbstractTemplate {
     private void handleField(DataMap buildDataMap) {
         GlobalConfig global = buildDataMap.getGlobalConfig();
         MetaTable metaTable = buildDataMap.getMetaTable();
-        List<Field> fields = metaTable.getFields();
-        TemplateConfig template = buildDataMap.getTemplateConfig();
+        List<Field> fields = JsonUtil.copyList(metaTable.getFields(), Field.class);
+        Class<?> clazz = getSuperClass();
+        if (getEnableExcludeSuperField() && clazz != null) {
+            java.lang.reflect.Field[] superFields = clazz.getDeclaredFields();
+            Set<String> superFieldSet = Arrays.stream(superFields).map(java.lang.reflect.Field::getName).collect(Collectors.toSet());
+            fields.removeIf(item -> superFieldSet.contains(item.getJavaName()));
+        }
         buildDataMap.put(GenConstant.DATA_MAP_KEY_FIELDS, fields);
         buildDataMap.put(GenConstant.DATA_MAP_KEY_ENABLE_TABLE_FIELD, getEnableTableField());
         if (global.getEnableExport() || global.getEnableImport()) {

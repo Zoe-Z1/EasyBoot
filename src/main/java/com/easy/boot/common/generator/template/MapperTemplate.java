@@ -112,7 +112,7 @@ public class MapperTemplate extends AbstractTemplate {
         buildDataMap.put(GenConstant.DATA_MAP_KEY_CLASS_NAME, className);
         buildDataMap.put(GenConstant.DATA_MAP_KEY_ENTITY_NAME, entityName);
         if (getSuperClass() != null) {
-            buildDataMap.put(GenConstant.DATA_MAP_KEY_SUPER_NAME, getSuperClass().getName());
+            buildDataMap.put(GenConstant.DATA_MAP_KEY_SUPER_NAME, getSuperClass().getSimpleName());
         }
     }
 

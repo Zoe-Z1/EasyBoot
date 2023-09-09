@@ -156,7 +156,7 @@ public class ControllerTemplate extends AbstractTemplate {
             buildDataMap.put(GenConstant.DATA_MAP_KEY_VO_NAME, voName);
         }
         if (getSuperClass() != null) {
-            buildDataMap.put(GenConstant.DATA_MAP_KEY_SUPER_NAME, getSuperClass().getName());
+            buildDataMap.put(GenConstant.DATA_MAP_KEY_SUPER_NAME, getSuperClass().getSimpleName());
         }
         if (global.getEnableImport()) {
             buildDataMap.put(GenConstant.DATA_MAP_KEY_IMPORT_EXCEL_ERROR_NAME, ImportExcelError.class.getSimpleName());
@@ -171,7 +171,6 @@ public class ControllerTemplate extends AbstractTemplate {
     private void buildPkgDataMap(DataMap buildDataMap) {
         GlobalConfig global = (GlobalConfig) buildDataMap.get(GenConstant.DATA_MAP_KEY_GLOBAL);
         AnnotationConfig annotation = (AnnotationConfig) buildDataMap.get(GenConstant.DATA_MAP_KEY_ANNOTATION);
-        TemplateConfig template = (TemplateConfig) buildDataMap.get(GenConstant.DATA_MAP_KEY_TEMPLATE);
         MetaTable metaTable = (MetaTable) buildDataMap.get(GenConstant.DATA_MAP_KEY_TABLE);
         Set<String> pkgs = new HashSet<>();
         if (annotation.getEnableLog()) {

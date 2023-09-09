@@ -103,8 +103,7 @@ public class ${className} {
                 EasyExcel.write(filePath).head(${entityName}.class)
                         .sheet().registerWriteHandler(new ImportErrorCellWriteHandler(errors))
                         .doWrite(errorList);
-                filePath = FileUtil.getMapPath(filePath, easyFile.getFilePath(),
-                easyFile.getFileMapPath());
+                filePath = FileUtil.getMapPath(filePath, easyFile.getFilePath(), easyFile.getFileMapPath());
             }
             ${ImportVO} importVO = ${ImportVO}.builder()
                     .count(list.size())

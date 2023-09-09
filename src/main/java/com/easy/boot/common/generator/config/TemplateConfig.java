@@ -3,7 +3,6 @@ package com.easy.boot.common.generator.config;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.easy.boot.common.generator.template.*;
-import com.easy.boot.exception.GeneratorException;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -125,7 +124,7 @@ public class TemplateConfig {
 
     public String getTemplateRootPath() {
         if (StrUtil.isEmpty(templateRootPath)) {
-            throw new GeneratorException("模板引擎根路径不能为空");
+            templateRootPath = System.getProperty("user.dir") + "/src/main/resources/templates";
         }
         return templateRootPath;
     }

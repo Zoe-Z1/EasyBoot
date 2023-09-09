@@ -23,26 +23,26 @@ public class FilterConfig {
      * 过滤表前缀
      * 生成代码时，类命名规则将去除该前缀
      */
-    private Set<String> tablePrefix;
+    private Set<String> excludeTablePrefix;
 
     /**
      * 过滤表后缀
      * 生成代码时，类命名规则将去除该后缀
      */
-    private Set<String> tableSuffix;
+    private Set<String> excludeTableSuffix;
 
-    public Set<String> getTablePrefix() {
-        if (tablePrefix == null) {
-            tablePrefix = new HashSet<>();
+    public Set<String> getExcludeTablePrefix() {
+        if (excludeTablePrefix == null) {
+            excludeTablePrefix = new HashSet<>();
         }
-        return tablePrefix;
+        return excludeTablePrefix;
     }
 
-    public Set<String> getTableSuffix() {
-        if (tableSuffix == null) {
-            tableSuffix = new HashSet<>();
+    public Set<String> getExcludeTableSuffix() {
+        if (excludeTableSuffix == null) {
+            excludeTableSuffix = new HashSet<>();
         }
-        return tableSuffix;
+        return excludeTableSuffix;
     }
 
     public static FilterConfig.FilterConfigBuilder builder() {
@@ -51,24 +51,24 @@ public class FilterConfig {
 
     @ToString
     public static class FilterConfigBuilder {
-        private Set<String> tablePrefix;
-        private Set<String> tableSuffix;
+        private Set<String> excludeTablePrefix;
+        private Set<String> excludeTableSuffix;
 
         FilterConfigBuilder() {
         }
 
-        public FilterConfig.FilterConfigBuilder addTablePrefix(String... tablePrefix) {
-            this.tablePrefix = CollUtil.newHashSet(tablePrefix);
+        public FilterConfig.FilterConfigBuilder addExcludeTablePrefix(String... excludeTablePrefix) {
+            this.excludeTablePrefix = CollUtil.newHashSet(excludeTablePrefix);
             return this;
         }
 
-        public FilterConfig.FilterConfigBuilder addTableSuffix(String... tableSuffix) {
-            this.tableSuffix = CollUtil.newHashSet(tableSuffix);
+        public FilterConfig.FilterConfigBuilder addExcludeTableSuffix(String... excludeTableSuffix) {
+            this.excludeTableSuffix = CollUtil.newHashSet(excludeTableSuffix);
             return this;
         }
 
         public FilterConfig build() {
-            return new FilterConfig(this.tablePrefix, this.tableSuffix);
+            return new FilterConfig(this.excludeTablePrefix, this.excludeTableSuffix);
         }
     }
 }

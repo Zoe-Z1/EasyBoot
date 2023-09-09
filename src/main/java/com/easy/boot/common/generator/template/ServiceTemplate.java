@@ -120,7 +120,7 @@ public class ServiceTemplate extends AbstractTemplate {
         buildDataMap.put(GenConstant.DATA_MAP_KEY_UPDATE_DTO_NAME, updateDTOName);
         buildDataMap.put(GenConstant.DATA_MAP_KEY_QUERY_NAME, queryName);
         if (getSuperClass() != null) {
-            buildDataMap.put(GenConstant.DATA_MAP_KEY_SUPER_NAME, getSuperClass().getName());
+            buildDataMap.put(GenConstant.DATA_MAP_KEY_SUPER_NAME, getSuperClass().getSimpleName());
         }
         if (global.getEnableImport()) {
             buildDataMap.put(GenConstant.DATA_MAP_KEY_IMPORT_EXCEL_ERROR_NAME, ImportExcelError.class.getSimpleName());
