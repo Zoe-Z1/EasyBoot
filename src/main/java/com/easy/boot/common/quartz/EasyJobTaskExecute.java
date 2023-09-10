@@ -69,6 +69,8 @@ public class EasyJobTaskExecute extends QuartzJobBean {
                 if (taskLog != null) {
                     taskLog.setEndTime(DateUtil.current());
                     taskLog.setHandleTime(taskLog.getEndTime() - taskLog.getStartTime());
+                    taskLog.setCreateTime(DateUtil.current());
+                    taskLog.setUpdateTime(DateUtil.current());
                     taskLogs.add(taskLog);
                 }
             }

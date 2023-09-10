@@ -1,5 +1,6 @@
 package com.easy.boot.common.log;
 
+import cn.dev33.satoken.SaManager;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
@@ -10,6 +11,7 @@ import com.easy.boot.admin.operationLog.enums.OperateStatusEnum;
 import com.easy.boot.admin.operationLog.enums.OperateTypeEnum;
 import com.easy.boot.admin.operationLog.enums.RoleTypeEnum;
 import com.easy.boot.admin.operationLog.service.IOperationLogService;
+import com.easy.boot.admin.user.entity.AdminUser;
 import com.easy.boot.common.properties.EasyLogFilter;
 import com.easy.boot.handler.EasyMetaObjectHandler;
 import com.easy.boot.utils.IpUtil;
@@ -105,8 +107,7 @@ public class EasyLogAspect {
         if (easyLog == null) {
             return;
         }
-        long startTime = DateUtil.current();
-        operateLog.setStartTime(startTime);
+        operateLog.setStartTime(DateUtil.current());
         // 处理注解上设置的参数
         handleLogParam(easyLog, operateLog);
         // 处理请求参数
@@ -236,11 +237,15 @@ public class EasyLogAspect {
     private void handleOperatorType(OperationLog operateLog) {
         RoleTypeEnum roleType = RoleTypeEnum.UNKNOWN;
         Long createBy = EasyMetaObjectHandler.BY;
+        String createUsername = EasyMetaObjectHandler.USERNAME;
         if (StpUtil.isLogin()) {
-            createBy = Long.parseLong(StpUtil.getLoginId().toString());
+            createBy = StpUtil.getLoginIdAsLong();
+            AdminUser user = (AdminUser) SaManager.getSaTokenDao().getObject(String.valueOf(createBy));
+            createUsername = user.getUsername();
             roleType = RoleTypeEnum.valueOf(StpUtil.getLoginType());
         }
         operateLog.setCreateBy(createBy);
+        operateLog.setCreateUsername(createUsername);
         operateLog.setOperatorType(roleType.getMsg());
     }
 

@@ -65,6 +65,7 @@ public class LoginLogServiceImpl extends ServiceImpl<LoginLogMapper, LoginLog> i
         loginLog.setStatus(dto.getStatus());
         loginLog.setRemarks(dto.getRemarks());
         loginLog.setCreateBy(dto.getUserId());
+        loginLog.setCreateUsername(dto.getUsername());
         save(loginLog);
     }
 

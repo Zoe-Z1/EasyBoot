@@ -116,7 +116,7 @@ public class AdminLoginServiceImpl implements AdminLoginService {
         StpLogic stpLogic = new StpLogic(String.valueOf(RoleTypeEnum.WEB));
         StpUtil.setStpLogic(stpLogic);
         StpUtil.checkLogin();
-        Long id = Long.valueOf(StpUtil.getLoginId().toString());
+        Long id = StpUtil.getLoginIdAsLong();
         AdminUser user = adminUserService.detail(id);
         if (user.getStatus() == 2) {
             throw new BusinessException(SystemErrorEnum.USER_DISABLED);

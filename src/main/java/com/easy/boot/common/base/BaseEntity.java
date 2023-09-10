@@ -42,6 +42,12 @@ public class BaseEntity implements Serializable {
     @ApiModelProperty("创建者")
     private Long createBy;
 
+    /** 创建者账号 */
+    @ExcelIgnore
+    @TableField(fill = FieldFill.INSERT)
+    @ApiModelProperty("创建者账号")
+    private String createUsername;
+
     /** 创建时间 */
     @ColumnWidth(20)
     @ExcelProperty(value = "创建时间", converter = LongTimeToStingTimeConvert.class)
@@ -55,6 +61,12 @@ public class BaseEntity implements Serializable {
     @TableField(fill = FieldFill.INSERT_UPDATE)
     @ApiModelProperty("更新者")
     private Long updateBy;
+
+    /** 更新者账号 */
+    @ExcelIgnore
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    @ApiModelProperty("更新者账号")
+    private String updateUsername;
 
     /** 更新时间 */
     @ExcelIgnore
