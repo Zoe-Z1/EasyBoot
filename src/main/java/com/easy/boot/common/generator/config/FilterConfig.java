@@ -1,10 +1,9 @@
 package com.easy.boot.common.generator.config;
 
-import cn.hutool.core.collection.CollUtil;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -15,6 +14,7 @@ import java.util.Set;
  * @description 过滤配置
  */
 @Setter
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
 public class FilterConfig {
@@ -55,38 +55,5 @@ public class FilterConfig {
             excludeField = new HashSet<>();
         }
         return excludeField;
-    }
-
-    public static FilterConfig.FilterConfigBuilder builder() {
-        return new FilterConfig.FilterConfigBuilder();
-    }
-
-    @ToString
-    public static class FilterConfigBuilder {
-        private Set<String> excludeTablePrefix;
-        private Set<String> excludeTableSuffix;
-        private Set<String> excludeField;
-
-        FilterConfigBuilder() {
-        }
-
-        public FilterConfig.FilterConfigBuilder addExcludeTablePrefix(String... excludeTablePrefix) {
-            this.excludeTablePrefix = CollUtil.newHashSet(excludeTablePrefix);
-            return this;
-        }
-
-        public FilterConfig.FilterConfigBuilder addExcludeTableSuffix(String... excludeTableSuffix) {
-            this.excludeTableSuffix = CollUtil.newHashSet(excludeTableSuffix);
-            return this;
-        }
-
-        public FilterConfig.FilterConfigBuilder addExcludeField(String... excludeField) {
-            this.excludeField = CollUtil.newHashSet(excludeField);
-            return this;
-        }
-
-        public FilterConfig build() {
-            return new FilterConfig(this.excludeTablePrefix, this.excludeTableSuffix, this.excludeField);
-        }
     }
 }

@@ -1,5 +1,6 @@
 package com.easy.boot;
 
+import cn.hutool.core.collection.CollUtil;
 import com.easy.boot.common.generator.config.*;
 import com.easy.boot.common.generator.db.convert.EasyColumnConvertHandler;
 import com.easy.boot.common.generator.execute.GeneratorExecute;
@@ -56,7 +57,7 @@ public class EasyGenerator {
                                         .updateDTO(
                                                 UpdateDTOTemplate.builder()
                                                         .enableExtendsCreateDTO(true)
-                                                        .addIncludeField("id")
+                                                        .includeField(CollUtil.newHashSet("id"))
                                                         .build()
                                         )
                                         .vo(
@@ -67,8 +68,8 @@ public class EasyGenerator {
                                         .build())
                         .filter(
                                 FilterConfig.builder()
-                                        .addExcludeTablePrefix("login_")
-                                        .addExcludeField("id","createBy","createTime","updateBy","updateTime","isDel")
+                                        .excludeTablePrefix(CollUtil.newHashSet("login_"))
+                                        .excludeField(CollUtil.newHashSet("id","createBy","createTime","updateBy","updateTime","isDel"))
                                         .build()
                         )
                         .build()

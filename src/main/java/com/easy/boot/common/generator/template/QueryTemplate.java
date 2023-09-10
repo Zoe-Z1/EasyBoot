@@ -55,6 +55,11 @@ public class QueryTemplate extends AbstractTemplate {
      */
     private Boolean enableExcludeSuperField;
 
+    /**
+     * 全局排除时保留的属性
+     */
+    private Set<String> includeField;
+
     @Override
     protected String getRemarks(String tableRemarks) {
         if (StrUtil.isNotEmpty(remarks)) {
@@ -119,6 +124,13 @@ public class QueryTemplate extends AbstractTemplate {
         return enableExcludeSuperField;
     }
 
+    protected Set<String> getIncludeField() {
+        if (includeField == null) {
+            includeField = new HashSet<>();
+        }
+        return includeField;
+    }
+
     @Override
     public DataMap buildDataMap(DataMap dataMap) {
         DataMap buildDataMap = super.buildDataMap(dataMap);
@@ -153,7 +165,7 @@ public class QueryTemplate extends AbstractTemplate {
         MetaTable metaTable = buildDataMap.getMetaTable();
         FilterConfig filter = buildDataMap.getFilterConfig();
         List<Field> fields = JsonUtil.copyList(metaTable.getFields(), Field.class);
-        fields.removeIf(item -> filter.getExcludeField().contains(item.getJavaName()));
+        fields.removeIf(item -> filter.getExcludeField().contains(item.getJavaName()) && !getIncludeField().contains(item.getJavaName()));
         Class<?> clazz = getSuperClass();
         if (getEnableExcludeSuperField() && clazz != null) {
             java.lang.reflect.Field[] superFields = clazz.getDeclaredFields();
