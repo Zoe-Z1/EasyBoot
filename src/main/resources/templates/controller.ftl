@@ -74,8 +74,8 @@ public class ${className} {
     @ApiOperationSupport(author = "${global.author}")
     @ApiOperation(value = "批量删除${remarks!}")
     @EasyLog(module = "批量删除${remarks!}", operateType = OperateTypeEnum.DELETE)
-    @PostMapping("/batchDel/{ids}")
-    public Result batchDel(@PathVariable List<Long> ids) {
+    @PostMapping("/batchDel")
+    public Result batchDel(@RequestBody List<Long> ids) {
         return Result.r(${serviceCamelName}.deleteBatchByIds(ids));
     }
 

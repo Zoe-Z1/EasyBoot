@@ -84,8 +84,8 @@ public class BlacklistController extends BaseController {
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "批量取消拉黑")
     @EasyLog(module = "批量取消拉黑", operateType = OperateTypeEnum.DELETE)
-    @PostMapping("/batchDel/{ids}")
-    public Result batchDel(@PathVariable List<Long> ids) {
+    @PostMapping("/batchDel")
+    public Result batchDel(@RequestBody List<Long> ids) {
         return Result.r(blacklistService.deleteBatchByIds(ids));
     }
 

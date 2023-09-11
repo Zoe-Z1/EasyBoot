@@ -136,28 +136,4 @@ public class GenerateConfig extends BaseEntity {
                 .templateJson(JsonUtil.toJsonStr(GenerateTemplate.defaultBuild(isOverride)))
                 .build();
     }
-
-    public static GenerateConfig defaultTableBuild() {
-        boolean isOverride = true;
-        boolean isOpen = true;
-        boolean enableImport = true;
-        boolean enableExport = true;
-        boolean enableLog = true;
-        boolean enableBuilder = true;
-
-        return GenerateConfig.builder()
-                .type(2)
-                .packageName(GenConstant.DEFAULT_PACKAGE_NAME)
-                .requestMappingPrefix(GenConstant.DEFAULT_REQUEST_MAPPING_PREFIX)
-                .outputPath(GenConstant.DEFAULT_OUTPUT_PATH)
-                .isOverride(isOverride ? 0 : 1)
-                .isOpen(isOpen ? 0 : 1)
-                .author(GenConstant.DEFAULT_AUTHOR)
-                .enableImport(enableImport ? 0 : 1)
-                .enableExport(enableExport ? 0 : 1)
-                .enableLog(enableLog ? 0 : 1)
-                .enableBuilder(enableBuilder ? 0 : 1)
-                .templateJson(JsonUtil.toJsonStr(GenerateTemplate.defaultBuild(isOverride)))
-                .build();
-    }
 }

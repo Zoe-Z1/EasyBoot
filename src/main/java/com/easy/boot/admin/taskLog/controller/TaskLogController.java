@@ -11,14 +11,12 @@ import com.easy.boot.admin.taskLog.service.ITaskLogService;
 import com.easy.boot.common.base.BaseController;
 import com.easy.boot.common.base.Result;
 import com.easy.boot.common.log.EasyLog;
-import com.easy.boot.common.properties.EasyFile;
 import com.easy.boot.exception.FileException;
 import com.easy.boot.utils.FileUtil;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -68,8 +66,8 @@ public class TaskLogController extends BaseController {
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "批量删除调度日志")
     @EasyLog(module = "批量删除调度日志", operateType = OperateTypeEnum.DELETE)
-    @PostMapping("/batchDel/{ids}")
-    public Result batchDel(@PathVariable List<Long> ids) {
+    @PostMapping("/batchDel")
+    public Result batchDel(@RequestBody List<Long> ids) {
         return Result.r(taskLogService.deleteBatchByIds(ids));
     }
 

@@ -158,7 +158,11 @@ public class EasyLogAspect {
         // 请求方式
         operateLog.setRequestWay(request.getMethod());
         // 请求url
-        operateLog.setRequestUrl(request.getRequestURI());
+        String url = request.getRequestURI();
+        if (url.length() > 250) {
+            url = url.substring(0, 250);
+        }
+        operateLog.setRequestUrl(url);
 
     }
 

@@ -4,21 +4,19 @@ import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.ExcelWriter;
 import com.alibaba.excel.write.metadata.WriteSheet;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.easy.boot.admin.operationLog.enums.OperateTypeEnum;
 import com.easy.boot.admin.loginLog.entity.LoginLog;
 import com.easy.boot.admin.loginLog.entity.LoginLogQuery;
 import com.easy.boot.admin.loginLog.service.ILoginLogService;
+import com.easy.boot.admin.operationLog.enums.OperateTypeEnum;
 import com.easy.boot.common.base.BaseController;
 import com.easy.boot.common.base.Result;
 import com.easy.boot.common.log.EasyLog;
-import com.easy.boot.common.properties.EasyFile;
 import com.easy.boot.exception.FileException;
 import com.easy.boot.utils.FileUtil;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -69,8 +67,8 @@ public class LoginLogController extends BaseController {
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "批量删除登录日志")
     @EasyLog(module = "批量删除登录日志", operateType = OperateTypeEnum.DELETE)
-    @PostMapping("/batchDel/{ids}")
-    public Result batchDel(@PathVariable List<Long> ids) {
+    @PostMapping("/batchDel")
+    public Result batchDel(@RequestBody List<Long> ids) {
         return Result.r(loginLogService.deleteBatchByIds(ids));
     }
 

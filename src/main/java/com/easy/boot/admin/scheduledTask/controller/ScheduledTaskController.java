@@ -90,8 +90,8 @@ public class ScheduledTaskController extends BaseController {
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "批量删除定时任务")
     @EasyLog(module = "批量删除定时任务", operateType = OperateTypeEnum.DELETE)
-    @PostMapping("/batchDel/{ids}")
-    public Result batchDel(@PathVariable List<Long> ids) {
+    @PostMapping("/batchDel")
+    public Result batchDel(@RequestBody List<Long> ids) {
         return Result.r(scheduledTaskService.deleteBatchByIds(ids));
     }
 

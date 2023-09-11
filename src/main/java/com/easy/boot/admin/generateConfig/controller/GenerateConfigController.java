@@ -68,8 +68,8 @@ public class GenerateConfigController extends BaseController {
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "批量重置代码生成Table参数配置")
     @EasyLog(module = "批量重置代码生成Table参数配置", operateType = OperateTypeEnum.DELETE)
-    @PostMapping("/batchDel/{ids}")
-    public Result batchDel(@PathVariable List<Long> ids) {
+    @PostMapping("/batchDel")
+    public Result batchDel(@RequestBody List<Long> ids) {
         return Result.r(generateConfigService.deleteBatchByIds(ids));
     }
 

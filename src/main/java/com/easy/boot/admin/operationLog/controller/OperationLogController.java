@@ -73,8 +73,8 @@ public class OperationLogController extends BaseController {
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "批量删除操作日志")
     @EasyLog(module = "批量删除操作日志", operateType = OperateTypeEnum.DELETE)
-    @PostMapping("/batchDel/{ids}")
-    public Result batchDel(@PathVariable List<Long> ids) {
+    @PostMapping("/batchDel")
+    public Result batchDel(@RequestBody List<Long> ids) {
         return Result.r(operationLogService.deleteBatchByIds(ids));
     }
 
