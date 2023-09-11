@@ -131,7 +131,7 @@ public class SysConfigDomainController extends BaseController {
     @PostMapping("/export")
     public void exportExcel(@Validated @RequestBody SysConfigDomainQuery query) {
         String filePath = FileUtil.getFullPath(easyFile.getExcelPath(), "系统配置域");
-        query.setPageNum(1);
+        query.setPageNum(1L);
         query.setPageSize(maxLimit);
         ExcelWriter build = EasyExcel.write(filePath, SysConfigDomain.class).build();
         WriteSheet writeSheet = EasyExcel.writerSheet("系统配置域").build();

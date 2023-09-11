@@ -2,7 +2,7 @@ package com.easy.boot.common.base;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
@@ -16,7 +16,7 @@ import java.io.Serializable;
  * @author zoe
  * @date 2023/7/22
  */
-@Getter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder
@@ -35,19 +35,4 @@ public class BasePageQuery implements Serializable {
     @Max(value = 200, message = "每页条数不能超过{value}")
     private Long pageSize;
 
-    public void setPageNum(Integer pageNum) {
-        this.pageNum = Long.valueOf(pageNum);
-    }
-
-    public void setPageNum(Long pageNum) {
-        this.pageNum = pageNum;
-    }
-
-    public void setPageSize(Integer pageSize) {
-        this.pageSize = Long.valueOf(pageSize);
-    }
-
-    public void setPageSize(Long pageSize) {
-        this.pageSize = pageSize;
-    }
 }

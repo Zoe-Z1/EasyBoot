@@ -22,7 +22,7 @@ public class BaseController {
     protected EasyFile easyFile;
 
     @Value("${mybatis-plus.global-config.max-limit}")
-    protected Integer maxLimit;
+    protected Long maxLimit;
 
     @Autowired
     protected HttpServletRequest request;

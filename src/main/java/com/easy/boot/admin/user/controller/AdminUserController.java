@@ -160,7 +160,7 @@ public class AdminUserController extends BaseController {
     @PostMapping("/export")
     public void exportExcel(@Validated @RequestBody AdminUserQuery query) {
         String filePath = FileUtil.getFullPath(easyFile.getExcelPath(), "用户");
-        query.setPageNum(1);
+        query.setPageNum(1L);
         query.setPageSize(maxLimit);
         ExcelWriter build = EasyExcel.write(filePath, AdminUser.class)
                 .excludeColumnFieldNames(Collections.singletonList("password"))

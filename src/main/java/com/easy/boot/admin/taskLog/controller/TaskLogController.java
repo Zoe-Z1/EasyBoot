@@ -85,7 +85,7 @@ public class TaskLogController extends BaseController {
     @PostMapping("/export")
     public void exportExcel(@Validated @RequestBody TaskLogQuery query) {
         String filePath = FileUtil.getFullPath(easyFile.getExcelPath(), "调度日志");
-        query.setPageNum(1);
+        query.setPageNum(1L);
         query.setPageSize(maxLimit);
         ExcelWriter build = EasyExcel.write(filePath, TaskLog.class).build();
         WriteSheet writeSheet = EasyExcel.writerSheet("调度日志").build();

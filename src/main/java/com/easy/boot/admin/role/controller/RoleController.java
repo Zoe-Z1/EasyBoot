@@ -150,7 +150,7 @@ public class RoleController extends BaseController {
     @PostMapping("/export")
     public void exportExcel(@Validated @RequestBody RoleQuery query) {
         String filePath = FileUtil.getFullPath(easyFile.getExcelPath(), "角色");
-        query.setPageNum(1);
+        query.setPageNum(1L);
         query.setPageSize(maxLimit);
         ExcelWriter build = EasyExcel.write(filePath, Role.class).build();
         WriteSheet writeSheet = EasyExcel.writerSheet("角色").build();

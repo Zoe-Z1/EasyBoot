@@ -154,7 +154,7 @@ public class SysConfigController extends BaseController {
     @PostMapping("/export")
     public void exportExcel(@Validated @RequestBody SysConfigQuery query) {
         String filePath = FileUtil.getFullPath(easyFile.getExcelPath(), "系统配置");
-        query.setPageNum(1);
+        query.setPageNum(1L);
         query.setPageSize(maxLimit);
         ExcelWriter build = EasyExcel.write(filePath, SysConfigExcelDO.class).build();
         WriteSheet writeSheet = EasyExcel.writerSheet("系统配置").build();

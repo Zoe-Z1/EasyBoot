@@ -86,7 +86,7 @@ public class LoginLogController extends BaseController {
     @PostMapping("/export")
     public void exportExcel(@Validated @RequestBody LoginLogQuery query) {
         String filePath = FileUtil.getFullPath(easyFile.getExcelPath(), "登录日志");
-        query.setPageNum(1);
+        query.setPageNum(1L);
         query.setPageSize(maxLimit);
         ExcelWriter build = EasyExcel.write(filePath, LoginLog.class).build();
         WriteSheet writeSheet = EasyExcel.writerSheet("登录日志").build();

@@ -125,7 +125,7 @@ public class ${className} {
     @PostMapping("/export")
     public void exportExcel(@Validated @RequestBody ${entityName}Query query) {
         String filePath = FileUtil.getFullPath(easyFile.getExcelPath(), "${remarks!}");
-        query.setPageNum(1);
+        query.setPageNum(1L);
         query.setPageSize(maxLimit);
         ExcelWriter build = EasyExcel.write(filePath, ${entityName}.class)
                 .build();

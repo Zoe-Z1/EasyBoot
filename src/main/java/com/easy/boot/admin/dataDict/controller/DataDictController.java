@@ -165,7 +165,7 @@ public class DataDictController extends BaseController {
     @PostMapping("/export")
     public void exportExcel(@Validated @RequestBody DataDictQuery query) {
         String filePath = FileUtil.getFullPath(easyFile.getExcelPath(), "数据字典");
-        query.setPageNum(1);
+        query.setPageNum(1L);
         query.setPageSize(maxLimit);
         ExcelWriter build = EasyExcel.write(filePath, DataDictExcelDO.class).build();
         WriteSheet writeSheet = EasyExcel.writerSheet("数据字典").build();
