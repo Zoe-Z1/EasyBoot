@@ -1,9 +1,8 @@
 package com.easy.boot.admin.generate.service.impl;
 
-import com.easy.boot.admin.generate.entity.GenerateConfig;
+import com.easy.boot.admin.generate.entity.DatabaseTable;
 import com.easy.boot.admin.generate.entity.GenerateTableColumn;
 import com.easy.boot.admin.generate.entity.GenerateTableQuery;
-import com.easy.boot.admin.generate.entity.DatabaseTable;
 import com.easy.boot.admin.generate.mapper.GenerateMapper;
 import com.easy.boot.admin.generate.service.GenerateService;
 import com.easy.boot.common.base.Page;
@@ -49,14 +48,16 @@ public class GenerateServiceImpl implements GenerateService {
     }
 
     @Override
-    public GenerateConfig getGlobalConfig() {
-//        GenerateConfig generateConfig = generateMapper.getGlobalConfig();
-        return null;
-    }
-
-    @Override
-    public GenerateConfig getTableConfig(String tableName) {
-        return null;
+    public DatabaseTable getTableByTableName(String tableName) {
+        String[] splits = url.split("/");
+        String endStr = splits[splits.length - 1];
+        String dbName = endStr.substring(0, endStr.indexOf("?"));
+        GenerateTableQuery query = GenerateTableQuery.builder()
+                .tableName(tableName)
+                .dbName(dbName)
+                .tableType(GenConstant.TABLE_TYPE_BASE_TABLE)
+                .build();
+        return generateMapper.getTableByTableName(query);
     }
 
     @Override

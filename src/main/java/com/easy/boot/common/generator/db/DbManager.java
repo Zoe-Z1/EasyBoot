@@ -91,7 +91,10 @@ public class DbManager {
             }
         }
         // 去重
-        distinctTables(list);
+        list = list.stream().collect(Collectors.collectingAndThen(Collectors.toCollection(() ->
+                        new TreeSet<>(Comparator.comparing(MetaTable::getName))),
+                ArrayList::new)
+        );
         // 处理表中的字段信息
         for (MetaTable metaTable : list) {
             handleTableFields(metaTable);
@@ -114,8 +117,12 @@ public class DbManager {
             Set<MetaTable> tables = new HashSet<>();
             while (rs.next()) {
                 String name = rs.getString(DbConstant.TABLE_NAME);
+                String tableRemarks = rs.getString(DbConstant.TABLE_REMARKS);
+                if (StrUtil.isNotEmpty(tableRemarks)) {
+                    tableRemarks = tableRemarks.replaceAll("\n", "\t");
+                }
                 String filterName = filterTableName(name);
-                String remarks = StrUtil.isEmpty(table.getRemarks()) ? rs.getString(DbConstant.TABLE_REMARKS) : table.getRemarks();
+                String remarks = StrUtil.isEmpty(table.getRemarks()) ? tableRemarks : table.getRemarks();
                 MetaTable metaTable = MetaTable.builder()
                         .name(name)
                         .beanName(NamingCase.toPascalCase(filterName))
@@ -161,20 +168,6 @@ public class DbManager {
     }
 
     /**
-     * 根据表名进行表数据去重
-     * @param tables 表数据集合
-     * @return List<MetaTable>
-     */
-    private void distinctTables(List<MetaTable> tables) {
-        tables.stream()
-                .collect(
-                        Collectors.collectingAndThen(Collectors.toCollection(() ->
-                                new TreeSet<>(Comparator.comparing(MetaTable::getName))),
-                                ArrayList::new)
-                );
-    }
-
-    /**
      * 处理表字段信息
      * @param metaTable 表数据
      */
@@ -192,6 +185,10 @@ public class DbManager {
             ResultSet rs = dbMetaData.getColumns(connection.getCatalog(), null, metaTable.getName(), null);
             while (rs.next()) {
                 String columnName = rs.getString(DbConstant.COLUMN_NAME);
+                String remarks = rs.getString(DbConstant.COLUMN_REMARKS);
+                if (StrUtil.isNotEmpty(remarks)) {
+                    remarks = remarks.replaceAll("\n", "\t");
+                }
                 String javaName = NamingCase.toCamelCase(columnName);
                 String columnType = rs.getString(DbConstant.COLUMN_TYPE);
                 JavaTypeEnum javaType = columnConvertHandler.convert(columnType);
@@ -204,7 +201,7 @@ public class DbManager {
                         .javaTypePackageName(javaType.getPackageName())
                         .size(rs.getInt(DbConstant.COLUMN_SIZE))
                         .nullable(rs.getInt(DbConstant.COLUMN_NULLABLE))
-                        .remarks(rs.getString(DbConstant.COLUMN_REMARKS))
+                        .remarks(remarks)
                         .build();
                 fields.add(field);
             }

@@ -1,7 +1,6 @@
 package com.easy.boot.admin.generate.service;
 
 import com.easy.boot.admin.generate.entity.DatabaseTable;
-import com.easy.boot.admin.generate.entity.GenerateConfig;
 import com.easy.boot.admin.generate.entity.GenerateTableColumn;
 import com.easy.boot.admin.generate.entity.GenerateTableQuery;
 import com.easy.boot.common.base.Page;
@@ -16,24 +15,18 @@ import java.util.List;
 public interface GenerateService {
 
     /**
-     * 获取数据库Table 列表
+     * 获取数据库Table列表
      * @param query
      * @return
      */
     Page<DatabaseTable> selectPage(GenerateTableQuery query);
 
     /**
-     * 获取代码生成全局配置
-     * @return
-     */
-    GenerateConfig getGlobalConfig();
-
-    /**
-     * 获取代码生成Table配置
+     * 根据表名获取数据库Table信息
      * @param tableName
      * @return
      */
-    GenerateConfig getTableConfig(String tableName);
+    DatabaseTable getTableByTableName(String tableName);
 
     /**
      * 获取代码生成Table列

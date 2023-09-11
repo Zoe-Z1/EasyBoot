@@ -1,6 +1,5 @@
 package com.easy.boot.common.properties;
 
-import com.easy.boot.common.redis.RedisKeyConstant;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,11 +24,6 @@ import java.io.Serializable;
 public class EasyLock implements Serializable {
 
     private static final long serialVersionUID = -7434312891547319851L;
-
-    /**
-     * 锁key
-     */
-    private String key = RedisKeyConstant.EASY_REDIS_LOCK;
 
     /**
      * 锁持有时间/s

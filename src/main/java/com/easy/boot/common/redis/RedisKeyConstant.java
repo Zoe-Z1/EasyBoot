@@ -7,6 +7,6 @@ package com.easy.boot.common.redis;
  */
 public class RedisKeyConstant {
 
-    public static final String EASY_REDIS_LOCK = "easy:redis:lock";
+    public static final String EASY_REDIS_LOCK = "easy:redis:lock:";
 
 }

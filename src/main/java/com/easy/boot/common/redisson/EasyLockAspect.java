@@ -61,7 +61,8 @@ public class EasyLockAspect {
         }
         Object[] args = point.getArgs();
         com.easy.boot.common.properties.EasyLock lock = this.getLock(annotation, method, args);
-        RLock rLock = redissonClient.getLock(lock.getKey());
+        String key = this.getKey(annotation.key(), point, method, args);
+        RLock rLock = redissonClient.getLock(key);
         boolean isLock = rLock.tryLock(lock.getWaitTime(), lock.getLeaseTime(), TimeUnit.SECONDS);
         Object result = null;
         if (isLock) {
@@ -95,17 +96,6 @@ public class EasyLockAspect {
      * @return
      */
     private com.easy.boot.common.properties.EasyLock getLock(EasyLock easyLock, Method method, Object[] args) {
-        String key = easyLock.key();
-        if (StrUtil.isEmpty(key)) {
-            key = globalEasyLock.getKey();
-        } else {
-            if (key.startsWith("#")) {
-                key = this.parseSpel(key, method, args);
-                if (StrUtil.isNotEmpty(key)) {
-                    key = RedisKeyEnum.LOCK.getKey(key);
-                }
-            }
-        }
         long leaseTime = easyLock.leaseTime();
         if (leaseTime <= 0) {
             leaseTime = globalEasyLock.getLeaseTime();
@@ -115,10 +105,33 @@ public class EasyLockAspect {
             waitTime = globalEasyLock.getWaitTime();
         }
         return com.easy.boot.common.properties.EasyLock.builder()
-                .key(key)
                 .leaseTime(leaseTime)
                 .waitTime(waitTime)
                 .build();
+    }
+
+    /**
+     * 获取分布式锁的key
+     * @param key
+     * @param point
+     * @param method
+     * @param args
+     * @return
+     */
+    private String getKey(String key, ProceedingJoinPoint point, Method method, Object[] args) {
+        if (StrUtil.isEmpty(key)) {
+            String className = point.getTarget().getClass().getName();
+            String methodName = point.getSignature().getName();
+            key = RedisKeyEnum.LOCK.getKey(className + ":" + methodName);
+        } else {
+            if (key.startsWith("#")) {
+                key = this.parseSpel(key, method, args);
+                if (StrUtil.isNotEmpty(key)) {
+                    key = RedisKeyEnum.LOCK.getKey(key);
+                }
+            }
+        }
+        return key;
     }
 
     /**

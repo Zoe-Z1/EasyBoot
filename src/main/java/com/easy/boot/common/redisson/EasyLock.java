@@ -15,6 +15,7 @@ public @interface EasyLock {
     /**
      * 锁key 支持SpEL表达式
      * 格式: #{spEL} 表达式
+     * 不设置时默认取 类名 ：方法名
      */
     String key() default "";
 

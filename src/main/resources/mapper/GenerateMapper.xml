@@ -57,4 +57,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		limit ${pageSize * (pageNum - 1)},#{pageSize}
 	</select>
 
-</mapper> 
+	<select id="getTableByTableName" parameterType="com.easy.boot.admin.generate.entity.GenerateTableQuery" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List"/>
+		from INFORMATION_SCHEMA.TABLES
+		where
+		TABLE_TYPE = #{tableType}
+		AND TABLE_SCHEMA = #{dbName}
+		AND TABLE_NAME = #{tableName}
+    </select>
+</mapper>

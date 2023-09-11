@@ -1,6 +1,7 @@
 package com.easy.boot;
 
 import cn.hutool.core.collection.CollUtil;
+import com.easy.boot.common.generator.GenConstant;
 import com.easy.boot.common.generator.config.*;
 import com.easy.boot.common.generator.db.convert.EasyColumnConvertHandler;
 import com.easy.boot.common.generator.execute.GeneratorExecute;
@@ -23,8 +24,8 @@ public class EasyGenerator {
                 GeneratorConfig.builder()
                         .global(
                                 GlobalConfig.builder()
-                                        .packageName("com.easy.boot.admin")
-                                        .requestMappingPrefix("/admin/")
+                                        .packageName(GenConstant.DEFAULT_PACKAGE_NAME)
+                                        .requestMappingPrefix("/admin")
                                         .outputPath("/Users/zoe/Downloads/template/")
                                         .isOverride(true)
                                         .isOpen(true)
@@ -68,13 +69,13 @@ public class EasyGenerator {
                                         .build())
                         .filter(
                                 FilterConfig.builder()
-                                        .excludeTablePrefix(CollUtil.newHashSet("login_"))
+                                        .excludeTablePrefix(CollUtil.newHashSet(""))
                                         .excludeField(CollUtil.newHashSet("id","createBy","createTime","updateBy","updateTime","isDel"))
                                         .build()
                         )
                         .build()
         )
-                .tables("login_log")
+                .tables("generate_config")
                 .execute();
 
     }

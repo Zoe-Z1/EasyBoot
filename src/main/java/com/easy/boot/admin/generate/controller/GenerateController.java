@@ -1,7 +1,6 @@
 package com.easy.boot.admin.generate.controller;
 
 import com.easy.boot.admin.generate.entity.DatabaseTable;
-import com.easy.boot.admin.generate.entity.GenerateConfig;
 import com.easy.boot.admin.generate.entity.GenerateTableColumn;
 import com.easy.boot.admin.generate.entity.GenerateTableQuery;
 import com.easy.boot.admin.generate.service.GenerateService;
@@ -47,26 +46,11 @@ public class GenerateController {
     }
 
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "获取代码生成全局配置")
-    @EasyLog(module = "获取代码生成全局配置", operateType = OperateTypeEnum.SELECT)
-    @GetMapping(value = "/globalConfig")
-    public Result<GenerateConfig> globalConfig() {
-        return Result.success(generateService.getGlobalConfig());
-    }
-
-    @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "获取代码生成Table配置")
-    @EasyLog(module = "获取代码生成Table配置", operateType = OperateTypeEnum.SELECT)
-    @GetMapping(value = "/config/{tableName}")
-    public Result<GenerateConfig> config(@PathVariable String tableName) {
-        return Result.success(generateService.getTableConfig(tableName));
-    }
-
-    @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "获取代码生成Table中的列")
     @EasyLog(module = "获取代码生成Table中的列", operateType = OperateTypeEnum.SELECT)
     @GetMapping(value = "/column/{tableName}")
     public Result<List<GenerateTableColumn>> column(@PathVariable String tableName) {
         return Result.success(generateService.selectTableColumnList(tableName));
     }
+
 }

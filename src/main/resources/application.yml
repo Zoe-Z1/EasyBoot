@@ -10,7 +10,6 @@ easy:
     filter:
       fields: password,token,salt,oldPassword,newPassword
   lock:
-    key: easy:redis:lock
     lease-time: 30
     wait-time: 5
   file:

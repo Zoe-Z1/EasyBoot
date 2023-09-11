@@ -28,4 +28,11 @@ public interface GenerateMapper {
      * @return
      */
     List<DatabaseTable> selectPage(GenerateTableQuery query);
+
+    /**
+     * 获取数据库Table信息
+     * @param query
+     * @return
+     */
+    DatabaseTable getTableByTableName(GenerateTableQuery query);
 }

@@ -7,6 +7,17 @@ package com.easy.boot.common.generator;
  */
 public class GenConstant {
 
+    /*------------------------- 默认常量值 -------------------------*/
+
+    public static final String DEFAULT_PACKAGE_NAME = "com.easy.boot.admin";
+
+    public static final String DEFAULT_REQUEST_MAPPING_PREFIX = "/admin";
+
+    public static final String DEFAULT_OUTPUT_PATH = "/Users/zoe/Downloads/template/";
+
+    public static final String DEFAULT_AUTHOR = "zoe";
+
+
     /*------------------------- 模块名 -------------------------*/
 
     public static final String MODULE_CONTROLLER = "controller";

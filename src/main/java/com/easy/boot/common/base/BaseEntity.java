@@ -5,6 +5,7 @@ import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.annotation.write.style.ColumnWidth;
 import com.baomidou.mybatisplus.annotation.*;
 import com.easy.boot.common.excel.converter.LongTimeToStingTimeConvert;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.swagger.annotations.ApiModelProperty;
@@ -75,6 +76,7 @@ public class BaseEntity implements Serializable {
     private Long updateTime;
 
     /** 删除状态 */
+    @JsonIgnore
     @ExcelIgnore
     @ApiModelProperty("删除状态：0：未删除，1：已删除")
     @TableLogic
