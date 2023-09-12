@@ -14,7 +14,6 @@ import com.easy.boot.common.excel.ImportVO;
 import com.easy.boot.common.excel.UploadDTO;
 import com.easy.boot.common.excel.handler.ImportErrorCellWriteHandler;
 import com.easy.boot.common.log.EasyLog;
-import com.easy.boot.exception.FileException;
 import com.easy.boot.utils.FileUtil;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.annotations.Api;
@@ -121,83 +120,64 @@ public class AdminUserController extends BaseController {
     @ApiOperation(value = "导入用户")
     @EasyLog(module = "导入用户", operateType = OperateTypeEnum.IMPORT)
     @PostMapping("/import")
-    public Result<ImportVO> importExcel(UploadDTO dto) {
+    public Result<ImportVO> importExcel(UploadDTO dto) throws IOException {
         Assert.notNull(dto.getFile(), "文件不能为空");
-        try {
-            List<AdminUser> list = EasyExcel.read(dto.getFile().getInputStream())
-                    .head(AdminUser.class)
-                    .excelType(FileUtil.getExcelType(dto.getFile()))
-                    .sheet()
-                    .doReadSync();
-            List<ImportExcelError> errors = new ArrayList<>();
-            List<AdminUser> errorList = new ArrayList<>();
-            // 导入Excel处理
-            adminUserService.importExcel(list, errorList, errors);
-            String filePath = "";
-            if (!errorList.isEmpty()) {
-                // 将错误数据写到Excel文件
-                filePath = FileUtil.getFullPath(easyFile.getFilePath(), "用户导入错误信息");
-                EasyExcel.write(filePath).head(AdminUser.class)
-                        .sheet().registerWriteHandler(new ImportErrorCellWriteHandler(errors))
-                        .doWrite(errorList);
-                filePath = FileUtil.getMapPath(filePath, easyFile.getFilePath(), easyFile.getFileMapPath());
-            }
-            ImportVO importVO = ImportVO.builder()
-                    .count(list.size())
-                    .errorCount(errorList.size())
-                    .errorFilePath(filePath)
-                    .build();
-            return Result.success(importVO);
-        } catch (IOException e) {
-            log.error("导入Excel失败 e -> ", e);
-            throw new FileException("导入Excel失败");
+        List<AdminUser> list = EasyExcel.read(dto.getFile().getInputStream())
+                .head(AdminUser.class)
+                .excelType(FileUtil.getExcelType(dto.getFile()))
+                .sheet()
+                .doReadSync();
+        List<ImportExcelError> errors = new ArrayList<>();
+        List<AdminUser> errorList = new ArrayList<>();
+        // 导入Excel处理
+        adminUserService.importExcel(list, errorList, errors);
+        String filePath = "";
+        if (!errorList.isEmpty()) {
+            // 将错误数据写到Excel文件
+            filePath = FileUtil.getFullPath(easyFile.getFilePath(), "用户导入错误信息");
+            EasyExcel.write(filePath).head(AdminUser.class)
+                    .sheet().registerWriteHandler(new ImportErrorCellWriteHandler(errors))
+                    .doWrite(errorList);
+            filePath = FileUtil.getMapPath(filePath, easyFile.getFilePath(), easyFile.getFileMapPath());
         }
+        ImportVO importVO = ImportVO.builder()
+                .count(list.size())
+                .errorCount(errorList.size())
+                .errorFilePath(filePath)
+                .build();
+        return Result.success(importVO);
     }
 
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "导出用户")
     @EasyLog(module = "导出用户", operateType = OperateTypeEnum.EXPORT)
     @PostMapping("/export")
-    public void exportExcel(@Validated @RequestBody AdminUserQuery query) {
-        String filePath = FileUtil.getFullPath(easyFile.getExcelPath(), "用户");
+    public void exportExcel(@Validated @RequestBody AdminUserQuery query) throws IOException {
         query.setPageNum(1L);
         query.setPageSize(maxLimit);
-        ExcelWriter build = EasyExcel.write(filePath, AdminUser.class)
+        ExcelWriter writer = EasyExcel.write(response.getOutputStream(), AdminUser.class)
                 .excludeColumnFieldNames(Collections.singletonList("password"))
                 .build();
-        WriteSheet writeSheet = EasyExcel.writerSheet("用户").build();
+        WriteSheet writeSheet = EasyExcel.writerSheet("用户信息列表").build();
         while (true) {
             IPage<AdminUser> page = adminUserService.selectPage(query);
-            build.write(page.getRecords(), writeSheet);
+            writer.write(page.getRecords(), writeSheet);
             if (page.getCurrent() >= page.getPages()) {
                 break;
             }
             query.setPageNum(query.getPageNum() + 1);
         }
-        build.finish();
-        try {
-            FileUtil.downloadAndDelete(filePath, response);
-        } catch (IOException e) {
-            log.error("导出Excel失败 e -> ", e);
-            throw new FileException("导出Excel失败");
-        }
+        writer.finish();
     }
 
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "下载用户导入模板")
     @EasyLog(module = "下载用户导入模板", operateType = OperateTypeEnum.DOWNLOAD)
     @PostMapping("/download")
-    public void downloadTemplate() {
-        String filePath = FileUtil.getFullPath(easyFile.getExcelPath(), "用户导入模板");
-        EasyExcel.write(filePath, AdminUser.class)
+    public void downloadTemplate() throws IOException {
+        EasyExcel.write(response.getOutputStream(), AdminUser.class)
                 .excludeColumnFieldNames(Collections.singletonList("createTime"))
                 .sheet("用户导入模板")
                 .doWrite(new ArrayList<>());
-        try {
-            FileUtil.downloadAndDelete(filePath, response);
-        } catch (IOException e) {
-            log.error("下载用户导入模板失败 e -> ", e);
-            throw new FileException("下载用户导入模板失败");
-        }
     }
 }

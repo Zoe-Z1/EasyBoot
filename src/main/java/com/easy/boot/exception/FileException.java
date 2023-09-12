@@ -3,7 +3,7 @@ package com.easy.boot.exception;
 import com.easy.boot.exception.enums.SystemErrorEnum;
 
 /**
- * @describe 文件上传异常
+ * @describe 文件相关异常
  * @author zoe
  * @date 2023/8/6
  */

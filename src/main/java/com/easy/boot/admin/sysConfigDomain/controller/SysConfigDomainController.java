@@ -120,8 +120,8 @@ public class SysConfigDomainController extends BaseController {
                     .build();
             return Result.success(importVO);
         } catch (IOException e) {
-            log.error("导入Excel失败 e -> ", e);
-            throw new FileException("导入Excel失败");
+            log.error("Excel导入出错 e -> ", e);
+            throw new FileException("Excel导入出错，请稍后再试");
         }
     }
 
@@ -129,12 +129,11 @@ public class SysConfigDomainController extends BaseController {
     @ApiOperation(value = "导出系统配置域")
     @EasyLog(module = "导出系统配置域", operateType = OperateTypeEnum.EXPORT)
     @PostMapping("/export")
-    public void exportExcel(@Validated @RequestBody SysConfigDomainQuery query) {
-        String filePath = FileUtil.getFullPath(easyFile.getExcelPath(), "系统配置域");
+    public void exportExcel(@Validated @RequestBody SysConfigDomainQuery query) throws IOException {
         query.setPageNum(1L);
         query.setPageSize(maxLimit);
-        ExcelWriter build = EasyExcel.write(filePath, SysConfigDomain.class).build();
-        WriteSheet writeSheet = EasyExcel.writerSheet("系统配置域").build();
+        ExcelWriter build = EasyExcel.write(response.getOutputStream(), SysConfigDomain.class).build();
+        WriteSheet writeSheet = EasyExcel.writerSheet("系统配置域信息列表").build();
         while (true) {
             IPage<SysConfigDomain> page = sysConfigDomainService.selectPage(query);
             build.write(page.getRecords(), writeSheet);
@@ -144,29 +143,16 @@ public class SysConfigDomainController extends BaseController {
             query.setPageNum(query.getPageNum() + 1);
         }
         build.finish();
-        try {
-            FileUtil.downloadAndDelete(filePath, response);
-        } catch (IOException e) {
-            log.error("导出Excel失败 e -> ", e);
-            throw new FileException("导出Excel失败");
-        }
     }
 
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "下载系统配置域导入模板")
     @EasyLog(module = "下载系统配置域导入模板", operateType = OperateTypeEnum.DOWNLOAD)
     @PostMapping("/download")
-    public void downloadTemplate() {
-        String filePath = FileUtil.getFullPath(easyFile.getExcelPath(), "系统配置域导入模板");
-        EasyExcel.write(filePath, SysConfigDomain.class)
+    public void downloadTemplate() throws IOException {
+        EasyExcel.write(response.getOutputStream(), SysConfigDomain.class)
                 .excludeColumnFieldNames(Collections.singletonList("createTime"))
                 .sheet("系统配置域导入模板")
                 .doWrite(new ArrayList<>());
-        try {
-            FileUtil.downloadAndDelete(filePath, response);
-        } catch (IOException e) {
-            log.error("下载系统配置域导入模板失败 e -> ", e);
-            throw new FileException("下载系统配置域导入模板失败");
-        }
     }
 }

@@ -154,8 +154,8 @@ public class DataDictController extends BaseController {
                     .build();
             return Result.success(importVO);
         } catch (IOException e) {
-            log.error("导入Excel失败 e -> ", e);
-            throw new FileException("导入Excel失败");
+            log.error("Excel导入出错 e -> ", e);
+            throw new FileException("Excel导入出错，请稍后再试");
         }
     }
 
@@ -163,12 +163,11 @@ public class DataDictController extends BaseController {
     @ApiOperation(value = "导出数据字典")
     @EasyLog(module = "导出数据字典", operateType = OperateTypeEnum.EXPORT)
     @PostMapping("/export")
-    public void exportExcel(@Validated @RequestBody DataDictQuery query) {
-        String filePath = FileUtil.getFullPath(easyFile.getExcelPath(), "数据字典");
+    public void exportExcel(@Validated @RequestBody DataDictQuery query) throws IOException {
         query.setPageNum(1L);
         query.setPageSize(maxLimit);
-        ExcelWriter build = EasyExcel.write(filePath, DataDictExcelDO.class).build();
-        WriteSheet writeSheet = EasyExcel.writerSheet("数据字典").build();
+        ExcelWriter build = EasyExcel.write(response.getOutputStream(), DataDictExcelDO.class).build();
+        WriteSheet writeSheet = EasyExcel.writerSheet("数据字典信息列表").build();
         while (true) {
             IPage<DataDict> page = dataDictService.selectPage(query);
             DataDictDomain dictDomain = dataDictDomainService.getById(query.getDomainId());
@@ -188,29 +187,16 @@ public class DataDictController extends BaseController {
             query.setPageNum(query.getPageNum() + 1);
         }
         build.finish();
-        try {
-            FileUtil.downloadAndDelete(filePath, response);
-        } catch (IOException e) {
-            log.error("导出Excel失败 e -> ", e);
-            throw new FileException("导出Excel失败");
-        }
     }
 
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "下载数据字典导入模板")
     @EasyLog(module = "下载数据字典导入模板", operateType = OperateTypeEnum.DOWNLOAD)
     @PostMapping("/download")
-    public void downloadTemplate() {
-        String filePath = FileUtil.getFullPath(easyFile.getExcelPath(), "数据字典导入模板");
-        EasyExcel.write(filePath, DataDict.class)
+    public void downloadTemplate() throws IOException {
+        EasyExcel.write(response.getOutputStream(), DataDict.class)
                 .excludeColumnFieldNames(Collections.singletonList("createTime"))
                 .sheet("数据字典导入模板")
                 .doWrite(new ArrayList<>());
-        try {
-            FileUtil.downloadAndDelete(filePath, response);
-        } catch (IOException e) {
-            log.error("下载数据字典导入模板失败 e -> ", e);
-            throw new FileException("下载数据字典导入模板失败");
-        }
     }
 }

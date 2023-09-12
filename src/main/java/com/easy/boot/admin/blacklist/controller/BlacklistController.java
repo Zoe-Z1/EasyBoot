@@ -13,8 +13,6 @@ import com.easy.boot.admin.operationLog.enums.OperateTypeEnum;
 import com.easy.boot.common.base.BaseController;
 import com.easy.boot.common.base.Result;
 import com.easy.boot.common.log.EasyLog;
-import com.easy.boot.exception.FileException;
-import com.easy.boot.utils.FileUtil;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -93,12 +91,11 @@ public class BlacklistController extends BaseController {
     @ApiOperation(value = "导出黑名单")
     @EasyLog(module = "导出黑名单", operateType = OperateTypeEnum.EXPORT)
     @PostMapping("/export")
-    public void exportExcel(@Validated @RequestBody BlacklistQuery query) {
-        String filePath = FileUtil.getFullPath(easyFile.getExcelPath(), "黑名单");
+    public void exportExcel(@Validated @RequestBody BlacklistQuery query) throws IOException {
         query.setPageNum(1L);
         query.setPageSize(maxLimit);
-        ExcelWriter build = EasyExcel.write(filePath, Blacklist.class).build();
-        WriteSheet writeSheet = EasyExcel.writerSheet("黑名单").build();
+        ExcelWriter build = EasyExcel.write(response.getOutputStream(), Blacklist.class).build();
+        WriteSheet writeSheet = EasyExcel.writerSheet("黑名单信息列表").build();
         while (true) {
             IPage<Blacklist> page = blacklistService.selectPage(query);
             build.write(page.getRecords(), writeSheet);
@@ -108,11 +105,5 @@ public class BlacklistController extends BaseController {
             query.setPageNum(query.getPageNum() + 1);
         }
         build.finish();
-        try {
-            FileUtil.downloadAndDelete(filePath, response);
-        } catch (IOException e) {
-            log.error("导出Excel失败 e -> ", e);
-            throw new FileException("导出Excel失败");
-        }
     }
 }

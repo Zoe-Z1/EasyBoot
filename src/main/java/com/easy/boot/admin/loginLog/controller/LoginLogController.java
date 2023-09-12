@@ -11,8 +11,6 @@ import com.easy.boot.admin.operationLog.enums.OperateTypeEnum;
 import com.easy.boot.common.base.BaseController;
 import com.easy.boot.common.base.Result;
 import com.easy.boot.common.log.EasyLog;
-import com.easy.boot.exception.FileException;
-import com.easy.boot.utils.FileUtil;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -84,12 +82,11 @@ public class LoginLogController extends BaseController {
     @ApiOperation(value = "导出登录日志")
     @EasyLog(module = "导出登录日志", operateType = OperateTypeEnum.EXPORT)
     @PostMapping("/export")
-    public void exportExcel(@Validated @RequestBody LoginLogQuery query) {
-        String filePath = FileUtil.getFullPath(easyFile.getExcelPath(), "登录日志");
+    public void exportExcel(@Validated @RequestBody LoginLogQuery query) throws IOException {
         query.setPageNum(1L);
         query.setPageSize(maxLimit);
-        ExcelWriter build = EasyExcel.write(filePath, LoginLog.class).build();
-        WriteSheet writeSheet = EasyExcel.writerSheet("登录日志").build();
+        ExcelWriter build = EasyExcel.write(response.getOutputStream(), LoginLog.class).build();
+        WriteSheet writeSheet = EasyExcel.writerSheet("登录日志信息列表").build();
         while (true) {
             IPage<LoginLog> page = loginLogService.selectPage(query);
             build.write(page.getRecords(), writeSheet);
@@ -99,11 +96,5 @@ public class LoginLogController extends BaseController {
             query.setPageNum(query.getPageNum() + 1);
         }
         build.finish();
-        try {
-            FileUtil.downloadAndDelete(filePath, response);
-        } catch (IOException e) {
-            log.error("导出Excel失败 e -> ", e);
-            throw new FileException("导出Excel失败");
-        }
     }
 }

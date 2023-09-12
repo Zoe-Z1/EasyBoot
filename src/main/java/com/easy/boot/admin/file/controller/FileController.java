@@ -29,7 +29,7 @@ import java.io.IOException;
 @Api(tags = "文件相关接口")
 @RestController
 @RequestMapping("/admin")
-public class UploadController extends BaseController {
+public class FileController extends BaseController {
 
     @Resource
     private EasyFile easyFile;
@@ -79,14 +79,9 @@ public class UploadController extends BaseController {
     @ApiOperation(value = "下载文件")
     @EasyLog(module = "下载文件", operateType = OperateTypeEnum.DOWNLOAD)
     @PostMapping("/download")
-    public void download(String path) {
+    public void download(String path) throws IOException {
         String filePath = FileUtil.inverseAnalysis(path, easyFile);
         FileUtil.checkPath(filePath, easyFile);
-        try {
-            FileUtil.download(filePath, response);
-        } catch (IOException e) {
-            log.error("文件下载失败 e --->>> ", e);
-            throw new FileException("文件下载失败");
-        }
+        FileUtil.download(filePath, response);
     }
 }

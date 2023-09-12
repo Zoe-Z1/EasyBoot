@@ -11,11 +11,11 @@ import com.easy.boot.exception.enums.SystemErrorEnum;
 import org.springframework.http.MediaType;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
@@ -112,21 +112,10 @@ public class FileUtil extends cn.hutool.core.io.FileUtil {
         //通过文件的路径读取文件字节流
         byte[] bytes = FileUtil.readBytes(path);
         //通过response的输出流返回文件
-        OutputStream os = response.getOutputStream();
+        ServletOutputStream os = response.getOutputStream();
         os.write(bytes);
         os.flush();
         os.close();
-    }
-
-    /**
-     * 下载后删除
-     * @param path 文件路径
-     * @param response
-     * @throws IOException
-     */
-    public static void downloadAndDelete(String path, HttpServletResponse response) throws IOException {
-        download(path, response);
-        del(path);
     }
 
     /**

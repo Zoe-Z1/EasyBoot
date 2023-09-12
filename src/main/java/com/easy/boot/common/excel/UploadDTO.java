@@ -17,7 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 @ApiModel(value = "Excel导入请求对象", description = "Excel导入请求对象")
 public class UploadDTO {
 
-    @ApiModelProperty(value = "文件")
+    @ApiModelProperty(required = true, value = "文件")
     @JSONField(serialize = false)
     private MultipartFile file;
 }

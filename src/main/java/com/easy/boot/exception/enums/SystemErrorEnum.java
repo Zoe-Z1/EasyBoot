@@ -25,10 +25,10 @@ public enum SystemErrorEnum {
     IP_UNKNOWN(205,"IP未知，无法访问"),
 
     /** 没有角色权限 */
-    NO_ROLE(401,"没有角色权限"),
+    NO_ROLE(401,"没有角色权限，无法访问"),
 
     /** 没有菜单权限 */
-    NO_PERMISSION(402,"没有菜单权限"),
+    NO_PERMISSION(402,"没有菜单权限，无法访问"),
 
     /** 认证失败 */
     AUTHENTICATION_FAILURE(403,"身份认证失败,请重新授权"),
@@ -37,7 +37,7 @@ public enum SystemErrorEnum {
     NOT_FOUND(404, "找不到请求的路径"),
 
     /** 系统出错 */
-    SYSTEM_ERROR(500, "系统异常"),
+    SYSTEM_ERROR(500, "系统异常，请稍后再试"),
 
     /** 调用方法出错 */
     CALL_ERROR(501,"调用方法异常"),
@@ -49,28 +49,34 @@ public enum SystemErrorEnum {
     SCHEDULER_ERROR(503,"定时任务执行异常"),
 
     /** 数据解析出错 */
-    JSON_PARSE_ERROR(504,"数据解析异常"),
+    JSON_PARSE_ERROR(504,"数据解析异常，请确认数据格式"),
 
     /** 文件上传出错 */
-    UPLOAD_ERROR(505,"文件上传异常"),
+    UPLOAD_ERROR(505,"文件上传失败，请稍后再试"),
 
     /** 文件大小超出 */
     UPLOAD_MAX_SIZE_EXCEEDED_ERROR(506,"文件大小超过限制"),
 
     /** 下载文件出错 */
-    DOWNLOAD_ERROR(507,"下载文件异常"),
+    DOWNLOAD_ERROR(507,"下载文件失败，请稍后再试"),
 
     /** 代码生成出错 */
-    GENERATOR_ERROR(508, "代码生成异常"),
+    GENERATOR_ERROR(508, "代码生成失败，请稍后再试"),
+
+    /** 文件导入出错 */
+    IMPORT_ERROR(509,"文件导入失败，请稍后再试"),
+
+    /** 文件导出出错 */
+    EXPORT_ERROR(510,"文件导出失败，请稍后再试"),
 
     /** 业务逻辑出错 */
-    BUSINESS_ERROR(600,"业务逻辑异常"),
+    BUSINESS_ERROR(600,"操作失败，请稍后再试"),
 
     /** http请求异常 */
-    HTTP_REQUEST_ERROR(700,"http请求异常"),
+    HTTP_REQUEST_ERROR(700,"Http请求异常"),
 
     /** 获取不到锁 */
-    TRY_LOCK_ERROR(800,"获取锁异常"),
+    TRY_LOCK_ERROR(800,"前方拥堵，请稍后再试"),
 
 
     /*------------------------用户异常返回枚举------------------------*/
@@ -91,7 +97,7 @@ public enum SystemErrorEnum {
 
     /*------------------------验证码异常返回枚举------------------------*/
 
-    RENDER_ERROR(1100,"获取验证码异常"),
+    RENDER_ERROR(1100,"获取验证码出错，请稍后再试"),
 
     VALIDATE_ERROR(1101,"验证码错误"),
 

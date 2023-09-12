@@ -109,8 +109,8 @@ public class OperationLogController extends BaseController {
 
             return Result.success();
         } catch (IOException e) {
-            log.error("导入Excel失败 e -> ", e);
-            throw new FileException("导入Excel失败");
+            log.error("Excel导入出错 e -> ", e);
+            throw new FileException("Excel导入出错，请稍后再试");
         }
     }
 
@@ -118,12 +118,11 @@ public class OperationLogController extends BaseController {
     @ApiOperation(value = "导出操作日志")
     @EasyLog(module = "导出操作日志", operateType = OperateTypeEnum.EXPORT)
     @PostMapping("/export")
-    public void exportExcel(@Validated @RequestBody OperationLogQuery query) {
-        String filePath = FileUtil.getFullPath(easyFile.getExcelPath(), "操作日志");
+    public void exportExcel(@Validated @RequestBody OperationLogQuery query) throws IOException {
         query.setPageNum(1L);
         query.setPageSize(maxLimit);
-        ExcelWriter build = EasyExcel.write(filePath, OperationLog.class).build();
-        WriteSheet writeSheet = EasyExcel.writerSheet("操作日志").build();
+        ExcelWriter build = EasyExcel.write(response.getOutputStream(), OperationLog.class).build();
+        WriteSheet writeSheet = EasyExcel.writerSheet("操作日志信息列表").build();
         while (true) {
             IPage<OperationLog> page = operationLogService.selectPage(query);
             build.write(page.getRecords(), writeSheet);
@@ -133,12 +132,6 @@ public class OperationLogController extends BaseController {
             query.setPageNum(query.getPageNum() + 1);
         }
         build.finish();
-        try {
-            FileUtil.downloadAndDelete(filePath, response);
-        } catch (IOException e) {
-            log.error("导出Excel失败 e -> ", e);
-            throw new FileException("导出Excel失败");
-        }
     }
 
 }
