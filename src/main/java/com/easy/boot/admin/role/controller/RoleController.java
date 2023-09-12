@@ -5,9 +5,9 @@ import com.alibaba.excel.ExcelWriter;
 import com.alibaba.excel.write.metadata.WriteSheet;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.easy.boot.admin.operationLog.enums.OperateTypeEnum;
-import com.easy.boot.admin.post.entity.Post;
 import com.easy.boot.admin.role.entity.*;
 import com.easy.boot.admin.role.service.IRoleService;
+import com.easy.boot.admin.user.entity.AdminUser;
 import com.easy.boot.admin.userRole.service.IUserRoleService;
 import com.easy.boot.common.base.BaseController;
 import com.easy.boot.common.base.Result;
@@ -16,7 +16,6 @@ import com.easy.boot.common.excel.ImportVO;
 import com.easy.boot.common.excel.UploadDTO;
 import com.easy.boot.common.excel.handler.ImportErrorCellWriteHandler;
 import com.easy.boot.common.log.EasyLog;
-import com.easy.boot.exception.FileException;
 import com.easy.boot.utils.FileUtil;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.annotations.Api;
@@ -27,8 +26,10 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Collections;
 import java.util.List;
 
@@ -111,37 +112,33 @@ public class RoleController extends BaseController {
     @ApiOperation(value = "导入角色")
     @EasyLog(module = "导入角色", operateType = OperateTypeEnum.IMPORT)
     @PostMapping("/import")
-    public Result<ImportVO> importExcel(UploadDTO dto) {
+    public Result<ImportVO> importExcel(UploadDTO dto) throws IOException {
         Assert.notNull(dto.getFile(), "文件不能为空");
-        try {
-            List<Role> list = EasyExcel.read(dto.getFile().getInputStream())
-                    .head(Role.class)
-                    .excelType(FileUtil.getExcelType(dto.getFile()))
-                    .sheet()
-                    .doReadSync();
-            List<ImportExcelError> errors = new ArrayList<>();
-            List<Role> errorList = new ArrayList<>();
-            // 导入Excel处理
-            roleService.importExcel(list, errorList, errors);
-            String filePath = "";
-            if (!errorList.isEmpty()) {
-                // 将错误数据写到Excel文件
-                filePath = FileUtil.getFullPath(easyFile.getFilePath(), "角色导入错误信息");
-                EasyExcel.write(filePath).head(Post.class)
-                        .sheet().registerWriteHandler(new ImportErrorCellWriteHandler(errors))
-                        .doWrite(errorList);
-                filePath = FileUtil.getMapPath(filePath, easyFile.getFilePath(), easyFile.getFileMapPath());
-            }
-            ImportVO importVO = ImportVO.builder()
-                    .count(list.size())
-                    .errorCount(errorList.size())
-                    .errorFilePath(filePath)
-                    .build();
-            return Result.success(importVO);
-        } catch (IOException e) {
-            log.error("Excel导入出错 e -> ", e);
-            throw new FileException("Excel导入出错，请稍后再试");
+        List<Role> list = EasyExcel.read(dto.getFile().getInputStream())
+                .head(Role.class)
+                .excelType(FileUtil.getExcelType(dto.getFile()))
+                .sheet()
+                .doReadSync();
+        List<ImportExcelError> errors = new ArrayList<>();
+        List<Role> errorList = new ArrayList<>();
+        // 导入Excel处理
+        roleService.importExcel(list, errorList, errors);
+        String base64 = "";
+        if (!errorList.isEmpty()) {
+            // 将错误数据写到Excel文件
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            EasyExcel.write(out).head(AdminUser.class)
+                    .sheet("角色导入错误信息列表")
+                    .registerWriteHandler(new ImportErrorCellWriteHandler(errors))
+                    .doWrite(errorList);
+            base64 = Base64.getEncoder().encodeToString(out.toByteArray());
         }
+        ImportVO importVO = ImportVO.builder()
+                .count(list.size())
+                .errorCount(errorList.size())
+                .errorBase64(base64)
+                .build();
+        return Result.success(importVO);
     }
 
     @ApiOperationSupport(author = "zoe")

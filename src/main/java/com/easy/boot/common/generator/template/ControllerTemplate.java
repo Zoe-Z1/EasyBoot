@@ -19,7 +19,6 @@ import com.easy.boot.common.generator.config.GlobalConfig;
 import com.easy.boot.common.generator.config.TemplateConfig;
 import com.easy.boot.common.generator.db.MetaTable;
 import com.easy.boot.common.log.EasyLog;
-import com.easy.boot.exception.FileException;
 import com.easy.boot.utils.BeanUtil;
 import com.easy.boot.utils.FileUtil;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
@@ -31,6 +30,7 @@ import org.springframework.util.Assert;
 import org.springframework.validation.annotation.Validated;
 
 import javax.annotation.Resource;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.*;
 
@@ -188,15 +188,13 @@ public class ControllerTemplate extends AbstractTemplate {
             pkgs.add(ImportVO.class.getName());
             pkgs.add(FileUtil.class.getName());
             pkgs.add(IOException.class.getName());
-            pkgs.add(FileException.class.getName());
+            pkgs.add(ByteArrayOutputStream.class.getName());
         }
         if (global.getEnableExport()) {
             pkgs.add(EasyExcel.class.getName());
             pkgs.add(ExcelWriter.class.getName());
             pkgs.add(WriteSheet.class.getName());
-            pkgs.add(FileUtil.class.getName());
             pkgs.add(IOException.class.getName());
-            pkgs.add(FileException.class.getName());
         }
         if (getSuperClass() != null) {
             pkgs.add(getSuperClass().getName());

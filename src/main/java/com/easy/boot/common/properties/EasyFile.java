@@ -49,11 +49,6 @@ public class EasyFile implements Serializable {
     private String imagePath = "/Users/zoe/Downloads/image";
 
     /**
-     * excel导出临时生成路径
-     */
-    private String excelPath = "/Users/zoe/Downloads/excel";
-
-    /**
      * 文件最大大小，单位/MB
      */
     private Integer maxFileSize = 10;
@@ -113,13 +108,4 @@ public class EasyFile implements Serializable {
         return imagePath;
     }
 
-    public String getExcelPath() {
-        if (!excelPath.endsWith("/")) {
-            excelPath = excelPath + "/";
-        }
-        if (!excelPath.startsWith("/")) {
-            excelPath = "/" + excelPath;
-        }
-        return excelPath;
-    }
 }

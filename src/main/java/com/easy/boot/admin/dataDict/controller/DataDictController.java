@@ -9,6 +9,7 @@ import com.easy.boot.admin.dataDict.service.IDataDictService;
 import com.easy.boot.admin.dataDictDomain.entity.DataDictDomain;
 import com.easy.boot.admin.dataDictDomain.service.DataDictDomainService;
 import com.easy.boot.admin.operationLog.enums.OperateTypeEnum;
+import com.easy.boot.admin.user.entity.AdminUser;
 import com.easy.boot.common.base.BaseController;
 import com.easy.boot.common.base.Result;
 import com.easy.boot.common.excel.ImportExcelError;
@@ -17,7 +18,6 @@ import com.easy.boot.common.excel.UploadDTO;
 import com.easy.boot.common.excel.handler.ImportErrorCellWriteHandler;
 import com.easy.boot.common.log.EasyLog;
 import com.easy.boot.exception.BusinessException;
-import com.easy.boot.exception.FileException;
 import com.easy.boot.utils.BeanUtil;
 import com.easy.boot.utils.FileUtil;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
@@ -29,11 +29,9 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -124,39 +122,35 @@ public class DataDictController extends BaseController {
     @ApiOperation(value = "导入数据字典")
     @EasyLog(module = "导入数据字典", operateType = OperateTypeEnum.IMPORT)
     @PostMapping("/import")
-    public Result<ImportVO> importExcel(UploadDTO dto, Long domainId) {
+    public Result<ImportVO> importExcel(UploadDTO dto, Long domainId) throws IOException {
         Assert.notNull(dto.getFile(), "文件不能为空");
         Assert.notNull(domainId, "数据字典域ID不能为空");
-        try {
-            List<DataDict> list = EasyExcel.read(dto.getFile().getInputStream())
-                    .head(DataDict.class)
-                    .excelType(FileUtil.getExcelType(dto.getFile()))
-                    .sheet()
-                    .doReadSync();
-            list.forEach(item -> item.setDomainId(domainId));
-            List<ImportExcelError> errors = new ArrayList<>();
-            List<DataDict> errorList = new ArrayList<>();
-            // 导入Excel处理
-            dataDictService.importExcel(list, errorList, errors);
-            String filePath = "";
-            if (!errorList.isEmpty()) {
-                // 将错误数据写到Excel文件
-                filePath = FileUtil.getFullPath(easyFile.getFilePath(), "数据字典导入错误信息");
-                EasyExcel.write(filePath).head(DataDict.class)
-                        .sheet().registerWriteHandler(new ImportErrorCellWriteHandler(errors))
-                        .doWrite(errorList);
-                filePath = FileUtil.getMapPath(filePath, easyFile.getFilePath(), easyFile.getFileMapPath());
-            }
-            ImportVO importVO = ImportVO.builder()
-                    .count(list.size())
-                    .errorCount(errorList.size())
-                    .errorFilePath(filePath)
-                    .build();
-            return Result.success(importVO);
-        } catch (IOException e) {
-            log.error("Excel导入出错 e -> ", e);
-            throw new FileException("Excel导入出错，请稍后再试");
+        List<DataDict> list = EasyExcel.read(dto.getFile().getInputStream())
+                .head(DataDict.class)
+                .excelType(FileUtil.getExcelType(dto.getFile()))
+                .sheet()
+                .doReadSync();
+        list.forEach(item -> item.setDomainId(domainId));
+        List<ImportExcelError> errors = new ArrayList<>();
+        List<DataDict> errorList = new ArrayList<>();
+        // 导入Excel处理
+        dataDictService.importExcel(list, errorList, errors);
+        String base64 = "";
+        if (!errorList.isEmpty()) {
+            // 将错误数据写到Excel文件
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            EasyExcel.write(out).head(AdminUser.class)
+                    .sheet("数据字典导入错误信息列表")
+                    .registerWriteHandler(new ImportErrorCellWriteHandler(errors))
+                    .doWrite(errorList);
+            base64 = Base64.getEncoder().encodeToString(out.toByteArray());
         }
+        ImportVO importVO = ImportVO.builder()
+                .count(list.size())
+                .errorCount(errorList.size())
+                .errorBase64(base64)
+                .build();
+        return Result.success(importVO);
     }
 
     @ApiOperationSupport(author = "zoe")

@@ -21,6 +21,6 @@ public class ImportVO {
     @ApiModelProperty(value = "错误条数")
     private Integer errorCount;
 
-    @ApiModelProperty(value = "错误文件下载地址")
-    private String errorFilePath;
+    @ApiModelProperty(value = "错误文件Base64")
+    private String errorBase64;
 }

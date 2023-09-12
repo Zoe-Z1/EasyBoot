@@ -2,7 +2,6 @@ easy:
   file:
     file-path: /Users/zoe/Downloads/file
     image-path: /Users/zoe/Downloads/image
-    excel-path: /Users/zoe/Downloads/excel
 
 spring:
   datasource:

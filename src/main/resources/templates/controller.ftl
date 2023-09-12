@@ -95,19 +95,20 @@ public class ${className} {
         List<${entityName}> errorList = new ArrayList<>();
         // 导入Excel处理
         ${serviceCamelName}.importExcel(list, errorList, errors);
-        String filePath = "";
+        String base64 = "";
         if (!errorList.isEmpty()) {
             // 将错误数据写到Excel文件
-            filePath = FileUtil.getFullPath(easyFile.getFilePath(), "${remarks!}导入错误信息");
-            EasyExcel.write(filePath).head(${entityName}.class)
-                    .sheet().registerWriteHandler(new ImportErrorCellWriteHandler(errors))
-                    .doWrite(errorList);
-            filePath = FileUtil.getMapPath(filePath, easyFile.getFilePath(), easyFile.getFileMapPath());
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            EasyExcel.write(out).head(AdminUser.class)
+                .sheet("${remarks!}导入错误信息列表")
+                .registerWriteHandler(new ImportErrorCellWriteHandler(errors))
+                .doWrite(errorList);
+            base64 = Base64.getEncoder().encodeToString(out.toByteArray());
         }
         ${ImportVO} importVO = ${ImportVO}.builder()
                 .count(list.size())
                 .errorCount(errorList.size())
-                .errorFilePath(filePath)
+                .errorBase64(base64)
                 .build();
                 return Result.success(importVO);
     }

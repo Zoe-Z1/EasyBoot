@@ -12,10 +12,9 @@ import com.easy.boot.admin.operationLog.enums.OperateTypeEnum;
 import com.easy.boot.admin.operationLog.service.IOperationLogService;
 import com.easy.boot.common.base.BaseController;
 import com.easy.boot.common.base.Result;
-import com.easy.boot.common.excel.UploadDTO;
 import com.easy.boot.common.excel.ImportVO;
+import com.easy.boot.common.excel.UploadDTO;
 import com.easy.boot.common.log.EasyLog;
-import com.easy.boot.exception.FileException;
 import com.easy.boot.utils.FileUtil;
 import com.easy.boot.utils.JsonUtil;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
@@ -90,28 +89,23 @@ public class OperationLogController extends BaseController {
     @ApiOperation(value = "导入操作日志 - 用于测试")
     @EasyLog(module = "导入操作日志 - 用于测试", operateType = OperateTypeEnum.IMPORT)
     @PostMapping("/import")
-    public Result<ImportVO> importExcel(UploadDTO dto) {
+    public Result<ImportVO> importExcel(UploadDTO dto) throws IOException {
         Assert.notNull(dto.getFile(), "文件不能为空");
-        try {
-            List<OperationLog> list = EasyExcel.read(dto.getFile().getInputStream())
-                    .head(OperationLog.class)
-                    .excelType(FileUtil.getExcelType(dto.getFile()))
-                    .sheet()
-                    .doReadSync();
-            long start = DateUtil.current();
-            List<OperationLogUpdateDTO> updateDTOS = JsonUtil.copyList(list, OperationLogUpdateDTO.class);
-            long end = DateUtil.current();
-            long time = end - start;
+        List<OperationLog> list = EasyExcel.read(dto.getFile().getInputStream())
+                .head(OperationLog.class)
+                .excelType(FileUtil.getExcelType(dto.getFile()))
+                .sheet()
+                .doReadSync();
+        long start = DateUtil.current();
+        List<OperationLogUpdateDTO> updateDTOS = JsonUtil.copyList(list, OperationLogUpdateDTO.class);
+        long end = DateUtil.current();
+        long time = end - start;
 //            operationLogService.saveBatch(list);
-            System.out.println("DateUtil.start() = " + start);
-            System.out.println("DateUtil.end() = " + end);
-            System.out.println("DateUtil.time() = " + time);
+        System.out.println("DateUtil.start() = " + start);
+        System.out.println("DateUtil.end() = " + end);
+        System.out.println("DateUtil.time() = " + time);
 
-            return Result.success();
-        } catch (IOException e) {
-            log.error("Excel导入出错 e -> ", e);
-            throw new FileException("Excel导入出错，请稍后再试");
-        }
+        return Result.success();
     }
 
     @ApiOperationSupport(author = "zoe")
