@@ -3,8 +3,7 @@ package com.easy.boot.admin.user.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.easy.boot.admin.user.entity.*;
-import com.easy.boot.admin.user.entity.*;
-import com.easy.boot.common.excel.ImportExcelError;
+import com.easy.boot.common.excel.entity.ImportExcelError;
 
 import java.util.List;
 

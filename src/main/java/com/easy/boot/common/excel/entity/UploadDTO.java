@@ -1,4 +1,4 @@
-package com.easy.boot.common.excel;
+package com.easy.boot.common.excel.entity;
 
 import com.alibaba.fastjson2.annotation.JSONField;
 import io.swagger.annotations.ApiModel;

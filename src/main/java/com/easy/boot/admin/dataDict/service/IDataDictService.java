@@ -6,7 +6,7 @@ import com.easy.boot.admin.dataDict.entity.DataDict;
 import com.easy.boot.admin.dataDict.entity.DataDictCreateDTO;
 import com.easy.boot.admin.dataDict.entity.DataDictQuery;
 import com.easy.boot.admin.dataDict.entity.DataDictUpdateDTO;
-import com.easy.boot.common.excel.ImportExcelError;
+import com.easy.boot.common.excel.entity.ImportExcelError;
 
 import java.util.List;
 

@@ -17,7 +17,7 @@ import com.easy.boot.admin.role.entity.RoleUpdateDTO;
 import com.easy.boot.admin.role.mapper.RoleMapper;
 import com.easy.boot.admin.role.service.IRoleService;
 import com.easy.boot.common.base.BaseEntity;
-import com.easy.boot.common.excel.ImportExcelError;
+import com.easy.boot.common.excel.entity.ImportExcelError;
 import com.easy.boot.exception.BusinessException;
 import com.easy.boot.utils.BeanUtil;
 import org.springframework.stereotype.Service;

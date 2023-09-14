@@ -4,7 +4,7 @@ import com.easy.boot.admin.file.entity.UploadVO;
 import com.easy.boot.admin.operationLog.enums.OperateTypeEnum;
 import com.easy.boot.common.base.BaseController;
 import com.easy.boot.common.base.Result;
-import com.easy.boot.common.excel.UploadDTO;
+import com.easy.boot.common.excel.entity.UploadDTO;
 import com.easy.boot.common.log.EasyLog;
 import com.easy.boot.utils.FileUtil;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;

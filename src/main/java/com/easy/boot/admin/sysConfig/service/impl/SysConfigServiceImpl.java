@@ -13,7 +13,7 @@ import com.easy.boot.admin.sysConfig.entity.SysConfigUpdateDTO;
 import com.easy.boot.admin.sysConfig.mapper.SysConfigMapper;
 import com.easy.boot.admin.sysConfig.service.ISysConfigService;
 import com.easy.boot.common.base.BaseEntity;
-import com.easy.boot.common.excel.ImportExcelError;
+import com.easy.boot.common.excel.entity.ImportExcelError;
 import com.easy.boot.exception.BusinessException;
 import com.easy.boot.utils.BeanUtil;
 import org.springframework.stereotype.Service;

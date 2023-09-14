@@ -5,7 +5,7 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.easy.boot.common.excel.ImportExcelError;
+import com.easy.boot.common.excel.entity.ImportExcelError;
 import com.easy.boot.common.generator.DataMap;
 import com.easy.boot.common.generator.GenConstant;
 import com.easy.boot.common.generator.config.GlobalConfig;

@@ -9,10 +9,11 @@ import com.easy.boot.admin.user.entity.*;
 import com.easy.boot.admin.user.service.AdminUserService;
 import com.easy.boot.common.base.BaseController;
 import com.easy.boot.common.base.Result;
-import com.easy.boot.common.excel.ImportExcelError;
-import com.easy.boot.common.excel.ImportVO;
-import com.easy.boot.common.excel.UploadDTO;
-import com.easy.boot.common.excel.handler.ImportErrorCellWriteHandler;
+import com.easy.boot.common.excel.entity.ImportExcelError;
+import com.easy.boot.common.excel.entity.ImportVO;
+import com.easy.boot.common.excel.entity.UploadDTO;
+import com.easy.boot.common.excel.handler.ExportExcelErrorCellWriteHandler;
+import com.easy.boot.common.excel.handler.ExportExcelSelectCellWriteHandler;
 import com.easy.boot.common.log.EasyLog;
 import com.easy.boot.utils.FileUtil;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
@@ -139,7 +140,8 @@ public class AdminUserController extends BaseController {
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             EasyExcel.write(out).head(AdminUser.class)
                     .sheet("用户导入错误信息列表")
-                    .registerWriteHandler(new ImportErrorCellWriteHandler(errors))
+                    .registerWriteHandler(new ExportExcelSelectCellWriteHandler(AdminUser.class))
+                    .registerWriteHandler(new ExportExcelErrorCellWriteHandler(errors))
                     .doWrite(errorList);
             base64 = Base64.getEncoder().encodeToString(out.toByteArray());
         }
@@ -159,6 +161,7 @@ public class AdminUserController extends BaseController {
         query.setPageNum(1L);
         query.setPageSize(maxLimit);
         ExcelWriter writer = EasyExcel.write(response.getOutputStream(), AdminUser.class)
+                .registerWriteHandler(new ExportExcelSelectCellWriteHandler(AdminUser.class))
                 .excludeColumnFieldNames(Collections.singletonList("password"))
                 .build();
         WriteSheet writeSheet = EasyExcel.writerSheet("用户信息列表").build();
@@ -179,6 +182,7 @@ public class AdminUserController extends BaseController {
     @PostMapping("/download")
     public void downloadTemplate() throws IOException {
         EasyExcel.write(response.getOutputStream(), AdminUser.class)
+                .registerWriteHandler(new ExportExcelSelectCellWriteHandler(AdminUser.class))
                 .excludeColumnFieldNames(Collections.singletonList("createTime"))
                 .sheet("用户导入模板")
                 .doWrite(new ArrayList<>());

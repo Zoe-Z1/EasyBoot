@@ -6,7 +6,7 @@ import com.easy.boot.admin.sysConfig.entity.SysConfigQuery;
 import com.easy.boot.admin.sysConfig.entity.SysConfigCreateDTO;
 import com.easy.boot.admin.sysConfig.entity.SysConfigUpdateDTO;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.easy.boot.common.excel.ImportExcelError;
+import com.easy.boot.common.excel.entity.ImportExcelError;
 
 import java.util.List;
 

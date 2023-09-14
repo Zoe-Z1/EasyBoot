@@ -3,7 +3,7 @@ package com.easy.boot.common.excel.handler;
 import cn.hutool.core.collection.CollUtil;
 import com.alibaba.excel.write.handler.CellWriteHandler;
 import com.alibaba.excel.write.handler.context.CellWriteHandlerContext;
-import com.easy.boot.common.excel.ImportExcelError;
+import com.easy.boot.common.excel.entity.ImportExcelError;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.Cell;
@@ -18,11 +18,11 @@ import java.util.List;
 /**
  * @author zoe
  * @date 2023/8/9
- * @description 导入错误列导出自定义处理器
+ * @description Excel导出错误数据自定义处理器
  */
 @Slf4j
 @AllArgsConstructor
-public class ImportErrorCellWriteHandler implements CellWriteHandler {
+public class ExportExcelErrorCellWriteHandler implements CellWriteHandler {
 
     private List<ImportExcelError> errors;
 
@@ -33,14 +33,13 @@ public class ImportErrorCellWriteHandler implements CellWriteHandler {
         if (CollUtil.isEmpty(errors)) {
             return;
         }
-        // 这里可以对cell进行任何操作
         for (ImportExcelError error : errors) {
             if (cell.getRowIndex() == error.getRowIndex() && cell.getColumnIndex() == error.getColumnIndex()) {
-                log.info("对第{}行，第{}列进行错误批注", cell.getRowIndex(), cell.getColumnIndex());
                 // 存在批注，跳过
                 if (cell.getCellComment() != null) {
                     continue;
                 }
+                log.info("对第{}行，第{}列进行错误批注", cell.getRowIndex(), cell.getColumnIndex());
                 ClientAnchor anchor = new XSSFClientAnchor();
                 anchor.setCol1(cell.getColumnIndex());
                 anchor.setRow1(cell.getRowIndex());

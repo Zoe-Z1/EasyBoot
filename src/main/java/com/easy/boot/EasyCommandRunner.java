@@ -26,14 +26,15 @@ public class EasyCommandRunner implements CommandLineRunner {
         if (enable){
             String os = System.getProperty("os.name");
             String path = "http://localhost:" + port + "/doc.html";
-            log.info("knife4j addr --->>  " + path);
 
-//            if (os.toLowerCase().contains("mac")) {
+            if (os.toLowerCase().contains("mac")) {
+                log.info("knife4j addr --->>  " + path);
 //                Runtime.getRuntime().exec("open " + path);
-//            }
-//            if (os.toLowerCase().contains("win")) {
+            }
+            if (os.toLowerCase().contains("win")) {
+                log.info("knife4j addr --->>  " + path);
 //                Runtime.getRuntime().exec("cmd   /c   start   " + path);
-//            }
+            }
         }
     }
 }

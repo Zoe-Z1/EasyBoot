@@ -3,7 +3,7 @@ package com.easy.boot.admin.sysConfigDomain.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.easy.boot.admin.sysConfig.entity.SysConfig;
-import com.easy.boot.common.excel.ImportExcelError;
+import com.easy.boot.common.excel.entity.ImportExcelError;
 import com.easy.boot.admin.sysConfigDomain.entity.SysConfigDomain;
 import com.easy.boot.admin.sysConfigDomain.entity.SysConfigDomainCreateDTO;
 import com.easy.boot.admin.sysConfigDomain.entity.SysConfigDomainQuery;

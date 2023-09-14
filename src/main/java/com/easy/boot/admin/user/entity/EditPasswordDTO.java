@@ -1,6 +1,5 @@
 package com.easy.boot.admin.user.entity;
 
-import com.easy.boot.common.validator.Update;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -24,7 +23,7 @@ import javax.validation.constraints.NotNull;
 @ApiModel("用户修改密码实体")
 public class EditPasswordDTO {
 
-    @NotNull(message = "ID不能为空", groups = {Update.class})
+    @NotNull(message = "ID不能为空")
     @ApiModelProperty(value = "ID")
     private Long id;
 

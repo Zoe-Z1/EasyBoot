@@ -21,7 +21,7 @@ import com.easy.boot.admin.user.service.AdminUserService;
 import com.easy.boot.admin.userPost.service.IUserPostService;
 import com.easy.boot.admin.userRole.service.IUserRoleService;
 import com.easy.boot.common.base.BaseEntity;
-import com.easy.boot.common.excel.ImportExcelError;
+import com.easy.boot.common.excel.entity.ImportExcelError;
 import com.easy.boot.common.redis.EasyRedisManager;
 import com.easy.boot.common.redis.RedisKeyEnum;
 import com.easy.boot.exception.BusinessException;

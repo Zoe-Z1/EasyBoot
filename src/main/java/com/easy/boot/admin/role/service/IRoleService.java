@@ -6,7 +6,7 @@ import com.easy.boot.admin.role.entity.Role;
 import com.easy.boot.admin.role.entity.RoleCreateDTO;
 import com.easy.boot.admin.role.entity.RoleQuery;
 import com.easy.boot.admin.role.entity.RoleUpdateDTO;
-import com.easy.boot.common.excel.ImportExcelError;
+import com.easy.boot.common.excel.entity.ImportExcelError;
 
 import java.util.List;
 

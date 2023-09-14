@@ -6,7 +6,7 @@ import com.easy.boot.admin.post.entity.PostQuery;
 import com.easy.boot.admin.post.entity.PostCreateDTO;
 import com.easy.boot.admin.post.entity.PostUpdateDTO;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.easy.boot.common.excel.ImportExcelError;
+import com.easy.boot.common.excel.entity.ImportExcelError;
 
 import java.util.List;
 

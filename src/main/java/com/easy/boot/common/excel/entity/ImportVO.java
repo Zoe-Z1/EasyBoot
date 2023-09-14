@@ -1,4 +1,4 @@
-package com.easy.boot.common.excel;
+package com.easy.boot.common.excel.entity;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

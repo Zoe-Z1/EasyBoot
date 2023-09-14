@@ -11,11 +11,11 @@ import com.easy.boot.admin.dataDictDomain.entity.DataDictDomain;
 import com.easy.boot.admin.dataDictDomain.entity.DataDictDomainCreateDTO;
 import com.easy.boot.admin.dataDictDomain.entity.DataDictDomainUpdateDTO;
 import com.easy.boot.common.base.BaseEntity;
-import com.easy.boot.common.excel.ImportExcelError;
+import com.easy.boot.common.excel.entity.ImportExcelError;
 import com.easy.boot.exception.BusinessException;
 import com.easy.boot.admin.dataDictDomain.entity.DataDictDomainQuery;
 import com.easy.boot.admin.dataDictDomain.mapper.DataDictDomainMapper;
-import com.easy.boot.admin.dataDictDomain.service.DataDictDomainService;
+import com.easy.boot.admin.dataDictDomain.service.IDataDictDomainService;
 import com.easy.boot.utils.BeanUtil;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
 * @description 数据字典域 服务实现类
 */
 @Service
-public class DataDictDomainServiceImpl extends ServiceImpl<DataDictDomainMapper, DataDictDomain> implements DataDictDomainService {
+public class DataDictDomainServiceImpl extends ServiceImpl<DataDictDomainMapper, DataDictDomain> implements IDataDictDomainService {
 
     @Resource
     private IDataDictService dataDictionaryService;

@@ -6,7 +6,7 @@ import com.easy.boot.admin.dataDict.entity.DataDict;
 import com.easy.boot.admin.dataDictDomain.entity.DataDictDomain;
 import com.easy.boot.admin.dataDictDomain.entity.DataDictDomainCreateDTO;
 import com.easy.boot.admin.dataDictDomain.entity.DataDictDomainUpdateDTO;
-import com.easy.boot.common.excel.ImportExcelError;
+import com.easy.boot.common.excel.entity.ImportExcelError;
 import com.easy.boot.admin.dataDictDomain.entity.DataDictDomainQuery;
 
 import java.util.List;
@@ -17,7 +17,7 @@ import java.util.Map;
 * @date 2023/08/01
 * @description 数据字典域 服务类
 */
-public interface DataDictDomainService extends IService<DataDictDomain> {
+public interface IDataDictDomainService extends IService<DataDictDomain> {
 
     /**
     * 查询数据字典域
@@ -40,7 +40,7 @@ public interface DataDictDomainService extends IService<DataDictDomain> {
     DataDictDomain detail(Long id);
 
     /**
-     * 根据根据字典域编码获取字典
+     * 根据根据字典域编码获取字典域详情
      * @param code
      * @return
      */

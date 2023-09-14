@@ -12,10 +12,10 @@ import com.easy.boot.admin.sysConfigDomain.service.ISysConfigDomainService;
 import com.easy.boot.admin.user.entity.AdminUser;
 import com.easy.boot.common.base.BaseController;
 import com.easy.boot.common.base.Result;
-import com.easy.boot.common.excel.ImportExcelError;
-import com.easy.boot.common.excel.ImportVO;
-import com.easy.boot.common.excel.UploadDTO;
-import com.easy.boot.common.excel.handler.ImportErrorCellWriteHandler;
+import com.easy.boot.common.excel.entity.ImportExcelError;
+import com.easy.boot.common.excel.entity.ImportVO;
+import com.easy.boot.common.excel.entity.UploadDTO;
+import com.easy.boot.common.excel.handler.ExportExcelErrorCellWriteHandler;
 import com.easy.boot.common.log.EasyLog;
 import com.easy.boot.exception.BusinessException;
 import com.easy.boot.utils.BeanUtil;
@@ -134,7 +134,7 @@ public class SysConfigController extends BaseController {
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             EasyExcel.write(out).head(AdminUser.class)
                     .sheet("系统配置导入错误信息列表")
-                    .registerWriteHandler(new ImportErrorCellWriteHandler(errors))
+                    .registerWriteHandler(new ExportExcelErrorCellWriteHandler(errors))
                     .doWrite(errorList);
             base64 = Base64.getEncoder().encodeToString(out.toByteArray());
         }

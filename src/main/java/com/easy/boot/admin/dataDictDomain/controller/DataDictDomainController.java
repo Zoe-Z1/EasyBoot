@@ -8,15 +8,15 @@ import com.easy.boot.admin.dataDictDomain.entity.DataDictDomain;
 import com.easy.boot.admin.dataDictDomain.entity.DataDictDomainCreateDTO;
 import com.easy.boot.admin.dataDictDomain.entity.DataDictDomainQuery;
 import com.easy.boot.admin.dataDictDomain.entity.DataDictDomainUpdateDTO;
-import com.easy.boot.admin.dataDictDomain.service.DataDictDomainService;
+import com.easy.boot.admin.dataDictDomain.service.IDataDictDomainService;
 import com.easy.boot.admin.operationLog.enums.OperateTypeEnum;
 import com.easy.boot.admin.user.entity.AdminUser;
 import com.easy.boot.common.base.BaseController;
 import com.easy.boot.common.base.Result;
-import com.easy.boot.common.excel.ImportExcelError;
-import com.easy.boot.common.excel.ImportVO;
-import com.easy.boot.common.excel.UploadDTO;
-import com.easy.boot.common.excel.handler.ImportErrorCellWriteHandler;
+import com.easy.boot.common.excel.entity.ImportExcelError;
+import com.easy.boot.common.excel.entity.ImportVO;
+import com.easy.boot.common.excel.entity.UploadDTO;
+import com.easy.boot.common.excel.handler.ExportExcelErrorCellWriteHandler;
 import com.easy.boot.common.log.EasyLog;
 import com.easy.boot.utils.FileUtil;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
@@ -47,7 +47,7 @@ import java.util.List;
 public class DataDictDomainController extends BaseController {
 
     @Resource
-    private DataDictDomainService dataDictDomainService;
+    private IDataDictDomainService dataDictDomainService;
 
 
     @ApiOperationSupport(author = "zoe")
@@ -119,7 +119,7 @@ public class DataDictDomainController extends BaseController {
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             EasyExcel.write(out).head(AdminUser.class)
                     .sheet("数据字典域导入错误信息列表")
-                    .registerWriteHandler(new ImportErrorCellWriteHandler(errors))
+                    .registerWriteHandler(new ExportExcelErrorCellWriteHandler(errors))
                     .doWrite(errorList);
             base64 = Base64.getEncoder().encodeToString(out.toByteArray());
         }
