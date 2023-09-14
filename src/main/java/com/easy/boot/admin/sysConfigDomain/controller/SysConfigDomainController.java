@@ -18,7 +18,6 @@ import com.easy.boot.common.excel.entity.ImportVO;
 import com.easy.boot.common.excel.entity.UploadDTO;
 import com.easy.boot.common.excel.handler.ExportExcelErrorCellWriteHandler;
 import com.easy.boot.common.log.EasyLog;
-import com.easy.boot.utils.FileUtil;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -98,7 +97,6 @@ public class SysConfigDomainController extends BaseController {
         Assert.notNull(dto.getFile(), "文件不能为空");
         List<SysConfigDomain> list = EasyExcel.read(dto.getFile().getInputStream())
                 .head(SysConfigDomain.class)
-                .excelType(FileUtil.getExcelType(dto.getFile()))
                 .sheet()
                 .doReadSync();
         List<ImportExcelError> errors = new ArrayList<>();

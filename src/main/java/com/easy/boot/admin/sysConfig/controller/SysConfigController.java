@@ -19,7 +19,6 @@ import com.easy.boot.common.excel.handler.ExportExcelErrorCellWriteHandler;
 import com.easy.boot.common.log.EasyLog;
 import com.easy.boot.exception.BusinessException;
 import com.easy.boot.utils.BeanUtil;
-import com.easy.boot.utils.FileUtil;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -120,7 +119,6 @@ public class SysConfigController extends BaseController {
         Assert.notNull(domainId, "系统配置域ID不能为空");
         List<SysConfig> list = EasyExcel.read(dto.getFile().getInputStream())
                 .head(SysConfig.class)
-                .excelType(FileUtil.getExcelType(dto.getFile()))
                 .sheet()
                 .doReadSync();
         list.forEach(item -> item.setDomainId(domainId));

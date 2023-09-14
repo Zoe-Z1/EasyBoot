@@ -21,7 +21,6 @@ import com.easy.boot.common.generator.config.TemplateConfig;
 import com.easy.boot.common.generator.db.MetaTable;
 import com.easy.boot.common.log.EasyLog;
 import com.easy.boot.utils.BeanUtil;
-import com.easy.boot.utils.FileUtil;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -188,7 +187,6 @@ public class ControllerTemplate extends AbstractTemplate {
             pkgs.add(ExportExcelErrorCellWriteHandler.class.getName());
             pkgs.add(ExportExcelSelectCellWriteHandler.class.getName());
             pkgs.add(ImportVO.class.getName());
-            pkgs.add(FileUtil.class.getName());
             pkgs.add(IOException.class.getName());
             pkgs.add(ByteArrayOutputStream.class.getName());
         }

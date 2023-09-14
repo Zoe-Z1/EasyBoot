@@ -15,7 +15,6 @@ import com.easy.boot.common.base.Result;
 import com.easy.boot.common.excel.entity.ImportVO;
 import com.easy.boot.common.excel.entity.UploadDTO;
 import com.easy.boot.common.log.EasyLog;
-import com.easy.boot.utils.FileUtil;
 import com.easy.boot.utils.JsonUtil;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.annotations.Api;
@@ -93,7 +92,6 @@ public class OperationLogController extends BaseController {
         Assert.notNull(dto.getFile(), "文件不能为空");
         List<OperationLog> list = EasyExcel.read(dto.getFile().getInputStream())
                 .head(OperationLog.class)
-                .excelType(FileUtil.getExcelType(dto.getFile()))
                 .sheet()
                 .doReadSync();
         long start = DateUtil.current();

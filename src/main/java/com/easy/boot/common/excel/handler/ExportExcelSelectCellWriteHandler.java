@@ -29,7 +29,6 @@ public class ExportExcelSelectCellWriteHandler implements CellWriteHandler {
 
     private Class<?> headClass;
 
-
     @Override
     public void beforeCellCreate(WriteSheetHolder writeSheetHolder, WriteTableHolder writeTableHolder, Row row, Head head, Integer columnIndex, Integer relativeRowIndex, Boolean isHead) {
         Sheet sheet = writeSheetHolder.getSheet();

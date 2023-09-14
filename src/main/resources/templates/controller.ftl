@@ -88,7 +88,6 @@ public class ${className} {
         Assert.notNull(dto.getFile(), "文件不能为空");
         List<${entityName}> list = EasyExcel.read(dto.getFile().getInputStream())
                 .head(${entityName}.class)
-                .excelType(FileUtil.getExcelType(dto.getFile()))
                 .sheet()
                 .doReadSync();
         List<${ImportExcelError}> errors = new ArrayList<>();
