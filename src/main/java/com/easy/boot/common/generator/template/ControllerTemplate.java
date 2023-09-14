@@ -189,6 +189,7 @@ public class ControllerTemplate extends AbstractTemplate {
             pkgs.add(ImportVO.class.getName());
             pkgs.add(IOException.class.getName());
             pkgs.add(ByteArrayOutputStream.class.getName());
+            pkgs.add(Base64.class.getName());
         }
         if (global.getEnableExport()) {
             pkgs.add(EasyExcel.class.getName());

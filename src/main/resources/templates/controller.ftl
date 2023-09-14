@@ -86,6 +86,7 @@ public class ${className} {
     @PostMapping("/import")
     public Result<${ImportVO}> importExcel(UploadDTO dto) throws IOException {
         Assert.notNull(dto.getFile(), "文件不能为空");
+        // 同步的写法仅适用于数据量不多的情况，否则容易导致OOM
         List<${entityName}> list = EasyExcel.read(dto.getFile().getInputStream())
                 .head(${entityName}.class)
                 .sheet()
@@ -98,7 +99,7 @@ public class ${className} {
         if (!errorList.isEmpty()) {
             // 将错误数据写到Excel文件
             ByteArrayOutputStream out = new ByteArrayOutputStream();
-            EasyExcel.write(out).head(AdminUser.class)
+            EasyExcel.write(out).head(${entityName}.class)
                 .sheet("${remarks!}导入错误信息列表")
                 .registerWriteHandler(new ExportExcelSelectCellWriteHandler(${entityName}.class))
                 .registerWriteHandler(new ExportExcelErrorCellWriteHandler(errors))
