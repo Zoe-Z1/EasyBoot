@@ -101,7 +101,8 @@ public class ${className} {
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             EasyExcel.write(out).head(AdminUser.class)
                 .sheet("${remarks!}导入错误信息列表")
-                .registerWriteHandler(new ImportErrorCellWriteHandler(errors))
+                .registerWriteHandler(new ExportExcelSelectCellWriteHandler(${entityName}.class))
+                .registerWriteHandler(new ExportExcelErrorCellWriteHandler(errors))
                 .doWrite(errorList);
             base64 = Base64.getEncoder().encodeToString(out.toByteArray());
         }
@@ -123,6 +124,7 @@ public class ${className} {
         query.setPageNum(1L);
         query.setPageSize(maxLimit);
         ExcelWriter writer = EasyExcel.write(response.getOutputStream(), ${entityName}.class)
+                .registerWriteHandler(new ExportExcelSelectCellWriteHandler(${entityName}.class))
                 .build();
         WriteSheet writeSheet = EasyExcel.writerSheet("${remarks!}信息列表").build();
         while (true) {
@@ -144,6 +146,7 @@ public class ${className} {
     @PostMapping("/download")
     public void downloadTemplate() throws IOException {
         EasyExcel.write(response.getOutputStream(), ${entityName}.class)
+                .registerWriteHandler(new ExportExcelSelectCellWriteHandler(${entityName}.class))
                 .excludeColumnFieldNames(Collections.singletonList("createTime"))
                 .sheet("${remarks!}导入模板")
                 .doWrite(new ArrayList<>());

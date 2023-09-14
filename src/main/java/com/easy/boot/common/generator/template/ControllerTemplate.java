@@ -12,6 +12,7 @@ import com.easy.boot.common.excel.entity.ImportExcelError;
 import com.easy.boot.common.excel.entity.ImportVO;
 import com.easy.boot.common.excel.entity.UploadDTO;
 import com.easy.boot.common.excel.handler.ExportExcelErrorCellWriteHandler;
+import com.easy.boot.common.excel.handler.ExportExcelSelectCellWriteHandler;
 import com.easy.boot.common.generator.DataMap;
 import com.easy.boot.common.generator.GenConstant;
 import com.easy.boot.common.generator.config.AnnotationConfig;
@@ -185,6 +186,7 @@ public class ControllerTemplate extends AbstractTemplate {
             pkgs.add(Collections.class.getName());
             pkgs.add(ImportExcelError.class.getName());
             pkgs.add(ExportExcelErrorCellWriteHandler.class.getName());
+            pkgs.add(ExportExcelSelectCellWriteHandler.class.getName());
             pkgs.add(ImportVO.class.getName());
             pkgs.add(FileUtil.class.getName());
             pkgs.add(IOException.class.getName());
@@ -195,6 +197,7 @@ public class ControllerTemplate extends AbstractTemplate {
             pkgs.add(ExcelWriter.class.getName());
             pkgs.add(WriteSheet.class.getName());
             pkgs.add(IOException.class.getName());
+            pkgs.add(ExportExcelSelectCellWriteHandler.class.getName());
         }
         if (getSuperClass() != null) {
             pkgs.add(getSuperClass().getName());
