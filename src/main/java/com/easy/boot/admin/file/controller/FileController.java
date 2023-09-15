@@ -20,7 +20,7 @@ import java.io.IOException;
 /**
  * @author zoe
  * @date 2023/8/6
- * @description 文件上传控制器
+ * @description 文件上传/下载控制器
  */
 @Slf4j
 @Api(tags = "文件相关接口")
@@ -39,7 +39,7 @@ public class FileController extends BaseController {
         FileUtil.upload(dto.getFile(), filePath);
         filePath = filePath.replace(easyFile.getFilePath(), easyFile.getFileMapPath());
         UploadVO uploadVO = UploadVO.builder()
-                .url(easyFile.getPrefix() + filePath)
+                .url(filePath)
                 .build();
         return Result.success(uploadVO);
     }
@@ -54,7 +54,7 @@ public class FileController extends BaseController {
         FileUtil.upload(dto.getFile(), filePath);
         filePath = filePath.replace(easyFile.getImagePath(), easyFile.getImageMapPath());
         UploadVO uploadVO = UploadVO.builder()
-                .url(easyFile.getPrefix() + filePath)
+                .url(filePath)
                 .build();
         return Result.success(uploadVO);
     }

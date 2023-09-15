@@ -42,7 +42,7 @@ public class Field {
     private String javaType;
 
     /**
-     * 转换后的Java类型
+     * 转换后的Java类型需要的包名
      */
     private String javaTypePackageName;
 

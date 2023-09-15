@@ -110,21 +110,6 @@ public class Result<T> implements Serializable {
         return new Result<T>(SystemErrorEnum.SUCCESS, t);
     }
 
-//    public static <T> Result success(List<T> list) {
-//        PageInfo pageInfo = new PageInfo(list);
-//        Page page = Page.builder()
-//                .pageNum(pageInfo.getPageNum())
-//                .pageSize(pageInfo.getPageSize())
-//                .pageCount(pageInfo.getPages())
-//                .size(pageInfo.getSize())
-//                .hasPreviousPage(pageInfo.isHasPreviousPage())
-//                .hasNextPage(pageInfo.isHasNextPage())
-//                .total(pageInfo.getTotal())
-//                .list(list)
-//                .build();
-//        return new Result(SystemError.SUCCESS, page);
-//    }
-
     public static <T> Result<T> success(Integer code,String message) {
         return new Result<T>(code, message);
     }
