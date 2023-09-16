@@ -9,7 +9,6 @@ import com.easy.boot.admin.dataDict.service.IDataDictService;
 import com.easy.boot.admin.dataDictDomain.entity.DataDictDomain;
 import com.easy.boot.admin.dataDictDomain.service.IDataDictDomainService;
 import com.easy.boot.admin.operationLog.enums.OperateTypeEnum;
-import com.easy.boot.admin.user.entity.AdminUser;
 import com.easy.boot.common.base.BaseController;
 import com.easy.boot.common.base.Result;
 import com.easy.boot.common.excel.entity.ImportExcelError;
@@ -137,7 +136,7 @@ public class DataDictController extends BaseController {
         if (!errorList.isEmpty()) {
             // 将错误数据写到Excel文件
             ByteArrayOutputStream out = new ByteArrayOutputStream();
-            EasyExcel.write(out).head(AdminUser.class)
+            EasyExcel.write(out).head(DataDict.class)
                     .sheet("数据字典导入错误信息列表")
                     .registerWriteHandler(new ExportExcelErrorCellWriteHandler(errors))
                     .doWrite(errorList);

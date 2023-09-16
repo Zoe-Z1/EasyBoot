@@ -3,6 +3,7 @@ package com.easy.boot.admin.generate.controller;
 import com.easy.boot.admin.generate.entity.DatabaseTable;
 import com.easy.boot.admin.generate.entity.GenerateTableQuery;
 import com.easy.boot.admin.generate.service.GenerateService;
+import com.easy.boot.admin.generateColumn.service.IGenerateColumnService;
 import com.easy.boot.admin.operationLog.enums.OperateTypeEnum;
 import com.easy.boot.common.base.Page;
 import com.easy.boot.common.base.Result;
@@ -12,9 +13,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -33,6 +32,9 @@ public class GenerateController {
     @Resource
     private GenerateService generateService;
 
+    @Resource
+    private IGenerateColumnService generateColumnService;
+
 
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "获取代码生成Table列表")
@@ -42,12 +44,13 @@ public class GenerateController {
         return Result.success(generateService.selectPage(query));
     }
 
-//    @ApiOperationSupport(author = "zoe")
-//    @ApiOperation(value = "生成代码")
-//    @EasyLog(module = "生成代码", operateType = OperateTypeEnum.GENERATE)
-//    @PostMapping(value = "/code")
-//    public Result<List<GenerateTableColumn>> generateCode(@PathVariable String tableName) {
-//        return Result.success(generateService.selectTableColumnList(tableName));
-//    }
+    @ApiOperationSupport(author = "zoe")
+    @ApiOperation(value = "生成代码")
+    @EasyLog(module = "生成代码", operateType = OperateTypeEnum.GENERATE)
+    @PostMapping(value = "/code/{tableName}")
+    public Result generateCode(@PathVariable String tableName) {
+        generateColumnService.generateCode(tableName);
+        return Result.success();
+    }
 
 }

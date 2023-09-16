@@ -43,4 +43,9 @@ public interface IGenerateColumnService extends IService<GenerateColumn> {
      */
     Boolean deleteTableName(String tableName);
 
+    /**
+     * 生成代码
+     * @param tableName
+     */
+    void generateCode(String tableName);
 }

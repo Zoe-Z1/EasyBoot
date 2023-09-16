@@ -17,6 +17,7 @@ import com.easy.boot.common.base.BaseEntity;
 import com.easy.boot.common.generator.config.FilterConfig;
 import com.easy.boot.common.generator.db.DbManager;
 import com.easy.boot.common.generator.db.convert.ColumnConvertHandler;
+import com.easy.boot.common.generator.execute.GeneratorExecute;
 import com.easy.boot.utils.BeanUtil;
 import com.easy.boot.utils.JsonUtil;
 import org.springframework.stereotype.Service;
@@ -92,6 +93,15 @@ public class GenerateColumnServiceImpl extends ServiceImpl<GenerateColumnMapper,
         QueryWrapper<GenerateColumn> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("table_name", tableName);
         return remove(queryWrapper);
+    }
+
+    @Override
+    public void generateCode(String tableName) {
+        TableConfigQuery query = new TableConfigQuery(tableName);
+        GenerateConfig generateConfig = generateConfigService.getTableConfig(query);
+        GenerateColumnQuery columnQuery = new GenerateColumnQuery(tableName);
+        List<GenerateColumn> columns = this.selectList(columnQuery);
+        GeneratorExecute.init(generateConfig).columns(columns).execute();
     }
 
 }

@@ -1,11 +1,8 @@
 package com.easy.boot.admin.generate.service;
 
 import com.easy.boot.admin.generate.entity.DatabaseTable;
-import com.easy.boot.admin.generate.entity.GenerateTableColumn;
 import com.easy.boot.admin.generate.entity.GenerateTableQuery;
 import com.easy.boot.common.base.Page;
-
-import java.util.List;
 
 /**
  * @author zoe
@@ -33,5 +30,5 @@ public interface GenerateService {
      * @param tableName
      * @return
      */
-    List<GenerateTableColumn> selectTableColumnList(String tableName);
+    void generateCode(String tableName);
 }

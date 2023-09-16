@@ -1,7 +1,6 @@
 package com.easy.boot.admin.generate.service.impl;
 
 import com.easy.boot.admin.generate.entity.DatabaseTable;
-import com.easy.boot.admin.generate.entity.GenerateTableColumn;
 import com.easy.boot.admin.generate.entity.GenerateTableQuery;
 import com.easy.boot.admin.generate.mapper.GenerateMapper;
 import com.easy.boot.admin.generate.service.GenerateService;
@@ -61,7 +60,7 @@ public class GenerateServiceImpl implements GenerateService {
     }
 
     @Override
-    public List<GenerateTableColumn> selectTableColumnList(String tableName) {
-        return null;
+    public void generateCode(String tableName) {
+
     }
 }

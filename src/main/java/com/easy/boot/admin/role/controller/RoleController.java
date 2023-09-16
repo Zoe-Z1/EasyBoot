@@ -7,7 +7,6 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.easy.boot.admin.operationLog.enums.OperateTypeEnum;
 import com.easy.boot.admin.role.entity.*;
 import com.easy.boot.admin.role.service.IRoleService;
-import com.easy.boot.admin.user.entity.AdminUser;
 import com.easy.boot.admin.userRole.service.IUserRoleService;
 import com.easy.boot.common.base.BaseController;
 import com.easy.boot.common.base.Result;
@@ -125,7 +124,7 @@ public class RoleController extends BaseController {
         if (!errorList.isEmpty()) {
             // 将错误数据写到Excel文件
             ByteArrayOutputStream out = new ByteArrayOutputStream();
-            EasyExcel.write(out).head(AdminUser.class)
+            EasyExcel.write(out).head(Role.class)
                     .sheet("角色导入错误信息列表")
                     .registerWriteHandler(new ExportExcelErrorCellWriteHandler(errors))
                     .doWrite(errorList);

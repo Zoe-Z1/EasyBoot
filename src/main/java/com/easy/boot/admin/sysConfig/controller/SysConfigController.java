@@ -9,7 +9,6 @@ import com.easy.boot.admin.sysConfig.entity.*;
 import com.easy.boot.admin.sysConfig.service.ISysConfigService;
 import com.easy.boot.admin.sysConfigDomain.entity.SysConfigDomain;
 import com.easy.boot.admin.sysConfigDomain.service.ISysConfigDomainService;
-import com.easy.boot.admin.user.entity.AdminUser;
 import com.easy.boot.common.base.BaseController;
 import com.easy.boot.common.base.Result;
 import com.easy.boot.common.excel.entity.ImportExcelError;
@@ -130,7 +129,7 @@ public class SysConfigController extends BaseController {
         if (!errorList.isEmpty()) {
             // 将错误数据写到Excel文件
             ByteArrayOutputStream out = new ByteArrayOutputStream();
-            EasyExcel.write(out).head(AdminUser.class)
+            EasyExcel.write(out).head(SysConfig.class)
                     .sheet("系统配置导入错误信息列表")
                     .registerWriteHandler(new ExportExcelErrorCellWriteHandler(errors))
                     .doWrite(errorList);

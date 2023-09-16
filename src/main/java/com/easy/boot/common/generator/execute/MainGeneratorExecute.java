@@ -1,12 +1,12 @@
 package com.easy.boot.common.generator.execute;
 
 import cn.hutool.core.collection.CollUtil;
-import com.easy.boot.admin.generateColumn.entity.GenerateColumn;
-import com.easy.boot.admin.generateConfig.entity.GenerateConfig;
 import com.easy.boot.common.generator.DataMap;
 import com.easy.boot.common.generator.GenConstant;
 import com.easy.boot.common.generator.config.*;
+import com.easy.boot.common.generator.db.DbManager;
 import com.easy.boot.common.generator.db.MetaTable;
+import com.easy.boot.common.generator.db.Table;
 import com.easy.boot.common.generator.template.AbstractTemplate;
 import com.easy.boot.exception.GeneratorException;
 import freemarker.template.Configuration;
@@ -16,7 +16,9 @@ import lombok.extern.slf4j.Slf4j;
 import java.awt.*;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author zoe
@@ -24,7 +26,7 @@ import java.util.List;
  * @description 代码生成执行器
  */
 @Slf4j
-public class GeneratorExecute {
+public class MainGeneratorExecute {
 
     /**
      * 代码生成配置
@@ -57,11 +59,11 @@ public class GeneratorExecute {
     private final FilterConfig filterConfig;
 
     /**
-     * 要生成的列信息
+     * 要生成的表信息
      */
-    private List<GenerateColumn> columns;
+    private List<Table> tables;
 
-    private GeneratorExecute(GeneratorConfig generatorConfig) {
+    private MainGeneratorExecute(GeneratorConfig generatorConfig) {
         this.generatorConfig = generatorConfig;
         this.globalConfig = generatorConfig.getGlobalConfig();
         this.dataSourceConfig = generatorConfig.getDataSourceConfig();
@@ -73,23 +75,30 @@ public class GeneratorExecute {
     /**
      * 初始化类
      *
-     * @param generateConfig 生成参数配置
+     * @param generatorConfig 生成配置
      * @return MainGeneratorExecute
      */
-    public static GeneratorExecute init(GenerateConfig generateConfig) {
-        GeneratorConfig generatorConfig = GeneratorConfig
-                .builder()
-                .build();
-        return new GeneratorExecute(generatorConfig);
+    public static MainGeneratorExecute init(GeneratorConfig generatorConfig) {
+        return new MainGeneratorExecute(generatorConfig);
     }
 
     /**
-     * 设置要生成的列信息
-     * @param columns 要生成的列
-     * @return GeneratorExecute
+     * 设置要生成的表信息
+     * @param tableNames 表名
+     * @return MainGeneratorExecute
      */
-    public GeneratorExecute columns(List<GenerateColumn> columns) {
-        this.columns = columns;
+    public MainGeneratorExecute tables(String... tableNames) {
+        this.tables = Arrays.stream(tableNames).map(Table::new).collect(Collectors.toList());
+        return this;
+    }
+
+    /**
+     * 设置要生成的表信息
+     * @param tables 表信息
+     * @return MainGeneratorExecute
+     */
+    public MainGeneratorExecute tables(Table... tables) {
+        this.tables = Arrays.asList(tables);
         return this;
     }
 
@@ -97,24 +106,25 @@ public class GeneratorExecute {
      * 执行代码生成
      */
     public void execute() {
-        if (CollUtil.isEmpty(columns)) {
-            throw new GeneratorException("需要生成的列不能为空");
+        if (CollUtil.isEmpty(tables)) {
+            throw new GeneratorException("需要生成的表不能为空");
         }
+        // 获取要生成的所有表的信息
+        List<MetaTable> metaTables = DbManager.init(dataSourceConfig, filterConfig).getTables(tables);
         // 获取所有的模板
         List<AbstractTemplate> templates = templateConfig.getTemplates();
-        // 未找到模板类，直接结束
-        if (templates.isEmpty()) {
-            log.warn("未找到需要生成的模板");
+        // 未找到表或未找到模板类，直接结束
+        if (templates.isEmpty() || metaTables.isEmpty()) {
+            String str = templates.isEmpty() ? "模板" : "表";
+            log.warn("未找到需要生成的" + str);
             return;
         }
-        DataMap dataMap = DataMap.getAndPutDataMap(generatorConfig);
-        dataMap.put(GenConstant.DATA_MAP_KEY_TABLE, columns);
-        // 遍历生成
-//        eachTemplates(templates, columns);
-//        // 打开生成目录
-//        if (globalConfig.getIsOpen()) {
-//            openPath();
-//        }
+        // 遍历表
+        eachMetaTables(templates, metaTables);
+        // 打开生成目录
+        if (globalConfig.getIsOpen()) {
+            openPath();
+        }
     }
 
     /**
