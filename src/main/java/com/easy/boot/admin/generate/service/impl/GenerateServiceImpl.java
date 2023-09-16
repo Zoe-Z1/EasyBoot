@@ -4,10 +4,18 @@ import com.easy.boot.admin.generate.entity.DatabaseTable;
 import com.easy.boot.admin.generate.entity.GenerateTableQuery;
 import com.easy.boot.admin.generate.mapper.GenerateMapper;
 import com.easy.boot.admin.generate.service.GenerateService;
+import com.easy.boot.admin.generateColumn.entity.GenerateColumn;
+import com.easy.boot.admin.generateColumn.entity.GenerateColumnQuery;
+import com.easy.boot.admin.generateColumn.service.IGenerateColumnService;
+import com.easy.boot.admin.generateConfig.entity.GenerateConfig;
+import com.easy.boot.admin.generateConfig.entity.TableConfigQuery;
+import com.easy.boot.admin.generateConfig.service.IGenerateConfigService;
 import com.easy.boot.common.base.Page;
 import com.easy.boot.common.generator.GenConstant;
+import com.easy.boot.common.generator.execute.GeneratorExecute;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -26,6 +34,12 @@ public class GenerateServiceImpl implements GenerateService {
 
     @Value("${spring.datasource.url}")
     private String url;
+
+    @Resource
+    private IGenerateConfigService generateConfigService;
+
+    @Resource
+    private IGenerateColumnService generateColumnService;
 
 
     @Override
@@ -61,6 +75,18 @@ public class GenerateServiceImpl implements GenerateService {
 
     @Override
     public void generateCode(String tableName) {
+        TableConfigQuery query = new TableConfigQuery(tableName);
+        GenerateConfig generateConfig = generateConfigService.getTableConfig(query);
+        GenerateColumnQuery columnQuery = new GenerateColumnQuery(tableName);
+        List<GenerateColumn> columns = generateColumnService.selectList(columnQuery);
+        GeneratorExecute.init(generateConfig).columns(columns).execute();
+    }
 
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public Boolean deleteBatchByTableNames(List<String> tableNames) {
+        generateConfigService.deleteBatchByTableNames(tableNames);
+        generateColumnService.deleteBatchByTableNames(tableNames);
+        return null;
     }
 }

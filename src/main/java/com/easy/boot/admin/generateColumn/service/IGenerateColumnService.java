@@ -2,7 +2,6 @@ package com.easy.boot.admin.generateColumn.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.easy.boot.admin.generateColumn.entity.GenerateColumn;
-import com.easy.boot.admin.generateColumn.entity.GenerateColumnCreateDTO;
 import com.easy.boot.admin.generateColumn.entity.GenerateColumnQuery;
 import com.easy.boot.admin.generateColumn.entity.GenerateColumnUpdateDTO;
 
@@ -23,13 +22,6 @@ public interface IGenerateColumnService extends IService<GenerateColumn> {
     List<GenerateColumn> selectList(GenerateColumnQuery query);
 
     /**
-     * 创建代码生成列配置
-     * @param dto
-     * @return
-     */
-    Boolean create(GenerateColumnCreateDTO dto);
-
-    /**
      * 编辑代码生成列配置
      * @param dto
      * @return
@@ -41,11 +33,12 @@ public interface IGenerateColumnService extends IService<GenerateColumn> {
      * @param tableName
      * @return
      */
-    Boolean deleteTableName(String tableName);
+    Boolean deleteByTableName(String tableName);
 
     /**
-     * 生成代码
-     * @param tableName
+     * 批量删除代码生成列配置
+     * @param tableNames
+     * @return
      */
-    void generateCode(String tableName);
+    Boolean deleteBatchByTableNames(List<String> tableNames);
 }

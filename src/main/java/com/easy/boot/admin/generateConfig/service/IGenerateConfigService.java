@@ -37,16 +37,15 @@ public interface IGenerateConfigService extends IService<GenerateConfig> {
 
     /**
      * 删除代码生成参数配置
-     * @param id
+     * @param tableName
      * @return
      */
-    Boolean deleteById(Long id);
+    Boolean deleteByTableName(String tableName);
 
     /**
      * 批量删除代码生成参数配置
-     * @param ids
+     * @param tableNames
      * @return
      */
-    Boolean deleteBatchByIds(List<Long> ids);
-
+    Boolean deleteBatchByTableNames(List<String> tableNames);
 }

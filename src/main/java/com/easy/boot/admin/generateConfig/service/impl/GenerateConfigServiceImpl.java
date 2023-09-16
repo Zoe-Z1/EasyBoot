@@ -1,5 +1,7 @@
 package com.easy.boot.admin.generateConfig.service.impl;
 
+import cn.hutool.extra.spring.SpringUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.easy.boot.admin.generate.entity.DatabaseTable;
 import com.easy.boot.admin.generate.service.GenerateService;
@@ -13,7 +15,6 @@ import com.easy.boot.exception.GeneratorException;
 import com.easy.boot.utils.BeanUtil;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -24,9 +25,6 @@ import java.util.List;
 @Service
 public class GenerateConfigServiceImpl extends ServiceImpl<GenerateConfigMapper, GenerateConfig> implements IGenerateConfigService {
 
-
-    @Resource
-    private GenerateService generateService;
 
     @EasyLock
     @Override
@@ -44,6 +42,7 @@ public class GenerateConfigServiceImpl extends ServiceImpl<GenerateConfigMapper,
     @EasyLock
     @Override
     public GenerateConfig getTableConfig(TableConfigQuery query) {
+        GenerateService generateService = SpringUtil.getBean(GenerateService.class);
         DatabaseTable tableByTableName = generateService.getTableByTableName(query.getTableName());
         if (tableByTableName == null) {
             throw new GeneratorException("当前表配置信息不存在");
@@ -76,13 +75,17 @@ public class GenerateConfigServiceImpl extends ServiceImpl<GenerateConfigMapper,
     }
 
     @Override
-    public Boolean deleteById(Long id) {
-        return removeById(id);
+    public Boolean deleteByTableName(String tableName) {
+        QueryWrapper<GenerateConfig> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("table_name", tableName);
+        return remove(queryWrapper);
     }
 
     @Override
-    public Boolean deleteBatchByIds(List<Long> ids) {
-        return removeBatchByIds(ids);
+    public Boolean deleteBatchByTableNames(List<String> tableNames) {
+        QueryWrapper<GenerateConfig> queryWrapper = new QueryWrapper<>();
+        queryWrapper.in("table_name", tableNames);
+        return remove(queryWrapper);
     }
 
 }

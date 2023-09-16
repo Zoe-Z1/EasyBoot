@@ -54,7 +54,7 @@ public class GenerateColumnController extends BaseController {
     @EasyLog(module = "重置代码生成列配置", operateType = OperateTypeEnum.DELETE)
     @PostMapping("/delete/{tableName}")
     public Result delete(@PathVariable String tableName) {
-        return Result.r(generateColumnService.deleteTableName(tableName));
+        return Result.r(generateColumnService.deleteByTableName(tableName));
     }
 
 }

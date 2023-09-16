@@ -3,7 +3,6 @@ package com.easy.boot.admin.generate.controller;
 import com.easy.boot.admin.generate.entity.DatabaseTable;
 import com.easy.boot.admin.generate.entity.GenerateTableQuery;
 import com.easy.boot.admin.generate.service.GenerateService;
-import com.easy.boot.admin.generateColumn.service.IGenerateColumnService;
 import com.easy.boot.admin.operationLog.enums.OperateTypeEnum;
 import com.easy.boot.common.base.Page;
 import com.easy.boot.common.base.Result;
@@ -16,6 +15,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author zoe
@@ -32,9 +32,6 @@ public class GenerateController {
     @Resource
     private GenerateService generateService;
 
-    @Resource
-    private IGenerateColumnService generateColumnService;
-
 
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "获取代码生成Table列表")
@@ -45,12 +42,20 @@ public class GenerateController {
     }
 
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "生成代码")
-    @EasyLog(module = "生成代码", operateType = OperateTypeEnum.GENERATE)
-    @PostMapping(value = "/code/{tableName}")
-    public Result generateCode(@PathVariable String tableName) {
-        generateColumnService.generateCode(tableName);
-        return Result.success();
+    @ApiOperation(value = "批量重置代码生成配置")
+    @EasyLog(module = "批量重置代码生成配置", operateType = OperateTypeEnum.DELETE)
+    @PostMapping("/batchDel")
+    public Result batchDel(@RequestBody List<String> tableNames) {
+        return Result.r(generateService.deleteBatchByTableNames(tableNames));
     }
+
+//    @ApiOperationSupport(author = "zoe")
+//    @ApiOperation(value = "生成代码")
+//    @EasyLog(module = "生成代码", operateType = OperateTypeEnum.GENERATE)
+//    @PostMapping(value = "/code/{tableName}")
+//    public Result generateCode(@PathVariable String tableName) {
+//        generateService.generateCode(tableName);
+//        return Result.success();
+//    }
 
 }

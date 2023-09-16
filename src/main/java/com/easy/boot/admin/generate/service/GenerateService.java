@@ -4,6 +4,8 @@ import com.easy.boot.admin.generate.entity.DatabaseTable;
 import com.easy.boot.admin.generate.entity.GenerateTableQuery;
 import com.easy.boot.common.base.Page;
 
+import java.util.List;
+
 /**
  * @author zoe
  * @date 2023/9/7
@@ -31,4 +33,11 @@ public interface GenerateService {
      * @return
      */
     void generateCode(String tableName);
+
+    /**
+     * 批量删除代码生成配置
+     * @param tableNames
+     * @return
+     */
+    Boolean deleteBatchByTableNames(List<String> tableNames);
 }

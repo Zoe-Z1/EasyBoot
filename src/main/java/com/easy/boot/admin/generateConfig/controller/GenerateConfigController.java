@@ -16,7 +16,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 /**
  * @author zoe
@@ -60,17 +59,9 @@ public class GenerateConfigController extends BaseController {
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "重置代码生成Table参数配置")
     @EasyLog(module = "重置代码生成Table参数配置", operateType = OperateTypeEnum.DELETE)
-    @PostMapping("/delete/{id}")
-    public Result delete(@PathVariable Long id) {
-        return Result.r(generateConfigService.deleteById(id));
-    }
-
-    @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "批量重置代码生成Table参数配置")
-    @EasyLog(module = "批量重置代码生成Table参数配置", operateType = OperateTypeEnum.DELETE)
-    @PostMapping("/batchDel")
-    public Result batchDel(@RequestBody List<Long> ids) {
-        return Result.r(generateConfigService.deleteBatchByIds(ids));
+    @PostMapping("/delete/{tableName}")
+    public Result delete(@PathVariable String tableName) {
+        return Result.r(generateConfigService.deleteByTableName(tableName));
     }
 
 }
