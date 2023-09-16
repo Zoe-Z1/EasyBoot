@@ -1,11 +1,7 @@
 package com.easy.boot.admin.generateConfig.entity;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import java.lang.Integer;
-import java.lang.Long;
-import java.lang.String;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -15,7 +11,6 @@ import lombok.experimental.SuperBuilder;
  * @date 2023/09/10
  * @description 代码生成参数配置视图实体
  */
-@TableName("generate_config")
 @ApiModel(value = "代码生成参数配置视图实体")
 @Data
 @AllArgsConstructor

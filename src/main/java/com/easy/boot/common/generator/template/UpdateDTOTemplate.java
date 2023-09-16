@@ -1,7 +1,6 @@
 package com.easy.boot.common.generator.template;
 
 import cn.hutool.core.util.StrUtil;
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.easy.boot.common.generator.DataMap;
 import com.easy.boot.common.generator.GenConstant;
 import com.easy.boot.common.generator.config.AnnotationConfig;
@@ -194,6 +193,7 @@ public class UpdateDTOTemplate extends AbstractTemplate {
                 fields.removeIf(item -> superFieldSet.contains(item.getJavaName()));
             }
         }
+        buildDataMap.put(GenConstant.DATA_MAP_KEY_IS_ENTITY, false);
         buildDataMap.put(GenConstant.DATA_MAP_KEY_FIELDS, fields);
         buildDataMap.put(GenConstant.DATA_MAP_KEY_ENABLE_TABLE_FIELD, getEnableTableField());
     }
@@ -212,7 +212,6 @@ public class UpdateDTOTemplate extends AbstractTemplate {
         if (annotation.getEnableBuilder()) {
             pkgs.add(SuperBuilder.class.getName());
         }
-        pkgs.add(TableName.class.getName());
         pkgs.add(ApiModel.class.getName());
         pkgs.add(ApiModelProperty.class.getName());
         pkgs.addAll(metaTable.getFields().stream().map(Field::getJavaTypePackageName).collect(Collectors.toSet()));

@@ -1,5 +1,7 @@
 package com.easy.boot.common.generator.db.convert;
 
+import com.easy.boot.common.generator.OptElementEnum;
+
 /**
  * @author zoe
  * @date 2023/8/19
@@ -8,71 +10,85 @@ package com.easy.boot.common.generator.db.convert;
 public enum DbColumnTypeEnum {
 
     /**
-     * INT
+     * int
      */
-    INT("INT", JavaTypeEnum.INTEGER),
+    INT("INT", JavaTypeEnum.INTEGER, OptElementEnum.INPUT),
 
-    BIGINT("BIGINT", JavaTypeEnum.LONG),
+    BIGINT("BIGINT", JavaTypeEnum.LONG, OptElementEnum.INPUT),
 
-    DECIMAL("DECIMAL", JavaTypeEnum.BIG_DECIMAL),
+    DECIMAL("DECIMAL", JavaTypeEnum.BIG_DECIMAL, OptElementEnum.INPUT),
 
-    DATE("DATE", JavaTypeEnum.DATE),
+    DATE("DATE", JavaTypeEnum.DATE, OptElementEnum.INPUT),
 
-    TIME("TIME", JavaTypeEnum.TIME),
+    TIME("TIME", JavaTypeEnum.TIME, OptElementEnum.INPUT),
 
-    DATETIME("DATETIME", JavaTypeEnum.DATE),
+    DATETIME("DATETIME", JavaTypeEnum.DATE, OptElementEnum.INPUT),
 
-    TIMESTAMP("TIMESTAMP", JavaTypeEnum.TIMESTAMP),
+    TIMESTAMP("TIMESTAMP", JavaTypeEnum.TIMESTAMP, OptElementEnum.INPUT),
 
-    VARCHAR("VARCHAR", JavaTypeEnum.STRING),
+    VARCHAR("VARCHAR", JavaTypeEnum.STRING, OptElementEnum.INPUT),
 
-    CHAR("CHAR", JavaTypeEnum.STRING),
+    CHAR("CHAR", JavaTypeEnum.STRING, OptElementEnum.INPUT),
 
-    BLOB("BLOB", JavaTypeEnum.BLOB),
+    BLOB("BLOB", JavaTypeEnum.BLOB, OptElementEnum.TEXTAREA),
 
-    TEXT("TEXT", JavaTypeEnum.STRING),
+    TEXT("TEXT", JavaTypeEnum.STRING, OptElementEnum.TEXTAREA),
 
-    FLOAT("FLOAT", JavaTypeEnum.FLOAT),
+    FLOAT("FLOAT", JavaTypeEnum.FLOAT, OptElementEnum.INPUT),
 
     ;
 
-
+    /**
+     * 列类型
+     */
     private String columnType;
 
+    /**
+     * Java类型
+     */
     private JavaTypeEnum javaType;
 
-    DbColumnTypeEnum(String columnType, JavaTypeEnum javaType) {
+    /**
+     * 操作组件
+     */
+    private OptElementEnum optElement;
+
+    DbColumnTypeEnum(String columnType, JavaTypeEnum javaType, OptElementEnum optElement) {
         this.columnType = columnType;
         this.javaType = javaType;
+        this.optElement = optElement;
     }
 
     /**
-     * 转换为Java类型枚举
-     * @return JavaTypeEnum
+     * 格式化
+     * @param columnType 列名
+     * @return
      */
-    public static JavaTypeEnum toJavaType(String columnType) {
+    public static DbColumnTypeEnum format(String columnType) {
         DbColumnTypeEnum dbColumnType = null;
         try {
             dbColumnType = DbColumnTypeEnum.valueOf(columnType);
         } catch (Exception e) {
             dbColumnType = DbColumnTypeEnum.VARCHAR;
         }
-        return dbColumnType.javaType;
+        return dbColumnType;
     }
 
     /**
-     * 转换为Java类型
-     * @return javaType
+     * 转换为Java类型枚举
+     * @param columnType 列名
+     * @return JavaTypeEnum
      */
-    public static String toJavaTypeValue(String columnType) {
-        return toJavaType(columnType).getValue();
+    public static JavaTypeEnum toJavaType(String columnType) {
+        return format(columnType).javaType;
     }
 
     /**
-     * 转换为包名
-     * @return packageName
+     * 转换为操作组件
+     * @param columnType 列名
+     * @return OptElement
      */
-    public static String toJavaTypePackageName(String columnType) {
-        return toJavaType(columnType).getPackageName();
+    public static OptElementEnum toOptElement(String columnType) {
+        return format(columnType).optElement;
     }
 }

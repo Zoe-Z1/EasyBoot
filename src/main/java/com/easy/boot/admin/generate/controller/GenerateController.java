@@ -1,7 +1,6 @@
 package com.easy.boot.admin.generate.controller;
 
 import com.easy.boot.admin.generate.entity.DatabaseTable;
-import com.easy.boot.admin.generate.entity.GenerateTableColumn;
 import com.easy.boot.admin.generate.entity.GenerateTableQuery;
 import com.easy.boot.admin.generate.service.GenerateService;
 import com.easy.boot.admin.operationLog.enums.OperateTypeEnum;
@@ -14,12 +13,10 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 /**
  * @author zoe
@@ -45,12 +42,12 @@ public class GenerateController {
         return Result.success(generateService.selectPage(query));
     }
 
-    @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "获取代码生成Table中的列")
-    @EasyLog(module = "获取代码生成Table中的列", operateType = OperateTypeEnum.SELECT)
-    @GetMapping(value = "/column/{tableName}")
-    public Result<List<GenerateTableColumn>> column(@PathVariable String tableName) {
-        return Result.success(generateService.selectTableColumnList(tableName));
-    }
+//    @ApiOperationSupport(author = "zoe")
+//    @ApiOperation(value = "生成代码")
+//    @EasyLog(module = "生成代码", operateType = OperateTypeEnum.GENERATE)
+//    @PostMapping(value = "/code")
+//    public Result<List<GenerateTableColumn>> generateCode(@PathVariable String tableName) {
+//        return Result.success(generateService.selectTableColumnList(tableName));
+//    }
 
 }

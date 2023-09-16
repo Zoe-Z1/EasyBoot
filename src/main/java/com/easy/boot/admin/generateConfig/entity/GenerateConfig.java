@@ -112,6 +112,7 @@ public class GenerateConfig extends BaseEntity {
     private String excludeTableSuffix;
 
     public static GenerateConfig defaultGlobalBuild() {
+        // 定义成变量方便直接修改
         boolean isOverride = true;
         boolean isOpen = true;
         boolean enableImport = true;

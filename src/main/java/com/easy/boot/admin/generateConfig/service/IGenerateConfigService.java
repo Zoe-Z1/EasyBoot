@@ -2,7 +2,6 @@ package com.easy.boot.admin.generateConfig.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.easy.boot.admin.generateConfig.entity.GenerateConfig;
-import com.easy.boot.admin.generateConfig.entity.GenerateConfigCreateDTO;
 import com.easy.boot.admin.generateConfig.entity.GenerateConfigUpdateDTO;
 import com.easy.boot.admin.generateConfig.entity.TableConfigQuery;
 
@@ -28,13 +27,6 @@ public interface IGenerateConfigService extends IService<GenerateConfig> {
      * @return
      */
     GenerateConfig getTableConfig(TableConfigQuery query);
-
-    /**
-     * 创建代码生成参数配置
-     * @param dto
-     * @return
-     */
-    Boolean create(GenerateConfigCreateDTO dto);
 
     /**
      * 编辑代码生成参数配置

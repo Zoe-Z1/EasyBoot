@@ -10,7 +10,9 @@ import ${pkg};
  * @date ${date}
  * @description ${remarks!}实体
  */
+<#if isEntity>
 @TableName("${table.name}")
+</#if>
 @ApiModel(value = "${remarks!}实体")
 @Data
 @AllArgsConstructor

@@ -85,6 +85,8 @@ public class GenConstant {
 
     public static final String DATA_MAP_KEY_TABLE = "table";
 
+    public static final String DATA_MAP_KEY_IS_ENTITY = "isEntity";
+
     public static final String DATA_MAP_KEY_FIELDS = "fields";
 
     public static final String DATA_MAP_KEY_ENABLE_TABLE_FIELD = "enableTableField";

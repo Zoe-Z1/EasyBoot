@@ -57,19 +57,22 @@ public class BaseEntity implements Serializable {
     private Long createTime;
 
     /** 更新者 */
-    @JsonSerialize(using = ToStringSerializer.class)
+    @JsonIgnore
+//    @JsonSerialize(using = ToStringSerializer.class)
     @ExcelIgnore
     @TableField(fill = FieldFill.INSERT_UPDATE)
     @ApiModelProperty("更新者")
     private Long updateBy;
 
     /** 更新者账号 */
+    @JsonIgnore
     @ExcelIgnore
     @TableField(fill = FieldFill.INSERT_UPDATE)
     @ApiModelProperty("更新者账号")
     private String updateUsername;
 
     /** 更新时间 */
+    @JsonIgnore
     @ExcelIgnore
     @TableField(fill = FieldFill.INSERT_UPDATE)
     @ApiModelProperty("更新时间")

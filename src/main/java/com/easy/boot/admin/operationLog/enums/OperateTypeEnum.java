@@ -65,7 +65,7 @@ public enum OperateTypeEnum {
     /**
      * 生成代码
      */
-    GENCODE("生成代码"),
+    GENERATE("生成代码"),
 
     /**
      * 清空数据

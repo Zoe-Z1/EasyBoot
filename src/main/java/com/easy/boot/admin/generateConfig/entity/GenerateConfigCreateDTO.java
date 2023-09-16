@@ -1,6 +1,5 @@
 package com.easy.boot.admin.generateConfig.entity;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.easy.boot.admin.generate.entity.GenerateTemplate;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -13,7 +12,6 @@ import lombok.experimental.SuperBuilder;
  * @date 2023/09/10
  * @description 代码生成参数配置创建实体
  */
-@TableName("generate_config")
 @ApiModel(value = "代码生成参数配置创建实体")
 @Data
 @AllArgsConstructor
@@ -72,9 +70,4 @@ public class GenerateConfigCreateDTO {
     @ApiModelProperty("过滤表后缀 多个用,分隔")
     private String excludeTableSuffix;
 
-    @ApiModelProperty("创建者账号")
-    private String createUsername;
-
-    @ApiModelProperty("更新者账号")
-    private String updateUsername;
 }

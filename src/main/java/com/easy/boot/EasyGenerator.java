@@ -69,13 +69,13 @@ public class EasyGenerator {
                                         .build())
                         .filter(
                                 FilterConfig.builder()
-                                        .excludeTablePrefix(CollUtil.newHashSet("generate_"))
-                                        .excludeField(CollUtil.newHashSet("id","createBy","createTime","updateBy","updateTime","isDel"))
+                                        .excludeTablePrefix(CollUtil.newHashSet(""))
+                                        .excludeField(CollUtil.newHashSet("id","createBy","createUsername","createTime","updateBy","updateUsername","updateTime","isDel"))
                                         .build()
                         )
                         .build()
         )
-                .tables("generate_config")
+                .tables("generate_column")
                 .execute();
 
     }

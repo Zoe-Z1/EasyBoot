@@ -12,9 +12,11 @@ import com.easy.boot.admin.operationLog.enums.OperateTypeEnum;
 import com.easy.boot.admin.operationLog.enums.RoleTypeEnum;
 import com.easy.boot.admin.operationLog.service.IOperationLogService;
 import com.easy.boot.admin.user.entity.AdminUser;
+import com.easy.boot.common.base.Result;
 import com.easy.boot.common.properties.EasyLogFilter;
 import com.easy.boot.handler.EasyMetaObjectHandler;
 import com.easy.boot.utils.IpUtil;
+import com.easy.boot.utils.JsonUtil;
 import lombok.SneakyThrows;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -74,7 +76,7 @@ public class EasyLogAspect {
             // 请求参数
             if (args != null) {
 //            String reqParam = JsonUtil.toJsonStr(args);
-                String reqParam = JSON.toJSONString(args, getSimplePropertyPreFilter(filter.getFields()));
+                String reqParam = JSON.toJSONString(args, getSimplePropertyPreFilter());
                 if (reqParam.length() <= easyLog.getRequestSaveMaxLength()) {
                     operateLog.setRequestParam(reqParam);
                 }
@@ -189,14 +191,16 @@ public class EasyLogAspect {
                 return;
             }
 //            String response = JsonUtil.toJsonStr(result);
-            String response = JSON.toJSONString(result, getSimplePropertyPreFilter(filter.getFields()));
+            String response = JSON.toJSONString(result, getSimplePropertyPreFilter());
             if (response.length() <= easyLog.getResponseSaveMaxLength()) {
                 operateLog.setResponseParam(response);
+            } else {
+                operateLog.setResponseParam(JsonUtil.toJsonStr(Result.success()));
             }
         }
     }
 
-    private SimplePropertyPreFilter getSimplePropertyPreFilter(String[] fields) {
+    private SimplePropertyPreFilter getSimplePropertyPreFilter() {
         SimplePropertyPreFilter simplePropertyPreFilter = new SimplePropertyPreFilter();
         simplePropertyPreFilter.getExcludes().addAll(Arrays.asList(filter.getFields()));
         return simplePropertyPreFilter;

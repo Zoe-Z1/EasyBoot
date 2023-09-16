@@ -3,10 +3,14 @@ package com.easy.boot.common.generator.db;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.text.NamingCase;
 import cn.hutool.core.util.StrUtil;
+import com.easy.boot.admin.generateColumn.entity.GenerateColumn;
+import com.easy.boot.admin.generateColumn.entity.GenerateColumnQuery;
+import com.easy.boot.common.generator.OptElementEnum;
 import com.easy.boot.common.generator.config.DataSourceConfig;
 import com.easy.boot.common.generator.config.FilterConfig;
 import com.easy.boot.common.generator.db.convert.ColumnConvertHandler;
 import com.easy.boot.common.generator.db.convert.JavaTypeEnum;
+import com.easy.boot.common.generator.db.convert.OptElementConvertHandler;
 import com.easy.boot.exception.GeneratorException;
 import lombok.extern.slf4j.Slf4j;
 
@@ -38,7 +42,10 @@ public class DbManager {
      */
     private final ColumnConvertHandler columnConvertHandler;
 
+    private final OptElementConvertHandler optElementConvertHandler;
+
     private DbManager(Connection connection, FilterConfig filterConfig, ColumnConvertHandler columnConvertHandler) {
+        this.optElementConvertHandler = OptElementConvertHandler.defaultHandler();
         this.columnConvertHandler = columnConvertHandler;
         this.connection = connection;
         this.filter = filterConfig;
@@ -76,6 +83,84 @@ public class DbManager {
             throw new GeneratorException("获取连接信息异常");
         }
         return new DbManager(connection, filterConfig, columnConvertHandler);
+    }
+
+
+    /**
+     * 获取要生成表的列信息
+     * @return List<GenerateColumn>
+     */
+    public List<GenerateColumn> getGenerateColumns(List<GenerateColumnQuery> querys) {
+        List<GenerateColumn> list = new ArrayList<>();
+        for (GenerateColumnQuery query : querys) {
+            List<GenerateColumn> newColumns = getGenerateColumns(query);
+            if (CollUtil.isNotEmpty(newColumns)) {
+                list.addAll(newColumns);
+            }
+        }
+        return list;
+    }
+
+
+    /**
+     * 获取要生成表的列信息
+     * @return List<GenerateColumn>
+     */
+    public List<GenerateColumn> getGenerateColumns(GenerateColumnQuery query) {
+        List<GenerateColumn> columns = new ArrayList<>();
+        try {
+            DatabaseMetaData dbMetaData = connection.getMetaData();
+            List<String> primaryKeyNames = new ArrayList<>();
+            // 处理主键信息
+            ResultSet primaryKeys = dbMetaData.getPrimaryKeys(null, null, query.getTableName());
+            while (primaryKeys.next()) {
+                primaryKeyNames.add(primaryKeys.getString(DbConstant.COLUMN_NAME));
+            }
+            // 处理字段信息
+            ResultSet rs = dbMetaData.getColumns(connection.getCatalog(), null, query.getTableName(), null);
+            while (rs.next()) {
+                String columnName = rs.getString(DbConstant.COLUMN_NAME);
+                String javaName = NamingCase.toCamelCase(columnName);
+                // 字段过滤
+                if (filter.getExcludeField().contains(javaName)) {
+                    continue;
+                }
+                String remarks = rs.getString(DbConstant.COLUMN_REMARKS);
+                if (StrUtil.isNotEmpty(remarks)) {
+                    remarks = remarks.replaceAll("\n", "\t");
+                }
+                String columnType = rs.getString(DbConstant.COLUMN_TYPE);
+                JavaTypeEnum javaType = columnConvertHandler.convert(columnType);
+                OptElementEnum optElement = optElementConvertHandler.convert(columnType);
+                boolean isPrimaryKey = primaryKeyNames.contains(columnName);
+                int columnSize = rs.getInt(DbConstant.COLUMN_SIZE);
+                columnType = columnType + "(" + columnSize + ")";
+                GenerateColumn column = GenerateColumn.builder()
+                        .tableName(query.getTableName())
+                        .isPrimaryKey(isPrimaryKey ? 0 : 1)
+                        .columnName(columnName)
+                        .columnType(columnType)
+                        .columnRemarks(remarks)
+                        .nullable(rs.getInt(DbConstant.COLUMN_NULLABLE))
+                        .javaName(javaName)
+                        .javaType(javaType.getValue())
+                        .javaTypePackageName(javaType.getPackageName())
+                        .isCreate(isPrimaryKey ? 1:0)
+                        .isUpdate(0)
+                        .listShow(isPrimaryKey ? 1:0)
+                        .detailShow(isPrimaryKey ? 1:0)
+                        .isImport(isPrimaryKey ? 1:0)
+                        .isExport(isPrimaryKey ? 1:0)
+                        .isRequired(isPrimaryKey ? 1:0)
+                        .optElement(optElement.getValue())
+                        .build();
+                columns.add(column);
+            }
+        } catch (Exception e) {
+            log.error("获取 {} 表列信息异常 e-> ", query.getTableName(), e);
+            throw new GeneratorException("获取表列息异常");
+        }
+        return columns;
     }
 
     /**

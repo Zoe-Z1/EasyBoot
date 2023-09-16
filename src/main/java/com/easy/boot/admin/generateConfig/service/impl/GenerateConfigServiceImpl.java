@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.easy.boot.admin.generate.entity.DatabaseTable;
 import com.easy.boot.admin.generate.service.GenerateService;
 import com.easy.boot.admin.generateConfig.entity.GenerateConfig;
-import com.easy.boot.admin.generateConfig.entity.GenerateConfigCreateDTO;
 import com.easy.boot.admin.generateConfig.entity.GenerateConfigUpdateDTO;
 import com.easy.boot.admin.generateConfig.entity.TableConfigQuery;
 import com.easy.boot.admin.generateConfig.mapper.GenerateConfigMapper;
@@ -68,12 +67,6 @@ public class GenerateConfigServiceImpl extends ServiceImpl<GenerateConfigMapper,
             save(generateConfig);
         }
         return generateConfig;
-    }
-
-    @Override
-    public Boolean create(GenerateConfigCreateDTO dto) {
-        GenerateConfig generateConfig = BeanUtil.copyBean(dto, GenerateConfig.class);
-        return save(generateConfig);
     }
 
     @Override
