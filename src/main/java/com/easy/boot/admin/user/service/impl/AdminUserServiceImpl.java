@@ -138,7 +138,7 @@ public class AdminUserServiceImpl extends ServiceImpl<AdminUserMapper, AdminUser
         userPostService.userBindPost(dto.getPostIds(), dto.getId());
         // 删除所有角色重新分配
         userRoleService.deleteByUserId(dto.getId());
-        userRoleService.userBindRole(dto.getPostIds(), dto.getId());
+        userRoleService.userBindRole(dto.getRoleIds(), dto.getId());
         AdminUser user = BeanUtil.copyBean(dto, AdminUser.class);
         // 禁用账号退出登录
         if (dto.getStatus() != null && dto.getStatus() == 2) {
