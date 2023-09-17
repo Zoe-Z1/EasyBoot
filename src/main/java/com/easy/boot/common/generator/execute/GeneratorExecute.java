@@ -231,7 +231,7 @@ public class GeneratorExecute {
         List<AbstractTemplate> templates = templateConfig.getTemplates();
         // 未找到模板类，直接结束
         if (templates.isEmpty()) {
-            log.warn("未找到需要生成的模板");
+//            log.warn("未找到需要生成的模板");
             return new ArrayList<>();
         }
         StringWriter writer = new StringWriter();
@@ -244,7 +244,7 @@ public class GeneratorExecute {
             // 创建数据模型
             DataMap buildDataMap = template.buildDataMap(dataMap);
             if (!template.isEnable()) {
-                log.info(buildDataMap.get("fileName") + " 已跳过代码生成!");
+//                log.info(buildDataMap.get("fileName") + " 已跳过代码生成!");
                 continue;
             }
             String fileName = buildDataMap.getString(GenConstant.DATA_MAP_KEY_FILE_NAME);
