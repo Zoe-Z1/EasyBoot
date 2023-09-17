@@ -52,6 +52,15 @@ public class GenerateTemplate {
     @ApiModelProperty("Sql")
     private Sql sql;
 
+    @ApiModelProperty("index.vue")
+    private Template indexVue;
+
+    @ApiModelProperty("save.vue")
+    private Template saveVue;
+
+    @ApiModelProperty("js")
+    private Template js;
+
     public static GenerateTemplate defaultBuild() {
         return GenerateTemplate.builder()
                 .controller(new Template())
@@ -65,6 +74,9 @@ public class GenerateTemplate {
                 .query(new Template())
                 .vo(new Template())
                 .sql(new Sql())
+                .indexVue(new Template())
+                .saveVue(new Template())
+                .js(new Template())
                 .build();
     }
 }

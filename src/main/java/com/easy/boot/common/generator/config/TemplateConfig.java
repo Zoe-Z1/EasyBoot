@@ -3,10 +3,9 @@ package com.easy.boot.common.generator.config;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.easy.boot.common.generator.template.*;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
+import net.bytebuddy.implementation.bind.annotation.Super;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,6 +17,7 @@ import java.util.List;
  * @description 模板配置
  */
 @Setter
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
 public class TemplateConfig {
@@ -73,12 +73,17 @@ public class TemplateConfig {
     private VOTemplate vo;
 
     /**
+     * js模板配置
+     */
+    private JsTemplate js;
+
+    /**
      * 模板引擎根路径
      */
     private String templateRootPath;
 
     /**
-     * 需要生成的模板列表
+     * 需要额外生成的模板列表
      */
     private List<AbstractTemplate> templates;
 
@@ -122,6 +127,10 @@ public class TemplateConfig {
         return vo == null ? new VOTemplate() : vo;
     }
 
+    public JsTemplate getJs() {
+        return js == null ? new JsTemplate() : js;
+    }
+
     public String getTemplateRootPath() {
         if (StrUtil.isEmpty(templateRootPath)) {
             templateRootPath = System.getProperty("user.dir") + "/src/main/resources/templates";
@@ -141,6 +150,7 @@ public class TemplateConfig {
         list.add(getUpdateDTO());
         list.add(getQuery());
         list.add(getVo());
+        list.add(getJs());
         if (CollUtil.isNotEmpty(templates)) {
             list.addAll(templates);
         }
@@ -148,90 +158,90 @@ public class TemplateConfig {
         return templates;
     }
 
-    public static TemplateConfig.TemplateConfigBuilder builder() {
-        return new TemplateConfig.TemplateConfigBuilder();
-    }
-
-    @ToString
-    public static class TemplateConfigBuilder {
-        private ControllerTemplate controller;
-        private ServiceTemplate service;
-        private ServiceImplTemplate serviceImpl;
-        private MapperTemplate mapper;
-        private MapperXmlTemplate xml;
-        private EntityTemplate entity;
-        private CreateDTOTemplate createDTO;
-        private UpdateDTOTemplate updateDTO;
-        private QueryTemplate query;
-        private VOTemplate vo;
-        private String templateRootPath;
-        private List<AbstractTemplate> templates;
-
-        TemplateConfigBuilder() {
-        }
-
-        public TemplateConfig.TemplateConfigBuilder controller(final ControllerTemplate controller) {
-            this.controller = controller;
-            return this;
-        }
-
-        public TemplateConfig.TemplateConfigBuilder service(final ServiceTemplate service) {
-            this.service = service;
-            return this;
-        }
-
-        public TemplateConfig.TemplateConfigBuilder serviceImpl(final ServiceImplTemplate serviceImpl) {
-            this.serviceImpl = serviceImpl;
-            return this;
-        }
-
-        public TemplateConfig.TemplateConfigBuilder mapper(final MapperTemplate mapper) {
-            this.mapper = mapper;
-            return this;
-        }
-
-        public TemplateConfig.TemplateConfigBuilder xml(final MapperXmlTemplate xml) {
-            this.xml = xml;
-            return this;
-        }
-
-        public TemplateConfig.TemplateConfigBuilder entity(final EntityTemplate entity) {
-            this.entity = entity;
-            return this;
-        }
-
-        public TemplateConfig.TemplateConfigBuilder createDTO(final CreateDTOTemplate createDTO) {
-            this.createDTO = createDTO;
-            return this;
-        }
-
-        public TemplateConfig.TemplateConfigBuilder updateDTO(final UpdateDTOTemplate updateDTO) {
-            this.updateDTO = updateDTO;
-            return this;
-        }
-
-        public TemplateConfig.TemplateConfigBuilder query(final QueryTemplate query) {
-            this.query = query;
-            return this;
-        }
-
-        public TemplateConfig.TemplateConfigBuilder vo(final VOTemplate vo) {
-            this.vo = vo;
-            return this;
-        }
-
-        public TemplateConfig.TemplateConfigBuilder templateRootPath(final String templateRootPath) {
-            this.templateRootPath = templateRootPath;
-            return this;
-        }
-
-        public TemplateConfig.TemplateConfigBuilder addTemplate(AbstractTemplate... templates) {
-            this.templates = Arrays.asList(templates);
-            return this;
-        }
-
-        public TemplateConfig build() {
-            return new TemplateConfig(this.controller, this.service, this.serviceImpl, this.mapper, this.xml, this.entity, this.createDTO, this.updateDTO, this.query, this.vo, this.templateRootPath, this.templates);
-        }
-    }
+//    public static TemplateConfig.TemplateConfigBuilder builder() {
+//        return new TemplateConfig.TemplateConfigBuilder();
+//    }
+//
+//    @ToString
+//    public static class TemplateConfigBuilder {
+//        private ControllerTemplate controller;
+//        private ServiceTemplate service;
+//        private ServiceImplTemplate serviceImpl;
+//        private MapperTemplate mapper;
+//        private MapperXmlTemplate xml;
+//        private EntityTemplate entity;
+//        private CreateDTOTemplate createDTO;
+//        private UpdateDTOTemplate updateDTO;
+//        private QueryTemplate query;
+//        private VOTemplate vo;
+//        private String templateRootPath;
+//        private List<AbstractTemplate> templates;
+//
+//        TemplateConfigBuilder() {
+//        }
+//
+//        public TemplateConfig.TemplateConfigBuilder controller(final ControllerTemplate controller) {
+//            this.controller = controller;
+//            return this;
+//        }
+//
+//        public TemplateConfig.TemplateConfigBuilder service(final ServiceTemplate service) {
+//            this.service = service;
+//            return this;
+//        }
+//
+//        public TemplateConfig.TemplateConfigBuilder serviceImpl(final ServiceImplTemplate serviceImpl) {
+//            this.serviceImpl = serviceImpl;
+//            return this;
+//        }
+//
+//        public TemplateConfig.TemplateConfigBuilder mapper(final MapperTemplate mapper) {
+//            this.mapper = mapper;
+//            return this;
+//        }
+//
+//        public TemplateConfig.TemplateConfigBuilder xml(final MapperXmlTemplate xml) {
+//            this.xml = xml;
+//            return this;
+//        }
+//
+//        public TemplateConfig.TemplateConfigBuilder entity(final EntityTemplate entity) {
+//            this.entity = entity;
+//            return this;
+//        }
+//
+//        public TemplateConfig.TemplateConfigBuilder createDTO(final CreateDTOTemplate createDTO) {
+//            this.createDTO = createDTO;
+//            return this;
+//        }
+//
+//        public TemplateConfig.TemplateConfigBuilder updateDTO(final UpdateDTOTemplate updateDTO) {
+//            this.updateDTO = updateDTO;
+//            return this;
+//        }
+//
+//        public TemplateConfig.TemplateConfigBuilder query(final QueryTemplate query) {
+//            this.query = query;
+//            return this;
+//        }
+//
+//        public TemplateConfig.TemplateConfigBuilder vo(final VOTemplate vo) {
+//            this.vo = vo;
+//            return this;
+//        }
+//
+//        public TemplateConfig.TemplateConfigBuilder templateRootPath(final String templateRootPath) {
+//            this.templateRootPath = templateRootPath;
+//            return this;
+//        }
+//
+//        public TemplateConfig.TemplateConfigBuilder addTemplate(AbstractTemplate... templates) {
+//            this.templates = Arrays.asList(templates);
+//            return this;
+//        }
+//
+//        public TemplateConfig build() {
+//            return new TemplateConfig(this.controller, this.service, this.serviceImpl, this.mapper, this.xml, this.entity, this.createDTO, this.updateDTO, this.query, this.vo, this.templateRootPath, this.templates);
+//        }
+//    }
 }

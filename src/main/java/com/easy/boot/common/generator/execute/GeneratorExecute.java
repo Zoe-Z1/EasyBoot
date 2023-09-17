@@ -236,7 +236,6 @@ public class GeneratorExecute {
             log.warn("未找到需要生成的模板");
             return new ArrayList<>();
         }
-        StringWriter writer = new StringWriter();
         List<GeneratePreviewVO> previews = new ArrayList<>();
 
         DataMap dataMap = DataMap.getAndPutDataMap(generatorConfig);
@@ -257,7 +256,7 @@ public class GeneratorExecute {
             configuration.setDefaultEncoding(StandardCharsets.UTF_8.name());
             // 加载模版文件
             Template easyTemplate = configuration.getTemplate(buildDataMap.getString(GenConstant.DATA_MAP_KEY_TEMPLATE_NAME));
-            // 输出文件
+            StringWriter writer = new StringWriter();
             try {
                 easyTemplate.process(buildDataMap, writer);
             } catch (TemplateException e) {
@@ -266,9 +265,8 @@ public class GeneratorExecute {
             buildDataMap.clear();
             GeneratePreviewVO preview = new GeneratePreviewVO(fileName, writer.toString());
             previews.add(preview);
+            writer.close();
         }
-        //关闭流
-        writer.close();
         return previews;
     }
 

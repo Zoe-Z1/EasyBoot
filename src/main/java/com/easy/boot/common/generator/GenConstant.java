@@ -30,6 +30,8 @@ public class GenConstant {
 
     public static final String MODULE_ENTITY = "entity";
 
+    public static final String MODULE_VUE = "vue";
+
 
     /*------------------------- 类名称后缀 -------------------------*/
 
@@ -49,11 +51,13 @@ public class GenConstant {
 
     public static final String VO = "VO";
 
-    public static final String TEST = "Test";
-
     public static final String SUFFIX = ".java";
 
     public static final String XML_SUFFIX = ".xml";
+
+    public static final String JS_SUFFIX = ".js";
+
+    public static final String VUE_SUFFIX = ".vue";
 
     /*------------------------- 模板引擎名称 -------------------------*/
 
@@ -68,6 +72,8 @@ public class GenConstant {
     public static final String MAPPER_XML_TEMPLATE_NAME = "mapper.xml.ftl";
 
     public static final String ENTITY_TEMPLATE_NAME = "entity.ftl";
+
+    public static final String JS_TEMPLATE_NAME = "js.ftl";
 
 
 
