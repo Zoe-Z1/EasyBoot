@@ -43,9 +43,9 @@ public enum JavaTypeEnum {
 
     ;
 
-    private final String value;
+    private String value;
 
-    private final String packageName;
+    private String packageName;
 
     JavaTypeEnum(String value, String packageName) {
         this.value = value;

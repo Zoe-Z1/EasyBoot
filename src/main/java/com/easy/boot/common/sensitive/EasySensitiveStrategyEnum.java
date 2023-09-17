@@ -30,7 +30,7 @@ public enum EasySensitiveStrategyEnum {
      */
     ADDRESS(s -> s.replaceAll("(\\S{3})\\S{2}(\\S*)\\S{2}", "$1****$2****"));
 
-    private final Function<String, String> desensitizer;
+    private Function<String, String> desensitizer;
 
     EasySensitiveStrategyEnum(Function<String, String> desensitizer) {
         this.desensitizer = desensitizer;

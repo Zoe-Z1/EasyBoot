@@ -41,6 +41,7 @@ public class GenerateController extends BaseController {
     @EasyLog(module = "获取代码生成Table列表", operateType = OperateTypeEnum.SELECT)
     @GetMapping(value = "/page")
     public Result<Page<DatabaseTable>> page(@Validated GenerateTableQuery query) {
+        log.warn("aaaaaa");
         return Result.success(generateService.selectPage(query));
     }
 

@@ -210,7 +210,7 @@ public class UpdateDTOTemplate extends AbstractTemplate {
             pkgs.add(getSuperClass().getName());
         }
         if (annotation.getEnableBuilder()) {
-            pkgs.add(SuperBuilder.class.getName());
+            pkgs.add("lombok.experimental.SuperBuilder");
         }
         pkgs.add(ApiModel.class.getName());
         pkgs.add(ApiModelProperty.class.getName());

@@ -204,12 +204,12 @@ public class ControllerTemplate extends AbstractTemplate {
         pkgs.add(Api.class.getName());
         pkgs.add(ApiOperation.class.getName());
         pkgs.add(ApiOperationSupport.class.getName());
-        pkgs.add(Slf4j.class.getName());
         pkgs.add(Validated.class.getName());
         pkgs.add(Resource.class.getName());
         pkgs.add(Result.class.getName());
         pkgs.add(IPage.class.getName());
         pkgs.add(List.class.getName());
+        pkgs.add("lombok.extern.slf4j.Slf4j");
         pkgs.add("org.springframework.web.bind.annotation.*");
         String pkgName = String.join(".", global.getPackageName(), metaTable.getModuleName());
         String serviceName = buildDataMap.getString(GenConstant.DATA_MAP_KEY_SERVICE_NAME);

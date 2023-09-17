@@ -32,7 +32,7 @@ public enum MatchPatternEnum {
     /**
      * 格式化规则
      */
-    private final String format;
+    private String format;
 
     MatchPatternEnum(String format) {
         this.format = format;

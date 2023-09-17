@@ -199,7 +199,7 @@ public class EntityTemplate extends AbstractTemplate {
             pkgs.add(getSuperClass().getName());
         }
         if (annotation.getEnableBuilder()) {
-            pkgs.add(SuperBuilder.class.getName());
+            pkgs.add("lombok.experimental.SuperBuilder");
         }
         if (global.getEnableExport() || global.getEnableImport()) {
             pkgs.add(ExcelProperty.class.getName());

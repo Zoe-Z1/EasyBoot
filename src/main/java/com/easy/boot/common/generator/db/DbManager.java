@@ -30,19 +30,19 @@ public class DbManager {
     /**
      * 数据库连接
      */
-    private final Connection connection;
+    private Connection connection;
 
     /**
      * 过滤配置
      */
-    private final FilterConfig filter;
+    private FilterConfig filter;
 
     /**
      * 数据库字段转换处理器
      */
-    private final ColumnConvertHandler columnConvertHandler;
+    private ColumnConvertHandler columnConvertHandler;
 
-    private final OptElementConvertHandler optElementConvertHandler;
+    private OptElementConvertHandler optElementConvertHandler;
 
     private DbManager(Connection connection, FilterConfig filterConfig, ColumnConvertHandler columnConvertHandler) {
         this.optElementConvertHandler = OptElementConvertHandler.defaultHandler();

@@ -19,6 +19,8 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
 import javax.servlet.http.HttpServletResponse;
 import java.awt.*;
@@ -41,32 +43,32 @@ public class GeneratorExecute {
     /**
      * 代码生成配置
      */
-    private final GeneratorConfig generatorConfig;
+    private GeneratorConfig generatorConfig;
 
     /**
      * 全局配置
      */
-    private final GlobalConfig globalConfig;
+    private GlobalConfig globalConfig;
 
     /**
      * 数据源配置
      */
-    private final DataSourceConfig dataSourceConfig;
+    private DataSourceConfig dataSourceConfig;
 
     /**
      * 注解配置
      */
-    private final AnnotationConfig annotationConfig;
+    private AnnotationConfig annotationConfig;
 
     /**
      * 模板配置
      */
-    private final TemplateConfig templateConfig;
+    private TemplateConfig templateConfig;
 
     /**
      * 过滤配置
      */
-    private final FilterConfig filterConfig;
+    private FilterConfig filterConfig;
 
     /**
      * 要生成的表信息
@@ -231,7 +233,7 @@ public class GeneratorExecute {
         List<AbstractTemplate> templates = templateConfig.getTemplates();
         // 未找到模板类，直接结束
         if (templates.isEmpty()) {
-//            log.warn("未找到需要生成的模板");
+            log.warn("未找到需要生成的模板");
             return new ArrayList<>();
         }
         StringWriter writer = new StringWriter();
@@ -244,14 +246,14 @@ public class GeneratorExecute {
             // 创建数据模型
             DataMap buildDataMap = template.buildDataMap(dataMap);
             if (!template.isEnable()) {
-//                log.info(buildDataMap.get("fileName") + " 已跳过代码生成!");
+                log.info(buildDataMap.get("fileName") + " 已跳过代码生成!");
                 continue;
             }
             String fileName = buildDataMap.getString(GenConstant.DATA_MAP_KEY_FILE_NAME);
             // 创建freeMarker配置实例
             Configuration configuration = new Configuration(Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
             // 获取模版路径
-            configuration.setDirectoryForTemplateLoading(new File(templateConfig.getTemplateRootPath()));
+            configuration.setClassForTemplateLoading(FreeMarkerTemplateUtils.class, "/templates");
             configuration.setDefaultEncoding(StandardCharsets.UTF_8.name());
             // 加载模版文件
             Template easyTemplate = configuration.getTemplate(buildDataMap.getString(GenConstant.DATA_MAP_KEY_TEMPLATE_NAME));
@@ -303,7 +305,7 @@ public class GeneratorExecute {
             // 创建freeMarker配置实例
             Configuration configuration = new Configuration(Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
             // 获取模版路径
-            configuration.setDirectoryForTemplateLoading(new File(templateConfig.getTemplateRootPath()));
+            configuration.setClassForTemplateLoading(FreeMarkerTemplateUtils.class, "/templates");
             configuration.setDefaultEncoding(StandardCharsets.UTF_8.name());
             // 加载模版文件
             Template easyTemplate = configuration.getTemplate(buildDataMap.getString(GenConstant.DATA_MAP_KEY_TEMPLATE_NAME));
