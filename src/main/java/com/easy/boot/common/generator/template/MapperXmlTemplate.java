@@ -27,8 +27,6 @@ public class MapperXmlTemplate extends AbstractTemplate {
 
     private String moduleName;
 
-    private String templateName;
-
     private String fileName;
 
     private Boolean enable;

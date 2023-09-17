@@ -43,8 +43,6 @@ public class UpdateDTOTemplate extends AbstractTemplate {
      */
     private Boolean enableExtendsCreateDTO;
 
-    private String templateName;
-
     private String fileName;
 
     private Boolean enable;

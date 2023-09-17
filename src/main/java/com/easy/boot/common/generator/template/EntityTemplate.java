@@ -40,8 +40,6 @@ public class EntityTemplate extends AbstractTemplate {
 
     private Class<?> superClass;
 
-    private String templateName;
-
     private String fileName;
 
     private Boolean enable;
