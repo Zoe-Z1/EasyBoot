@@ -28,8 +28,8 @@ import java.util.Map;
 @NoArgsConstructor
 @SuperBuilder
 @ToString(callSuper = true)
-@EqualsAndHashCode(callSuper = true)
-public class GenerateConfigVO extends BaseEntity {
+@EqualsAndHashCode
+public class GenerateConfigVO {
 
 
     @ApiModelProperty("配置类型 1：全局配置 2：表配置")

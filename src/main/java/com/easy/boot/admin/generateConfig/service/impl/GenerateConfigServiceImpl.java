@@ -53,30 +53,21 @@ public class GenerateConfigServiceImpl extends ServiceImpl<GenerateConfigMapper,
         if (databaseTable == null) {
             throw new GeneratorException("当前表配置信息不存在");
         }
-        GenerateConfigVO vo = new GenerateConfigVO();
         GenerateConfig generateConfig = lambdaQuery()
                 .eq(GenerateConfig::getType, 2)
                 .eq(GenerateConfig::getTableName, query.getTableName())
                 .one();
+        GenerateConfigVO vo = BeanUtil.copyBean(generateConfig, GenerateConfigVO.class);
         if (generateConfig == null) {
             vo = getGlobalConfig();
-            generateConfig = BeanUtil.copyBean(vo, GenerateConfig.class);
             String filterName = DbManager.filterTableName(databaseTable.getTableName(),
-                    generateConfig.getExcludeTablePrefix(), generateConfig.getExcludeTableSuffix());
-            generateConfig.setType(2)
+                    vo.getExcludeTablePrefix(), vo.getExcludeTableSuffix());
+            vo.setType(2)
                     .setTableName(databaseTable.getTableName())
                     .setModuleName(NamingCase.toCamelCase(filterName))
                     .setRemarks(databaseTable.getComment());
-            generateConfig.setId(null);
-            generateConfig.setCreateBy(null);
-            generateConfig.setCreateUsername(null);
-            generateConfig.setCreateTime(null);
-            generateConfig.setUpdateBy(null);
-            generateConfig.setUpdateUsername(null);
-            generateConfig.setUpdateTime(null);
+            generateConfig = BeanUtil.copyBean(vo, GenerateConfig.class);
             save(generateConfig);
-        } else {
-            vo = BeanUtil.copyBean(generateConfig, GenerateConfigVO.class);
         }
         return vo;
     }

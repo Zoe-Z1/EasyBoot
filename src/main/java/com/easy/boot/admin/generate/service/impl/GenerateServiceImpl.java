@@ -2,8 +2,8 @@ package com.easy.boot.admin.generate.service.impl;
 
 import cn.hutool.core.text.NamingCase;
 import com.easy.boot.admin.generate.entity.DatabaseTable;
+import com.easy.boot.admin.generate.entity.GeneratePreviewVO;
 import com.easy.boot.admin.generate.entity.GenerateTableQuery;
-import com.easy.boot.admin.generate.entity.GenerateUpdateDTO;
 import com.easy.boot.admin.generate.mapper.GenerateMapper;
 import com.easy.boot.admin.generate.service.GenerateService;
 import com.easy.boot.admin.generateColumn.entity.GenerateColumn;
@@ -26,7 +26,6 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -87,6 +86,28 @@ public class GenerateServiceImpl implements GenerateService {
     public void deleteBatchByTableNames(List<String> tableNames) {
         generateConfigService.deleteBatchByTableNames(tableNames);
         generateColumnService.deleteBatchByTableNames(tableNames);
+    }
+
+    @Override
+    public List<GeneratePreviewVO> preview(String tableName) throws IOException {
+        GenerateConfigQuery query = new GenerateConfigQuery(tableName);
+        GenerateConfigVO vo = generateConfigService.getTableConfig(query);
+        GenerateConfig generateConfig = BeanUtil.copyBean(vo, GenerateConfig.class);
+        GenerateColumnQuery columnQuery = new GenerateColumnQuery(tableName);
+        List<GenerateColumn> columns = generateColumnService.selectList(columnQuery);
+        String filterName = DbManager.filterTableName(generateConfig.getTableName(),
+                generateConfig.getExcludeTablePrefix(), generateConfig.getExcludeTableSuffix());
+        MetaTable metaTable = MetaTable.builder()
+                .name(generateConfig.getTableName())
+                .beanName(NamingCase.toPascalCase(filterName))
+                .camelName(NamingCase.toCamelCase(filterName))
+                .moduleName(generateConfig.getModuleName())
+                .remarks(generateConfig.getRemarks())
+                .columns(columns)
+                .build();
+        return GeneratorExecute.init(generateConfig)
+                .metaTable(metaTable)
+                .preview();
     }
 
     @Override

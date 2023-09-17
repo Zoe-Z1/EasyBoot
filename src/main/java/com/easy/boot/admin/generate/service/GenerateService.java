@@ -1,8 +1,8 @@
 package com.easy.boot.admin.generate.service;
 
 import com.easy.boot.admin.generate.entity.DatabaseTable;
+import com.easy.boot.admin.generate.entity.GeneratePreviewVO;
 import com.easy.boot.admin.generate.entity.GenerateTableQuery;
-import com.easy.boot.admin.generate.entity.GenerateUpdateDTO;
 import com.easy.boot.common.base.Page;
 
 import javax.servlet.http.HttpServletResponse;
@@ -24,6 +24,13 @@ public interface GenerateService {
     Page<DatabaseTable> selectPage(GenerateTableQuery query);
 
     /**
+     * 根据表名获取数据库Table信息
+     * @param tableName
+     * @return
+     */
+    DatabaseTable getTableByTableName(String tableName);
+
+    /**
      * 批量删除代码生成配置
      * @param tableNames
      * @return
@@ -31,11 +38,11 @@ public interface GenerateService {
     void deleteBatchByTableNames(List<String> tableNames);
 
     /**
-     * 根据表名获取数据库Table信息
+     * 预览代码
      * @param tableName
      * @return
      */
-    DatabaseTable getTableByTableName(String tableName);
+    List<GeneratePreviewVO> preview(String tableName) throws IOException;
 
     /**
      * 批量生成代码
@@ -44,5 +51,4 @@ public interface GenerateService {
      * @return
      */
     void batchGenerateCode(List<String> tableNames, HttpServletResponse response) throws IOException;
-
 }

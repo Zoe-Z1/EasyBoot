@@ -1,8 +1,8 @@
 package com.easy.boot.admin.generate.controller;
 
 import com.easy.boot.admin.generate.entity.DatabaseTable;
+import com.easy.boot.admin.generate.entity.GeneratePreviewVO;
 import com.easy.boot.admin.generate.entity.GenerateTableQuery;
-import com.easy.boot.admin.generate.entity.GenerateUpdateDTO;
 import com.easy.boot.admin.generate.service.GenerateService;
 import com.easy.boot.admin.operationLog.enums.OperateTypeEnum;
 import com.easy.boot.common.base.BaseController;
@@ -51,6 +51,14 @@ public class GenerateController extends BaseController {
     public Result batchDel(@RequestBody List<String> tableNames) {
         generateService.deleteBatchByTableNames(tableNames);
         return Result.success();
+    }
+
+    @ApiOperationSupport(author = "zoe")
+    @ApiOperation(value = "代码生成预览")
+    @EasyLog(module = "代码生成预览", operateType = OperateTypeEnum.SELECT)
+    @PostMapping(value = "/preview/{tableName}")
+    public Result<List<GeneratePreviewVO>> preview(@PathVariable String tableName) throws IOException {
+        return Result.success(generateService.preview(tableName));
     }
 
     @ApiOperationSupport(author = "zoe")

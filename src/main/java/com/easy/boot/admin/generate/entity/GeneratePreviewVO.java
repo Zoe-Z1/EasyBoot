@@ -13,21 +13,21 @@ import java.util.List;
 /**
  * @author zoe
  * @date 2023/09/10
- * @description 代码生成参数配置编辑实体
+ * @description 代码生成预览实体
  */
-@ApiModel(value = "代码生成参数配置编辑实体")
+@ApiModel(value = "代码生成预览实体")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder
 @ToString(callSuper = true)
 @EqualsAndHashCode
-public class GenerateUpdateDTO {
+public class GeneratePreviewVO {
 
-    @ApiModelProperty(required = true, value = "代码生成参数配置")
-    GenerateConfigUpdateDTO generateConfig;
+    @ApiModelProperty(value = "文件名")
+    private String filename;
 
-    @ApiModelProperty(required = true, value = "代码生成列配置")
-    List<GenerateColumnUpdateDTO> generateColumns;
+    @ApiModelProperty(value = "文件内容")
+    private String fileContent;
 
 }

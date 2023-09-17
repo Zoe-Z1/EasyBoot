@@ -1,7 +1,5 @@
 package com.easy.boot.admin.generateConfig.controller;
 
-import com.easy.boot.admin.generate.entity.GenerateUpdateDTO;
-import com.easy.boot.admin.generateConfig.entity.GenerateConfig;
 import com.easy.boot.admin.generateConfig.entity.GenerateConfigQuery;
 import com.easy.boot.admin.generateConfig.entity.GenerateConfigUpdateDTO;
 import com.easy.boot.admin.generateConfig.entity.GenerateConfigVO;

@@ -2,6 +2,7 @@ package com.easy.boot.common.generator.execute;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
+import com.easy.boot.admin.generate.entity.GeneratePreviewVO;
 import com.easy.boot.admin.generateConfig.entity.GenerateTemplate;
 import com.easy.boot.admin.generateConfig.entity.GenerateConfig;
 import com.easy.boot.common.generator.DataMap;
@@ -75,7 +76,7 @@ public class GeneratorExecute {
     /**
      * 要生成的表信息
      */
-    private List<MetaTable> metaTables;
+    private MetaTable metaTable;
 
     private HttpServletResponse response;
 
@@ -198,7 +199,7 @@ public class GeneratorExecute {
      * @return GeneratorExecute
      */
     public GeneratorExecute metaTable(MetaTable metaTable) {
-        this.metaTables = CollUtil.newArrayList(metaTable);
+        this.metaTable = metaTable;
         return this;
     }
 
@@ -220,10 +221,61 @@ public class GeneratorExecute {
 
 
     /**
+     * 代码生成预览
+     */
+    public List<GeneratePreviewVO> preview() throws IOException {
+        if (metaTable == null) {
+            throw new GeneratorException("需要生成的表不能为空");
+        }
+        // 获取所有的模板
+        List<AbstractTemplate> templates = templateConfig.getTemplates();
+        // 未找到模板类，直接结束
+        if (templates.isEmpty()) {
+            log.warn("未找到需要生成的模板");
+            return new ArrayList<>();
+        }
+        StringWriter writer = new StringWriter();
+        List<GeneratePreviewVO> previews = new ArrayList<>();
+
+        DataMap dataMap = DataMap.getAndPutDataMap(generatorConfig);
+        dataMap.put(GenConstant.DATA_MAP_KEY_TABLE, metaTable);
+        // 遍历模板
+        for (AbstractTemplate template : templates) {
+            // 创建数据模型
+            DataMap buildDataMap = template.buildDataMap(dataMap);
+            if (!template.isEnable()) {
+                log.info(buildDataMap.get("fileName") + " 已跳过代码生成!");
+                continue;
+            }
+            String fileName = buildDataMap.getString(GenConstant.DATA_MAP_KEY_FILE_NAME);
+            // 创建freeMarker配置实例
+            Configuration configuration = new Configuration(Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
+            // 获取模版路径
+            configuration.setDirectoryForTemplateLoading(new File(templateConfig.getTemplateRootPath()));
+            configuration.setDefaultEncoding(StandardCharsets.UTF_8.name());
+            // 加载模版文件
+            Template easyTemplate = configuration.getTemplate(buildDataMap.getString(GenConstant.DATA_MAP_KEY_TEMPLATE_NAME));
+            // 输出文件
+            try {
+                easyTemplate.process(buildDataMap, writer);
+            } catch (TemplateException e) {
+                e.printStackTrace();
+            }
+            buildDataMap.clear();
+            GeneratePreviewVO preview = new GeneratePreviewVO(fileName, writer.toString());
+            previews.add(preview);
+        }
+        //关闭流
+        writer.close();
+        return previews;
+    }
+
+
+    /**
      * 执行代码生成
      */
     public void execute() throws IOException {
-        if (CollUtil.isEmpty(metaTables)) {
+        if (metaTable == null) {
             throw new GeneratorException("需要生成的表不能为空");
         }
         // 获取所有的模板
@@ -233,41 +285,42 @@ public class GeneratorExecute {
             log.warn("未找到需要生成的模板");
             return;
         }
-        ZipOutputStream zip = new ZipOutputStream(response.getOutputStream());
+//        response.getOutputStream()
+        ZipOutputStream zip = new ZipOutputStream(new FileOutputStream("/Users/zoe/Downloads/template/"));
         StringWriter writer = new StringWriter();
-        // 遍历表
-        for (MetaTable metaTable : metaTables) {
-            DataMap dataMap = DataMap.getAndPutDataMap(generatorConfig);
-            dataMap.put(GenConstant.DATA_MAP_KEY_TABLE, metaTable);
-
-            for (AbstractTemplate template : templates) {
-                // 创建数据模型
-                DataMap buildDataMap = template.buildDataMap(dataMap);
-                if (!template.isEnable()) {
-                    log.info(buildDataMap.get("fileName") + " 已跳过代码生成!");
-                    continue;
-                }
-                String fileName = buildDataMap.getString(GenConstant.DATA_MAP_KEY_FILE_NAME);
-                // 创建freeMarker配置实例
-                Configuration configuration = new Configuration(Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
-                // 获取模版路径
-                configuration.setDirectoryForTemplateLoading(new File(templateConfig.getTemplateRootPath()));
-                configuration.setDefaultEncoding(StandardCharsets.UTF_8.name());
-                // 加载模版文件
-                Template easyTemplate = configuration.getTemplate(buildDataMap.getString(GenConstant.DATA_MAP_KEY_TEMPLATE_NAME));
-                // 输出文件
-                try {
-                    easyTemplate.process(buildDataMap, writer);
-                } catch (TemplateException e) {
-                    e.printStackTrace();
-                }
-                buildDataMap.clear();
-
-                System.out.println("fileName = " + fileName);
-                // 创建ZIP实体，并添加进压缩包
-                ZipEntry zipEntry = new ZipEntry(fileName);
-                zip.putNextEntry(zipEntry);
+//        Writer writer = new BufferedWriter(response.getWriter());
+        DataMap dataMap = DataMap.getAndPutDataMap(generatorConfig);
+        dataMap.put(GenConstant.DATA_MAP_KEY_TABLE, metaTable);
+        // 遍历模板
+        for (AbstractTemplate template : templates) {
+            // 创建数据模型
+            DataMap buildDataMap = template.buildDataMap(dataMap);
+            if (!template.isEnable()) {
+                log.info(buildDataMap.get("fileName") + " 已跳过代码生成!");
+                continue;
             }
+            String fileName = buildDataMap.getString(GenConstant.DATA_MAP_KEY_FILE_NAME);
+            // 创建freeMarker配置实例
+            Configuration configuration = new Configuration(Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
+            // 获取模版路径
+            configuration.setDirectoryForTemplateLoading(new File(templateConfig.getTemplateRootPath()));
+            configuration.setDefaultEncoding(StandardCharsets.UTF_8.name());
+            // 加载模版文件
+            Template easyTemplate = configuration.getTemplate(buildDataMap.getString(GenConstant.DATA_MAP_KEY_TEMPLATE_NAME));
+            // 输出文件
+            try {
+                easyTemplate.process(buildDataMap, writer);
+            } catch (TemplateException e) {
+                e.printStackTrace();
+            }
+            System.out.println("writer = " + writer);
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            buildDataMap.clear();
+
+            System.out.println("fileName = " + fileName);
+            // 创建ZIP实体，并添加进压缩包
+            ZipEntry zipEntry = new ZipEntry(fileName);
+            zip.putNextEntry(zipEntry);
         }
         //关闭流
         zip.flush();
@@ -282,7 +335,7 @@ public class GeneratorExecute {
         if (CollUtil.isEmpty(tables)) {
             throw new GeneratorException("需要生成的表不能为空");
         }
-        metaTables = DbManager.init(dataSourceConfig, filterConfig).getTables(tables);
+        List<MetaTable> metaTables = DbManager.init(dataSourceConfig, filterConfig).getTables(tables);
         // 获取所有的模板
         List<AbstractTemplate> templates = templateConfig.getTemplates();
         // 未找到模板类，直接结束
