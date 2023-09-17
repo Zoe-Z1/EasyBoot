@@ -26,7 +26,7 @@ public interface IGenerateColumnService extends IService<GenerateColumn> {
      * @param dto
      * @return
      */
-    Boolean updateBatchById(List<GenerateColumnUpdateDTO> dto);
+    Boolean updateByTableName(List<GenerateColumnUpdateDTO> dto);
 
     /**
      * 删除代码生成列配置

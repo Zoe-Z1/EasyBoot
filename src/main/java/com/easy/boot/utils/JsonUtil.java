@@ -2,9 +2,10 @@ package com.easy.boot.utils;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
-import com.easy.boot.admin.login.entity.LoginDTO;
+import com.easy.boot.admin.generateConfig.entity.GenerateTemplate;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -15,7 +16,6 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author zoe
@@ -47,22 +47,6 @@ public class JsonUtil {
         //忽略 在json字符串中存在，但是在java对象中不存在对应属性的情况。防止错误
         OBJECT_MAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-    }
-
-    public static void main(String[] args) {
-        List<LoginDTO> list = new ArrayList<>();
-        LoginDTO loginDTO = LoginDTO.builder()
-                .username("1111")
-                .password("aaaa")
-                .build();
-        list.add(loginDTO);
-
-//        String str = toJsonStr(list, "");
-//        String exStr = toJsonStr(loginDTO, "password");
-//        System.out.println("exStr = " + exStr);
-//        System.out.println("str = " + str);
-//        List<SysConfig> sysConfigs = toList(str, SysConfig.class);
-//        System.out.println("sysConfigs = " + sysConfigs);
     }
 
     /**
@@ -97,10 +81,29 @@ public class JsonUtil {
      * 对象 => Map
      *
      * @param obj 源对象
+     * @param typeReference 目标对象
      */
-    public static <T> Map toMap(T obj) {
+    public static <T> T parse(T obj, TypeReference<T> typeReference) {
         String json = toJsonStr(obj);
-        return toBean(json, Map.class);
+        return parse(json, typeReference);
+    }
+
+    /**
+     * Json字符串转换
+     *
+     * @param json json字符串串
+     * @param typeReference 目标对象
+     */
+    public static <T> T parse(String json, TypeReference<T> typeReference) {
+        T obj = null;
+        if (StrUtil.isNotEmpty(json) && typeReference != null) {
+            try {
+                obj = OBJECT_MAPPER.readValue(json, typeReference);
+            } catch (IOException e) {
+                log.error("Json转换异常 e -> ", e);
+            }
+        }
+        return obj;
     }
 
     /**
@@ -156,6 +159,13 @@ public class JsonUtil {
         }
         String json = toJsonStr(sourceEntity);
         return toList(json, targetClass);
+    }
+
+    public static void main(String[] args) throws JsonProcessingException {
+        String json = "{\"controller\":{\"enable\":true},\"service\":{\"enable\":true},\"serviceImpl\":{\"enable\":true},\"mapper\":{\"enable\":true},\"xml\":{\"enable\":true},\"entity\":{\"enable\":true},\"createDTO\":{\"enable\":true},\"updateDTO\":{\"enable\":true},\"query\":{\"enable\":true},\"vo\":{\"enable\":true},\"sql\":{\"enable\":true,\"isOverride\":true,\"execute\":false}}";
+        GenerateTemplate generateTemplate = JsonUtil.toBean(json, GenerateTemplate.class);
+        System.out.println("generateTemplate = " + generateTemplate);
+
     }
 
 }

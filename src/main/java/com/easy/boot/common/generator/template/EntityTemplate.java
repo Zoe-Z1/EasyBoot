@@ -5,13 +5,13 @@ import com.alibaba.excel.annotation.ExcelProperty;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.easy.boot.admin.generateColumn.entity.GenerateColumn;
 import com.easy.boot.common.base.BaseEntity;
 import com.easy.boot.common.generator.DataMap;
 import com.easy.boot.common.generator.GenConstant;
 import com.easy.boot.common.generator.config.AnnotationConfig;
 import com.easy.boot.common.generator.config.FilterConfig;
 import com.easy.boot.common.generator.config.GlobalConfig;
-import com.easy.boot.common.generator.db.Field;
 import com.easy.boot.common.generator.db.MetaTable;
 import com.easy.boot.utils.JsonUtil;
 import io.swagger.annotations.ApiModel;
@@ -170,16 +170,16 @@ public class EntityTemplate extends AbstractTemplate {
         GlobalConfig global = buildDataMap.getGlobalConfig();
         FilterConfig filter = buildDataMap.getFilterConfig();
         MetaTable metaTable = buildDataMap.getMetaTable();
-        List<Field> fields = JsonUtil.copyList(metaTable.getFields(), Field.class);
-        fields.removeIf(item -> filter.getExcludeField().contains(item.getJavaName()) && !getIncludeField().contains(item.getJavaName()));
+        List<GenerateColumn> columns = JsonUtil.copyList(metaTable.getColumns(), GenerateColumn.class);
+        columns.removeIf(item -> filter.getExcludeField().contains(item.getJavaName()) && !getIncludeField().contains(item.getJavaName()));
         Class<?> clazz = getSuperClass();
         if (getEnableExcludeSuperField() && clazz != null) {
             java.lang.reflect.Field[] superFields = clazz.getDeclaredFields();
             Set<String> superFieldSet = Arrays.stream(superFields).map(java.lang.reflect.Field::getName).collect(Collectors.toSet());
-            fields.removeIf(item -> superFieldSet.contains(item.getJavaName()));
+            columns.removeIf(item -> superFieldSet.contains(item.getJavaName()));
         }
         buildDataMap.put(GenConstant.DATA_MAP_KEY_IS_ENTITY, true);
-        buildDataMap.put(GenConstant.DATA_MAP_KEY_FIELDS, fields);
+        buildDataMap.put(GenConstant.DATA_MAP_KEY_COLUMNS, columns);
         buildDataMap.put(GenConstant.DATA_MAP_KEY_ENABLE_TABLE_FIELD, getEnableTableField());
         if (global.getEnableExport() || global.getEnableImport()) {
             buildDataMap.put(GenConstant.DATA_MAP_KEY_ENABLE_EXCEL, true);
@@ -209,7 +209,7 @@ public class EntityTemplate extends AbstractTemplate {
         pkgs.add(TableName.class.getName());
         pkgs.add(ApiModel.class.getName());
         pkgs.add(ApiModelProperty.class.getName());
-        pkgs.addAll(metaTable.getFields().stream().map(Field::getJavaTypePackageName).collect(Collectors.toSet()));
+        pkgs.addAll(metaTable.getColumns().stream().map(GenerateColumn::getJavaTypePackageName).collect(Collectors.toSet()));
         pkgs.add("lombok.*");
         List<String> list = new ArrayList<>(pkgs);
         Collections.sort(list);

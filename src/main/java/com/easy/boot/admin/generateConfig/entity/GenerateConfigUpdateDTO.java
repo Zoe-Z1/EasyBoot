@@ -1,12 +1,11 @@
 package com.easy.boot.admin.generateConfig.entity;
 
-import com.easy.boot.admin.generate.entity.GenerateTemplate;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotEmpty;
 
 
 /**
@@ -23,18 +22,15 @@ import javax.validation.constraints.NotNull;
 @EqualsAndHashCode
 public class GenerateConfigUpdateDTO {
 
-    @NotNull(message = "主键ID不能为空")
-    @ApiModelProperty("主键ID")
-    private Long id;
-
-    @ApiModelProperty("配置类型 1：全局配置 2：表配置")
-    private Integer type;
-
+    @NotEmpty(message = "表名称不能为空")
     @ApiModelProperty("表名称")
     private String tableName;
 
+    @ApiModelProperty("模块名称")
+    private String moduleName;
+
     @ApiModelProperty("表注释")
-    private String comment;
+    private String remarks;
 
     @ApiModelProperty("包名")
     private String packageName;
@@ -44,9 +40,6 @@ public class GenerateConfigUpdateDTO {
 
     @ApiModelProperty("生成代码路径")
     private String outputPath;
-
-    @ApiModelProperty("生成时是否覆盖已有文件，模板单独配置的优先级大于全局 	0：覆盖 1：不覆盖")
-    private Integer isOverride;
 
     @ApiModelProperty("生成完代码后是否打开目录	0：打开 1：不打开")
     private Integer isOpen;
@@ -74,5 +67,8 @@ public class GenerateConfigUpdateDTO {
 
     @ApiModelProperty("过滤表后缀 多个用,分隔")
     private String excludeTableSuffix;
+
+    @ApiModelProperty("过滤实体类属性 多个用,分隔")
+    private String excludeField;
 
 }

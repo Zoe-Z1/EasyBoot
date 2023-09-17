@@ -1,18 +1,23 @@
 package com.easy.boot.admin.generateConfig.service.impl;
 
+import cn.hutool.core.text.NamingCase;
 import cn.hutool.extra.spring.SpringUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.easy.boot.admin.generate.entity.DatabaseTable;
 import com.easy.boot.admin.generate.service.GenerateService;
 import com.easy.boot.admin.generateConfig.entity.GenerateConfig;
+import com.easy.boot.admin.generateConfig.entity.GenerateConfigQuery;
 import com.easy.boot.admin.generateConfig.entity.GenerateConfigUpdateDTO;
-import com.easy.boot.admin.generateConfig.entity.TableConfigQuery;
+import com.easy.boot.admin.generateConfig.entity.GenerateConfigVO;
 import com.easy.boot.admin.generateConfig.mapper.GenerateConfigMapper;
 import com.easy.boot.admin.generateConfig.service.IGenerateConfigService;
+import com.easy.boot.common.generator.db.DbManager;
 import com.easy.boot.common.redisson.EasyLock;
 import com.easy.boot.exception.GeneratorException;
 import com.easy.boot.utils.BeanUtil;
+import com.easy.boot.utils.JsonUtil;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,7 +33,7 @@ public class GenerateConfigServiceImpl extends ServiceImpl<GenerateConfigMapper,
 
     @EasyLock
     @Override
-    public GenerateConfig getGlobalConfig() {
+    public GenerateConfigVO getGlobalConfig() {
         GenerateConfig generateConfig = lambdaQuery()
                 .eq(GenerateConfig::getType, 1)
                 .one();
@@ -36,26 +41,32 @@ public class GenerateConfigServiceImpl extends ServiceImpl<GenerateConfigMapper,
             generateConfig = GenerateConfig.defaultGlobalBuild();
             save(generateConfig);
         }
-        return generateConfig;
+        GenerateConfigVO vo = BeanUtil.copyBean(generateConfig, GenerateConfigVO.class);
+        return vo;
     }
 
     @EasyLock
     @Override
-    public GenerateConfig getTableConfig(TableConfigQuery query) {
+    public GenerateConfigVO getTableConfig(GenerateConfigQuery query) {
         GenerateService generateService = SpringUtil.getBean(GenerateService.class);
-        DatabaseTable tableByTableName = generateService.getTableByTableName(query.getTableName());
-        if (tableByTableName == null) {
+        DatabaseTable databaseTable = generateService.getTableByTableName(query.getTableName());
+        if (databaseTable == null) {
             throw new GeneratorException("当前表配置信息不存在");
         }
+        GenerateConfigVO vo = new GenerateConfigVO();
         GenerateConfig generateConfig = lambdaQuery()
                 .eq(GenerateConfig::getType, 2)
                 .eq(GenerateConfig::getTableName, query.getTableName())
                 .one();
         if (generateConfig == null) {
-            generateConfig = getGlobalConfig();
+            vo = getGlobalConfig();
+            generateConfig = BeanUtil.copyBean(vo, GenerateConfig.class);
+            String filterName = DbManager.filterTableName(databaseTable.getTableName(),
+                    generateConfig.getExcludeTablePrefix(), generateConfig.getExcludeTableSuffix());
             generateConfig.setType(2)
-                    .setTableName(tableByTableName.getTableName())
-                    .setComment(tableByTableName.getComment());
+                    .setTableName(databaseTable.getTableName())
+                    .setModuleName(NamingCase.toCamelCase(filterName))
+                    .setRemarks(databaseTable.getComment());
             generateConfig.setId(null);
             generateConfig.setCreateBy(null);
             generateConfig.setCreateUsername(null);
@@ -64,14 +75,19 @@ public class GenerateConfigServiceImpl extends ServiceImpl<GenerateConfigMapper,
             generateConfig.setUpdateUsername(null);
             generateConfig.setUpdateTime(null);
             save(generateConfig);
+        } else {
+            vo = BeanUtil.copyBean(generateConfig, GenerateConfigVO.class);
         }
-        return generateConfig;
+        return vo;
     }
 
     @Override
-    public Boolean updateById(GenerateConfigUpdateDTO dto) {
+    public Boolean updateByTableName(GenerateConfigUpdateDTO dto) {
         GenerateConfig generateConfig = BeanUtil.copyBean(dto, GenerateConfig.class);
-        return updateById(generateConfig);
+        generateConfig.setTemplateJson(JsonUtil.toJsonStr(dto.getTemplateJson()));
+        UpdateWrapper<GenerateConfig> updateWrapper = new UpdateWrapper<>(generateConfig);
+        updateWrapper.eq("table_name", dto.getTableName());
+        return update(updateWrapper);
     }
 
     @Override

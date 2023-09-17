@@ -1,8 +1,10 @@
 package com.easy.boot.admin.generateConfig.controller;
 
+import com.easy.boot.admin.generate.entity.GenerateUpdateDTO;
 import com.easy.boot.admin.generateConfig.entity.GenerateConfig;
+import com.easy.boot.admin.generateConfig.entity.GenerateConfigQuery;
 import com.easy.boot.admin.generateConfig.entity.GenerateConfigUpdateDTO;
-import com.easy.boot.admin.generateConfig.entity.TableConfigQuery;
+import com.easy.boot.admin.generateConfig.entity.GenerateConfigVO;
 import com.easy.boot.admin.generateConfig.service.IGenerateConfigService;
 import com.easy.boot.admin.operationLog.enums.OperateTypeEnum;
 import com.easy.boot.common.base.BaseController;
@@ -36,7 +38,7 @@ public class GenerateConfigController extends BaseController {
     @ApiOperation(value = "获取代码生成全局参数配置")
     @EasyLog(module = "获取代码生成全局参数配置", operateType = OperateTypeEnum.SELECT)
     @GetMapping(value = "/globalConfig")
-    public Result<GenerateConfig> globalConfig() {
+    public Result<GenerateConfigVO> globalConfig() {
         return Result.success(generateConfigService.getGlobalConfig());
     }
 
@@ -44,7 +46,7 @@ public class GenerateConfigController extends BaseController {
     @ApiOperation(value = "获取代码生成Table参数配置")
     @EasyLog(module = "获取代码生成Table参数配置", operateType = OperateTypeEnum.SELECT)
     @GetMapping("/tableConfig")
-    public Result<GenerateConfig> tableConfig(@Validated TableConfigQuery query) {
+    public Result<GenerateConfigVO> tableConfig(@Validated GenerateConfigQuery query) {
         return Result.success(generateConfigService.getTableConfig(query));
     }
 
@@ -53,7 +55,8 @@ public class GenerateConfigController extends BaseController {
     @EasyLog(module = "编辑代码生成Table参数配置", operateType = OperateTypeEnum.UPDATE)
     @PostMapping(value = "/update")
     public Result update(@Validated @RequestBody GenerateConfigUpdateDTO dto) {
-        return Result.r(generateConfigService.updateById(dto));
+        generateConfigService.updateByTableName(dto);
+        return Result.success();
     }
 
     @ApiOperationSupport(author = "zoe")

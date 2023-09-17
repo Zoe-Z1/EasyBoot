@@ -1,4 +1,4 @@
-package com.easy.boot.admin.generate.entity;
+package com.easy.boot.admin.generateConfig.entity;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -22,10 +22,4 @@ public class Template {
     @ApiModelProperty("是否生成")
     private Boolean enable = true;
 
-    @ApiModelProperty("是否覆盖")
-    private Boolean isOverride = true;
-
-    public Template(Boolean isOverride) {
-        this.isOverride = isOverride;
-    }
 }

@@ -1,11 +1,11 @@
 package com.easy.boot.common.generator.template;
 
 import cn.hutool.core.util.StrUtil;
+import com.easy.boot.admin.generateColumn.entity.GenerateColumn;
 import com.easy.boot.common.generator.DataMap;
 import com.easy.boot.common.generator.GenConstant;
 import com.easy.boot.common.generator.config.GlobalConfig;
 import com.easy.boot.common.generator.config.TemplateConfig;
-import com.easy.boot.common.generator.db.Field;
 import com.easy.boot.common.generator.db.MetaTable;
 import com.easy.boot.utils.JsonUtil;
 import lombok.*;
@@ -129,12 +129,12 @@ public class MapperXmlTemplate extends AbstractTemplate {
      */
     private void buildOther(DataMap buildDataMap) {
         MetaTable metaTable = buildDataMap.getMetaTable();
-        List<Field> fields = JsonUtil.copyList(metaTable.getFields(), Field.class);
-        buildDataMap.put(GenConstant.DATA_MAP_KEY_FIELDS, fields);
+        List<GenerateColumn> columns = JsonUtil.copyList(metaTable.getColumns(), GenerateColumn.class);
+        buildDataMap.put(GenConstant.DATA_MAP_KEY_COLUMNS, columns);
         buildDataMap.put(GenConstant.DATA_MAP_KEY_GEN_BASE_RESULT_MAP_NAME, getGenBaseResultMap());
         buildDataMap.put(GenConstant.DATA_MAP_KEY_GEN_BASE_COLUMN_LIST_NAME, getGenBaseColumnList());
         if (getGenBaseColumnList()) {
-            String baseColumnList = fields.stream().map(Field::getName).collect(Collectors.joining(", "));
+            String baseColumnList = columns.stream().map(GenerateColumn::getColumnName).collect(Collectors.joining(", "));
             buildDataMap.put(GenConstant.DATA_MAP_KEY_BASE_COLUMN_LIST_NAME, baseColumnList);
         }
     }

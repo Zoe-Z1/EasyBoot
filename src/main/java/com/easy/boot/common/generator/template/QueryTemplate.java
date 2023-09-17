@@ -1,12 +1,12 @@
 package com.easy.boot.common.generator.template;
 
 import cn.hutool.core.util.StrUtil;
+import com.easy.boot.admin.generateColumn.entity.GenerateColumn;
 import com.easy.boot.common.base.BasePageQuery;
 import com.easy.boot.common.generator.DataMap;
 import com.easy.boot.common.generator.GenConstant;
 import com.easy.boot.common.generator.config.AnnotationConfig;
 import com.easy.boot.common.generator.config.FilterConfig;
-import com.easy.boot.common.generator.db.Field;
 import com.easy.boot.common.generator.db.MetaTable;
 import com.easy.boot.utils.JsonUtil;
 import io.swagger.annotations.ApiModel;
@@ -163,16 +163,16 @@ public class QueryTemplate extends AbstractTemplate {
     private void handleField(DataMap buildDataMap) {
         MetaTable metaTable = buildDataMap.getMetaTable();
         FilterConfig filter = buildDataMap.getFilterConfig();
-        List<Field> fields = JsonUtil.copyList(metaTable.getFields(), Field.class);
-        fields.removeIf(item -> filter.getExcludeField().contains(item.getJavaName()) && !getIncludeField().contains(item.getJavaName()));
+        List<GenerateColumn> columns = JsonUtil.copyList(metaTable.getColumns(), GenerateColumn.class);
+        columns.removeIf(item -> filter.getExcludeField().contains(item.getJavaName()) && !getIncludeField().contains(item.getJavaName()));
         Class<?> clazz = getSuperClass();
         if (getEnableExcludeSuperField() && clazz != null) {
             java.lang.reflect.Field[] superFields = clazz.getDeclaredFields();
             Set<String> superFieldSet = Arrays.stream(superFields).map(java.lang.reflect.Field::getName).collect(Collectors.toSet());
-            fields.removeIf(item -> superFieldSet.contains(item.getJavaName()));
+            columns.removeIf(item -> superFieldSet.contains(item.getJavaName()));
         }
         buildDataMap.put(GenConstant.DATA_MAP_KEY_IS_ENTITY, false);
-        buildDataMap.put(GenConstant.DATA_MAP_KEY_FIELDS, fields);
+        buildDataMap.put(GenConstant.DATA_MAP_KEY_COLUMNS, columns);
         buildDataMap.put(GenConstant.DATA_MAP_KEY_ENABLE_TABLE_FIELD, getEnableTableField());
     }
 
@@ -192,7 +192,7 @@ public class QueryTemplate extends AbstractTemplate {
         }
         pkgs.add(ApiModel.class.getName());
         pkgs.add(ApiModelProperty.class.getName());
-        pkgs.addAll(metaTable.getFields().stream().map(Field::getJavaTypePackageName).collect(Collectors.toSet()));
+        pkgs.addAll(metaTable.getColumns().stream().map(GenerateColumn::getJavaTypePackageName).collect(Collectors.toSet()));
         pkgs.add("lombok.*");
         List<String> list = new ArrayList<>(pkgs);
         Collections.sort(list);

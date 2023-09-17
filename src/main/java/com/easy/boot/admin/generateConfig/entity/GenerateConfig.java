@@ -3,7 +3,6 @@ package com.easy.boot.admin.generateConfig.entity;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.easy.boot.admin.generate.entity.GenerateTemplate;
 import com.easy.boot.common.base.BaseEntity;
 import com.easy.boot.common.generator.GenConstant;
 import com.easy.boot.utils.JsonUtil;
@@ -41,10 +40,15 @@ public class GenerateConfig extends BaseEntity {
     @ExcelProperty(value = "表名称")
     private String tableName;
 
+    @ApiModelProperty("模块名称")
+    @TableField("module_name")
+    @ExcelProperty(value = "模块名称")
+    private String moduleName;
+
     @ApiModelProperty("表注释")
-    @TableField("comment")
+    @TableField("remarks")
     @ExcelProperty(value = "表注释")
-    private String comment;
+    private String remarks;
 
     @ApiModelProperty("包名")
     @TableField("package_name")
@@ -60,11 +64,6 @@ public class GenerateConfig extends BaseEntity {
     @TableField("output_path")
     @ExcelProperty(value = "生成代码路径")
     private String outputPath;
-
-    @ApiModelProperty("生成时是否覆盖已有文件，模板单独配置的优先级大于全局 	0：覆盖 1：不覆盖")
-    @TableField("is_override")
-    @ExcelProperty(value = "生成时是否覆盖已有文件，模板单独配置的优先级大于全局 	0：覆盖 1：不覆盖")
-    private Integer isOverride;
 
     @ApiModelProperty("生成完代码后是否打开目录	0：打开 1：不打开")
     @TableField("is_open")
@@ -111,6 +110,11 @@ public class GenerateConfig extends BaseEntity {
     @ExcelProperty(value = "过滤表后缀 多个用,分隔")
     private String excludeTableSuffix;
 
+    @ApiModelProperty("过滤实体类属性 多个用,分隔")
+    @TableField("exclude_field")
+    @ExcelProperty(value = "过滤实体类属性 多个用,分隔")
+    private String excludeField;
+
     public static GenerateConfig defaultGlobalBuild() {
         // 定义成变量方便直接修改
         boolean isOverride = true;
@@ -123,18 +127,17 @@ public class GenerateConfig extends BaseEntity {
         return GenerateConfig.builder()
                 .type(1)
                 .tableName("")
-                .comment("")
+                .remarks("")
                 .packageName(GenConstant.DEFAULT_PACKAGE_NAME)
                 .requestMappingPrefix(GenConstant.DEFAULT_REQUEST_MAPPING_PREFIX)
                 .outputPath(GenConstant.DEFAULT_OUTPUT_PATH)
-                .isOverride(isOverride ? 0 : 1)
                 .isOpen(isOpen ? 0 : 1)
                 .author(GenConstant.DEFAULT_AUTHOR)
                 .enableImport(enableImport ? 0 : 1)
                 .enableExport(enableExport ? 0 : 1)
                 .enableLog(enableLog ? 0 : 1)
                 .enableBuilder(enableBuilder ? 0 : 1)
-                .templateJson(JsonUtil.toJsonStr(GenerateTemplate.defaultBuild(isOverride)))
+                .templateJson(JsonUtil.toJsonStr(GenerateTemplate.defaultBuild()))
                 .build();
     }
 }

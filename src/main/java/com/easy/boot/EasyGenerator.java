@@ -4,6 +4,7 @@ import cn.hutool.core.collection.CollUtil;
 import com.easy.boot.common.generator.GenConstant;
 import com.easy.boot.common.generator.config.*;
 import com.easy.boot.common.generator.db.convert.EasyColumnConvertHandler;
+import com.easy.boot.common.generator.execute.GeneratorExecute;
 import com.easy.boot.common.generator.execute.MainGeneratorExecute;
 import com.easy.boot.common.generator.template.EntityTemplate;
 import com.easy.boot.common.generator.template.UpdateDTOTemplate;
@@ -20,7 +21,7 @@ public class EasyGenerator {
 
     public static void main(String[] args) {
         String url = "jdbc:mysql://127.0.0.1:3306/easyboot?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B8";
-        MainGeneratorExecute.init(
+        GeneratorExecute.init(
                 GeneratorConfig.builder()
                         .global(
                                 GlobalConfig.builder()
@@ -69,14 +70,14 @@ public class EasyGenerator {
                                         .build())
                         .filter(
                                 FilterConfig.builder()
-                                        .excludeTablePrefix(CollUtil.newHashSet(""))
+                                        .excludeTablePrefix(CollUtil.newHashSet("generate_"))
                                         .excludeField(CollUtil.newHashSet("id","createBy","createUsername","createTime","updateBy","updateUsername","updateTime","isDel"))
                                         .build()
                         )
                         .build()
         )
                 .tables("generate_column")
-                .execute();
+                .mainExecute();
 
     }
 }

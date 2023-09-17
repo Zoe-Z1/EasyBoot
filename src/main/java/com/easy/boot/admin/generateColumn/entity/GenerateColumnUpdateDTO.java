@@ -6,6 +6,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import javax.validation.constraints.NotEmpty;
+
 
 /**
  * @author zoe
@@ -23,9 +25,7 @@ import lombok.experimental.SuperBuilder;
 public class GenerateColumnUpdateDTO {
 
 
-    @ApiModelProperty("主键ID")
-    private Long id;
-
+    @NotEmpty(message = "表名称不能为空")
     @ApiModelProperty("表名称")
     private String tableName;
 
@@ -49,9 +49,6 @@ public class GenerateColumnUpdateDTO {
 
     @ApiModelProperty("Java类型")
     private String javaType;
-
-    @ApiModelProperty("Java类型包名")
-    private String javaTypePackageName;
 
     @ApiModelProperty("是否需要创建 #0：创建 1：不创建")
     private Integer isCreate;

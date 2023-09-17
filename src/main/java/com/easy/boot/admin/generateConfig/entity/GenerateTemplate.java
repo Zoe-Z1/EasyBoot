@@ -1,4 +1,4 @@
-package com.easy.boot.admin.generate.entity;
+package com.easy.boot.admin.generateConfig.entity;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -52,19 +52,19 @@ public class GenerateTemplate {
     @ApiModelProperty("Sql")
     private Sql sql;
 
-    public static GenerateTemplate defaultBuild(Boolean isOverride) {
+    public static GenerateTemplate defaultBuild() {
         return GenerateTemplate.builder()
-                .controller(new Template(isOverride))
-                .service(new Template(isOverride))
-                .serviceImpl(new Template(isOverride))
-                .mapper(new Template(isOverride))
-                .xml(new Template(isOverride))
-                .entity(new Template(isOverride))
-                .createDTO(new Template(isOverride))
-                .updateDTO(new Template(isOverride))
-                .query(new Template(isOverride))
-                .vo(new Template(isOverride))
-                .sql(new Sql(isOverride))
+                .controller(new Template())
+                .service(new Template())
+                .serviceImpl(new Template())
+                .mapper(new Template())
+                .xml(new Template())
+                .entity(new Template())
+                .createDTO(new Template())
+                .updateDTO(new Template())
+                .query(new Template())
+                .vo(new Template())
+                .sql(new Sql())
                 .build();
     }
 }

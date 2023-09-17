@@ -86,82 +86,20 @@ public class DbManager {
     }
 
 
-    /**
-     * 获取要生成表的列信息
-     * @return List<GenerateColumn>
-     */
-    public List<GenerateColumn> getGenerateColumns(List<GenerateColumnQuery> querys) {
-        List<GenerateColumn> list = new ArrayList<>();
-        for (GenerateColumnQuery query : querys) {
-            List<GenerateColumn> newColumns = getGenerateColumns(query);
-            if (CollUtil.isNotEmpty(newColumns)) {
-                list.addAll(newColumns);
-            }
-        }
-        return list;
-    }
-
-
-    /**
-     * 获取要生成表的列信息
-     * @return List<GenerateColumn>
-     */
-    public List<GenerateColumn> getGenerateColumns(GenerateColumnQuery query) {
-        List<GenerateColumn> columns = new ArrayList<>();
-        try {
-            DatabaseMetaData dbMetaData = connection.getMetaData();
-            List<String> primaryKeyNames = new ArrayList<>();
-            // 处理主键信息
-            ResultSet primaryKeys = dbMetaData.getPrimaryKeys(null, null, query.getTableName());
-            while (primaryKeys.next()) {
-                primaryKeyNames.add(primaryKeys.getString(DbConstant.COLUMN_NAME));
-            }
-            // 处理字段信息
-            ResultSet rs = dbMetaData.getColumns(connection.getCatalog(), null, query.getTableName(), null);
-            while (rs.next()) {
-                String columnName = rs.getString(DbConstant.COLUMN_NAME);
-                String javaName = NamingCase.toCamelCase(columnName);
-                // 字段过滤
-                if (filter.getExcludeField().contains(javaName)) {
-                    continue;
-                }
-                String remarks = rs.getString(DbConstant.COLUMN_REMARKS);
-                if (StrUtil.isNotEmpty(remarks)) {
-                    remarks = remarks.replaceAll("\n", "\t");
-                }
-                String columnType = rs.getString(DbConstant.COLUMN_TYPE);
-                JavaTypeEnum javaType = columnConvertHandler.convert(columnType);
-                OptElementEnum optElement = optElementConvertHandler.convert(columnType);
-                boolean isPrimaryKey = primaryKeyNames.contains(columnName);
-                int columnSize = rs.getInt(DbConstant.COLUMN_SIZE);
-                columnType = columnType + "(" + columnSize + ")";
-                GenerateColumn column = GenerateColumn.builder()
-                        .tableName(query.getTableName())
-                        .isPrimaryKey(isPrimaryKey ? 0 : 1)
-                        .columnName(columnName)
-                        .columnType(columnType)
-                        .columnRemarks(remarks)
-                        .nullable(rs.getInt(DbConstant.COLUMN_NULLABLE))
-                        .javaName(javaName)
-                        .javaType(javaType.getValue())
-                        .javaTypePackageName(javaType.getPackageName())
-                        .isCreate(isPrimaryKey ? 1:0)
-                        .isUpdate(0)
-                        .listShow(isPrimaryKey ? 1:0)
-                        .detailShow(isPrimaryKey ? 1:0)
-                        .isImport(isPrimaryKey ? 1:0)
-                        .isExport(isPrimaryKey ? 1:0)
-                        .isRequired(isPrimaryKey ? 1:0)
-                        .optElement(optElement.getValue())
-                        .build();
-                columns.add(column);
-            }
-        } catch (Exception e) {
-            log.error("获取 {} 表列信息异常 e-> ", query.getTableName(), e);
-            throw new GeneratorException("获取表列息异常");
-        }
-        return columns;
-    }
+//    /**
+//     * 获取要生成表的列信息
+//     * @return List<GenerateColumn>
+//     */
+//    public List<GenerateColumn> getGenerateColumns(List<GenerateColumnQuery> querys) {
+//        List<GenerateColumn> list = new ArrayList<>();
+//        for (GenerateColumnQuery query : querys) {
+//            List<GenerateColumn> newColumns = getGenerateColumns(query);
+//            if (CollUtil.isNotEmpty(newColumns)) {
+//                list.addAll(newColumns);
+//            }
+//        }
+//        return list;
+//    }
 
     /**
      * 获取要生成的表信息
@@ -182,7 +120,9 @@ public class DbManager {
         );
         // 处理表中的字段信息
         for (MetaTable metaTable : list) {
-            handleTableFields(metaTable);
+            GenerateColumnQuery query = new GenerateColumnQuery(metaTable.getName());
+            List<GenerateColumn> columns = getGenerateColumns(query);
+            metaTable.setColumns(columns);
         }
         return list;
     }
@@ -253,47 +193,91 @@ public class DbManager {
     }
 
     /**
-     * 处理表字段信息
-     * @param metaTable 表数据
+     * 获取要生成表的列信息
+     * @return List<GenerateColumn>
      */
-    private void handleTableFields(MetaTable metaTable) {
-        List<Field> fields = new ArrayList<>();
+    public List<GenerateColumn> getGenerateColumns(GenerateColumnQuery query) {
+        List<GenerateColumn> columns = new ArrayList<>();
         try {
             DatabaseMetaData dbMetaData = connection.getMetaData();
             List<String> primaryKeyNames = new ArrayList<>();
             // 处理主键信息
-            ResultSet primaryKeys = dbMetaData.getPrimaryKeys(null, null, metaTable.getName());
+            ResultSet primaryKeys = dbMetaData.getPrimaryKeys(null, null, query.getTableName());
             while (primaryKeys.next()) {
                 primaryKeyNames.add(primaryKeys.getString(DbConstant.COLUMN_NAME));
             }
             // 处理字段信息
-            ResultSet rs = dbMetaData.getColumns(connection.getCatalog(), null, metaTable.getName(), null);
+            ResultSet rs = dbMetaData.getColumns(connection.getCatalog(), null, query.getTableName(), null);
             while (rs.next()) {
                 String columnName = rs.getString(DbConstant.COLUMN_NAME);
+                String javaName = NamingCase.toCamelCase(columnName);
                 String remarks = rs.getString(DbConstant.COLUMN_REMARKS);
                 if (StrUtil.isNotEmpty(remarks)) {
                     remarks = remarks.replaceAll("\n", "\t");
                 }
-                String javaName = NamingCase.toCamelCase(columnName);
                 String columnType = rs.getString(DbConstant.COLUMN_TYPE);
                 JavaTypeEnum javaType = columnConvertHandler.convert(columnType);
-                Field field = Field.builder()
-                        .isPrimaryKey(primaryKeyNames.contains(columnName))
-                        .name(columnName)
-                        .javaName(javaName)
+                OptElementEnum optElement = optElementConvertHandler.convert(columnType);
+                boolean isPrimaryKey = primaryKeyNames.contains(columnName);
+                int columnSize = rs.getInt(DbConstant.COLUMN_SIZE);
+                columnType = columnType + "(" + columnSize + ")";
+                GenerateColumn column = GenerateColumn.builder()
+                        .tableName(query.getTableName())
+                        .isPrimaryKey(isPrimaryKey ? 0 : 1)
+                        .columnName(columnName)
                         .columnType(columnType)
+                        .columnRemarks(remarks)
+                        .nullable(rs.getInt(DbConstant.COLUMN_NULLABLE))
+                        .javaName(javaName)
                         .javaType(javaType.getValue())
                         .javaTypePackageName(javaType.getPackageName())
-                        .size(rs.getInt(DbConstant.COLUMN_SIZE))
-                        .nullable(rs.getInt(DbConstant.COLUMN_NULLABLE))
-                        .remarks(remarks)
+                        .isCreate(isPrimaryKey ? 1:0)
+                        .isUpdate(0)
+                        .listShow(isPrimaryKey ? 1:0)
+                        .detailShow(isPrimaryKey ? 1:0)
+                        .isImport(isPrimaryKey ? 1:0)
+                        .isExport(isPrimaryKey ? 1:0)
+                        .isRequired(isPrimaryKey ? 1:0)
+                        .optElement(optElement.getValue())
                         .build();
-                fields.add(field);
+                columns.add(column);
             }
-            metaTable.setFields(fields);
         } catch (Exception e) {
-            log.error("加载 {} 表字段信息异常 e-> ", metaTable.getName(), e);
-            throw new GeneratorException("加载表字段信息异常");
+            log.error("获取 {} 表列信息异常 e-> ", query.getTableName(), e);
+            throw new GeneratorException("获取" + query.getTableName() + "表列信息异常");
         }
+        return columns;
+    }
+
+    /**
+     * 表名过滤
+     * @param tableName 表名
+     * @return
+     */
+    public static String filterTableName(String tableName, String excludeTablePrefix, String excludeTableSuffix) {
+        Set<String> excludeTablePrefixSet = new HashSet<>();
+        Set<String> excludeTableSuffixSet = new HashSet<>();
+        if (StrUtil.isNotEmpty(excludeTablePrefix)) {
+            excludeTablePrefixSet = Arrays.stream(excludeTablePrefix.split(",")).collect(Collectors.toSet());
+        }
+        if (StrUtil.isNotEmpty(excludeTableSuffix)) {
+            excludeTableSuffixSet = Arrays.stream(excludeTableSuffix.split(",")).collect(Collectors.toSet());
+        }
+        for (String tablePrefix : excludeTablePrefixSet) {
+            if (tableName.startsWith(tablePrefix)) {
+                tableName = tableName.replace(tablePrefix, "");
+                break;
+            }
+        }
+        for (String tableSuffix : excludeTableSuffixSet) {
+            if (tableName.endsWith(tableSuffix)) {
+                tableName = tableName.replace(tableSuffix, "");
+                break;
+            }
+        }
+        if (StrUtil.isEmpty(tableName)) {
+            throw new GeneratorException(tableName + " 表过滤后的表名称为空");
+        }
+        return tableName;
     }
 }

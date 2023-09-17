@@ -34,22 +34,22 @@ public class ${className} {
 </#if>
 
 <#-- ----------  BEGIN 字段循环遍历  ---------->
-<#list fields as field>
+<#list columns as column>
 
-    <#if field.remarks!?length gt 0>
-    @ApiModelProperty("${field.remarks}")
+    <#if column.columnRemarks!?length gt 0>
+    @ApiModelProperty("${column.columnRemarks}")
     </#if>
     <#if enableTableField>
-        <#if field.isPrimaryKey>
+        <#if column.isPrimaryKey == 0>
     @TableId
         <#else >
-    @TableField("${field.name}")
+    @TableField("${column.columnName}")
         </#if>
     </#if>
     <#if enableExcel??>
-    @ExcelProperty(value = "${field.remarks!}")
+    @ExcelProperty(value = "${column.columnRemarks!}")
     </#if>
     <#-- 遍历字段 -->
-    private ${field.javaType} ${field.javaName};
+    private ${column.javaType} ${column.javaName};
 </#list>
 }

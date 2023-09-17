@@ -18,7 +18,7 @@ import javax.validation.constraints.NotEmpty;
 @NoArgsConstructor
 @SuperBuilder
 @ToString(callSuper = true)
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode
 public class TableConfigQuery {
 
     @NotEmpty(message = "表名称不能为空")

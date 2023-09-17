@@ -1,22 +1,33 @@
 package com.easy.boot.common.generator.execute;
 
 import cn.hutool.core.collection.CollUtil;
-import com.easy.boot.admin.generateColumn.entity.GenerateColumn;
+import cn.hutool.core.util.StrUtil;
+import com.easy.boot.admin.generateConfig.entity.GenerateTemplate;
 import com.easy.boot.admin.generateConfig.entity.GenerateConfig;
 import com.easy.boot.common.generator.DataMap;
 import com.easy.boot.common.generator.GenConstant;
 import com.easy.boot.common.generator.config.*;
+import com.easy.boot.common.generator.db.DbManager;
 import com.easy.boot.common.generator.db.MetaTable;
-import com.easy.boot.common.generator.template.AbstractTemplate;
+import com.easy.boot.common.generator.db.Table;
+import com.easy.boot.common.generator.template.*;
 import com.easy.boot.exception.GeneratorException;
+import com.easy.boot.utils.BeanUtil;
+import com.easy.boot.utils.JsonUtil;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
+import freemarker.template.TemplateException;
 import lombok.extern.slf4j.Slf4j;
 
+import javax.servlet.http.HttpServletResponse;
 import java.awt.*;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.util.*;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 /**
  * @author zoe
@@ -57,9 +68,16 @@ public class GeneratorExecute {
     private final FilterConfig filterConfig;
 
     /**
-     * 要生成的列信息
+     * 要生成的表信息
      */
-    private List<GenerateColumn> columns;
+    private List<Table> tables;
+
+    /**
+     * 要生成的表信息
+     */
+    private List<MetaTable> metaTables;
+
+    private HttpServletResponse response;
 
     private GeneratorExecute(GeneratorConfig generatorConfig) {
         this.generatorConfig = generatorConfig;
@@ -73,32 +91,140 @@ public class GeneratorExecute {
     /**
      * 初始化类
      *
+     * @param generatorConfig 生成配置
+     * @return MainGeneratorExecute
+     */
+    public static GeneratorExecute init(GeneratorConfig generatorConfig) {
+        return new GeneratorExecute(generatorConfig);
+    }
+
+    /**
+     * 初始化类
+     *
      * @param generateConfig 生成参数配置
      * @return MainGeneratorExecute
      */
     public static GeneratorExecute init(GenerateConfig generateConfig) {
-        GeneratorConfig generatorConfig = GeneratorConfig
-                .builder()
+        GenerateTemplate generateTemplate = JsonUtil.toBean(generateConfig.getTemplateJson(), GenerateTemplate.class);
+        Set<String> excludeTablePrefix = new HashSet<>();
+        Set<String> excludeTableSuffix = new HashSet<>();
+        Set<String> excludeField = new HashSet<>();
+        if (StrUtil.isNotEmpty(generateConfig.getExcludeTablePrefix())) {
+            excludeTablePrefix = Arrays.stream(generateConfig.getExcludeTablePrefix().split(",")).collect(Collectors.toSet());
+        }
+        if (StrUtil.isNotEmpty(generateConfig.getExcludeTableSuffix())) {
+            excludeTableSuffix = Arrays.stream(generateConfig.getExcludeTableSuffix().split(",")).collect(Collectors.toSet());
+        }
+        if (StrUtil.isNotEmpty(generateConfig.getExcludeField())) {
+            excludeField = Arrays.stream(generateConfig.getExcludeField().split(",")).collect(Collectors.toSet());
+        }
+        GeneratorConfig generatorConfig = GeneratorConfig.builder()
+                .global(
+                        GlobalConfig.builder()
+                                .packageName(generateConfig.getPackageName())
+                                .requestMappingPrefix(generateConfig.getRequestMappingPrefix())
+                                .outputPath(generateConfig.getOutputPath())
+                                .isOverride(true)
+                                .isOpen(generateConfig.getIsOpen() == 0)
+                                .author(generateConfig.getAuthor())
+                                .commentDateFormat("yyyy/MM/dd")
+                                .enableImport(generateConfig.getEnableImport() == 0)
+                                .enableExport(generateConfig.getEnableExport() == 0)
+                                .build()
+                )
+                .dataSource(new DataSourceConfig())
+                .annotation(
+                        AnnotationConfig.builder()
+                                .enableLog(generateConfig.getEnableLog() == 0)
+                                .enableBuilder(generateConfig.getEnableBuilder() == 0)
+                                .build())
+                .template(
+                        TemplateConfig.builder()
+                                .controller(BeanUtil.copyBean(generateTemplate.getController(), ControllerTemplate.class))
+                                .service(BeanUtil.copyBean(generateTemplate.getService(), ServiceTemplate.class))
+                                .serviceImpl(BeanUtil.copyBean(generateTemplate.getServiceImpl(), ServiceImplTemplate.class))
+                                .mapper(BeanUtil.copyBean(generateTemplate.getMapper(), MapperTemplate.class))
+                                .xml(BeanUtil.copyBean(generateTemplate.getXml(), MapperXmlTemplate.class))
+                                .entity(
+                                        EntityTemplate.builder()
+                                                .enable(generateTemplate.getEntity().getEnable())
+                                                .enableTableField(true)
+                                                .build()
+                                )
+                                .updateDTO(
+                                        UpdateDTOTemplate.builder()
+                                                .enableExtendsCreateDTO(false)
+                                                .enable(generateTemplate.getUpdateDTO().getEnable())
+                                                .build()
+                                )
+                                .createDTO(BeanUtil.copyBean(generateTemplate.getCreateDTO(), CreateDTOTemplate.class))
+                                .query(BeanUtil.copyBean(generateTemplate.getQuery(), QueryTemplate.class))
+                                .vo(BeanUtil.copyBean(generateTemplate.getVo(), VOTemplate.class))
+                                .build())
+                .filter(
+                        FilterConfig.builder()
+                                .excludeTablePrefix(excludeTablePrefix)
+                                .excludeTableSuffix(excludeTableSuffix)
+                                .excludeField(excludeField)
+                                .build()
+                )
                 .build();
         return new GeneratorExecute(generatorConfig);
     }
 
     /**
-     * 设置要生成的列信息
-     * @param columns 要生成的列
-     * @return GeneratorExecute
+     * 设置要生成的表信息
+     * @param tableNames 表名
+     * @return MainGeneratorExecute
      */
-    public GeneratorExecute columns(List<GenerateColumn> columns) {
-        this.columns = columns;
+    public GeneratorExecute tables(String... tableNames) {
+        this.tables = Arrays.stream(tableNames).map(Table::new).collect(Collectors.toList());
         return this;
     }
 
     /**
+     * 设置要生成的表信息
+     * @param tables 表信息
+     * @return GeneratorExecute
+     */
+    public GeneratorExecute tables(Table... tables) {
+        this.tables = Arrays.asList(tables);
+        return this;
+    }
+
+    /**
+     * 设置要生成的表信息
+     * @param metaTable 要生成的表信息
+     * @return GeneratorExecute
+     */
+    public GeneratorExecute metaTable(MetaTable metaTable) {
+        this.metaTables = CollUtil.newArrayList(metaTable);
+        return this;
+    }
+
+    /**
+     * 设置HttpServletResponse
+     * @param response
+     * @return GeneratorExecute
+     */
+    public GeneratorExecute response(HttpServletResponse response) {
+        //设置缓存区编码为UTF-8编码格式
+        response.setCharacterEncoding("UTF-8");
+        //在响应中主动告诉浏览器使用UTF-8编码格式来接收数据
+        response.setHeader("Content-Type", "text/html;charset=UTF-8");
+        //可以使用封装类简写Content-Type，使用该方法则无需使用setCharacterEncoding
+        response.setContentType("text/html;charset=UTF-8");
+        this.response = response;
+        return this;
+    }
+
+
+    /**
      * 执行代码生成
      */
-    public void execute() {
-        if (CollUtil.isEmpty(columns)) {
-            throw new GeneratorException("需要生成的列不能为空");
+    public void execute() throws IOException {
+        if (CollUtil.isEmpty(metaTables)) {
+            throw new GeneratorException("需要生成的表不能为空");
         }
         // 获取所有的模板
         List<AbstractTemplate> templates = templateConfig.getTemplates();
@@ -107,14 +233,69 @@ public class GeneratorExecute {
             log.warn("未找到需要生成的模板");
             return;
         }
-        DataMap dataMap = DataMap.getAndPutDataMap(generatorConfig);
-        dataMap.put(GenConstant.DATA_MAP_KEY_TABLE, columns);
-        // 遍历生成
-//        eachTemplates(templates, columns);
-//        // 打开生成目录
-//        if (globalConfig.getIsOpen()) {
-//            openPath();
-//        }
+        ZipOutputStream zip = new ZipOutputStream(response.getOutputStream());
+        StringWriter writer = new StringWriter();
+        // 遍历表
+        for (MetaTable metaTable : metaTables) {
+            DataMap dataMap = DataMap.getAndPutDataMap(generatorConfig);
+            dataMap.put(GenConstant.DATA_MAP_KEY_TABLE, metaTable);
+
+            for (AbstractTemplate template : templates) {
+                // 创建数据模型
+                DataMap buildDataMap = template.buildDataMap(dataMap);
+                if (!template.isEnable()) {
+                    log.info(buildDataMap.get("fileName") + " 已跳过代码生成!");
+                    continue;
+                }
+                String fileName = buildDataMap.getString(GenConstant.DATA_MAP_KEY_FILE_NAME);
+                // 创建freeMarker配置实例
+                Configuration configuration = new Configuration(Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
+                // 获取模版路径
+                configuration.setDirectoryForTemplateLoading(new File(templateConfig.getTemplateRootPath()));
+                configuration.setDefaultEncoding(StandardCharsets.UTF_8.name());
+                // 加载模版文件
+                Template easyTemplate = configuration.getTemplate(buildDataMap.getString(GenConstant.DATA_MAP_KEY_TEMPLATE_NAME));
+                // 输出文件
+                try {
+                    easyTemplate.process(buildDataMap, writer);
+                } catch (TemplateException e) {
+                    e.printStackTrace();
+                }
+                buildDataMap.clear();
+
+                System.out.println("fileName = " + fileName);
+                // 创建ZIP实体，并添加进压缩包
+                ZipEntry zipEntry = new ZipEntry(fileName);
+                zip.putNextEntry(zipEntry);
+            }
+        }
+        //关闭流
+        zip.flush();
+        zip.close();
+    }
+
+
+    /**
+     * main方法执行代码生成
+     */
+    public void mainExecute() {
+        if (CollUtil.isEmpty(tables)) {
+            throw new GeneratorException("需要生成的表不能为空");
+        }
+        metaTables = DbManager.init(dataSourceConfig, filterConfig).getTables(tables);
+        // 获取所有的模板
+        List<AbstractTemplate> templates = templateConfig.getTemplates();
+        // 未找到模板类，直接结束
+        if (templates.isEmpty()) {
+            log.warn("未找到需要生成的模板");
+            return;
+        }
+        // 遍历表
+        eachMetaTables(templates, metaTables);
+        // 打开生成目录
+        if (globalConfig.getIsOpen()) {
+            openPath();
+        }
     }
 
     /**

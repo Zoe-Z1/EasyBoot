@@ -1,5 +1,6 @@
 package com.easy.boot.common.generator.db;
 
+import com.easy.boot.admin.generateColumn.entity.GenerateColumn;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -51,6 +52,6 @@ public class MetaTable {
     /**
      * 表字段信息
      */
-    private List<Field> fields;
+    private List<GenerateColumn> columns;
 
 }

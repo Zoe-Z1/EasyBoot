@@ -1,24 +1,35 @@
 package com.easy.boot.admin.generateConfig.entity;
 
+import cn.hutool.core.util.StrUtil;
+import com.easy.boot.common.base.BaseEntity;
+import com.easy.boot.utils.JsonUtil;
+import com.fasterxml.jackson.core.type.TypeReference;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
+import lombok.experimental.Accessors;
 import lombok.experimental.SuperBuilder;
+
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 
 /**
  * @author zoe
  * @date 2023/09/10
- * @description 代码生成参数配置视图实体
+ * @description 代码生成参数配置返回实体
  */
-@ApiModel(value = "代码生成参数配置视图实体")
+@ApiModel(value = "代码生成参数配置返回实体")
 @Data
+@Accessors(chain = true)
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder
-@ToString
-@EqualsAndHashCode
-public class GenerateConfigVO {
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
+public class GenerateConfigVO extends BaseEntity {
 
 
     @ApiModelProperty("配置类型 1：全局配置 2：表配置")
@@ -27,8 +38,11 @@ public class GenerateConfigVO {
     @ApiModelProperty("表名称")
     private String tableName;
 
+    @ApiModelProperty("模块名称")
+    private String moduleName;
+
     @ApiModelProperty("表注释")
-    private String comment;
+    private String remarks;
 
     @ApiModelProperty("包名")
     private String packageName;
@@ -38,9 +52,6 @@ public class GenerateConfigVO {
 
     @ApiModelProperty("生成代码路径")
     private String outputPath;
-
-    @ApiModelProperty("生成时是否覆盖已有文件，模板单独配置的优先级大于全局 	0：覆盖 1：不覆盖")
-    private Integer isOverride;
 
     @ApiModelProperty("生成完代码后是否打开目录	0：打开 1：不打开")
     private Integer isOpen;
@@ -63,15 +74,32 @@ public class GenerateConfigVO {
     @ApiModelProperty("生成模板json配置")
     private String templateJson;
 
+    @ApiModelProperty("生成模板json配置转list")
+    private List<Map<String, Object>> templateList;
+
     @ApiModelProperty("过滤表前缀 多个用,分隔")
     private String excludeTablePrefix;
 
     @ApiModelProperty("过滤表后缀 多个用,分隔")
     private String excludeTableSuffix;
 
-    @ApiModelProperty("创建者账号")
-    private String createUsername;
+    @ApiModelProperty("过滤实体类属性 多个用,分隔")
+    private String excludeField;
 
-    @ApiModelProperty("更新者账号")
-    private String updateUsername;
+
+    public List<Map<String, Object>> getTemplateList() {
+        if (StrUtil.isEmpty(templateJson)) {
+            return new ArrayList<>();
+        }
+        Map<String, Map<String, Object>> jsonMap = JsonUtil.parse(templateJson, new TypeReference<Map<String,Map<String, Object>>>(){});
+        List< Map<String, Object>> templateList = new ArrayList<>();
+        for (Field field : GenerateTemplate.class.getDeclaredFields()) {
+            Map<String, Object> map = jsonMap.get(field.getName());
+            if (map != null) {
+                map.put("key", field.getName());
+                templateList.add(map);
+            }
+        }
+        return templateList;
+    }
 }

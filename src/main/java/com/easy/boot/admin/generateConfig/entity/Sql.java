@@ -1,4 +1,4 @@
-package com.easy.boot.admin.generate.entity;
+package com.easy.boot.admin.generateConfig.entity;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -22,13 +22,7 @@ public class Sql {
     @ApiModelProperty("是否生成")
     private Boolean enable = true;
 
-    @ApiModelProperty("是否覆盖")
-    private Boolean isOverride = true;
-
     @ApiModelProperty("是否执行")
     private Boolean execute = false;
 
-    public Sql(Boolean isOverride) {
-        this.isOverride = isOverride;
-    }
 }

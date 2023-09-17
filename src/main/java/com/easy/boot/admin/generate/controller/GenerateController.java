@@ -2,8 +2,10 @@ package com.easy.boot.admin.generate.controller;
 
 import com.easy.boot.admin.generate.entity.DatabaseTable;
 import com.easy.boot.admin.generate.entity.GenerateTableQuery;
+import com.easy.boot.admin.generate.entity.GenerateUpdateDTO;
 import com.easy.boot.admin.generate.service.GenerateService;
 import com.easy.boot.admin.operationLog.enums.OperateTypeEnum;
+import com.easy.boot.common.base.BaseController;
 import com.easy.boot.common.base.Page;
 import com.easy.boot.common.base.Result;
 import com.easy.boot.common.log.EasyLog;
@@ -15,6 +17,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -27,7 +30,7 @@ import java.util.List;
 @Validated
 @RestController
 @RequestMapping("/admin/generate")
-public class GenerateController {
+public class GenerateController extends BaseController {
 
     @Resource
     private GenerateService generateService;
@@ -46,16 +49,16 @@ public class GenerateController {
     @EasyLog(module = "批量重置代码生成配置", operateType = OperateTypeEnum.DELETE)
     @PostMapping("/batchDel")
     public Result batchDel(@RequestBody List<String> tableNames) {
-        return Result.r(generateService.deleteBatchByTableNames(tableNames));
+        generateService.deleteBatchByTableNames(tableNames);
+        return Result.success();
     }
 
-//    @ApiOperationSupport(author = "zoe")
-//    @ApiOperation(value = "生成代码")
-//    @EasyLog(module = "生成代码", operateType = OperateTypeEnum.GENERATE)
-//    @PostMapping(value = "/code/{tableName}")
-//    public Result generateCode(@PathVariable String tableName) {
-//        generateService.generateCode(tableName);
-//        return Result.success();
-//    }
+    @ApiOperationSupport(author = "zoe")
+    @ApiOperation(value = "批量生成代码")
+    @EasyLog(module = "批量生成代码", operateType = OperateTypeEnum.GENERATE)
+    @PostMapping(value = "/batch/code")
+    public void batchGenerateCode(@RequestBody List<String> tableNames) throws IOException {
+        generateService.batchGenerateCode(tableNames, response);
+    }
 
 }

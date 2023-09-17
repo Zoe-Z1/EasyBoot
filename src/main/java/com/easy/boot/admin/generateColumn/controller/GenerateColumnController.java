@@ -4,6 +4,7 @@ import com.easy.boot.admin.generateColumn.entity.GenerateColumn;
 import com.easy.boot.admin.generateColumn.entity.GenerateColumnQuery;
 import com.easy.boot.admin.generateColumn.entity.GenerateColumnUpdateDTO;
 import com.easy.boot.admin.generateColumn.service.IGenerateColumnService;
+import com.easy.boot.admin.generateConfig.entity.GenerateConfigUpdateDTO;
 import com.easy.boot.admin.operationLog.enums.OperateTypeEnum;
 import com.easy.boot.common.base.BaseController;
 import com.easy.boot.common.base.Result;
@@ -46,7 +47,8 @@ public class GenerateColumnController extends BaseController {
     @EasyLog(module = "编辑代码生成列配置", operateType = OperateTypeEnum.UPDATE)
     @PostMapping(value = "/update")
     public Result update(@Validated @RequestBody List<GenerateColumnUpdateDTO> dto) {
-        return Result.r(generateColumnService.updateBatchById(dto));
+        generateColumnService.updateByTableName(dto);
+        return Result.success();
     }
 
     @ApiOperationSupport(author = "zoe")

@@ -2,8 +2,8 @@ package com.easy.boot.admin.generateColumn.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.extra.spring.SpringUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.easy.boot.admin.generateColumn.entity.GenerateColumn;
 import com.easy.boot.admin.generateColumn.entity.GenerateColumnQuery;
@@ -11,14 +11,17 @@ import com.easy.boot.admin.generateColumn.entity.GenerateColumnUpdateDTO;
 import com.easy.boot.admin.generateColumn.mapper.GenerateColumnMapper;
 import com.easy.boot.admin.generateColumn.service.IGenerateColumnService;
 import com.easy.boot.admin.generateConfig.entity.GenerateConfig;
-import com.easy.boot.admin.generateConfig.entity.TableConfigQuery;
+import com.easy.boot.admin.generateConfig.entity.GenerateConfigQuery;
+import com.easy.boot.admin.generateConfig.entity.GenerateConfigVO;
 import com.easy.boot.admin.generateConfig.service.IGenerateConfigService;
 import com.easy.boot.common.generator.config.FilterConfig;
 import com.easy.boot.common.generator.db.DbManager;
 import com.easy.boot.common.generator.db.convert.ColumnConvertHandler;
+import com.easy.boot.common.generator.db.convert.DbColumnTypeEnum;
 import com.easy.boot.common.redisson.EasyLock;
 import com.easy.boot.utils.JsonUtil;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import javax.sql.DataSource;
@@ -39,6 +42,8 @@ public class GenerateColumnServiceImpl extends ServiceImpl<GenerateColumnMapper,
     @Resource
     private DataSource dataSource;
 
+    @Resource
+    private IGenerateConfigService generateConfigService;
 
     @EasyLock
     @Override
@@ -47,9 +52,8 @@ public class GenerateColumnServiceImpl extends ServiceImpl<GenerateColumnMapper,
                 .eq(GenerateColumn::getTableName, query.getTableName())
                 .list();
         if (CollUtil.isEmpty(list)) {
-            TableConfigQuery tableConfigQuery = new TableConfigQuery(query.getTableName());
-            IGenerateConfigService generateConfigService = SpringUtil.getBean(IGenerateConfigService.class);
-            GenerateConfig tableConfig = generateConfigService.getTableConfig(tableConfigQuery);
+            GenerateConfigQuery generateConfigQuery = new GenerateConfigQuery(query.getTableName());
+            GenerateConfigVO tableConfig = generateConfigService.getTableConfig(generateConfigQuery);
             Set<String> tablePrefix = new HashSet<>();
             Set<String> tableSuffix = new HashSet<>();
             if (StrUtil.isNotEmpty(tableConfig.getExcludeTablePrefix())) {
@@ -72,10 +76,18 @@ public class GenerateColumnServiceImpl extends ServiceImpl<GenerateColumnMapper,
         return list;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
-    public Boolean updateBatchById(List<GenerateColumnUpdateDTO> dto) {
+    public Boolean updateByTableName(List<GenerateColumnUpdateDTO> dto) {
         List<GenerateColumn> list = JsonUtil.copyList(dto, GenerateColumn.class);
-        return updateBatchById(list);
+        list.forEach(item -> {
+            String pkgName = DbColumnTypeEnum.toOptElement(item.getColumnType()).getValue();
+            item.setJavaTypePackageName(pkgName);
+            UpdateWrapper<GenerateColumn> updateWrapper = new UpdateWrapper<>();
+            updateWrapper.eq("table_name", item.getTableName());
+            update(updateWrapper);
+        });
+        return true;
     }
 
     @Override

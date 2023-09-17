@@ -5,11 +5,11 @@
 <#if genBaseResultMap>
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="${entityPkgName}">
-    <#list fields as field>
-    <#if field.isPrimaryKey>
-        <id column="${field.name}" property="${field.javaName}" />
+    <#list columns as column>
+    <#if column.isPrimaryKey == 0>
+        <id column="${column.columnName}" property="${column.javaName}" />
     <#else >
-        <result column="${field.name}" property="${field.javaName}" />
+        <result column="${column.columnName}" property="${column.javaName}" />
     </#if>
     </#list>
     </resultMap>
