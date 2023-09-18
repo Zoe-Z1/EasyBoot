@@ -2,7 +2,9 @@ package com.easy.boot.admin.generate.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.text.NamingCase;
+import cn.hutool.core.util.StrUtil;
 import com.easy.boot.admin.generate.entity.DatabaseTable;
+import com.easy.boot.admin.generate.entity.GenerateCode;
 import com.easy.boot.admin.generate.entity.GeneratePreviewVO;
 import com.easy.boot.admin.generate.entity.GenerateTableQuery;
 import com.easy.boot.admin.generate.mapper.GenerateMapper;
@@ -29,6 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -92,7 +95,10 @@ public class GenerateServiceImpl implements GenerateService {
     }
 
     @Override
-    public List<GeneratePreviewVO> preview(String tableName) throws Exception {
+    public List<GenerateCode> preview(String tableName) throws Exception {
+        if (StrUtil.isEmpty(tableName)) {
+            throw new GeneratorException("要生成的表名不能为空");
+        }
         GenerateConfigQuery query = new GenerateConfigQuery(tableName);
         GenerateConfigVO vo = generateConfigService.getTableConfig(query);
         GenerateConfig generateConfig = BeanUtil.copyBean(vo, GenerateConfig.class);
@@ -113,32 +119,4 @@ public class GenerateServiceImpl implements GenerateService {
                 .preview();
     }
 
-    @Override
-    public void batchGenerateCode(List<String> tableNames, HttpServletResponse response) throws Exception {
-        if (CollUtil.isEmpty(tableNames)) {
-            throw new GeneratorException("要生成的表名不能为空");
-        }
-        for (String tableName : tableNames) {
-            GenerateConfigQuery query = new GenerateConfigQuery(tableName);
-            GenerateConfigVO vo = generateConfigService.getTableConfig(query);
-            GenerateConfig generateConfig = BeanUtil.copyBean(vo, GenerateConfig.class);
-            GenerateColumnQuery columnQuery = new GenerateColumnQuery(tableName);
-            List<GenerateColumn> columns = generateColumnService.selectList(columnQuery);
-            String filterName = DbManager.filterTableName(generateConfig.getTableName(),
-                    generateConfig.getExcludeTablePrefix(), generateConfig.getExcludeTableSuffix());
-            MetaTable metaTable = MetaTable.builder()
-                    .name(generateConfig.getTableName())
-                    .beanName(NamingCase.toPascalCase(filterName))
-                    .camelName(NamingCase.toCamelCase(filterName))
-                    .moduleName(generateConfig.getModuleName())
-                    .remarks(generateConfig.getRemarks())
-                    .columns(columns)
-                    .build();
-            GeneratorExecute.init(generateConfig)
-                    .metaTable(metaTable)
-                    .response(response)
-                    .execute();
-        }
-
-    }
 }

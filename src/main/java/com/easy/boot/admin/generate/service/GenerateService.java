@@ -1,6 +1,7 @@
 package com.easy.boot.admin.generate.service;
 
 import com.easy.boot.admin.generate.entity.DatabaseTable;
+import com.easy.boot.admin.generate.entity.GenerateCode;
 import com.easy.boot.admin.generate.entity.GeneratePreviewVO;
 import com.easy.boot.admin.generate.entity.GenerateTableQuery;
 import com.easy.boot.common.base.Page;
@@ -42,14 +43,8 @@ public interface GenerateService {
      * 预览代码
      * @param tableName
      * @return
+     * @throws Exception
      */
-    List<GeneratePreviewVO> preview(String tableName) throws Exception;
+    List<GenerateCode> preview(String tableName) throws Exception;
 
-    /**
-     * 批量生成代码
-     * @param tableNames
-     * @param response
-     * @return
-     */
-    void batchGenerateCode(List<String> tableNames, HttpServletResponse response) throws Exception;
 }

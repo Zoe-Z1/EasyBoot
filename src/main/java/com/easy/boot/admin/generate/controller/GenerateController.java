@@ -1,6 +1,8 @@
 package com.easy.boot.admin.generate.controller;
 
+import cn.hutool.core.collection.CollUtil;
 import com.easy.boot.admin.generate.entity.DatabaseTable;
+import com.easy.boot.admin.generate.entity.GenerateCode;
 import com.easy.boot.admin.generate.entity.GeneratePreviewVO;
 import com.easy.boot.admin.generate.entity.GenerateTableQuery;
 import com.easy.boot.admin.generate.service.GenerateService;
@@ -9,6 +11,9 @@ import com.easy.boot.common.base.BaseController;
 import com.easy.boot.common.base.Page;
 import com.easy.boot.common.base.Result;
 import com.easy.boot.common.log.EasyLog;
+import com.easy.boot.exception.GeneratorException;
+import com.easy.boot.utils.FileUtil;
+import com.easy.boot.utils.JsonUtil;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -18,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -59,7 +65,8 @@ public class GenerateController extends BaseController {
     @EasyLog(module = "代码生成预览", operateType = OperateTypeEnum.SELECT)
     @PostMapping(value = "/preview/{tableName}")
     public Result<List<GeneratePreviewVO>> preview(@PathVariable String tableName) throws Exception {
-        return Result.success(generateService.preview(tableName));
+        List<GenerateCode> codes = generateService.preview(tableName);
+        return Result.success(JsonUtil.copyList(codes, GeneratePreviewVO.class));
     }
 
     @ApiOperationSupport(author = "zoe")
@@ -67,7 +74,17 @@ public class GenerateController extends BaseController {
     @EasyLog(module = "批量生成代码", operateType = OperateTypeEnum.GENERATE)
     @PostMapping(value = "/batch/code")
     public void batchGenerateCode(@RequestBody List<String> tableNames) throws Exception {
-        generateService.batchGenerateCode(tableNames, response);
+        if (CollUtil.isEmpty(tableNames)) {
+            throw new GeneratorException("要生成的表名不能为空");
+        }
+        List<GenerateCode> codes = new ArrayList<>();
+        for (String tableName : tableNames) {
+            codes.addAll(generateService.preview(tableName));
+        }
+        if (codes.isEmpty()) {
+            return;
+        }
+        FileUtil.downloadZip(response, codes);
     }
 
 }

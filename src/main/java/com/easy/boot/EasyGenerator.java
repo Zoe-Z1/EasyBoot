@@ -77,7 +77,7 @@ public class EasyGenerator {
                         .build()
         )
                 .tables("generate_column")
-                .mainExecute();
+                .execute();
 
     }
 }

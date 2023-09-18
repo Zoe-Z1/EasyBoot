@@ -5,6 +5,8 @@ import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.excel.support.ExcelTypeEnum;
+import com.easy.boot.admin.generate.entity.GenerateCode;
+import com.easy.boot.common.generator.GenConstant;
 import com.easy.boot.common.properties.EasyFile;
 import com.easy.boot.exception.FileException;
 import com.easy.boot.exception.enums.SystemErrorEnum;
@@ -16,9 +18,13 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.StringWriter;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.Map;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 /**
  * @author zoe
@@ -116,6 +122,28 @@ public class FileUtil extends cn.hutool.core.io.FileUtil {
         os.write(bytes);
         os.flush();
         os.close();
+    }
+
+    /**
+     * 下载zip文件
+     * @param response
+     * @param codes 需要生成的代码文件
+     * @throws IOException
+     */
+    public static void downloadZip(HttpServletResponse response, List<GenerateCode> codes) throws IOException {
+        // 获取文件名
+        String filename = codes.get(0).getAuthor() + GenConstant.ZIP_SUFFIX;
+        response.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(filename, StandardCharsets.UTF_8.name()));
+        response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
+        ZipOutputStream zip = new ZipOutputStream(response.getOutputStream());
+        for (GenerateCode code : codes) {
+            ZipEntry zipEntry = new ZipEntry(code.getGenPath());
+            zip.putNextEntry(zipEntry);
+            zip.write(code.getFileContent().getBytes(StandardCharsets.UTF_8));
+            zip.closeEntry();
+        }
+        zip.flush();
+        zip.close();
     }
 
     /**
@@ -315,40 +343,6 @@ public class FileUtil extends cn.hutool.core.io.FileUtil {
         } catch (IOException e) {
             throw new FileException(SystemErrorEnum.DOWNLOAD_ERROR.getCode(), "下载的文件路径解析异常");
         }
-    }
-
-    /**
-     * 获取Excel完整路径
-     * @param excelPath excel上传路径
-     * @param moduleName 模块名称
-     * @return
-     */
-    public static String getFullPath(String excelPath, String moduleName) {
-        String format = "yyyy-MM-dd";
-        String date = DateUtil.date().toString(format);
-        // 加入一个随机的uuid路径，防止同时操作一个文件
-        String id = IdUtil.randomUUID();
-        String fullPath = excelPath + date + "/" + id +"/";
-        format = "yyyy-MM-dd HH_mm_ss";
-        date = DateUtil.date().toString(format);
-        String filename = moduleName + "-" + date + ".xlsx";
-        fullPath = fullPath + filename;
-        File file = new File(fullPath);
-        if (!file.getParentFile().exists()) {
-            file.getParentFile().mkdirs();
-        }
-        return fullPath;
-    }
-
-    /**
-     * 获取映射路径
-     * @param fullFilePath 完整路径
-     * @param filePath 文件上传路径
-     * @param fileMapPath 文件映射路径
-     * @return
-     */
-    public static String getMapPath(String fullFilePath, String filePath, String fileMapPath) {
-        return fullFilePath.replace(filePath, fileMapPath);
     }
 
     /**
