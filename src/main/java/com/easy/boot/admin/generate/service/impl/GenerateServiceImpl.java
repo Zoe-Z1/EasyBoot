@@ -1,5 +1,6 @@
 package com.easy.boot.admin.generate.service.impl;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.text.NamingCase;
 import com.easy.boot.admin.generate.entity.DatabaseTable;
 import com.easy.boot.admin.generate.entity.GeneratePreviewVO;
@@ -18,7 +19,9 @@ import com.easy.boot.common.generator.GenConstant;
 import com.easy.boot.common.generator.db.DbManager;
 import com.easy.boot.common.generator.db.MetaTable;
 import com.easy.boot.common.generator.execute.GeneratorExecute;
+import com.easy.boot.exception.GeneratorException;
 import com.easy.boot.utils.BeanUtil;
+import freemarker.template.TemplateException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -89,7 +92,7 @@ public class GenerateServiceImpl implements GenerateService {
     }
 
     @Override
-    public List<GeneratePreviewVO> preview(String tableName) throws IOException {
+    public List<GeneratePreviewVO> preview(String tableName) throws Exception {
         GenerateConfigQuery query = new GenerateConfigQuery(tableName);
         GenerateConfigVO vo = generateConfigService.getTableConfig(query);
         GenerateConfig generateConfig = BeanUtil.copyBean(vo, GenerateConfig.class);
@@ -111,7 +114,10 @@ public class GenerateServiceImpl implements GenerateService {
     }
 
     @Override
-    public void batchGenerateCode(List<String> tableNames, HttpServletResponse response) throws IOException {
+    public void batchGenerateCode(List<String> tableNames, HttpServletResponse response) throws Exception {
+        if (CollUtil.isEmpty(tableNames)) {
+            throw new GeneratorException("要生成的表名不能为空");
+        }
         for (String tableName : tableNames) {
             GenerateConfigQuery query = new GenerateConfigQuery(tableName);
             GenerateConfigVO vo = generateConfigService.getTableConfig(query);

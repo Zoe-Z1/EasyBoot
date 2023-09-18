@@ -4,6 +4,7 @@ import com.easy.boot.admin.generate.entity.DatabaseTable;
 import com.easy.boot.admin.generate.entity.GeneratePreviewVO;
 import com.easy.boot.admin.generate.entity.GenerateTableQuery;
 import com.easy.boot.common.base.Page;
+import freemarker.template.TemplateException;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -42,7 +43,7 @@ public interface GenerateService {
      * @param tableName
      * @return
      */
-    List<GeneratePreviewVO> preview(String tableName) throws IOException;
+    List<GeneratePreviewVO> preview(String tableName) throws Exception;
 
     /**
      * 批量生成代码
@@ -50,5 +51,5 @@ public interface GenerateService {
      * @param response
      * @return
      */
-    void batchGenerateCode(List<String> tableNames, HttpServletResponse response) throws IOException;
+    void batchGenerateCode(List<String> tableNames, HttpServletResponse response) throws Exception;
 }

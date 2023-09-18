@@ -59,6 +59,8 @@ public class GenConstant {
 
     public static final String VUE_SUFFIX = ".vue";
 
+    public static final String ZIP_SUFFIX = ".zip";
+
     /*------------------------- 模板引擎名称 -------------------------*/
 
     public static final String CONTROLLER_TEMPLATE_NAME = "controller.ftl";
@@ -118,6 +120,8 @@ public class GenConstant {
     public static final String DATA_MAP_KEY_IS_OVERRIDE = "isOverride";
 
     public static final String DATA_MAP_KEY_GEN_PATH = "genPath";
+
+    public static final String DATA_MAP_KEY_ZIP_PATH = "zipPath";
 
     public static final String DATA_MAP_KEY_CLASS_NAME = "className";
 

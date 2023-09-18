@@ -25,6 +25,7 @@ import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.*;
 import java.io.*;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.List;
@@ -211,12 +212,18 @@ public class GeneratorExecute {
      * @return GeneratorExecute
      */
     public GeneratorExecute response(HttpServletResponse response) {
-        //设置缓存区编码为UTF-8编码格式
-        response.setCharacterEncoding("UTF-8");
-        //在响应中主动告诉浏览器使用UTF-8编码格式来接收数据
-        response.setHeader("Content-Type", "text/html;charset=UTF-8");
-        //可以使用封装类简写Content-Type，使用该方法则无需使用setCharacterEncoding
-        response.setContentType("text/html;charset=UTF-8");
+        //文件的名称
+        String downloadFilename = globalConfig.getAuthor() + GenConstant.ZIP_SUFFIX;
+        //转换中文否则可能会产生乱码
+        try {
+            downloadFilename = URLEncoder.encode(downloadFilename, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        // 指明response的返回对象是文件流
+        response.setContentType("application/octet-stream");
+        // 设置在下载框默认显示的文件名
+        response.setHeader("Content-Disposition", "attachment;filename=" + downloadFilename);
         this.response = response;
         return this;
     }
@@ -225,7 +232,7 @@ public class GeneratorExecute {
     /**
      * 代码生成预览
      */
-    public List<GeneratePreviewVO> preview() throws IOException {
+    public List<GeneratePreviewVO> preview() throws Exception {
         if (metaTable == null) {
             throw new GeneratorException("需要生成的表不能为空");
         }
@@ -257,11 +264,7 @@ public class GeneratorExecute {
             // 加载模版文件
             Template easyTemplate = configuration.getTemplate(buildDataMap.getString(GenConstant.DATA_MAP_KEY_TEMPLATE_NAME));
             StringWriter writer = new StringWriter();
-            try {
-                easyTemplate.process(buildDataMap, writer);
-            } catch (TemplateException e) {
-                e.printStackTrace();
-            }
+            easyTemplate.process(buildDataMap, writer);
             buildDataMap.clear();
             GeneratePreviewVO preview = new GeneratePreviewVO(fileName, writer.toString());
             previews.add(preview);
@@ -274,7 +277,7 @@ public class GeneratorExecute {
     /**
      * 执行代码生成
      */
-    public void execute() throws IOException {
+    public void execute() throws Exception {
         if (metaTable == null) {
             throw new GeneratorException("需要生成的表不能为空");
         }
@@ -285,10 +288,7 @@ public class GeneratorExecute {
             log.warn("未找到需要生成的模板");
             return;
         }
-//        response.getOutputStream()
-        ZipOutputStream zip = new ZipOutputStream(new FileOutputStream("/Users/zoe/Downloads/template/"));
-        StringWriter writer = new StringWriter();
-//        Writer writer = new BufferedWriter(response.getWriter());
+        ZipOutputStream zip = new ZipOutputStream(response.getOutputStream());
         DataMap dataMap = DataMap.getAndPutDataMap(generatorConfig);
         dataMap.put(GenConstant.DATA_MAP_KEY_TABLE, metaTable);
         // 遍历模板
@@ -299,7 +299,10 @@ public class GeneratorExecute {
                 log.info(buildDataMap.get("fileName") + " 已跳过代码生成!");
                 continue;
             }
+            StringWriter writer = new StringWriter();
             String fileName = buildDataMap.getString(GenConstant.DATA_MAP_KEY_FILE_NAME);
+            String zipPath = buildDataMap.getString(GenConstant.DATA_MAP_KEY_ZIP_PATH);
+            String genPath = String.join("/", zipPath, fileName);
             // 创建freeMarker配置实例
             Configuration configuration = new Configuration(Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
             // 获取模版路径
@@ -308,19 +311,14 @@ public class GeneratorExecute {
             // 加载模版文件
             Template easyTemplate = configuration.getTemplate(buildDataMap.getString(GenConstant.DATA_MAP_KEY_TEMPLATE_NAME));
             // 输出文件
-            try {
-                easyTemplate.process(buildDataMap, writer);
-            } catch (TemplateException e) {
-                e.printStackTrace();
-            }
-            System.out.println("writer = " + writer);
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            easyTemplate.process(buildDataMap, writer);
             buildDataMap.clear();
-
-            System.out.println("fileName = " + fileName);
             // 创建ZIP实体，并添加进压缩包
-            ZipEntry zipEntry = new ZipEntry(fileName);
+            ZipEntry zipEntry = new ZipEntry(genPath);
             zip.putNextEntry(zipEntry);
+            zip.write(writer.toString().getBytes(StandardCharsets.UTF_8));
+            zip.closeEntry();
+            writer.close();
         }
         //关闭流
         zip.flush();

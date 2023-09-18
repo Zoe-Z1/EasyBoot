@@ -58,7 +58,7 @@ public class GenerateController extends BaseController {
     @ApiOperation(value = "代码生成预览")
     @EasyLog(module = "代码生成预览", operateType = OperateTypeEnum.SELECT)
     @PostMapping(value = "/preview/{tableName}")
-    public Result<List<GeneratePreviewVO>> preview(@PathVariable String tableName) throws IOException {
+    public Result<List<GeneratePreviewVO>> preview(@PathVariable String tableName) throws Exception {
         return Result.success(generateService.preview(tableName));
     }
 
@@ -66,7 +66,7 @@ public class GenerateController extends BaseController {
     @ApiOperation(value = "批量生成代码")
     @EasyLog(module = "批量生成代码", operateType = OperateTypeEnum.GENERATE)
     @PostMapping(value = "/batch/code")
-    public void batchGenerateCode(@RequestBody List<String> tableNames) throws IOException {
+    public void batchGenerateCode(@RequestBody List<String> tableNames) throws Exception {
         generateService.batchGenerateCode(tableNames, response);
     }
 
