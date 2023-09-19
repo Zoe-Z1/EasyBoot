@@ -72,7 +72,7 @@ public class GenerateController extends BaseController {
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "批量生成代码")
     @EasyLog(module = "批量生成代码", operateType = OperateTypeEnum.GENERATE)
-    @PostMapping(value = "/batch/code")
+    @GetMapping(value = "/batch/code")
     public void batchGenerateCode(@RequestBody List<String> tableNames) throws Exception {
         if (CollUtil.isEmpty(tableNames)) {
             throw new GeneratorException("要生成的表名不能为空");

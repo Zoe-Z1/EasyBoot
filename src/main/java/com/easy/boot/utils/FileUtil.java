@@ -15,10 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.StringWriter;
+import java.io.*;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
@@ -131,18 +128,20 @@ public class FileUtil extends cn.hutool.core.io.FileUtil {
      * @throws IOException
      */
     public static void downloadZip(HttpServletResponse response, List<GenerateCode> codes) throws IOException {
-        // 获取文件名
         String filename = codes.get(0).getAuthor() + GenConstant.ZIP_SUFFIX;
         response.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(filename, StandardCharsets.UTF_8.name()));
         response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
-        ZipOutputStream zip = new ZipOutputStream(response.getOutputStream());
+        OutputStream out = response.getOutputStream();
+        // 获取文件名
+        ZipOutputStream zip = new ZipOutputStream(out);
         for (GenerateCode code : codes) {
             ZipEntry zipEntry = new ZipEntry(code.getGenPath());
             zip.putNextEntry(zipEntry);
             zip.write(code.getFileContent().getBytes(StandardCharsets.UTF_8));
+            zip.flush();
             zip.closeEntry();
         }
-        zip.flush();
+        zip.finish();
         zip.close();
     }
 
