@@ -78,6 +78,11 @@ public class TemplateConfig {
     private JsTemplate js;
 
     /**
+     * index.vue模板配置
+     */
+    private IndexVueTemplate indexVue;
+
+    /**
      * 模板引擎根路径
      */
     private String templateRootPath;
@@ -131,6 +136,10 @@ public class TemplateConfig {
         return js == null ? new JsTemplate() : js;
     }
 
+    public IndexVueTemplate getIndexVue() {
+        return indexVue == null ? new IndexVueTemplate() : indexVue;
+    }
+
     public String getTemplateRootPath() {
         if (StrUtil.isEmpty(templateRootPath)) {
             templateRootPath = System.getProperty("user.dir") + "/src/main/resources/templates";
@@ -151,6 +160,7 @@ public class TemplateConfig {
         list.add(getQuery());
         list.add(getVo());
         list.add(getJs());
+        list.add(getIndexVue());
         if (CollUtil.isNotEmpty(templates)) {
             list.addAll(templates);
         }

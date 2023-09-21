@@ -178,6 +178,7 @@ public class UpdateDTOTemplate extends AbstractTemplate {
     private void handleField(DataMap buildDataMap) {
         MetaTable metaTable = buildDataMap.getMetaTable();
         FilterConfig filter = buildDataMap.getFilterConfig();
+        // 不要直接获取处理，会导致其他地方没有数据
         List<GenerateColumn> columns = JsonUtil.copyList(metaTable.getColumns(), GenerateColumn.class);
         if (getEnableExtendsCreateDTO()) {
             Set<String> includeFields = getIncludeField();

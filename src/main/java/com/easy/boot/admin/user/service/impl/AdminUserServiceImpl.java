@@ -24,6 +24,7 @@ import com.easy.boot.common.base.BaseEntity;
 import com.easy.boot.common.excel.entity.ImportExcelError;
 import com.easy.boot.common.redis.EasyRedisManager;
 import com.easy.boot.common.redis.RedisKeyEnum;
+import com.easy.boot.common.saToken.UserContext;
 import com.easy.boot.exception.BusinessException;
 import com.easy.boot.utils.BeanUtil;
 import org.springframework.lang.NonNull;
@@ -200,7 +201,7 @@ public class AdminUserServiceImpl extends ServiceImpl<AdminUserMapper, AdminUser
 
     @Override
     public AdminUserInfo getInfo() {
-        Long id = StpUtil.getLoginIdAsLong();
+        Long id = UserContext.getId();
         AdminUser adminUser = this.detail(id);
         AdminUserInfo info = BeanUtil.copyBean(adminUser, AdminUserInfo.class);
         // 获取角色编码

@@ -11,7 +11,6 @@ import com.easy.boot.utils.JsonUtil;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
-import lombok.experimental.SuperBuilder;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -157,6 +156,7 @@ public class CreateDTOTemplate extends AbstractTemplate {
     private void handleField(DataMap buildDataMap) {
         MetaTable metaTable = buildDataMap.getMetaTable();
         FilterConfig filter = buildDataMap.getFilterConfig();
+        // 不要直接获取处理，会导致其他地方没有数据
         List<GenerateColumn> columns = JsonUtil.copyList(metaTable.getColumns(), GenerateColumn.class);
         columns.removeIf(item -> filter.getExcludeField().contains(item.getJavaName()) && !getIncludeField().contains(item.getJavaName()));
         Class<?> clazz = getSuperClass();

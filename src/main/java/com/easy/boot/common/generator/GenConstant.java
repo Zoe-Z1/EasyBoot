@@ -77,6 +77,8 @@ public class GenConstant {
 
     public static final String JS_TEMPLATE_NAME = "js.ftl";
 
+    public static final String INDEX_VUE_TEMPLATE_NAME = "indexVue.ftl";
+
 
 
     /*------------------------- DataMap中的参数key -------------------------*/
@@ -156,6 +158,8 @@ public class GenConstant {
     public static final String DATA_MAP_KEY_GEN_BASE_COLUMN_LIST_NAME = "genBaseColumnList";
 
     public static final String DATA_MAP_KEY_BASE_COLUMN_LIST_NAME = "baseColumnList";
+
+    public static final String DATA_MAP_KEY_HAS_DICT = "hasDict";
 
 
 

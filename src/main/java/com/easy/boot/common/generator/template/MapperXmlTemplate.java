@@ -127,6 +127,7 @@ public class MapperXmlTemplate extends AbstractTemplate {
      */
     private void buildOther(DataMap buildDataMap) {
         MetaTable metaTable = buildDataMap.getMetaTable();
+        // 不要直接获取处理，会导致其他地方没有数据
         List<GenerateColumn> columns = JsonUtil.copyList(metaTable.getColumns(), GenerateColumn.class);
         buildDataMap.put(GenConstant.DATA_MAP_KEY_COLUMNS, columns);
         buildDataMap.put(GenConstant.DATA_MAP_KEY_GEN_BASE_RESULT_MAP_NAME, getGenBaseResultMap());

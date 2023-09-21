@@ -1,18 +1,16 @@
 package com.easy.boot.admin.login.service.impl;
 
-import cn.dev33.satoken.stp.StpLogic;
-import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.date.DateUtil;
 import com.easy.boot.admin.blacklist.entity.Blacklist;
 import com.easy.boot.admin.blacklist.service.IBlacklistService;
+import com.easy.boot.admin.login.entity.LoginDTO;
+import com.easy.boot.admin.login.service.AdminLoginService;
 import com.easy.boot.admin.loginLog.entity.LoginLogCreateDTO;
 import com.easy.boot.admin.loginLog.service.ILoginLogService;
 import com.easy.boot.admin.operationLog.enums.OperateStatusEnum;
-import com.easy.boot.admin.operationLog.enums.RoleTypeEnum;
 import com.easy.boot.admin.user.entity.AdminUser;
 import com.easy.boot.admin.user.service.AdminUserService;
-import com.easy.boot.admin.login.entity.LoginDTO;
-import com.easy.boot.admin.login.service.AdminLoginService;
+import com.easy.boot.common.saToken.UserContext;
 import com.easy.boot.exception.BusinessException;
 import com.easy.boot.exception.enums.SystemErrorEnum;
 import com.easy.boot.utils.IpUtil;
@@ -72,7 +70,7 @@ public class AdminLoginServiceImpl implements AdminLoginService {
             throw new BusinessException(remarks);
         }
         // 查询用户黑名单
-        Blacklist blacklist = blacklistService.getByUserId(user.getId().toString());
+        Blacklist blacklist = blacklistService.getByUserId(user.getId());
         if (Objects.nonNull(blacklist)) {
             if (blacklist.getDuration() != -1) {
                 // 计算拉黑结束时间 大于当前时间则代表拉黑中
@@ -113,16 +111,14 @@ public class AdminLoginServiceImpl implements AdminLoginService {
 
     @Override
     public void checkLogin() {
-        StpLogic stpLogic = new StpLogic(String.valueOf(RoleTypeEnum.WEB));
-        StpUtil.setStpLogic(stpLogic);
-        StpUtil.checkLogin();
-        Long id = StpUtil.getLoginIdAsLong();
+        UserContext.checkAdminUserLogin();
+        Long id = UserContext.getId();
         AdminUser user = adminUserService.detail(id);
         if (user.getStatus() == 2) {
             throw new BusinessException(SystemErrorEnum.USER_DISABLED);
         }
         // 查询用户黑名单
-        Blacklist blacklist = blacklistService.getByUserId(user.getId().toString());
+        Blacklist blacklist = blacklistService.getByUserId(user.getId());
         if (Objects.nonNull(blacklist)) {
             if (blacklist.getDuration() == -1) {
                 throw new BusinessException(SystemErrorEnum.USER_IS_BLACKLIST);

@@ -41,7 +41,7 @@ public interface IBlacklistService extends IService<Blacklist> {
      * @param userId
      * @return
      */
-    Blacklist getByUserId(String userId);
+    Blacklist getByUserId(Long userId);
 
     /**
      * 根据IP获取拉黑信息

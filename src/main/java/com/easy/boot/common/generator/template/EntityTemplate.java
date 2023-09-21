@@ -17,7 +17,6 @@ import com.easy.boot.utils.JsonUtil;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
-import lombok.experimental.SuperBuilder;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -168,6 +167,7 @@ public class EntityTemplate extends AbstractTemplate {
         GlobalConfig global = buildDataMap.getGlobalConfig();
         FilterConfig filter = buildDataMap.getFilterConfig();
         MetaTable metaTable = buildDataMap.getMetaTable();
+        // 不要直接获取处理，会导致其他地方没有数据
         List<GenerateColumn> columns = JsonUtil.copyList(metaTable.getColumns(), GenerateColumn.class);
         columns.removeIf(item -> filter.getExcludeField().contains(item.getJavaName()) && !getIncludeField().contains(item.getJavaName()));
         Class<?> clazz = getSuperClass();

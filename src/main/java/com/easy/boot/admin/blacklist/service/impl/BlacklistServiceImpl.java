@@ -80,8 +80,8 @@ public class BlacklistServiceImpl extends ServiceImpl<BlacklistMapper, Blacklist
     }
 
     @Override
-    public Blacklist getByUserId(String userId) {
-        return this.getByRelevanceDataAndType(userId, 1);
+    public Blacklist getByUserId(Long userId) {
+        return this.getByRelevanceDataAndType(userId.toString(), 1);
     }
 
 

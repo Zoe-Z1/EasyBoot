@@ -1,7 +1,5 @@
 package com.easy.boot.common.log;
 
-import cn.dev33.satoken.SaManager;
-import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson2.JSON;
@@ -11,10 +9,9 @@ import com.easy.boot.admin.operationLog.enums.OperateStatusEnum;
 import com.easy.boot.admin.operationLog.enums.OperateTypeEnum;
 import com.easy.boot.admin.operationLog.enums.RoleTypeEnum;
 import com.easy.boot.admin.operationLog.service.IOperationLogService;
-import com.easy.boot.admin.user.entity.AdminUser;
 import com.easy.boot.common.base.Result;
 import com.easy.boot.common.properties.EasyLogFilter;
-import com.easy.boot.handler.EasyMetaObjectHandler;
+import com.easy.boot.common.saToken.UserContext;
 import com.easy.boot.utils.IpUtil;
 import com.easy.boot.utils.JsonUtil;
 import lombok.SneakyThrows;
@@ -243,15 +240,9 @@ public class EasyLogAspect {
      * @param operateLog
      */
     private void handleOperatorType(OperationLog operateLog) {
-        RoleTypeEnum roleType = RoleTypeEnum.UNKNOWN;
-        Long createBy = EasyMetaObjectHandler.BY;
-        String createUsername = EasyMetaObjectHandler.USERNAME;
-        if (StpUtil.isLogin()) {
-            createBy = StpUtil.getLoginIdAsLong();
-            AdminUser user = (AdminUser) SaManager.getSaTokenDao().getObject(String.valueOf(createBy));
-            createUsername = user.getUsername();
-            roleType = RoleTypeEnum.valueOf(StpUtil.getLoginType());
-        }
+        RoleTypeEnum roleType = UserContext.getRoleType();
+        Long createBy = UserContext.getId();
+        String createUsername = UserContext.getUsername();
         operateLog.setCreateBy(createBy);
         operateLog.setCreateUsername(createUsername);
         operateLog.setOperatorType(roleType.getMsg());

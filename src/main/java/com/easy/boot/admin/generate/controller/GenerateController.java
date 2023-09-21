@@ -22,7 +22,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,7 +46,6 @@ public class GenerateController extends BaseController {
     @EasyLog(module = "获取代码生成Table列表", operateType = OperateTypeEnum.SELECT)
     @GetMapping(value = "/page")
     public Result<Page<DatabaseTable>> page(@Validated GenerateTableQuery query) {
-        log.warn("aaaaaa");
         return Result.success(generateService.selectPage(query));
     }
 
@@ -72,7 +70,7 @@ public class GenerateController extends BaseController {
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "批量生成代码")
     @EasyLog(module = "批量生成代码", operateType = OperateTypeEnum.GENERATE)
-    @GetMapping(value = "/batch/code")
+    @PostMapping(value = "/batch/code")
     public void batchGenerateCode(@RequestBody List<String> tableNames) throws Exception {
         if (CollUtil.isEmpty(tableNames)) {
             throw new GeneratorException("要生成的表名不能为空");

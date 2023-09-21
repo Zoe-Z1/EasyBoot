@@ -31,6 +31,11 @@ public enum RedisKeyEnum {
     USER_DETAIL("admin:user:","detail"),
 
     /**
+     * 登录缓存用户详情
+     */
+    SA_USER_DETAIL("sa:admin:user:","detail"),
+
+    /**
      * 用户信息key
      */
     USER_INFO("admin:user:","info"),

@@ -1,19 +1,16 @@
 package com.easy.boot.admin.login.controller;
 
-import cn.dev33.satoken.SaManager;
-import cn.dev33.satoken.stp.StpLogic;
-import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.thread.ThreadUtil;
 import com.easy.boot.admin.login.entity.LoginDTO;
 import com.easy.boot.admin.login.entity.TokenVO;
 import com.easy.boot.admin.login.service.AdminLoginService;
 import com.easy.boot.admin.operationLog.enums.OperateTypeEnum;
-import com.easy.boot.admin.operationLog.enums.RoleTypeEnum;
 import com.easy.boot.admin.user.entity.AdminUser;
 import com.easy.boot.common.base.Result;
 import com.easy.boot.common.log.EasyLog;
 import com.easy.boot.common.redisson.EasyLock;
+import com.easy.boot.common.saToken.UserContext;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -48,13 +45,10 @@ public class AdminLoginController {
     @PostMapping(value = "/login")
     public Result<TokenVO> login(@Validated @RequestBody LoginDTO dto) {
         AdminUser user = adminLoginService.login(dto);
-        StpLogic stpLogic = new StpLogic(String.valueOf(RoleTypeEnum.WEB));
-        StpUtil.setStpLogic(stpLogic);
-        StpUtil.login(user.getId());
-        SaManager.getSaTokenDao().setObject(user.getId().toString(), user, -1);
+        UserContext.login(user);
         TokenVO token = TokenVO.builder()
-                .tokenName(SaManager.getConfig().getTokenName())
-                .token(SaManager.getConfig().getTokenPrefix() + " " + StpUtil.getTokenValue())
+                .tokenName(UserContext.getTokenName())
+                .token(UserContext.getToken())
                 .build();
         return Result.success(token);
     }
@@ -64,7 +58,7 @@ public class AdminLoginController {
     @EasyLog(module = "注销登录", operateType = OperateTypeEnum.LOGOUT)
     @PostMapping(value = "/logout")
     public Result logout() {
-        StpUtil.logout();
+        UserContext.logout();
         return Result.success();
     }
 
