@@ -2,25 +2,9 @@ package com.easy.boot.common.generator.template;
 
 import cn.hutool.core.text.NamingCase;
 import cn.hutool.core.util.StrUtil;
-import com.alibaba.excel.annotation.ExcelProperty;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.easy.boot.admin.generateColumn.entity.GenerateColumn;
-import com.easy.boot.common.base.BaseEntity;
 import com.easy.boot.common.generator.DataMap;
 import com.easy.boot.common.generator.GenConstant;
-import com.easy.boot.common.generator.config.AnnotationConfig;
-import com.easy.boot.common.generator.config.FilterConfig;
-import com.easy.boot.common.generator.config.GlobalConfig;
-import com.easy.boot.common.generator.db.MetaTable;
-import com.easy.boot.utils.JsonUtil;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
-
-import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * @author zoe
@@ -63,6 +47,11 @@ public class JsTemplate extends AbstractTemplate {
     @Override
     protected String getTemplateName() {
         return GenConstant.JS_TEMPLATE_NAME;
+    }
+
+    @Override
+    protected String getTemplateType() {
+        return GenConstant.TEMPLATE_TYPE_VUE2;
     }
 
     @Override

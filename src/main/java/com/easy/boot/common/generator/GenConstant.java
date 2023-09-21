@@ -17,6 +17,12 @@ public class GenConstant {
 
     public static final String DEFAULT_AUTHOR = "zoe";
 
+    /*------------------------- 模板类型 -------------------------*/
+
+    public static final String TEMPLATE_TYPE_JAVA = "Java";
+
+    public static final String TEMPLATE_TYPE_VUE2 = "Vue2";
+
 
     /*------------------------- 模块名 -------------------------*/
 
@@ -31,6 +37,8 @@ public class GenConstant {
     public static final String MODULE_ENTITY = "entity";
 
     public static final String MODULE_VUE = "vue";
+
+    public static final String UI_MODULE_NAME = "system";
 
 
     /*------------------------- 类名称后缀 -------------------------*/

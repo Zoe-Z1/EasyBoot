@@ -1,6 +1,8 @@
 package com.easy.boot.common.generator.db;
 
+import cn.hutool.core.util.StrUtil;
 import com.easy.boot.admin.generateColumn.entity.GenerateColumn;
+import com.easy.boot.common.generator.GenConstant;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -35,9 +37,19 @@ public class MetaTable {
     private String camelName;
 
     /**
-     * 模块名
+     * 后端模块名
      */
     private String moduleName;
+
+    /**
+     * 前端模块名
+     */
+    private String uiModuleName;
+
+    /**
+     * 所属菜单ID
+     */
+    private Long parentMenuId;
 
     /**
      * 表类型
@@ -54,4 +66,10 @@ public class MetaTable {
      */
     private List<GenerateColumn> columns;
 
+    public String getUiModuleName() {
+        if (StrUtil.isEmpty(uiModuleName)) {
+            uiModuleName = GenConstant.UI_MODULE_NAME;
+        }
+        return uiModuleName;
+    }
 }

@@ -57,6 +57,11 @@ public class IndexVueTemplate extends AbstractTemplate {
     }
 
     @Override
+    protected String getTemplateType() {
+        return GenConstant.TEMPLATE_TYPE_VUE2;
+    }
+
+    @Override
     protected String getFileName(String javaName) {
         return "index" + GenConstant.VUE_SUFFIX;
     }

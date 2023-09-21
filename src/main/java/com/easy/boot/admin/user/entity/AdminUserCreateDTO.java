@@ -13,6 +13,7 @@ import org.hibernate.validator.constraints.Range;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.util.List;
 
 /**
@@ -40,7 +41,8 @@ public class AdminUserCreateDTO {
     private String avatar;
 
     @NotBlank(message = "账号不能为空")
-    @Length(min = 6, max = 15, message = "账号在{min}-{max}个字符之间")
+    @Length(min = 5, max = 15, message = "账号在{min}-{max}个字符之间")
+    @Pattern(regexp = "^[\\u4E00-\\u9FA5A-Za-z0-9_]+$", message = "账号格式不正确，仅支持字母、数字和下划线")
     @ApiModelProperty(required = true, value = "账号")
     private String username;
 

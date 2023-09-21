@@ -40,15 +40,20 @@ public class GenerateConfig extends BaseEntity {
     @ExcelProperty(value = "表名称")
     private String tableName;
 
-    @ApiModelProperty("模块名称")
+    @ApiModelProperty("后端模块名称")
     @TableField("module_name")
     @ExcelProperty(value = "模块名称")
     private String moduleName;
 
-    @ApiModelProperty("表注释")
-    @TableField("remarks")
-    @ExcelProperty(value = "表注释")
-    private String remarks;
+    @ApiModelProperty("前端模块名称")
+    @TableField("ui_module_name")
+    @ExcelProperty(value = "前端模块名称")
+    private String uiModuleName;
+
+    @ApiModelProperty("表描述")
+    @TableField("table_remarks")
+    @ExcelProperty(value = "表描述")
+    private String tableRemarks;
 
     @ApiModelProperty("包名")
     @TableField("package_name")
@@ -59,6 +64,11 @@ public class GenerateConfig extends BaseEntity {
     @TableField("request_mapping_prefix")
     @ExcelProperty(value = "RequestMapping 路径前缀	")
     private String requestMappingPrefix;
+
+    @ApiModelProperty("所属菜单")
+    @TableField("parent_menu_id")
+    @ExcelProperty(value = "所属菜单")
+    private Long parentMenuId;
 
     @ApiModelProperty("生成代码路径")
     @TableField("output_path")
@@ -115,28 +125,23 @@ public class GenerateConfig extends BaseEntity {
     @ExcelProperty(value = "过滤实体类属性 多个用,分隔")
     private String excludeField;
 
-    public static GenerateConfig defaultGlobalBuild() {
-        // 定义成变量方便直接修改
-        boolean isOverride = true;
-        boolean isOpen = true;
-        boolean enableImport = true;
-        boolean enableExport = true;
-        boolean enableLog = true;
-        boolean enableBuilder = true;
+    @ApiModelProperty("备注")
+    private String remarks;
 
+    public static GenerateConfig defaultGlobalBuild() {
         return GenerateConfig.builder()
                 .type(1)
                 .tableName("")
-                .remarks("")
+                .tableRemarks("")
                 .packageName(GenConstant.DEFAULT_PACKAGE_NAME)
                 .requestMappingPrefix(GenConstant.DEFAULT_REQUEST_MAPPING_PREFIX)
                 .outputPath(GenConstant.DEFAULT_OUTPUT_PATH)
-                .isOpen(isOpen ? 0 : 1)
+                .isOpen(0)
                 .author(GenConstant.DEFAULT_AUTHOR)
-                .enableImport(enableImport ? 0 : 1)
-                .enableExport(enableExport ? 0 : 1)
-                .enableLog(enableLog ? 0 : 1)
-                .enableBuilder(enableBuilder ? 0 : 1)
+                .enableImport(0)
+                .enableExport(0)
+                .enableLog(0)
+                .enableBuilder(0)
                 .templateJson(JsonUtil.toJsonStr(GenerateTemplate.defaultBuild()))
                 .build();
     }

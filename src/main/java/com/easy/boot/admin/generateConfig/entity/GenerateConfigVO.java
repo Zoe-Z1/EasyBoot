@@ -1,7 +1,6 @@
 package com.easy.boot.admin.generateConfig.entity;
 
 import cn.hutool.core.util.StrUtil;
-import com.easy.boot.common.base.BaseEntity;
 import com.easy.boot.utils.JsonUtil;
 import com.fasterxml.jackson.core.type.TypeReference;
 import io.swagger.annotations.ApiModel;
@@ -38,17 +37,23 @@ public class GenerateConfigVO {
     @ApiModelProperty("表名称")
     private String tableName;
 
-    @ApiModelProperty("模块名称")
+    @ApiModelProperty("后端模块名称")
     private String moduleName;
 
-    @ApiModelProperty("表注释")
-    private String remarks;
+    @ApiModelProperty("前端模块名称")
+    private String uiModuleName;
+
+    @ApiModelProperty("表描述")
+    private String tableRemarks;
 
     @ApiModelProperty("包名")
     private String packageName;
 
-    @ApiModelProperty("RequestMapping 路径前缀	")
-    private String requestMappingPrefix;
+//    @ApiModelProperty("RequestMapping 路径前缀	")
+//    private String requestMappingPrefix;
+
+    @ApiModelProperty("所属菜单")
+    private Long parentMenuId;
 
     @ApiModelProperty("生成代码路径")
     private String outputPath;
@@ -85,6 +90,9 @@ public class GenerateConfigVO {
 
     @ApiModelProperty("过滤实体类属性 多个用,分隔")
     private String excludeField;
+
+    @ApiModelProperty("备注")
+    private String remarks;
 
 
     public List<Map<String, Object>> getTemplateList() {

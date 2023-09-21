@@ -217,7 +217,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(ConstraintViolationException.class)
     public Result exceptionHandler(ConstraintViolationException e,HttpServletRequest request) {
-//        log.error("字段效验异常，异常路径： {} ，请求方式： {} ",request.getRequestURI(),request.getMethod(),e);
+        log.error("字段效验异常，异常路径： {} ，请求方式： {} ",request.getRequestURI(),request.getMethod(),e);
         Set<ConstraintViolation<?>> set = e.getConstraintViolations();
         List<FieldError> fieldErrors = new ArrayList<>();
         set.forEach(error -> {
@@ -234,7 +234,7 @@ public class GlobalExceptionHandler {
      * @return
      */
     private Result validationResult(BindingResult result,HttpServletRequest request){
-//        log.error("字段效验异常，异常路径： {} ，请求方式： {} ",request.getRequestURI(),request.getMethod(),e);
+        log.error("字段效验异常，异常路径： {} ，请求方式： {} ",request.getRequestURI(),request.getMethod());
         List<FieldError> fieldErrors = new ArrayList<>();
         result.getFieldErrors().forEach(error -> fieldErrors.add(new FieldError(error.getField(),error.getDefaultMessage())));
         return new Result(new FieldErrorException(fieldErrors),request.getRequestURI(),request.getMethod());

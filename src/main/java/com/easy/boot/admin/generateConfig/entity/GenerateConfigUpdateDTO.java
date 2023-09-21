@@ -26,17 +26,23 @@ public class GenerateConfigUpdateDTO {
     @ApiModelProperty("表名称")
     private String tableName;
 
-    @ApiModelProperty("模块名称")
+    @ApiModelProperty("后端模块名称")
     private String moduleName;
 
-    @ApiModelProperty("表注释")
-    private String remarks;
+    @ApiModelProperty("前端模块名称")
+    private String uiModuleName;
+
+    @ApiModelProperty("表描述")
+    private String tableRemarks;
 
     @ApiModelProperty("包名")
     private String packageName;
 
-    @ApiModelProperty("RequestMapping 路径前缀	")
-    private String requestMappingPrefix;
+//    @ApiModelProperty("RequestMapping 路径前缀")
+//    private String requestMappingPrefix;
+
+    @ApiModelProperty("所属菜单")
+    private Long parentMenuId;
 
     @ApiModelProperty("生成代码路径")
     private String outputPath;
@@ -70,5 +76,8 @@ public class GenerateConfigUpdateDTO {
 
     @ApiModelProperty("过滤实体类属性 多个用,分隔")
     private String excludeField;
+
+    @ApiModelProperty("备注")
+    private String remarks;
 
 }

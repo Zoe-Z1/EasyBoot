@@ -276,9 +276,9 @@ public class AdminUserServiceImpl extends ServiceImpl<AdminUserMapper, AdminUser
                 isError = true;
                 builder.columnIndex(0).rowIndex(rowIndex).msg("用户账号不能为空");
                 errors.add(builder.build());
-            } else if (adminUser.getUsername().length() < 6 || adminUser.getUsername().length() > 15) {
+            } else if (adminUser.getUsername().length() < 5 || adminUser.getUsername().length() > 15) {
                 isError = true;
-                builder.columnIndex(0).rowIndex(rowIndex).msg("用户账号在6-15个字符之间");
+                builder.columnIndex(0).rowIndex(rowIndex).msg("用户账号在5-15个字符之间");
                 errors.add(builder.build());
             }
             if (usernames.contains(adminUser.getUsername())) {

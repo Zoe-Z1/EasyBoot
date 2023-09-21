@@ -1,6 +1,7 @@
 package com.easy.boot.common.generator.template;
 
 import cn.hutool.core.map.MapUtil;
+import cn.hutool.core.util.StrUtil;
 import com.easy.boot.common.generator.DataMap;
 import com.easy.boot.common.generator.GenConstant;
 import com.easy.boot.common.generator.config.GlobalConfig;
@@ -41,6 +42,13 @@ public abstract class AbstractTemplate {
      */
     protected String getTemplateName() {
         return null;
+    }
+
+    /**
+     * 模板类型
+     */
+    protected String getTemplateType() {
+        return GenConstant.TEMPLATE_TYPE_JAVA;
     }
 
     /**
@@ -94,9 +102,13 @@ public abstract class AbstractTemplate {
         buildDataMap.put(GenConstant.DATA_MAP_KEY_IS_OVERRIDE, isOverride);
         String remarks = getRemarks(metaTable.getRemarks());
         buildDataMap.put(GenConstant.DATA_MAP_KEY_REMARKS, remarks);
+        String templateType = getTemplateType();
         String zipPath = String.join("/", global.getAuthor(), metaTable.getModuleName(), getModuleName());
         buildDataMap.put(GenConstant.DATA_MAP_KEY_ZIP_PATH, zipPath);
         String genPath = String.join("/", global.getOutputPath(), metaTable.getModuleName(), getModuleName());
+        if (StrUtil.isNotEmpty(templateType) && templateType.equals(GenConstant.TEMPLATE_TYPE_VUE2)) {
+            genPath = String.join("/", genPath, metaTable.getUiModuleName());
+        }
         genPath = genPath.replaceAll("\\.", "/");
         buildDataMap.put(GenConstant.DATA_MAP_KEY_GEN_PATH, genPath);
         return buildDataMap;

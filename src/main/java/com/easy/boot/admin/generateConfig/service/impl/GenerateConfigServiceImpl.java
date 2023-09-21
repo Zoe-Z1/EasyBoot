@@ -13,6 +13,7 @@ import com.easy.boot.admin.generateConfig.entity.GenerateConfigUpdateDTO;
 import com.easy.boot.admin.generateConfig.entity.GenerateConfigVO;
 import com.easy.boot.admin.generateConfig.mapper.GenerateConfigMapper;
 import com.easy.boot.admin.generateConfig.service.IGenerateConfigService;
+import com.easy.boot.common.generator.GenConstant;
 import com.easy.boot.common.generator.db.DbManager;
 import com.easy.boot.common.redisson.EasyLock;
 import com.easy.boot.exception.GeneratorException;
@@ -65,7 +66,8 @@ public class GenerateConfigServiceImpl extends ServiceImpl<GenerateConfigMapper,
             vo.setType(2)
                     .setTableName(databaseTable.getTableName())
                     .setModuleName(NamingCase.toCamelCase(filterName))
-                    .setRemarks(databaseTable.getComment());
+                    .setUiModuleName(GenConstant.UI_MODULE_NAME)
+                    .setTableRemarks(databaseTable.getComment());
             generateConfig = BeanUtil.copyBean(vo, GenerateConfig.class);
             save(generateConfig);
         }

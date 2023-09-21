@@ -1,11 +1,9 @@
 package com.easy.boot.admin.generate.service.impl;
 
-import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.text.NamingCase;
 import cn.hutool.core.util.StrUtil;
 import com.easy.boot.admin.generate.entity.DatabaseTable;
 import com.easy.boot.admin.generate.entity.GenerateCode;
-import com.easy.boot.admin.generate.entity.GeneratePreviewVO;
 import com.easy.boot.admin.generate.entity.GenerateTableQuery;
 import com.easy.boot.admin.generate.mapper.GenerateMapper;
 import com.easy.boot.admin.generate.service.GenerateService;
@@ -23,15 +21,11 @@ import com.easy.boot.common.generator.db.MetaTable;
 import com.easy.boot.common.generator.execute.GeneratorExecute;
 import com.easy.boot.exception.GeneratorException;
 import com.easy.boot.utils.BeanUtil;
-import freemarker.template.TemplateException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -111,7 +105,9 @@ public class GenerateServiceImpl implements GenerateService {
                 .beanName(NamingCase.toPascalCase(filterName))
                 .camelName(NamingCase.toCamelCase(filterName))
                 .moduleName(generateConfig.getModuleName())
-                .remarks(generateConfig.getRemarks())
+                .uiModuleName(generateConfig.getUiModuleName())
+                .parentMenuId(generateConfig.getParentMenuId())
+                .remarks(generateConfig.getTableRemarks())
                 .columns(columns)
                 .build();
         return GeneratorExecute.init(generateConfig)
