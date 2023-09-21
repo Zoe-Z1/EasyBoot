@@ -4,6 +4,8 @@ import cn.hutool.core.text.NamingCase;
 import cn.hutool.core.util.StrUtil;
 import com.easy.boot.common.generator.DataMap;
 import com.easy.boot.common.generator.GenConstant;
+import com.easy.boot.common.generator.config.GlobalConfig;
+import com.easy.boot.common.generator.db.MetaTable;
 import lombok.*;
 
 /**
@@ -79,7 +81,25 @@ public class JsTemplate extends AbstractTemplate {
     @Override
     public DataMap buildDataMap(DataMap dataMap) {
         DataMap buildDataMap = super.buildDataMap(dataMap);
+        // 构建生成参数
+        buildGenParam(buildDataMap);
         return buildDataMap;
+    }
+
+    /**
+     * 构建生成参数
+     * @param buildDataMap
+     */
+    private void buildGenParam(DataMap buildDataMap) {
+        MetaTable metaTable = buildDataMap.getMetaTable();
+        GlobalConfig global = buildDataMap.getGlobalConfig();
+        String genPath = String.join("/", global.getOutputPath(), metaTable.getModuleName(), getModuleName());
+        genPath = genPath.replaceAll("\\.", "/");
+        if (StrUtil.isNotEmpty(metaTable.getUiModuleName())) {
+            genPath = String.join("/", genPath, GenConstant.JS_PACKAGE_NAME, metaTable.getUiModuleName());
+            buildDataMap.put(GenConstant.DATA_MAP_KEY_UI_MODULE_NAME, metaTable.getUiModuleName());
+        }
+        buildDataMap.put(GenConstant.DATA_MAP_KEY_GEN_PATH, genPath);
     }
 
 }

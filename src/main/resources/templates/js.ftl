@@ -1,4 +1,4 @@
-import { getAction, postAction } from '../manage'
+import { getAction, postAction } from '@/api/manage'
 
 // ${remarks!}列表
 const list = (params) => getAction('${global.requestMappingPrefix!}/${table.moduleName}/page', params)

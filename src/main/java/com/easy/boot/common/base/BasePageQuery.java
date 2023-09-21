@@ -35,4 +35,6 @@ public class BasePageQuery implements Serializable {
     @Max(value = 200, message = "每页条数不能超过{value}")
     private Long pageSize;
 
+    @ApiModelProperty(required = true, value = "关键词")
+    private String keyword;
 }

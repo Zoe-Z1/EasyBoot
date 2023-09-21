@@ -46,7 +46,7 @@ public class ${className} {
     @TableField("${column.columnName}")
         </#if>
     </#if>
-    <#if enableExcel??>
+    <#if enableExcel?? && column.isExcel == 0>
     @ExcelProperty(value = "${column.columnRemarks!}")
     </#if>
     <#-- 遍历字段 -->

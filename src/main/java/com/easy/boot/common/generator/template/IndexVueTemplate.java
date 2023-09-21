@@ -82,22 +82,33 @@ public class IndexVueTemplate extends AbstractTemplate {
     @Override
     public DataMap buildDataMap(DataMap dataMap) {
         DataMap buildDataMap = super.buildDataMap(dataMap);
-        // 构建类名
-        buildClassName(buildDataMap);
+        // 构建生成参数
+        buildGenParam(buildDataMap);
         // 处理实体类属性
         handleField(buildDataMap);
         return buildDataMap;
     }
 
     /**
-     * 构建类名称
-     * @param buildDataMap 已构建过的参数
+     * 构建生成参数
+     * @param buildDataMap
      */
-    private void buildClassName(DataMap buildDataMap) {
+    private void buildGenParam(DataMap buildDataMap) {
         MetaTable metaTable = buildDataMap.getMetaTable();
+        GlobalConfig global = buildDataMap.getGlobalConfig();
         String javaName = metaTable.getBeanName();
         String className = NamingCase.toCamelCase(javaName);
+        String permission = metaTable.getName().replaceAll("_", ":");
+        String genPath = String.join("/", global.getOutputPath(), metaTable.getModuleName(), getModuleName());
+        genPath = genPath.replaceAll("\\.", "/");
+        if (StrUtil.isNotEmpty(metaTable.getUiModuleName())) {
+            permission = String.join(":", metaTable.getUiModuleName(), permission);
+            genPath = String.join("/", genPath, GenConstant.VUE_PACKAGE_NAME, metaTable.getUiModuleName());
+            buildDataMap.put(GenConstant.DATA_MAP_KEY_UI_MODULE_NAME, metaTable.getUiModuleName());
+        }
         buildDataMap.put(GenConstant.DATA_MAP_KEY_CLASS_NAME, className);
+        buildDataMap.put(GenConstant.DATA_MAP_KEY_PERMISSION, permission);
+        buildDataMap.put(GenConstant.DATA_MAP_KEY_GEN_PATH, genPath);
     }
 
     /**
@@ -108,9 +119,11 @@ public class IndexVueTemplate extends AbstractTemplate {
         GlobalConfig global = buildDataMap.getGlobalConfig();
         FilterConfig filter = buildDataMap.getFilterConfig();
         MetaTable metaTable = buildDataMap.getMetaTable();
+        JsTemplate jsTemplate = buildDataMap.getTemplateConfig().getJs();
         // 不要直接获取处理，会导致其他地方没有数据
         List<GenerateColumn> columns = JsonUtil.copyList(metaTable.getColumns(), GenerateColumn.class);
         columns.removeIf(item -> filter.getExcludeField().contains(item.getJavaName()));
+        String jsName = jsTemplate.getFileName(metaTable.getBeanName()).replace(GenConstant.JS_SUFFIX, "");
         for (GenerateColumn column : columns) {
             if (column.getJavaName().equals("os") || column.getJavaName().equals("proCode")) {
                 column.setDictDomainCode(column.getColumnName() + "code");
@@ -118,6 +131,7 @@ public class IndexVueTemplate extends AbstractTemplate {
         }
         long count = columns.stream().filter(item -> StrUtil.isNotEmpty(item.getDictDomainCode())).count();
         buildDataMap.put(GenConstant.DATA_MAP_KEY_HAS_DICT, count > 0);
+        buildDataMap.put(GenConstant.DATA_MAP_KEY_JS_NAME, jsName);
         buildDataMap.put(GenConstant.DATA_MAP_KEY_COLUMNS, columns);
         if (global.getEnableExport() || global.getEnableImport()) {
             buildDataMap.put(GenConstant.DATA_MAP_KEY_ENABLE_EXCEL, true);

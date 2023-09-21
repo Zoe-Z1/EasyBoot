@@ -71,15 +71,15 @@ public class GenerateColumn extends BaseEntity {
     @ExcelProperty(value = "Java类型包名")
     private String javaTypePackageName;
 
-    @ApiModelProperty("是否需要创建 #0：创建 1：不创建")
-    @TableField("is_create")
-    @ExcelProperty(value = "是否需要创建 #0：创建 1：不创建")
-    private Integer isCreate;
+    @ApiModelProperty("是否需要表单填写 #0：需要 1：不需要")
+    @TableField("is_form")
+    @ExcelProperty(value = "是否需要表单填写 #0：需要 1：不需要")
+    private Integer isForm;
 
-    @ApiModelProperty("是否需要编辑 #0：编辑 1：不编辑")
-    @TableField("is_update")
-    @ExcelProperty(value = "是否需要编辑 #0：编辑 1：不编辑")
-    private Integer isUpdate;
+    @ApiModelProperty("是否需要高级搜索 #0：需要 1：不需要")
+    @TableField("is_advanced_search")
+    @ExcelProperty(value = "是否需要高级搜索 #0：需要 1：不需要")
+    private Integer isAdvancedSearch;
 
     @ApiModelProperty("列表显示 #0：显示 1：不显示")
     @TableField("list_show")
@@ -91,15 +91,10 @@ public class GenerateColumn extends BaseEntity {
     @ExcelProperty(value = "详情显示 #0：显示 1：不显示")
     private Integer detailShow;
 
-    @ApiModelProperty("是否导入 #0：导入 1：不导入")
-    @TableField("is_import")
-    @ExcelProperty(value = "是否导入 #0：导入 1：不导入")
-    private Integer isImport;
-
-    @ApiModelProperty("是否导出 #0：导出 1：不导出")
-    @TableField("is_export")
-    @ExcelProperty(value = "是否导出 #0：导出 1：不导出")
-    private Integer isExport;
+    @ApiModelProperty("是否需要导入导出 #0：需要 1：不需要")
+    @TableField("is_excel")
+    @ExcelProperty(value = "是否需要导入导出 #0：需要 1：不需要")
+    private Integer isExcel;
 
     @ApiModelProperty("是否必填 #0：必填 1：不必填")
     @TableField("is_required")

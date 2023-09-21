@@ -129,6 +129,7 @@ public class GenerateConfig extends BaseEntity {
     private String remarks;
 
     public static GenerateConfig defaultGlobalBuild() {
+        String excludeField = "updateBy,updateUsername,updateTime,isDel";
         return GenerateConfig.builder()
                 .type(1)
                 .tableName("")
@@ -143,6 +144,7 @@ public class GenerateConfig extends BaseEntity {
                 .enableLog(0)
                 .enableBuilder(0)
                 .templateJson(JsonUtil.toJsonStr(GenerateTemplate.defaultBuild()))
+                .excludeField(excludeField)
                 .build();
     }
 }

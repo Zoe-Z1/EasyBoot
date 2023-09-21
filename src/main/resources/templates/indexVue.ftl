@@ -9,12 +9,13 @@
     >
       <template slot="advanced-content">
         <el-form ref="advancedForm" style="margin-top: 20px;" :model="queryForm" label-width="80px">
-          <el-form-item label="用户名">
-            <el-input v-model="queryForm.username" clearable />
+          <#list columns as column>
+            <#if column.isAdvancedSearch == 0>
+          <el-form-item label="${column.columnRemarks!}">
+            <el-input v-model="queryForm.${column.javaName}" clearable />
           </el-form-item>
-          <el-form-item label="昵称">
-            <el-input v-model="queryForm.name" clearable />
-          </el-form-item>
+            </#if>
+          </#list>
         </el-form>
       </template>
     </common-form>
@@ -49,12 +50,11 @@
       </template>
       </#if>
       </#list>
-      </template>
       <!-- 列表操作按钮 -->
       <template #operation="scope">
         <el-button
           v-throttle
-          v-permission="'system:user:edit'"
+          v-permission="'${permission}:edit'"
           :size="size"
           type="text"
           icon="el-icon-edit-outline"
@@ -62,7 +62,7 @@
         >编辑</el-button>
         <el-button
           v-throttle
-          v-permission="'system:user:del'"
+          v-permission="'${permission}:del'"
           :size="size"
           type="text"
           icon="el-icon-delete"
@@ -78,7 +78,7 @@
   </div>
 </template>
 <script>
-  import { edit } from '@/api/system/user' // 后台数据接口
+  <#--import { edit } from '@/api<#if uiModuleName??>/${uiModuleName}</#if>/${jsName}' // 后台数据接口-->
   import { mixin } from '@/views/pages/mixin'
   import AddOrUpdate from './components/save'
   export default {
@@ -108,15 +108,17 @@
             slotType: 'serialNumber'
           },
           <#list columns as column>
+          <#if column.listShow == 0>
           {
             prop: '${column.javaName}',
             label: '${column.columnRemarks!}',
-            align: 'center',
+            align: 'center'<#if column.dictDomainCode??>,</#if>
             <#if column.dictDomainCode??>
             type: 'slot',
             slotType: '${column.javaName}'
             </#if>
           },
+          </#if>
           </#list>
           {
             type: 'slot',
@@ -141,20 +143,7 @@
       </#list>
     },
     methods: {
-      // 账号状态切换触发
-      switchChange(e, form) {
-        form.status = e === 1 ? 2 : 1
-      },
-      // 确认禁用或启用
-      popConfirm(form) {
-        this.loading = true
-        form.status = form.status === 1 ? 2 : 1
-        edit(form).then((res) => {
-          if (res.code === 200) this.$message.success(form.status === 1 ? '账号已启用' : '账号已禁用')
-        }).finally(() => {
-          this.loading = false
-        })
-      }
+
     }
   }
 </script>

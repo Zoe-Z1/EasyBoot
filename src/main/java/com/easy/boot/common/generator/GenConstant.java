@@ -40,6 +40,10 @@ public class GenConstant {
 
     public static final String UI_MODULE_NAME = "system";
 
+    public static final String JS_PACKAGE_NAME = "api";
+
+    public static final String VUE_PACKAGE_NAME = "pages";
+
 
     /*------------------------- 类名称后缀 -------------------------*/
 
@@ -86,6 +90,8 @@ public class GenConstant {
     public static final String JS_TEMPLATE_NAME = "js.ftl";
 
     public static final String INDEX_VUE_TEMPLATE_NAME = "indexVue.ftl";
+
+    public static final String SAVE_VUE_TEMPLATE_NAME = "saveVue.ftl";
 
 
 
@@ -168,6 +174,12 @@ public class GenConstant {
     public static final String DATA_MAP_KEY_BASE_COLUMN_LIST_NAME = "baseColumnList";
 
     public static final String DATA_MAP_KEY_HAS_DICT = "hasDict";
+
+    public static final String DATA_MAP_KEY_UI_MODULE_NAME = "uiModuleName";
+
+    public static final String DATA_MAP_KEY_PERMISSION = "permission";
+
+    public static final String DATA_MAP_KEY_JS_NAME = "jsName";
 
 
 
