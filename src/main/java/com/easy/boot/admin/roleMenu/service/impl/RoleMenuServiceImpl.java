@@ -8,7 +8,6 @@ import com.easy.boot.admin.roleMenu.entity.RoleMenuQuery;
 import com.easy.boot.admin.roleMenu.mapper.RoleMenuMapper;
 import com.easy.boot.admin.roleMenu.service.IRoleMenuService;
 import com.easy.boot.common.base.BaseEntity;
-import lombok.var;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -38,7 +37,7 @@ public class RoleMenuServiceImpl extends ServiceImpl<RoleMenuMapper, RoleMenu> i
         if (CollUtil.isEmpty(roleIds)) {
             return new ArrayList<>();
         }
-        var list = lambdaQuery().in(RoleMenu::getRoleId, roleIds).list();
+        List<RoleMenu> list = lambdaQuery().in(RoleMenu::getRoleId, roleIds).list();
         return list.stream().map(RoleMenu::getMenuId).distinct().collect(Collectors.toList());
     }
 

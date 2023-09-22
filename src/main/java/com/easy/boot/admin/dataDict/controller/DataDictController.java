@@ -103,7 +103,7 @@ public class DataDictController extends BaseController {
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "删除数据字典")
     @EasyLog(module = "删除数据字典", operateType = OperateTypeEnum.DELETE)
-    @PostMapping("/delete/{ids}")
+    @PostMapping("/delete/{id}")
     public Result delete(@PathVariable Long id) {
         return Result.r(dataDictService.deleteById(id));
     }
