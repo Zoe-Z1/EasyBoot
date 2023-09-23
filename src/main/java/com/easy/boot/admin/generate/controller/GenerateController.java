@@ -82,6 +82,7 @@ public class GenerateController extends BaseController {
         if (codes.isEmpty()) {
             return;
         }
+        generateService.runSql(tableNames, codes);
         FileUtil.downloadZip(response, codes);
     }
 

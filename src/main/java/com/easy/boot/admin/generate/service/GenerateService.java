@@ -2,13 +2,9 @@ package com.easy.boot.admin.generate.service;
 
 import com.easy.boot.admin.generate.entity.DatabaseTable;
 import com.easy.boot.admin.generate.entity.GenerateCode;
-import com.easy.boot.admin.generate.entity.GeneratePreviewVO;
 import com.easy.boot.admin.generate.entity.GenerateTableQuery;
 import com.easy.boot.common.base.Page;
-import freemarker.template.TemplateException;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.List;
 
 /**
@@ -47,4 +43,10 @@ public interface GenerateService {
      */
     List<GenerateCode> preview(String tableName) throws Exception;
 
+    /**
+     * 执行sql
+     * @param tableNames
+     * @param codes
+     */
+    void runSql(List<String> tableNames, List<GenerateCode> codes);
 }

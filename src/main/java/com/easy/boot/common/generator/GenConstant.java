@@ -34,6 +34,8 @@ public class GenConstant {
 
     public static final String MODULE_MAPPER = "mapper";
 
+    public static final String MODULE_MAPPER_XML = "xml";
+
     public static final String MODULE_ENTITY = "entity";
 
     public static final String MODULE_VUE = "vue";
@@ -43,6 +45,8 @@ public class GenConstant {
     public static final String JS_PACKAGE_NAME = "api";
 
     public static final String VUE_PACKAGE_NAME = "pages";
+
+    public static final String SQL_PACKAGE_NAME = "sql";
 
 
     /*------------------------- 类名称后缀 -------------------------*/
@@ -73,6 +77,8 @@ public class GenConstant {
 
     public static final String ZIP_SUFFIX = ".zip";
 
+    public static final String SQL_SUFFIX = ".sql";
+
     /*------------------------- 模板引擎名称 -------------------------*/
 
     public static final String CONTROLLER_TEMPLATE_NAME = "controller.ftl";
@@ -92,6 +98,8 @@ public class GenConstant {
     public static final String INDEX_VUE_TEMPLATE_NAME = "indexVue.ftl";
 
     public static final String SAVE_VUE_TEMPLATE_NAME = "saveVue.ftl";
+
+    public static final String SQL_TEMPLATE_NAME = "sql.ftl";
 
 
 
@@ -180,6 +188,40 @@ public class GenConstant {
     public static final String DATA_MAP_KEY_PERMISSION = "permission";
 
     public static final String DATA_MAP_KEY_JS_NAME = "jsName";
+
+    public static final String DATA_MAP_KEY_MENU_ID = "menuId";
+
+    public static final String DATA_MAP_KEY_PAGE_MENU_ID = "pageMenuId";
+
+    public static final String DATA_MAP_KEY_DETAIL_MENU_ID = "detailMenuId";
+
+    public static final String DATA_MAP_KEY_CREATE_MENU_ID = "createMenuId";
+
+    public static final String DATA_MAP_KEY_UPDATE_MENU_ID = "updateMenuId";
+
+    public static final String DATA_MAP_KEY_DEL_MENU_ID = "delMenuId";
+
+    public static final String DATA_MAP_KEY_BATCH_DEL_MENU_ID = "batchDelMenuId";
+
+    public static final String DATA_MAP_KEY_IMPORT_MENU_ID = "importMenuId";
+
+    public static final String DATA_MAP_KEY_DOWNLOAD_MENU_ID = "downloadMenuId";
+
+    public static final String DATA_MAP_KEY_EXPORT_MENU_ID = "exportMenuId";
+
+    public static final String DATA_MAP_KEY_PARENT_MENU_ID = "parentMenuId";
+
+    public static final String DATA_MAP_KEY_MENU_PATH = "menuPath";
+
+    public static final String DATA_MAP_KEY_COMPONENT = "component";
+
+    public static final String DATA_MAP_KEY_CREATE_BY = "createBy";
+
+    public static final String DATA_MAP_KEY_CREATE_USERNAME = "createUsername";
+
+    public static final String DATA_MAP_KEY_CREATE_TIME = "createTime";
+
+    public static final String DATA_MAP_KEY_DICT_SQLS = "dictSqls";
 
 
 

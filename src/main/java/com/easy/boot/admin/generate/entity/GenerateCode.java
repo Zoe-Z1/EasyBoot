@@ -32,4 +32,7 @@ public class GenerateCode {
     @ApiModelProperty(value = "文件内容")
     private String fileContent;
 
+    @ApiModelProperty(value = "是否执行SQL")
+    private Boolean execute;
+
 }

@@ -3,9 +3,8 @@ package com.easy.boot.common.generator.execute;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.easy.boot.admin.generate.entity.GenerateCode;
-import com.easy.boot.admin.generate.entity.GeneratePreviewVO;
-import com.easy.boot.admin.generateConfig.entity.GenerateTemplate;
 import com.easy.boot.admin.generateConfig.entity.GenerateConfig;
+import com.easy.boot.admin.generateConfig.entity.GenerateTemplate;
 import com.easy.boot.common.generator.DataMap;
 import com.easy.boot.common.generator.GenConstant;
 import com.easy.boot.common.generator.config.*;
@@ -18,21 +17,15 @@ import com.easy.boot.utils.BeanUtil;
 import com.easy.boot.utils.JsonUtil;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
-import freemarker.template.TemplateException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
-import javax.servlet.http.HttpServletResponse;
 import java.awt.*;
 import java.io.*;
-import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
 
 /**
  * @author zoe
@@ -81,6 +74,11 @@ public class GeneratorExecute {
      * 要生成的表信息
      */
     private MetaTable metaTable;
+
+    /**
+     * 数据库处理器
+     */
+    private DbManager dbManager;
 
     private GeneratorExecute(GeneratorConfig generatorConfig) {
         this.generatorConfig = generatorConfig;
@@ -163,6 +161,10 @@ public class GeneratorExecute {
                                 .createDTO(BeanUtil.copyBean(generateTemplate.getCreateDTO(), CreateDTOTemplate.class))
                                 .query(BeanUtil.copyBean(generateTemplate.getQuery(), QueryTemplate.class))
                                 .vo(BeanUtil.copyBean(generateTemplate.getVo(), VOTemplate.class))
+                                .sql(BeanUtil.copyBean(generateTemplate.getSql(), SqlTemplate.class))
+                                .js(BeanUtil.copyBean(generateTemplate.getJs(), JsTemplate.class))
+                                .indexVue(BeanUtil.copyBean(generateTemplate.getIndexVue(), IndexVueTemplate.class))
+                                .saveVue(BeanUtil.copyBean(generateTemplate.getSaveVue(), SaveVueTemplate.class))
                                 .build())
                 .filter(
                         FilterConfig.builder()
@@ -230,9 +232,9 @@ public class GeneratorExecute {
                 log.info(buildDataMap.get("fileName") + " 已跳过代码生成!");
                 continue;
             }
-            String fileName = buildDataMap.getString(GenConstant.DATA_MAP_KEY_FILE_NAME);
+            String filename = buildDataMap.getString(GenConstant.DATA_MAP_KEY_FILE_NAME);
             String zipPath = buildDataMap.getString(GenConstant.DATA_MAP_KEY_ZIP_PATH);
-            String genPath = String.join("/", zipPath, fileName);
+            String genPath = String.join("/", zipPath, filename);
             // 创建freeMarker配置实例
             Configuration configuration = new Configuration(Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
             // 获取模版路径
@@ -242,14 +244,15 @@ public class GeneratorExecute {
             Template easyTemplate = configuration.getTemplate(buildDataMap.getString(GenConstant.DATA_MAP_KEY_TEMPLATE_NAME));
             StringWriter writer = new StringWriter();
             easyTemplate.process(buildDataMap, writer);
-            buildDataMap.clear();
             GenerateCode code = GenerateCode.builder()
                     .author(globalConfig.getAuthor())
-                    .filename(fileName)
+                    .filename(filename)
                     .genPath(genPath)
                     .fileContent(writer.toString())
                     .build();
+            code.setExecute(templateConfig.getSql().getExecute());
             codes.add(code);
+            buildDataMap.clear();
             writer.close();
         }
         return codes;
@@ -263,7 +266,8 @@ public class GeneratorExecute {
         if (CollUtil.isEmpty(tables)) {
             throw new GeneratorException("需要生成的表不能为空");
         }
-        List<MetaTable> metaTables = DbManager.init(dataSourceConfig, filterConfig).getTables(tables);
+        dbManager = DbManager.init(dataSourceConfig, filterConfig);
+        List<MetaTable> metaTables = dbManager.getTables(tables);
         // 获取所有的模板
         List<AbstractTemplate> templates = templateConfig.getTemplates();
         // 未找到模板类，直接结束
@@ -307,6 +311,10 @@ public class GeneratorExecute {
             }
             try {
                 this.generator(buildDataMap);
+                // 执行sql
+                if (template instanceof SqlTemplate && templateConfig.getSql().getExecute()) {
+                    dbManager.runSql(buildDataMap);
+                }
             } catch (Exception e) {
                 log.error(buildDataMap.getString(GenConstant.DATA_MAP_KEY_FILE_NAME) + "代码生成出错,  e -> ", e);
             }
@@ -329,12 +337,12 @@ public class GeneratorExecute {
         // 加载模版文件
         Template easyTemplate = configuration.getTemplate(dataMap.getString(GenConstant.DATA_MAP_KEY_TEMPLATE_NAME));
         // 生成数据
-        String fileName = dataMap.getString(GenConstant.DATA_MAP_KEY_FILE_NAME);
-        File file = new File(dataMap.getString(GenConstant.DATA_MAP_KEY_GEN_PATH), fileName);
+        String filename = dataMap.getString(GenConstant.DATA_MAP_KEY_FILE_NAME);
+        File file = new File(dataMap.getString(GenConstant.DATA_MAP_KEY_GEN_PATH), filename);
         boolean isOverride = (boolean) dataMap.get(GenConstant.DATA_MAP_KEY_IS_OVERRIDE);
         // 文件存在时根据配置不覆盖代码
         if (file.exists() && !isOverride) {
-            log.info(fileName + " 已存在，已根据配置不覆盖!");
+            log.info(filename + " 已存在，已根据配置不覆盖!");
             return;
         }
         // 目录不存在则创建
@@ -344,10 +352,11 @@ public class GeneratorExecute {
         Writer out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file)));
         // 输出文件
         easyTemplate.process(dataMap, out);
+
         //关闭流
         out.flush();
         out.close();
-        log.info(fileName + " 生成成功!");
+        log.info(filename + " 生成成功!");
     }
 
     /**

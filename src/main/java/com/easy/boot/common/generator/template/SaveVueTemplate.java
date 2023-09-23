@@ -99,17 +99,21 @@ public class SaveVueTemplate extends AbstractTemplate {
         String javaName = metaTable.getBeanName();
         String className = NamingCase.toCamelCase(javaName);
         String permission = metaTable.getName().replaceAll("_", ":");
-        String genPath = String.join("/", global.getOutputPath(), metaTable.getModuleName(), getModuleName());
+        String genPath = String.join("/", global.getOutputPath(), metaTable.getModuleName(), getModuleName(), GenConstant.VUE_PACKAGE_NAME);
         genPath = genPath.replaceAll("\\.", "/");
+        String zipPath = String.join("/", global.getAuthor(), metaTable.getModuleName(), getModuleName(), GenConstant.VUE_PACKAGE_NAME);
         if (StrUtil.isNotEmpty(metaTable.getUiModuleName())) {
             permission = String.join(":", metaTable.getUiModuleName(), permission);
+            String kebabCase = NamingCase.toKebabCase(javaName);
             String components = "components";
-            genPath = String.join("/", genPath, GenConstant.VUE_PACKAGE_NAME, metaTable.getUiModuleName(), components);
+            genPath = String.join("/", genPath, metaTable.getUiModuleName(), kebabCase, components);
+            zipPath = String.join("/", zipPath, metaTable.getUiModuleName(), kebabCase, components);
             buildDataMap.put(GenConstant.DATA_MAP_KEY_UI_MODULE_NAME, metaTable.getUiModuleName());
         }
         buildDataMap.put(GenConstant.DATA_MAP_KEY_CLASS_NAME, className);
         buildDataMap.put(GenConstant.DATA_MAP_KEY_PERMISSION, permission);
         buildDataMap.put(GenConstant.DATA_MAP_KEY_GEN_PATH, genPath);
+        buildDataMap.put(GenConstant.DATA_MAP_KEY_ZIP_PATH, zipPath);
     }
 
     /**

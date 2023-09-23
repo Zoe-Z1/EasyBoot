@@ -46,7 +46,7 @@ public class MapperXmlTemplate extends AbstractTemplate {
     @Override
     protected String getModuleName() {
         if (StrUtil.isEmpty(moduleName)) {
-            moduleName = GenConstant.MODULE_MAPPER;
+            moduleName = GenConstant.MODULE_MAPPER_XML;
         }
         return moduleName;
     }

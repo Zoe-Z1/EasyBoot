@@ -24,9 +24,9 @@ public class ${className} {
 
 
     @ApiOperationSupport(author = "${global.author}")
-    @ApiOperation(value = "获取${remarks!}列表")
+    @ApiOperation(value = "分页获取${remarks!}列表")
     <#if annotation.enableLog>
-    @EasyLog(module = "获取${remarks!}列表", operateType = OperateTypeEnum.SELECT)
+    @EasyLog(module = "分页获取${remarks!}列表", operateType = OperateTypeEnum.SELECT)
     </#if>
     @GetMapping("/page")
     public Result<IPage<${entityName}>> page(@Validated ${queryName} query) {

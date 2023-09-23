@@ -73,6 +73,11 @@ public class TemplateConfig {
     private VOTemplate vo;
 
     /**
+     * sql模板配置
+     */
+    private SqlTemplate sql;
+
+    /**
      * js模板配置
      */
     private JsTemplate js;
@@ -137,6 +142,10 @@ public class TemplateConfig {
         return vo == null ? new VOTemplate() : vo;
     }
 
+    public SqlTemplate getSql() {
+        return sql == null ? new SqlTemplate() : sql;
+    }
+
     public JsTemplate getJs() {
         return js == null ? new JsTemplate() : js;
     }
@@ -168,6 +177,7 @@ public class TemplateConfig {
         list.add(getUpdateDTO());
         list.add(getQuery());
         list.add(getVo());
+        list.add(getSql());
         list.add(getJs());
         list.add(getIndexVue());
         list.add(getSaveVue());

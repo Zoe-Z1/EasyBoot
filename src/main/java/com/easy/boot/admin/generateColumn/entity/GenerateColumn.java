@@ -1,5 +1,6 @@
 package com.easy.boot.admin.generateColumn.entity;
 
+import com.alibaba.excel.annotation.ExcelIgnore;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -110,4 +111,17 @@ public class GenerateColumn extends BaseEntity {
     @TableField("dict_domain_code")
     @ExcelProperty(value = "字典域编码")
     private String dictDomainCode;
+
+    @ExcelIgnore
+    @TableField(exist = false)
+    @ApiModelProperty("是否需要创建")
+    private Boolean isCreate;
+
+    public Boolean getIsCreate() {
+        if (isCreate == null) {
+            isCreate = true;
+        }
+        return isCreate;
+    }
+
 }

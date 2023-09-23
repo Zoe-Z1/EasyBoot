@@ -26,6 +26,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -42,6 +45,9 @@ public class GenerateServiceImpl implements GenerateService {
 
     @Value("${spring.datasource.url}")
     private String url;
+
+    @Resource
+    private DataSource dataSource;
 
     @Resource
     private IGenerateConfigService generateConfigService;
@@ -113,6 +119,28 @@ public class GenerateServiceImpl implements GenerateService {
         return GeneratorExecute.init(generateConfig)
                 .metaTable(metaTable)
                 .preview();
+    }
+
+    @Override
+    public void runSql(List<String> tableNames, List<GenerateCode> codes) {
+        StringBuffer sb = new StringBuffer();
+        String sql = "sql";
+        codes.forEach(item -> {
+            if (item.getExecute() && sql.equals(item.getFilename())) {
+                sb.append(item.getFileContent());
+            }
+        });
+        try {
+            Connection connection = dataSource.getConnection();
+            System.out.println("connection.getCatalog() = " + connection.getCatalog());
+            boolean status = DbManager.runSql(connection, sb.toString());
+            if (!status) {
+                throw new GeneratorException("执行SQL失败，已中断代码生成");
+            }
+        } catch (SQLException e) {
+            throw new GeneratorException("获取数据库连接失败，已中断代码生成");
+        }
+
     }
 
 }

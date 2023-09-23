@@ -3,12 +3,10 @@ package com.easy.boot;
 import cn.hutool.core.collection.CollUtil;
 import com.easy.boot.common.generator.GenConstant;
 import com.easy.boot.common.generator.config.*;
-import com.easy.boot.common.generator.db.convert.EasyColumnConvertHandler;
 import com.easy.boot.common.generator.execute.GeneratorExecute;
 import com.easy.boot.common.generator.template.EntityTemplate;
-import com.easy.boot.common.generator.template.JsTemplate;
+import com.easy.boot.common.generator.template.SqlTemplate;
 import com.easy.boot.common.generator.template.UpdateDTOTemplate;
-import com.easy.boot.common.generator.template.VOTemplate;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -41,7 +39,6 @@ public class EasyGenerator {
                                         .url(url)
                                         .username("root")
                                         .password("zz123456")
-                                        .columnConvertHandler(new EasyColumnConvertHandler())
                                         .build()
                         )
                         .annotation(
@@ -62,9 +59,9 @@ public class EasyGenerator {
                                                         .includeField(CollUtil.newHashSet("id"))
                                                         .build()
                                         )
-                                        .vo(
-                                                VOTemplate.builder()
-                                                        .enable(true)
+                                        .sql(
+                                                SqlTemplate.builder()
+                                                        .execute(false)
                                                         .build()
                                         )
                                         .build())

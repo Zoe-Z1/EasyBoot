@@ -93,13 +93,16 @@ public class JsTemplate extends AbstractTemplate {
     private void buildGenParam(DataMap buildDataMap) {
         MetaTable metaTable = buildDataMap.getMetaTable();
         GlobalConfig global = buildDataMap.getGlobalConfig();
-        String genPath = String.join("/", global.getOutputPath(), metaTable.getModuleName(), getModuleName());
+        String genPath = String.join("/", global.getOutputPath(), metaTable.getModuleName(), getModuleName(), GenConstant.JS_PACKAGE_NAME);
         genPath = genPath.replaceAll("\\.", "/");
+        String zipPath = String.join("/", global.getAuthor(), metaTable.getModuleName(), getModuleName(), GenConstant.JS_PACKAGE_NAME);
         if (StrUtil.isNotEmpty(metaTable.getUiModuleName())) {
-            genPath = String.join("/", genPath, GenConstant.JS_PACKAGE_NAME, metaTable.getUiModuleName());
+            genPath = String.join("/", genPath, metaTable.getUiModuleName());
+            zipPath = String.join("/", zipPath, metaTable.getUiModuleName());
             buildDataMap.put(GenConstant.DATA_MAP_KEY_UI_MODULE_NAME, metaTable.getUiModuleName());
         }
         buildDataMap.put(GenConstant.DATA_MAP_KEY_GEN_PATH, genPath);
+        buildDataMap.put(GenConstant.DATA_MAP_KEY_ZIP_PATH, zipPath);
     }
 
 }

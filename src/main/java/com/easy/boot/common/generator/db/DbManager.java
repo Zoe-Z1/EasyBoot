@@ -5,6 +5,8 @@ import cn.hutool.core.text.NamingCase;
 import cn.hutool.core.util.StrUtil;
 import com.easy.boot.admin.generateColumn.entity.GenerateColumn;
 import com.easy.boot.admin.generateColumn.entity.GenerateColumnQuery;
+import com.easy.boot.common.generator.DataMap;
+import com.easy.boot.common.generator.GenConstant;
 import com.easy.boot.common.generator.OptElementEnum;
 import com.easy.boot.common.generator.config.DataSourceConfig;
 import com.easy.boot.common.generator.config.FilterConfig;
@@ -13,8 +15,10 @@ import com.easy.boot.common.generator.db.convert.JavaTypeEnum;
 import com.easy.boot.common.generator.db.convert.OptElementConvertHandler;
 import com.easy.boot.exception.GeneratorException;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.jdbc.ScriptRunner;
 
 import javax.sql.DataSource;
+import java.io.*;
 import java.sql.*;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -84,22 +88,6 @@ public class DbManager {
         }
         return new DbManager(connection, filterConfig, columnConvertHandler);
     }
-
-
-//    /**
-//     * 获取要生成表的列信息
-//     * @return List<GenerateColumn>
-//     */
-//    public List<GenerateColumn> getGenerateColumns(List<GenerateColumnQuery> querys) {
-//        List<GenerateColumn> list = new ArrayList<>();
-//        for (GenerateColumnQuery query : querys) {
-//            List<GenerateColumn> newColumns = getGenerateColumns(query);
-//            if (CollUtil.isNotEmpty(newColumns)) {
-//                list.addAll(newColumns);
-//            }
-//        }
-//        return list;
-//    }
 
     /**
      * 获取要生成的表信息
@@ -278,5 +266,59 @@ public class DbManager {
             throw new GeneratorException(tableName + " 表过滤后的表名称为空");
         }
         return tableName;
+    }
+
+    /**
+     * 执行sql
+     * @param buildDataMap
+     * @return
+     * @throws FileNotFoundException
+     */
+    public boolean runSql(DataMap buildDataMap) throws FileNotFoundException {
+        if (connection == null) {
+            throw new GeneratorException("数据库连接不存在，无法执行SQL");
+        }
+        ScriptRunner scriptRunner = new ScriptRunner(connection);
+        String filename = buildDataMap.getString(GenConstant.DATA_MAP_KEY_FILE_NAME);
+        File file = new File(buildDataMap.getString(GenConstant.DATA_MAP_KEY_GEN_PATH), filename);
+        // 读取文件，返回Reader对象
+        Reader reader = new FileReader(file);
+        // 执行失败停止执行并抛出异常回滚
+        scriptRunner.setStopOnError(true);
+        // 执行SQL脚本
+        boolean status = true;
+        try {
+            scriptRunner.runScript(reader);
+        } catch (Exception e) {
+            status = false;
+        }
+        log.info("执行SQL文件 {} " + (status ? "成功" : "失败"), filename);
+        return status;
+    }
+
+    /**
+     * 执行sql
+     * @param connection
+     * @param sql
+     * @return
+     * @throws FileNotFoundException
+     */
+    public static boolean runSql(Connection connection, String sql) {
+        if (connection == null) {
+            throw new GeneratorException("数据库连接不存在，无法执行SQL");
+        }
+        ScriptRunner scriptRunner = new ScriptRunner(connection);
+        // 读取文件，返回Reader对象
+        Reader reader = new StringReader(sql);
+        // 执行失败停止执行并抛出异常回滚
+        scriptRunner.setStopOnError(true);
+        // 执行SQL脚本
+        boolean status = true;
+        try {
+            scriptRunner.runScript(reader);
+        } catch (Exception e) {
+            status = false;
+        }
+        return status;
     }
 }
