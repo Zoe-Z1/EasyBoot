@@ -6,12 +6,12 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.easy.boot.admin.menu.entity.*;
-import com.easy.boot.admin.menu.entity.*;
 import com.easy.boot.admin.menu.mapper.MenuMapper;
 import com.easy.boot.admin.menu.service.IMenuService;
 import com.easy.boot.common.base.BaseEntity;
 import com.easy.boot.exception.BusinessException;
 import com.easy.boot.utils.BeanUtil;
+import com.easy.boot.utils.JsonUtil;
 import lombok.NonNull;
 import lombok.var;
 import org.springframework.stereotype.Service;
@@ -60,14 +60,8 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
     @Override
     public List<MenuTree> treeList(MenuTreeQuery query) {
         List<Menu> list = lambdaQuery()
-                .in(CollUtil.isNotEmpty(query.getMenuIds()), Menu::getId, query.getMenuIds())
-                .eq(Objects.nonNull(query.getType()), Menu::getType, query.getType())
-                .eq(Objects.nonNull(query.getStatus()), Menu::getStatus, query.getStatus())
-                .eq(Objects.nonNull(query.getShowStatus()), Menu::getShowStatus, query.getShowStatus())
-                .like(StrUtil.isNotEmpty(query.getLabel()) , Menu::getLabel, query.getLabel())
-                .like(StrUtil.isNotEmpty(query.getPermission()) , Menu::getPermission, query.getPermission())
-                .between(Objects.nonNull(query.getStartTime()) && Objects.nonNull(query.getEndTime()),
-                        BaseEntity::getCreateTime, query.getStartTime(), query.getEndTime())
+                .eq(query.getStatus() != null, Menu::getStatus, query.getStatus())
+                .in(CollUtil.isNotEmpty(query.getMenuIds()), BaseEntity::getId, query.getMenuIds())
                 .list();
         if (CollUtil.isEmpty(list)) {
             return new ArrayList<>();
@@ -96,6 +90,10 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
     public IPage<Menu> selectPage(MenuQuery query) {
         Page<Menu> page = new Page<>(query.getPageNum(), query.getPageSize());
         return lambdaQuery()
+                .and(StrUtil.isNotEmpty(query.getKeyword()), keywordQuery -> {
+                    keywordQuery.like(Menu::getLabel, query.getKeyword()).or()
+                            .like(Menu::getPermission, query.getKeyword());
+                })
                 .eq(Objects.nonNull(query.getParentId()), Menu::getParentId, query.getParentId())
                 .eq(Objects.nonNull(query.getType()), Menu::getType, query.getType())
                 .eq(Objects.nonNull(query.getStatus()), Menu::getStatus, query.getStatus())
@@ -107,6 +105,37 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
                 .orderByAsc(Menu::getSort)
                 .orderByDesc(BaseEntity::getCreateTime)
                 .page(page);
+    }
+
+    @Override
+    public List<MenuLazyVO> selectList(MenuTreeLazyQuery query) {
+        List<Menu> list = lambdaQuery()
+                .and(StrUtil.isNotEmpty(query.getKeyword()), keywordQuery -> {
+                    keywordQuery.like(Menu::getLabel, query.getKeyword()).or()
+                            .like(Menu::getPermission, query.getKeyword());
+                })
+                .eq(Objects.nonNull(query.getParentId()), Menu::getParentId, query.getParentId())
+                .eq(Objects.nonNull(query.getType()), Menu::getType, query.getType())
+                .eq(Objects.nonNull(query.getStatus()), Menu::getStatus, query.getStatus())
+                .eq(Objects.nonNull(query.getShowStatus()), Menu::getShowStatus, query.getShowStatus())
+                .like(StrUtil.isNotEmpty(query.getLabel()) , Menu::getLabel, query.getLabel())
+                .like(StrUtil.isNotEmpty(query.getPermission()) , Menu::getPermission, query.getPermission())
+                .between(Objects.nonNull(query.getStartTime()) && Objects.nonNull(query.getEndTime()),
+                        BaseEntity::getCreateTime, query.getStartTime(), query.getEndTime())
+                .orderByAsc(Menu::getSort)
+                .orderByDesc(BaseEntity::getCreateTime)
+                .list();
+        if (CollUtil.isEmpty(list)) {
+            return new ArrayList<>();
+        }
+        List<MenuLazyVO> voList = JsonUtil.copyList(list, MenuLazyVO.class);
+        List<Long> ids = voList.stream().map(BaseEntity::getId).collect(Collectors.toList());
+        List<Menu> menus = lambdaQuery().select(Menu::getParentId).in(Menu::getParentId, ids).list();
+        Set<Long> parentIds = menus.stream().map(Menu::getParentId).collect(Collectors.toSet());
+        voList.forEach(item -> {
+            item.setIsLeaf(!parentIds.contains(item.getId()));
+        });
+        return voList;
     }
 
     @Override

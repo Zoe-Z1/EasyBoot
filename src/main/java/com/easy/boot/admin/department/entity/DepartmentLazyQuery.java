@@ -19,6 +19,9 @@ import lombok.experimental.SuperBuilder;
 @ApiModel(value = "DepartmentLazyQuery对象", description = "部门异步加载")
 public class DepartmentLazyQuery {
 
+    @ApiModelProperty("关键词")
+    private String keyword;
+
     @ApiModelProperty(required = false, value = "父级部门ID，为0则代表最上级部门")
     private Long parentId;
 

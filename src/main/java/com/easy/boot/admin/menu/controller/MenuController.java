@@ -2,11 +2,12 @@ package com.easy.boot.admin.menu.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.easy.boot.admin.menu.entity.*;
-import com.easy.boot.admin.operationLog.enums.OperateTypeEnum;
 import com.easy.boot.admin.menu.service.IMenuService;
+import com.easy.boot.admin.operationLog.enums.OperateTypeEnum;
 import com.easy.boot.common.base.BaseController;
 import com.easy.boot.common.base.Result;
 import com.easy.boot.common.log.EasyLog;
+import com.easy.boot.common.noRepeatSubmit.EasyNoRepeatIgnore;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -31,11 +32,20 @@ public class MenuController extends BaseController {
 
 
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "获取树形菜单")
-    @EasyLog(module = "获取树形菜单", operateType = OperateTypeEnum.SELECT)
+    @ApiOperation(value = "获取可用菜单树")
+    @EasyLog(module = "获取可用菜单树", operateType = OperateTypeEnum.SELECT)
     @GetMapping("/tree")
     public Result<List<MenuTree>> tree(@Validated MenuTreeQuery query) {
         return Result.success(menuService.treeList(query));
+    }
+
+    @EasyNoRepeatIgnore
+    @ApiOperationSupport(author = "zoe")
+    @ApiOperation(value = "懒加载菜单树")
+    @EasyLog(module = "懒加载菜单树", operateType = OperateTypeEnum.SELECT)
+    @GetMapping("/list")
+    public Result<List<MenuLazyVO>> list(@Validated MenuTreeLazyQuery query) {
+        return Result.success(menuService.selectList(query));
     }
 
     @ApiOperationSupport(author = "zoe")

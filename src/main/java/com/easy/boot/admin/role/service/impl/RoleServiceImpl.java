@@ -5,9 +5,6 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.easy.boot.admin.roleMenu.service.IRoleMenuService;
-import com.easy.boot.admin.userRole.entity.UserRole;
-import com.easy.boot.admin.userRole.service.IUserRoleService;
 import com.easy.boot.admin.menu.entity.Menu;
 import com.easy.boot.admin.menu.service.IMenuService;
 import com.easy.boot.admin.role.entity.Role;
@@ -16,6 +13,9 @@ import com.easy.boot.admin.role.entity.RoleQuery;
 import com.easy.boot.admin.role.entity.RoleUpdateDTO;
 import com.easy.boot.admin.role.mapper.RoleMapper;
 import com.easy.boot.admin.role.service.IRoleService;
+import com.easy.boot.admin.roleMenu.service.IRoleMenuService;
+import com.easy.boot.admin.userRole.entity.UserRole;
+import com.easy.boot.admin.userRole.service.IUserRoleService;
 import com.easy.boot.common.base.BaseEntity;
 import com.easy.boot.common.excel.entity.ImportExcelError;
 import com.easy.boot.exception.BusinessException;
@@ -51,6 +51,10 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IR
     public IPage<Role> selectPage(RoleQuery query) {
         Page<Role> page = new Page<>(query.getPageNum(), query.getPageSize());
         return lambdaQuery()
+                .and(StrUtil.isNotEmpty(query.getKeyword()), keywordQuery -> {
+                    keywordQuery.like(Role::getCode, query.getKeyword()).or()
+                            .like(Role::getName, query.getKeyword());
+                })
                 .like(StrUtil.isNotEmpty(query.getName()), Role::getName, query.getName())
                 .like(StrUtil.isNotEmpty(query.getCode()), Role::getCode, query.getCode())
                 .eq(Objects.nonNull(query.getStatus()), Role::getStatus, query.getStatus())

@@ -48,10 +48,7 @@ public class DepartmentServiceImpl extends ServiceImpl<DepartmentMapper, Departm
     public List<DepartmentTree> treeList(DepartmentTreeQuery query) {
         List<Department> list = lambdaQuery()
                 .select(BaseEntity::getId,Department::getName,Department::getParentId,Department::getStatus, Department::getSort,BaseEntity::getCreateTime)
-                .like(StrUtil.isNotEmpty(query.getName()), Department::getName, query.getName())
-                .eq(Objects.nonNull(query.getStatus()), Department::getStatus, query.getStatus())
-                .between(Objects.nonNull(query.getStartTime()) && Objects.nonNull(query.getEndTime()),
-                        BaseEntity::getCreateTime, query.getStartTime(), query.getEndTime())
+                .eq(Department::getStatus, 1)
                 .list();
         if (CollUtil.isEmpty(list)) {
             return new ArrayList<>();
@@ -91,8 +88,13 @@ public class DepartmentServiceImpl extends ServiceImpl<DepartmentMapper, Departm
     @Override
     public List<DepartmentLazyVO> selectList(DepartmentLazyQuery query) {
         List<Department> list = lambdaQuery()
+                .and(StrUtil.isNotEmpty(query.getKeyword()), keywordQuery -> {
+                    keywordQuery.like(Department::getName, query.getKeyword());
+                })
                 .eq(query.getParentId() != null, Department::getParentId, query.getParentId())
                 .like(StrUtil.isNotEmpty(query.getName()), Department::getName, query.getName())
+                .orderByAsc(Department::getSort)
+                .orderByDesc(BaseEntity::getCreateTime)
                 .list();
         if (CollUtil.isEmpty(list)) {
             return new ArrayList<>();

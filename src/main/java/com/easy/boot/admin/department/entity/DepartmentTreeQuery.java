@@ -25,16 +25,4 @@ public class DepartmentTreeQuery {
     @ApiModelProperty(required = true, value = "父级部门ID，为0则代表最上级部门")
     private Long parentId;
 
-    @ApiModelProperty("部门名称")
-    private String name;
-
-    @ApiModelProperty("部门状态 1：正常 2：禁用")
-    private Integer status;
-
-    @ApiModelProperty("开始时间")
-    private Long startTime;
-
-    @ApiModelProperty("结束时间")
-    private Long endTime;
-
 }

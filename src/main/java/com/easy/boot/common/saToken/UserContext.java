@@ -64,7 +64,8 @@ public class UserContext {
      */
     public static void checkAdminUserLogin() {
         StpLogic stpLogic = new StpLogic(String.valueOf(RoleTypeEnum.WEB));
-        stpLogic.checkLogin();
+        StpUtil.setStpLogic(stpLogic);
+        StpUtil.checkLogin();
     }
 
     /**

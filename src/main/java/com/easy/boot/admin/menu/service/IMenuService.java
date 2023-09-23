@@ -54,6 +54,14 @@ public interface IMenuService extends IService<Menu> {
     */
     IPage<Menu> selectPage(MenuQuery query);
 
+
+    /**
+     * 查询菜单
+     * @param query
+     * @return
+     */
+    List<MenuLazyVO> selectList(MenuTreeLazyQuery query);
+
     /**
      * 获取菜单详情
      * @param id

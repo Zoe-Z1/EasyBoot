@@ -35,8 +35,8 @@ public class DepartmentController extends BaseController {
 
 
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "获取部门树")
-    @EasyLog(module = "获取部门树", operateType = OperateTypeEnum.SELECT)
+    @ApiOperation(value = "获取可用部门树")
+    @EasyLog(module = "获取可用部门树", operateType = OperateTypeEnum.SELECT)
     @GetMapping("/tree")
     public Result<List<DepartmentTree>> tree(@Validated DepartmentTreeQuery query) {
         return Result.success(departmentService.treeList(query));

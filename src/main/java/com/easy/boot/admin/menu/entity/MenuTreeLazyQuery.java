@@ -8,9 +8,6 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.validator.constraints.Range;
 
-import javax.validation.constraints.NotNull;
-import java.util.List;
-
 /**
  * @author zoe
  * @date 2023/07/30
@@ -20,15 +17,14 @@ import java.util.List;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel("菜单树查询对象")
-public class MenuTreeQuery {
+@ApiModel(value = "MenuLazyQuery对象", description = "菜单懒加载查询")
+public class MenuTreeLazyQuery {
 
-    @NotNull(message = "上级菜单不能为空")
-    @ApiModelProperty(required = true, value = "父级菜单ID，为0则代表最上级菜单")
+    @ApiModelProperty("关键词")
+    private String keyword;
+
+    @ApiModelProperty(required = false, value = "父级菜单ID，为0则代表最上级菜单")
     private Long parentId;
-
-    @ApiModelProperty(required = false, value = "菜单ID集合")
-    private List<Long> menuIds;
 
     @ApiModelProperty("菜单名称")
     private String label;

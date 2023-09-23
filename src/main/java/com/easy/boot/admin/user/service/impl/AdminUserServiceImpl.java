@@ -73,6 +73,12 @@ public class AdminUserServiceImpl extends ServiceImpl<AdminUserMapper, AdminUser
             query.getDepartmentId())
         .eq(query.getSex() != null, AdminUser::getSex, query.getSex())
         .eq(query.getStatus() != null, AdminUser::getStatus, query.getStatus())
+        .and(StrUtil.isNotEmpty(query.getKeyword()), keywordQuery -> {
+            keywordQuery.like(AdminUser::getUsername, query.getKeyword()).or()
+                    .like(AdminUser::getName, query.getKeyword()).or()
+                    .like(AdminUser::getMobile, query.getKeyword()).or()
+                    .like(AdminUser::getEmail, query.getKeyword());
+        })
         .like(StrUtil.isNotEmpty(query.getUsername()), AdminUser::getUsername, query.getUsername())
         .like(StrUtil.isNotEmpty(query.getName()), AdminUser::getName, query.getName())
         .like(StrUtil.isNotEmpty(query.getMobile()), AdminUser::getMobile, query.getMobile())
