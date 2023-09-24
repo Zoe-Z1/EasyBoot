@@ -46,6 +46,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<if test="startTime != null and endTime != null">
 			AND CREATE_TIME BETWEEN #{startTime} and #{endTime}
 		</if>
+		<if test="keyword != null and keyword != ''">
+			AND (TABLE_NAME like concat('%', #{keyword} , '%') OR TABLE_COMMENT like concat('%', #{keyword} , '%'))
+		</if>
 		<if test="tableName != null and tableName != ''">
 			AND TABLE_NAME like concat('%', #{tableName} , '%')
 		</if>

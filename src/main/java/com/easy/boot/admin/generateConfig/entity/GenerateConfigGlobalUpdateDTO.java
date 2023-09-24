@@ -5,26 +5,20 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-import javax.validation.constraints.NotEmpty;
-
 
 /**
  * @author zoe
  * @date 2023/09/10
  * @description 代码生成参数配置编辑实体
  */
-@ApiModel(value = "代码生成参数配置编辑实体")
+@ApiModel(value = "代码生成全局参数配置编辑实体")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder
 @ToString(callSuper = true)
 @EqualsAndHashCode
-public class GenerateConfigUpdateDTO {
-
-    @NotEmpty(message = "表名称不能为空")
-    @ApiModelProperty("表名称")
-    private String tableName;
+public class GenerateConfigGlobalUpdateDTO {
 
     @ApiModelProperty("后端模块名称")
     private String moduleName;
@@ -32,17 +26,11 @@ public class GenerateConfigUpdateDTO {
     @ApiModelProperty("前端模块名称")
     private String uiModuleName;
 
-    @ApiModelProperty("表描述")
-    private String tableRemarks;
-
     @ApiModelProperty("包名")
     private String packageName;
 
     @ApiModelProperty("RequestMapping 路径前缀")
     private String requestMappingPrefix;
-
-    @ApiModelProperty("所属菜单")
-    private Long parentMenuId;
 
     @ApiModelProperty("生成代码路径")
     private String outputPath;
@@ -76,8 +64,5 @@ public class GenerateConfigUpdateDTO {
 
     @ApiModelProperty("过滤实体类属性 多个用,分隔")
     private String excludeField;
-
-    @ApiModelProperty("备注")
-    private String remarks;
 
 }

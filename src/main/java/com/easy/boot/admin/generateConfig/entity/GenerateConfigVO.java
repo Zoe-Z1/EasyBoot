@@ -49,8 +49,8 @@ public class GenerateConfigVO {
     @ApiModelProperty("包名")
     private String packageName;
 
-//    @ApiModelProperty("RequestMapping 路径前缀	")
-//    private String requestMappingPrefix;
+    @ApiModelProperty("RequestMapping 路径前缀")
+    private String requestMappingPrefix;
 
     @ApiModelProperty("所属菜单")
     private Long parentMenuId;
@@ -58,7 +58,7 @@ public class GenerateConfigVO {
     @ApiModelProperty("生成代码路径")
     private String outputPath;
 
-    @ApiModelProperty("生成完代码后是否打开目录	0：打开 1：不打开")
+    @ApiModelProperty("生成完代码后是否打开目录 #0：打开，1：不打开")
     private Integer isOpen;
 
     @ApiModelProperty("作者")

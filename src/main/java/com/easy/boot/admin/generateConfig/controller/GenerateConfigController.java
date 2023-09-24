@@ -1,5 +1,6 @@
 package com.easy.boot.admin.generateConfig.controller;
 
+import com.easy.boot.admin.generateConfig.entity.GenerateConfigGlobalUpdateDTO;
 import com.easy.boot.admin.generateConfig.entity.GenerateConfigQuery;
 import com.easy.boot.admin.generateConfig.entity.GenerateConfigUpdateDTO;
 import com.easy.boot.admin.generateConfig.entity.GenerateConfigVO;
@@ -49,11 +50,29 @@ public class GenerateConfigController extends BaseController {
     }
 
     @ApiOperationSupport(author = "zoe")
+    @ApiOperation(value = "编辑代码生成全局参数配置")
+    @EasyLog(module = "编辑代码生成全局参数配置", operateType = OperateTypeEnum.UPDATE)
+    @PostMapping(value = "/updateGlobal")
+    public Result updateGlobal(@Validated @RequestBody GenerateConfigGlobalUpdateDTO dto) {
+        generateConfigService.updateGlobalConfig(dto);
+        return Result.success();
+    }
+
+    @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "编辑代码生成Table参数配置")
     @EasyLog(module = "编辑代码生成Table参数配置", operateType = OperateTypeEnum.UPDATE)
-    @PostMapping(value = "/update")
-    public Result update(@Validated @RequestBody GenerateConfigUpdateDTO dto) {
+    @PostMapping(value = "/updateTable")
+    public Result updateTable(@Validated @RequestBody GenerateConfigUpdateDTO dto) {
         generateConfigService.updateByTableName(dto);
+        return Result.success();
+    }
+
+    @ApiOperationSupport(author = "zoe")
+    @ApiOperation(value = "重置代码生成全局参数配置")
+    @EasyLog(module = "重置代码生成全局参数配置", operateType = OperateTypeEnum.DELETE)
+    @PostMapping("/deleteGlobal")
+    public Result deleteGlobal() {
+        generateConfigService.deleteGlobal();
         return Result.success();
     }
 
@@ -62,7 +81,8 @@ public class GenerateConfigController extends BaseController {
     @EasyLog(module = "重置代码生成Table参数配置", operateType = OperateTypeEnum.DELETE)
     @PostMapping("/delete/{tableName}")
     public Result delete(@PathVariable String tableName) {
-        return Result.r(generateConfigService.deleteByTableName(tableName));
+        generateConfigService.deleteByTableName(tableName);
+        return Result.success();
     }
 
 }

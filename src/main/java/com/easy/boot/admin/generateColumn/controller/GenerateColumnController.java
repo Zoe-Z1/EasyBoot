@@ -4,7 +4,6 @@ import com.easy.boot.admin.generateColumn.entity.GenerateColumn;
 import com.easy.boot.admin.generateColumn.entity.GenerateColumnQuery;
 import com.easy.boot.admin.generateColumn.entity.GenerateColumnUpdateDTO;
 import com.easy.boot.admin.generateColumn.service.IGenerateColumnService;
-import com.easy.boot.admin.generateConfig.entity.GenerateConfigUpdateDTO;
 import com.easy.boot.admin.operationLog.enums.OperateTypeEnum;
 import com.easy.boot.common.base.BaseController;
 import com.easy.boot.common.base.Result;
@@ -56,7 +55,8 @@ public class GenerateColumnController extends BaseController {
     @EasyLog(module = "重置代码生成列配置", operateType = OperateTypeEnum.DELETE)
     @PostMapping("/delete/{tableName}")
     public Result delete(@PathVariable String tableName) {
-        return Result.r(generateColumnService.deleteByTableName(tableName));
+        generateColumnService.deleteByTableName(tableName);
+        return Result.success();
     }
 
 }

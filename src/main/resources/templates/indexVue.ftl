@@ -54,7 +54,7 @@
       <template #operation="scope">
         <el-button
           v-throttle
-          v-permission="'${permission}:edit'"
+          v-permission="'${permission}:update'"
           :size="size"
           type="text"
           icon="el-icon-edit-outline"

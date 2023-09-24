@@ -3,14 +3,10 @@ package com.easy.boot.admin.generateConfig.service.impl;
 import cn.hutool.core.text.NamingCase;
 import cn.hutool.extra.spring.SpringUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.easy.boot.admin.generate.entity.DatabaseTable;
 import com.easy.boot.admin.generate.service.GenerateService;
-import com.easy.boot.admin.generateConfig.entity.GenerateConfig;
-import com.easy.boot.admin.generateConfig.entity.GenerateConfigQuery;
-import com.easy.boot.admin.generateConfig.entity.GenerateConfigUpdateDTO;
-import com.easy.boot.admin.generateConfig.entity.GenerateConfigVO;
+import com.easy.boot.admin.generateConfig.entity.*;
 import com.easy.boot.admin.generateConfig.mapper.GenerateConfigMapper;
 import com.easy.boot.admin.generateConfig.service.IGenerateConfigService;
 import com.easy.boot.common.generator.GenConstant;
@@ -20,6 +16,7 @@ import com.easy.boot.exception.GeneratorException;
 import com.easy.boot.utils.BeanUtil;
 import com.easy.boot.utils.JsonUtil;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -68,19 +65,36 @@ public class GenerateConfigServiceImpl extends ServiceImpl<GenerateConfigMapper,
                     .setModuleName(NamingCase.toCamelCase(filterName))
                     .setUiModuleName(GenConstant.UI_MODULE_NAME)
                     .setTableRemarks(databaseTable.getComment());
-            generateConfig = BeanUtil.copyBean(vo, GenerateConfig.class);
-            save(generateConfig);
         }
         return vo;
+    }
+
+    @EasyLock
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public Boolean updateGlobalConfig(GenerateConfigGlobalUpdateDTO dto) {
+        GenerateConfig generateConfig = BeanUtil.copyBean(dto, GenerateConfig.class);
+        generateConfig.setTemplateJson(JsonUtil.toJsonStr(dto.getTemplateJson()))
+                .setType(1)
+                .setTableName("")
+                .setTableRemarks("");
+        deleteGlobal();
+        return save(generateConfig);
     }
 
     @Override
     public Boolean updateByTableName(GenerateConfigUpdateDTO dto) {
         GenerateConfig generateConfig = BeanUtil.copyBean(dto, GenerateConfig.class);
         generateConfig.setTemplateJson(JsonUtil.toJsonStr(dto.getTemplateJson()));
-        UpdateWrapper<GenerateConfig> updateWrapper = new UpdateWrapper<>(generateConfig);
-        updateWrapper.eq("table_name", dto.getTableName());
-        return update(updateWrapper);
+        deleteByTableName(generateConfig.getTableName());
+        return save(generateConfig);
+    }
+
+    @Override
+    public Boolean deleteGlobal() {
+        QueryWrapper<GenerateConfig> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("type", 1);
+        return remove(queryWrapper);
     }
 
     @Override

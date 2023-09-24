@@ -7,6 +7,7 @@ import com.easy.boot.admin.generateColumn.entity.GenerateColumn;
 import com.easy.boot.admin.generateColumn.entity.GenerateColumnQuery;
 import com.easy.boot.common.generator.DataMap;
 import com.easy.boot.common.generator.GenConstant;
+import com.easy.boot.common.generator.GenerateUtil;
 import com.easy.boot.common.generator.OptElementEnum;
 import com.easy.boot.common.generator.config.DataSourceConfig;
 import com.easy.boot.common.generator.config.FilterConfig;
@@ -209,6 +210,8 @@ public class DbManager {
                 boolean isPrimaryKey = primaryKeyNames.contains(columnName);
                 int columnSize = rs.getInt(DbConstant.COLUMN_SIZE);
                 columnType = columnType + "(" + columnSize + ")";
+                boolean isCreate = GenerateUtil.isParseDomainCode(remarks);
+                String domainCode = isCreate ? query.getTableName() + "_" + columnName : null;
                 GenerateColumn column = GenerateColumn.builder()
                         .tableName(query.getTableName())
                         .isPrimaryKey(isPrimaryKey ? 0 : 1)
@@ -226,12 +229,21 @@ public class DbManager {
                         .isExcel(isPrimaryKey ? 1:0)
                         .isRequired(isPrimaryKey ? 1:0)
                         .optElement(optElement.getValue())
+                        .dictDomainCode(domainCode)
+                        .isCreate(isCreate)
                         .build();
                 columns.add(column);
             }
         } catch (Exception e) {
             log.error("获取 {} 表列信息异常 e-> ", query.getTableName(), e);
             throw new GeneratorException("获取" + query.getTableName() + "表列信息异常");
+        }
+        try {
+            if (connection != null) {
+                connection.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return columns;
     }
@@ -274,7 +286,7 @@ public class DbManager {
      * @return
      * @throws FileNotFoundException
      */
-    public boolean runSql(DataMap buildDataMap) throws FileNotFoundException {
+    public boolean runSql(DataMap buildDataMap) throws Exception {
         if (connection == null) {
             throw new GeneratorException("数据库连接不存在，无法执行SQL");
         }
@@ -293,6 +305,7 @@ public class DbManager {
             status = false;
         }
         log.info("执行SQL文件 {} " + (status ? "成功" : "失败"), filename);
+        connection.close();
         return status;
     }
 
@@ -318,6 +331,11 @@ public class DbManager {
             scriptRunner.runScript(reader);
         } catch (Exception e) {
             status = false;
+        }
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return status;
     }

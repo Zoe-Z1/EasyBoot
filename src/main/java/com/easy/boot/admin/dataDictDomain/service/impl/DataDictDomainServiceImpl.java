@@ -75,6 +75,14 @@ public class DataDictDomainServiceImpl extends ServiceImpl<DataDictDomainMapper,
     }
 
     @Override
+    public List<DataDictDomain> getByCodes(List<String> codes) {
+        if (CollUtil.isEmpty(codes)) {
+            return new ArrayList<>();
+        }
+        return lambdaQuery().in(DataDictDomain::getCode, codes).list();
+    }
+
+    @Override
     public List<DataDict> selectListByDomainCode(String code) {
         DataDictDomain domain = this.getByCode(code);
         if (domain == null || domain.getStatus() == 2) {

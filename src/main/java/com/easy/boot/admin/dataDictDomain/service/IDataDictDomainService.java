@@ -47,6 +47,13 @@ public interface IDataDictDomainService extends IService<DataDictDomain> {
     DataDictDomain getByCode(String code);
 
     /**
+     * 根据根据字典域编码获取字典域列表
+     * @param codes
+     * @return
+     */
+    List<DataDictDomain> getByCodes(List<String> codes);
+
+    /**
      * 根据字典域编码获取字典列表
      * @param code
      * @return

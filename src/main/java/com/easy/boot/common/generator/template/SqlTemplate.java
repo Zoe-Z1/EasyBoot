@@ -188,8 +188,8 @@ public class SqlTemplate extends AbstractTemplate {
                 DictSql dictSql = DictSql.builder()
                         .domainId(domainId)
                         .code(domainCode)
-                        .name(column.getColumnRemarks().substring(0, index))
-                        .remarks(column.getColumnRemarks())
+                        .name(column.getColumnRemarks().substring(0, index).trim())
+                        .remarks(column.getColumnRemarks().trim())
                         .list(list)
                         .build();
                 dictSqls.add(dictSql);

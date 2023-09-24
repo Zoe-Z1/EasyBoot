@@ -3,14 +3,14 @@ package com.easy.boot.admin.generateColumn.service.impl;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.easy.boot.admin.dataDictDomain.entity.DataDictDomain;
+import com.easy.boot.admin.dataDictDomain.service.IDataDictDomainService;
 import com.easy.boot.admin.generateColumn.entity.GenerateColumn;
 import com.easy.boot.admin.generateColumn.entity.GenerateColumnQuery;
 import com.easy.boot.admin.generateColumn.entity.GenerateColumnUpdateDTO;
 import com.easy.boot.admin.generateColumn.mapper.GenerateColumnMapper;
 import com.easy.boot.admin.generateColumn.service.IGenerateColumnService;
-import com.easy.boot.admin.generateConfig.entity.GenerateConfig;
 import com.easy.boot.admin.generateConfig.entity.GenerateConfigQuery;
 import com.easy.boot.admin.generateConfig.entity.GenerateConfigVO;
 import com.easy.boot.admin.generateConfig.service.IGenerateConfigService;
@@ -25,10 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import javax.sql.DataSource;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -44,6 +41,9 @@ public class GenerateColumnServiceImpl extends ServiceImpl<GenerateColumnMapper,
 
     @Resource
     private IGenerateConfigService generateConfigService;
+
+    @Resource
+    private IDataDictDomainService dataDictDomainService;
 
     @EasyLock
     @Override
@@ -71,8 +71,16 @@ public class GenerateColumnServiceImpl extends ServiceImpl<GenerateColumnMapper,
                     .build();
             list = DbManager.init(dataSource, filterConfig, ColumnConvertHandler.defaultHandler())
                     .getGenerateColumns(query);
-            saveBatch(list);
         }
+        List<String> domainCodes = list.stream()
+                .map(GenerateColumn::getDictDomainCode)
+                .filter(StrUtil::isNotEmpty)
+                .collect(Collectors.toList());
+        List<DataDictDomain> domains = dataDictDomainService.getByCodes(domainCodes);
+        Map<String, DataDictDomain> domainMap = domains.stream().collect(Collectors.toMap(DataDictDomain::getCode, x -> x));
+        list.forEach(item -> {
+            item.setIsCreate(StrUtil.isNotEmpty(item.getDictDomainCode()) && domainMap.get(item.getDictDomainCode()) == null);
+        });
         return list;
     }
 
@@ -80,14 +88,16 @@ public class GenerateColumnServiceImpl extends ServiceImpl<GenerateColumnMapper,
     @Override
     public Boolean updateByTableName(List<GenerateColumnUpdateDTO> dto) {
         List<GenerateColumn> list = JsonUtil.copyList(dto, GenerateColumn.class);
+        if (list.isEmpty()) {
+            return false;
+        }
+        String tableName = list.get(0).getTableName();
+        deleteByTableName(tableName);
         list.forEach(item -> {
             String pkgName = DbColumnTypeEnum.toOptElement(item.getColumnType()).getValue();
             item.setJavaTypePackageName(pkgName);
-            UpdateWrapper<GenerateColumn> updateWrapper = new UpdateWrapper<>();
-            updateWrapper.eq("table_name", item.getTableName());
-            update(updateWrapper);
         });
-        return true;
+        return saveBatch(list);
     }
 
     @Override

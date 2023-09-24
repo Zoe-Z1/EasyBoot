@@ -21,7 +21,6 @@ import com.easy.boot.common.generator.db.MetaTable;
 import com.easy.boot.common.generator.execute.GeneratorExecute;
 import com.easy.boot.exception.GeneratorException;
 import com.easy.boot.utils.BeanUtil;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,6 +28,7 @@ import javax.annotation.Resource;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -43,9 +43,6 @@ public class GenerateServiceImpl implements GenerateService {
     @Resource
     private GenerateMapper generateMapper;
 
-    @Value("${spring.datasource.url}")
-    private String url;
-
     @Resource
     private DataSource dataSource;
 
@@ -56,17 +53,38 @@ public class GenerateServiceImpl implements GenerateService {
     private IGenerateColumnService generateColumnService;
 
 
+    private String getDbName() {
+        String dbName = "";
+        Connection connection = null;
+        try {
+            connection = dataSource.getConnection();
+            dbName = connection.getCatalog();
+        } catch (SQLException e) {
+            throw new GeneratorException("获取数据库名失败");
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return dbName;
+    }
+
+
     @Override
     public Page<DatabaseTable> selectPage(GenerateTableQuery query) {
+        String dbName = getDbName();
         Page<DatabaseTable> page = new Page<>();
-        String[] splits = url.split("/");
-        String endStr = splits[splits.length - 1];
-        String dbName = endStr.substring(0, endStr.indexOf("?"));
         query.setDbName(dbName)
                 .setTableType(GenConstant.TABLE_TYPE_BASE_TABLE);
-        List<DatabaseTable> list = generateMapper.selectPage(query);
         Long count = generateMapper.selectCount(query);
-
+        List<DatabaseTable> list = new ArrayList<>();
+        if (count >= 0) {
+            list = generateMapper.selectPage(query);
+        }
         page.setCurrent(query.getPageNum())
                 .setSize(query.getPageSize())
                 .setTotal(count)
@@ -76,9 +94,7 @@ public class GenerateServiceImpl implements GenerateService {
 
     @Override
     public DatabaseTable getTableByTableName(String tableName) {
-        String[] splits = url.split("/");
-        String endStr = splits[splits.length - 1];
-        String dbName = endStr.substring(0, endStr.indexOf("?"));
+        String dbName = getDbName();
         GenerateTableQuery query = GenerateTableQuery.builder()
                 .tableName(tableName)
                 .dbName(dbName)
@@ -130,15 +146,23 @@ public class GenerateServiceImpl implements GenerateService {
                 sb.append(item.getFileContent());
             }
         });
+        Connection connection = null;
         try {
-            Connection connection = dataSource.getConnection();
-            System.out.println("connection.getCatalog() = " + connection.getCatalog());
+            connection = dataSource.getConnection();
             boolean status = DbManager.runSql(connection, sb.toString());
             if (!status) {
                 throw new GeneratorException("执行SQL失败，已中断代码生成");
             }
         } catch (SQLException e) {
             throw new GeneratorException("获取数据库连接失败，已中断代码生成");
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
 
     }

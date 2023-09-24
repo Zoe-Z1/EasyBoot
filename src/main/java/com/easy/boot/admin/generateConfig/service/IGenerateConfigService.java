@@ -1,10 +1,7 @@
 package com.easy.boot.admin.generateConfig.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.easy.boot.admin.generateConfig.entity.GenerateConfig;
-import com.easy.boot.admin.generateConfig.entity.GenerateConfigQuery;
-import com.easy.boot.admin.generateConfig.entity.GenerateConfigUpdateDTO;
-import com.easy.boot.admin.generateConfig.entity.GenerateConfigVO;
+import com.easy.boot.admin.generateConfig.entity.*;
 
 import java.util.List;
 
@@ -30,11 +27,23 @@ public interface IGenerateConfigService extends IService<GenerateConfig> {
     GenerateConfigVO getTableConfig(GenerateConfigQuery query);
 
     /**
+     * 编辑代码生成全局参数配置
+     * @return
+     */
+    Boolean updateGlobalConfig(GenerateConfigGlobalUpdateDTO dto);
+
+    /**
      * 编辑代码生成参数配置
      * @param dto
      * @return
      */
     Boolean updateByTableName(GenerateConfigUpdateDTO dto);
+
+    /**
+     * 删除全局代码生成配置
+     * @return
+     */
+    Boolean deleteGlobal();
 
     /**
      * 删除代码生成参数配置
@@ -49,4 +58,5 @@ public interface IGenerateConfigService extends IService<GenerateConfig> {
      * @return
      */
     Boolean deleteBatchByTableNames(List<String> tableNames);
+
 }
