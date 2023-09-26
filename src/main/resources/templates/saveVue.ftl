@@ -29,7 +29,6 @@
             v-model.trim="ruleForm.${column.javaName}"
             placeholder="请输入${column.columnRemarks}"
             type="text"
-            :size="size"
             show-word-limit
             autocomplete="off"
           />
@@ -38,12 +37,93 @@
           <el-input
             v-model.trim="ruleForm.${column.javaName}"
             placeholder="请输入${column.columnRemarks}"
-            type="text"
-            :size="size"
             :rows="4"
             type="textarea"
             show-word-limit
             autocomplete="off"
+          />
+          </#if>
+          <#if column.optElement == 'select'>
+            <#if column.dictDomainCode??>
+          <el-select v-model="ruleForm.${column.javaName}" placeholder="请选择${column.columnRemarks}">
+            <el-option
+              v-for="(item, index) in dict.${column.javaName}List"
+              :key="index"
+              :label="item.label"
+              :value="item.code"
+            />
+          </el-select>
+            <#else >
+          <el-input
+            v-model.trim="ruleForm.${column.javaName}"
+            placeholder="请输入${column.columnRemarks}"
+            type="text"
+            show-word-limit
+            autocomplete="off"
+          />
+            </#if>
+          </#if>
+          <#if column.optElement == 'radio'>
+            <#if column.dictDomainCode??>
+          <el-radio
+            v-model="ruleForm.${column.javaName}"
+            v-for="(item, index) in dict.${column.javaName}List"
+            :key="index"
+            :label="item.code">
+            {{ item.label }}
+          </el-radio>
+            <#else >
+          <el-input
+            v-model.trim="ruleForm.${column.javaName}"
+            placeholder="请输入${column.columnRemarks}"
+            type="text"
+            show-word-limit
+            autocomplete="off"
+          />
+            </#if>
+          </#if>
+          <#if column.optElement == 'checkbox'>
+            <#if column.dictDomainCode??>
+          <el-checkbox-group v-model="ruleForm.${column.javaName}">
+            <el-checkbox
+              v-for="(item, index) in dict.${column.javaName}List"
+              :key="index"
+              :label="item.code"
+            >{{ item.label }}</el-checkbox>
+          </el-checkbox-group>
+            <#else >
+          <el-input
+            v-model.trim="ruleForm.${column.javaName}"
+            placeholder="请输入${column.columnRemarks}"
+            type="text"
+            show-word-limit
+            autocomplete="off"
+          />
+            </#if>
+          </#if>
+          <#if column.optElement == 'timepicker'>
+          <el-time-picker
+            v-model="ruleForm.${column.javaName}"
+            placeholder="选择时间"
+          />
+          </#if>
+          <#if column.optElement == 'datapicker'>
+          <el-date-picker
+            v-model="ruleForm.${column.javaName}"
+            type="date"
+            placeholder="选择日期"
+          />
+          </#if>
+          <#if column.optElement == 'datetimepicker'>
+          <el-date-picker
+            v-model="ruleForm.${column.javaName}"
+            type="datetime"
+            placeholder="选择日期时间"
+          />
+          </#if>
+          <#if column.optElement == 'inputnumber'>
+          <el-input-number
+            v-model="ruleForm.${column.javaName}"
           />
           </#if>
         </el-form-item>
@@ -60,7 +140,7 @@
 <script>
   import { mixin } from '@/views/pages/mixin/save'
   export default {
-    name: 'RoleSave',
+    name: '${className}Save',
     mixins: [mixin],
     data() {
       return {

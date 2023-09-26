@@ -37,14 +37,20 @@ values(${exportMenuId?c}, ${menuId?c}, '导出${remarks!}', '${permission}:expor
 
 </#if>
 
+<#if (dictSqls?size > 0)>
 -- 数据字典域SQL
+</#if>
+
 <#list dictSqls as dictSql>
 insert into data_dict_domain (id, code, name, remarks, create_by, create_username, create_time)
 values(${dictSql.domainId?c}, '${dictSql.code}', '${dictSql.name}', '${dictSql.remarks}', '${createBy?c}', '${createUsername}', '${createTime?c}');
 
 </#list>
 
+<#if (dictSqls?size > 0)>
 -- 数据字典SQL
+</#if>
+
 <#list dictSqls as dictSql>
     <#list dictSql.list as dict>
 insert into data_dict (id, domain_id, code, label, create_by, create_username, create_time)

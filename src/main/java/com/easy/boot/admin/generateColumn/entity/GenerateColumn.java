@@ -62,7 +62,8 @@ public class GenerateColumn extends BaseEntity {
     @ExcelProperty(value = "Java命名")
     private String javaName;
 
-    @ApiModelProperty("Java类型")
+    @ApiModelProperty("Java类型 #String：String，Integer：Integer，Long：Long，Short：Short，Double：Double，Byte：Byte，" +
+            "Boolean：Boolean，Float：Float，Character：Character，Date：Date，BigDecimal：BigDecimal")
     @TableField("java_type")
     @ExcelProperty(value = "Java类型")
     private String javaType;

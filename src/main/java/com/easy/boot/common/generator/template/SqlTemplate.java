@@ -10,6 +10,7 @@ import com.easy.boot.common.generator.DataMap;
 import com.easy.boot.common.generator.DictSql;
 import com.easy.boot.common.generator.GenConstant;
 import com.easy.boot.common.generator.config.FilterConfig;
+import com.easy.boot.common.generator.config.GlobalConfig;
 import com.easy.boot.common.generator.db.MetaTable;
 import com.easy.boot.common.saToken.UserContext;
 import com.easy.boot.utils.JsonUtil;
@@ -64,6 +65,11 @@ public class SqlTemplate extends AbstractTemplate {
     }
 
     @Override
+    protected String getTemplateType() {
+        return GenConstant.TEMPLATE_TYPE_SQL;
+    }
+
+    @Override
     protected String getFileName(String javaName) {
         if (StrUtil.isNotEmpty(this.fileName)) {
             return this.fileName + GenConstant.SQL_SUFFIX;
@@ -108,6 +114,9 @@ public class SqlTemplate extends AbstractTemplate {
      */
     private void buildGenParam(DataMap buildDataMap) {
         MetaTable metaTable = buildDataMap.getMetaTable();
+        GlobalConfig global = buildDataMap.getGlobalConfig();
+        String genPath = String.join("/", global.getOutputPath(), getModuleName());
+        String zipPath = String.join("/", global.getAuthor(), getModuleName());
         String permission = metaTable.getName().replaceAll("_", ":");
         if (StrUtil.isNotEmpty(metaTable.getUiModuleName())) {
             permission = String.join(":", metaTable.getUiModuleName(), permission);
@@ -119,6 +128,8 @@ public class SqlTemplate extends AbstractTemplate {
         String createUsername = UserContext.getUsername();
         Long createTime = DateUtil.current();
 
+        buildDataMap.put(GenConstant.DATA_MAP_KEY_GEN_PATH, genPath);
+        buildDataMap.put(GenConstant.DATA_MAP_KEY_ZIP_PATH, zipPath);
         buildDataMap.put(GenConstant.DATA_MAP_KEY_MENU_ID, IdWorker.getId());
         buildDataMap.put(GenConstant.DATA_MAP_KEY_PAGE_MENU_ID, IdWorker.getId());
         buildDataMap.put(GenConstant.DATA_MAP_KEY_DETAIL_MENU_ID, IdWorker.getId());

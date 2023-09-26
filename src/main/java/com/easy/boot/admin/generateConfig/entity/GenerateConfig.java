@@ -134,6 +134,7 @@ public class GenerateConfig extends BaseEntity {
                 .type(1)
                 .tableName("")
                 .tableRemarks("")
+                .uiModuleName(GenConstant.UI_MODULE_NAME)
                 .packageName(GenConstant.DEFAULT_PACKAGE_NAME)
                 .requestMappingPrefix(GenConstant.DEFAULT_REQUEST_MAPPING_PREFIX)
                 .outputPath(GenConstant.DEFAULT_OUTPUT_PATH)

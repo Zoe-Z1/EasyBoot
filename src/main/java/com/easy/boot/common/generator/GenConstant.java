@@ -23,6 +23,8 @@ public class GenConstant {
 
     public static final String TEMPLATE_TYPE_VUE2 = "Vue2";
 
+    public static final String TEMPLATE_TYPE_SQL = "Sql";
+
 
     /*------------------------- 模块名 -------------------------*/
 

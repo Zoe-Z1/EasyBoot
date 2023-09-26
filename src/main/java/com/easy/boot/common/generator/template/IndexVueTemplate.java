@@ -99,9 +99,10 @@ public class IndexVueTemplate extends AbstractTemplate {
         String javaName = metaTable.getBeanName();
         String className = NamingCase.toCamelCase(javaName);
         String permission = metaTable.getName().replaceAll("_", ":");
-        String genPath = String.join("/", global.getOutputPath(), metaTable.getModuleName(), getModuleName(), GenConstant.VUE_PACKAGE_NAME);
+        String genPath = String.join("/", global.getOutputPath(), getModuleName(), GenConstant.VUE_PACKAGE_NAME);
         genPath = genPath.replaceAll("\\.", "/");
-        String zipPath = String.join("/", global.getAuthor(), metaTable.getModuleName(), getModuleName(), GenConstant.VUE_PACKAGE_NAME);
+        String zipPath = String.join("/", global.getAuthor(), getModuleName(), GenConstant.VUE_PACKAGE_NAME);
+        zipPath = zipPath.replaceAll("\\.", "/");
         if (StrUtil.isNotEmpty(metaTable.getUiModuleName())) {
             String kebabCase = NamingCase.toKebabCase(javaName);
             permission = String.join(":", metaTable.getUiModuleName(), permission);

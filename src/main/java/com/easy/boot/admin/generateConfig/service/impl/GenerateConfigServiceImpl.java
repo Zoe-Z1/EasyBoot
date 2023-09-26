@@ -9,7 +9,6 @@ import com.easy.boot.admin.generate.service.GenerateService;
 import com.easy.boot.admin.generateConfig.entity.*;
 import com.easy.boot.admin.generateConfig.mapper.GenerateConfigMapper;
 import com.easy.boot.admin.generateConfig.service.IGenerateConfigService;
-import com.easy.boot.common.generator.GenConstant;
 import com.easy.boot.common.generator.db.DbManager;
 import com.easy.boot.common.redisson.EasyLock;
 import com.easy.boot.exception.GeneratorException;
@@ -63,7 +62,6 @@ public class GenerateConfigServiceImpl extends ServiceImpl<GenerateConfigMapper,
             vo.setType(2)
                     .setTableName(databaseTable.getTableName())
                     .setModuleName(NamingCase.toCamelCase(filterName))
-                    .setUiModuleName(GenConstant.UI_MODULE_NAME)
                     .setTableRemarks(databaseTable.getComment());
         }
         return vo;
