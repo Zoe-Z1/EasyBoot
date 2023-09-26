@@ -38,8 +38,8 @@ public class TaskLogController extends BaseController {
 
 
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "获取调度日志列表")
-    @EasyLog(module = "获取调度日志列表", operateType = OperateTypeEnum.SELECT)
+    @ApiOperation(value = "分页获取调度日志列表")
+    @EasyLog(module = "分页获取调度日志列表", operateType = OperateTypeEnum.SELECT)
     @GetMapping("/page")
     public Result<IPage<TaskLog>> page(@Validated TaskLogQuery query) {
         return Result.success(taskLogService.selectPage(query));

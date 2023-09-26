@@ -49,8 +49,8 @@ public class MenuController extends BaseController {
     }
 
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "获取菜单列表")
-    @EasyLog(module = "获取菜单列表", operateType = OperateTypeEnum.SELECT)
+    @ApiOperation(value = "分页获取菜单列表")
+    @EasyLog(module = "分页获取菜单列表", operateType = OperateTypeEnum.SELECT)
     @GetMapping("/page")
     public Result<IPage<Menu>> page(@Validated MenuQuery query) {
         return Result.success(menuService.selectPage(query));

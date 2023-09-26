@@ -23,6 +23,7 @@ public class ${className} {
     private ${serviceName} ${serviceCamelName};
 
 
+    @SaCheckPermission(value = "${permission}:page")
     @ApiOperationSupport(author = "${global.author}")
     @ApiOperation(value = "分页获取${remarks!}列表")
     <#if annotation.enableLog>
@@ -33,6 +34,7 @@ public class ${className} {
         return Result.success(${serviceCamelName}.selectPage(query));
     }
 
+    @SaCheckPermission(value = "${permission}:detail")
     @ApiOperationSupport(author = "${global.author}")
     @ApiOperation(value = "获取${remarks!}详情")
     <#if annotation.enableLog>
@@ -47,6 +49,7 @@ public class ${className} {
     </#if>
     }
 
+    @SaCheckPermission(value = "${permission}:create")
     @ApiOperationSupport(author = "${global.author}")
     @ApiOperation(value = "创建${remarks!}")
     @EasyLog(module = "创建${remarks!}", operateType = OperateTypeEnum.CREATE)
@@ -55,6 +58,7 @@ public class ${className} {
         return Result.r(${serviceCamelName}.create(dto));
     }
 
+    @SaCheckPermission(value = "${permission}:update")
     @ApiOperationSupport(author = "${global.author}")
     @ApiOperation(value = "编辑${remarks!}")
     @EasyLog(module = "编辑${remarks!}", operateType = OperateTypeEnum.UPDATE)
@@ -63,6 +67,7 @@ public class ${className} {
         return Result.r(${serviceCamelName}.updateById(dto));
     }
 
+    @SaCheckPermission(value = "${permission}:del")
     @ApiOperationSupport(author = "${global.author}")
     @ApiOperation(value = "删除${remarks!}")
     @EasyLog(module = "删除${remarks!}", operateType = OperateTypeEnum.DELETE)
@@ -71,6 +76,7 @@ public class ${className} {
         return Result.r(${serviceCamelName}.deleteById(id));
     }
 
+    @SaCheckPermission(value = "${permission}:batch:del")
     @ApiOperationSupport(author = "${global.author}")
     @ApiOperation(value = "批量删除${remarks!}")
     @EasyLog(module = "批量删除${remarks!}", operateType = OperateTypeEnum.DELETE)
@@ -80,6 +86,7 @@ public class ${className} {
     }
 
 <#if global.enableImport>
+    @SaCheckPermission(value = "${permission}:import")
     @ApiOperationSupport(author = "${global.author}")
     @ApiOperation(value = "导入${remarks!}")
     @EasyLog(module = "导入${remarks!}", operateType = OperateTypeEnum.IMPORT)
@@ -116,6 +123,7 @@ public class ${className} {
 </#if>
 
 <#if global.enableExport>
+    @SaCheckPermission(value = "${permission}:export")
     @ApiOperationSupport(author = "${global.author}")
     @ApiOperation(value = "导出${remarks!}")
     @EasyLog(module = "导出${remarks!}", operateType = OperateTypeEnum.EXPORT)
@@ -140,6 +148,7 @@ public class ${className} {
 </#if>
 
 <#if global.enableImport>
+    @SaCheckPermission(value = "${permission}:download")
     @ApiOperationSupport(author = "${global.author}")
     @ApiOperation(value = "下载${remarks!}导入模板")
     @EasyLog(module = "下载${remarks!}导入模板", operateType = OperateTypeEnum.DOWNLOAD)

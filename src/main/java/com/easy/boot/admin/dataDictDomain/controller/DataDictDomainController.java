@@ -49,8 +49,8 @@ public class DataDictDomainController extends BaseController {
 
 
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "获取数据字典域列表")
-    @EasyLog(module = "获取数据字典域列表", operateType = OperateTypeEnum.SELECT)
+    @ApiOperation(value = "分页获取数据字典域列表")
+    @EasyLog(module = "分页获取数据字典域列表", operateType = OperateTypeEnum.SELECT)
     @GetMapping("/page")
     public Result<IPage<DataDictDomain>> page(@Validated DataDictDomainQuery query) {
         return Result.success(dataDictDomainService.selectPage(query));

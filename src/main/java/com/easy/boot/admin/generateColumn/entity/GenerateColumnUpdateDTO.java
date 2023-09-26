@@ -53,6 +53,9 @@ public class GenerateColumnUpdateDTO {
     @ApiModelProperty("是否需要表单填写 #0：需要，1：不需要")
     private Integer isForm;
 
+    @ApiModelProperty("是否需要关键词搜索 #0：需要 1：不需要")
+    private Integer isKeyword;
+
     @ApiModelProperty("是否需要高级搜索 #0：需要，1：不需要")
     private Integer isAdvancedSearch;
 

@@ -12,7 +12,39 @@
           <#list columns as column>
             <#if column.isAdvancedSearch == 0>
           <el-form-item label="${column.columnRemarks!}">
+            <#if column.optElement == 'input' || column.optElement == 'textarea' ||  column.optElement == 'inputnumber'>
             <el-input v-model="queryForm.${column.javaName}" clearable />
+            </#if>
+            <#if column.optElement == 'select' || column.optElement == 'radio' || column.optElement == 'checkbox'>
+              <#if column.dictDomainCode?? && column.dictDomainCode != "">
+            <el-select v-model="queryForm.${column.javaName}" placeholder="请选择${column.columnRemarks}">
+              <el-option
+                v-for="(item, index) in dict.${column.javaName}List"
+                :key="index"
+                :label="item.label"
+                :value="item.code"
+              />
+            </el-select>
+              <#else >
+            <el-input
+              v-model.trim="queryForm.${column.javaName}"
+              placeholder="请输入${column.columnRemarks}"
+              type="text"
+              show-word-limit
+              autocomplete="off"
+            />
+              </#if>
+            </#if>
+            <#if column.optElement == 'timepicker' || column.optElement == 'datapicker' || column.optElement == 'datetimepicker'>
+            <el-date-picker
+              v-model="queryForm.${column.javaName}"
+              type="datetimerange"
+              placeholder="选择时间"
+              range-separator="至"
+              start-placeholder="开始时间"
+              end-placeholder="结束时间"
+            />
+            </#if>
           </el-form-item>
             </#if>
           </#list>

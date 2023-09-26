@@ -46,9 +46,10 @@ public class AdminUserController extends BaseController {
     private AdminUserService adminUserService;
 
 
+//    @SaCheckPermission(value = "system:admin:user:page")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "获取用户列表")
-    @EasyLog(module = "获取用户列表", operateType = OperateTypeEnum.SELECT)
+    @ApiOperation(value = "分页获取用户列表")
+    @EasyLog(module = "分页获取用户列表", operateType = OperateTypeEnum.SELECT)
     @GetMapping("/page")
     public Result<IPage<AdminUser>> page(@Validated AdminUserQuery query) {
         return Result.success(adminUserService.selectPage(query));

@@ -45,8 +45,8 @@ public class OperationLogController extends BaseController {
 
 
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "获取操作日志列表")
-    @EasyLog(module = "获取操作日志列表", operateType = OperateTypeEnum.SELECT)
+    @ApiOperation(value = "分页获取操作日志列表")
+    @EasyLog(module = "分页获取操作日志列表", operateType = OperateTypeEnum.SELECT)
     @GetMapping("/page")
     public Result<IPage<OperationLog>> page(@Validated OperationLogQuery query) {
         return Result.success(operationLogService.selectPage(query));

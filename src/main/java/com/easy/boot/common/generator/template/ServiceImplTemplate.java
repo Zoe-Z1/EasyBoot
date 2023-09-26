@@ -5,17 +5,21 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.easy.boot.admin.generateColumn.entity.GenerateColumn;
 import com.easy.boot.common.excel.entity.ImportExcelError;
 import com.easy.boot.common.generator.DataMap;
 import com.easy.boot.common.generator.GenConstant;
+import com.easy.boot.common.generator.config.FilterConfig;
 import com.easy.boot.common.generator.config.GlobalConfig;
 import com.easy.boot.common.generator.config.TemplateConfig;
 import com.easy.boot.common.generator.db.MetaTable;
 import com.easy.boot.utils.BeanUtil;
+import com.easy.boot.utils.JsonUtil;
 import lombok.*;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author zoe
@@ -97,6 +101,8 @@ public class ServiceImplTemplate extends AbstractTemplate {
         DataMap buildDataMap = super.buildDataMap(dataMap);
         // 构建类名
         buildClassName(buildDataMap);
+        // 处理实体类属性
+        handleField(buildDataMap);
         // 构建需要导入的包
         buildPkgDataMap(buildDataMap);
         return buildDataMap;
@@ -137,6 +143,21 @@ public class ServiceImplTemplate extends AbstractTemplate {
     }
 
     /**
+     * 处理实体类属性
+     * @param buildDataMap 已构建过的参数
+     */
+    private void handleField(DataMap buildDataMap) {
+        MetaTable metaTable = buildDataMap.getMetaTable();
+        FilterConfig filter = buildDataMap.getFilterConfig();
+        // 不要直接获取处理，会导致其他地方没有数据
+        List<GenerateColumn> columns = JsonUtil.copyList(metaTable.getColumns(), GenerateColumn.class);
+        columns.removeIf(item -> filter.getExcludeField().contains(item.getJavaName()));
+        List<String> keywordFields = columns.stream().map(GenerateColumn::getJavaName).collect(Collectors.toList());
+        buildDataMap.put(GenConstant.DATA_MAP_KEY_KEYWORD_FIELDS, keywordFields);
+        buildDataMap.put(GenConstant.DATA_MAP_KEY_COLUMNS, columns);
+    }
+
+    /**
      * 构建代码生成需要导入的包
      * @param buildDataMap 已构建过的参数
      */
@@ -155,10 +176,8 @@ public class ServiceImplTemplate extends AbstractTemplate {
         pkgs.add(Service.class.getName());
         pkgs.add(Page.class.getName());
         pkgs.add(BeanUtil.class.getName());
-
+        pkgs.add(StrUtil.class.getName());
         pkgs.add(IPage.class.getName());
-
-
         pkgs.add(IPage.class.getName());
         pkgs.add(List.class.getName());
         String pkgName = String.join(".", global.getPackageName(), metaTable.getModuleName());

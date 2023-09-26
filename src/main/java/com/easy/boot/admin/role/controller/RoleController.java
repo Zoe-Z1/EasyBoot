@@ -51,8 +51,8 @@ public class RoleController extends BaseController {
 
 
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "获取角色列表")
-    @EasyLog(module = "获取角色列表", operateType = OperateTypeEnum.SELECT)
+    @ApiOperation(value = "分页获取角色列表")
+    @EasyLog(module = "分页获取角色列表", operateType = OperateTypeEnum.SELECT)
     @GetMapping("/page")
     public Result<IPage<Role>> page(@Validated RoleQuery query) {
         return Result.success(roleService.selectPage(query));

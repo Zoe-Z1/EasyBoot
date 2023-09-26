@@ -16,6 +16,22 @@ public class ${className} extends ${superName}<${mapperName}, ${entityName}> imp
     public IPage<${entityName}> selectPage(${queryName} query) {
         Page<${entityName}> page = new Page<>(query.getPageNum(), query.getPageSize());
         return lambdaQuery()
+<#if (keywordFields?size > 0)>
+                .and(StrUtil.isNotEmpty(query.getKeyword()), keywordQuery -> {
+                    keywordQuery
+    <#list keywordFields as field>
+                    .like(${entityName}::get${field?cap_first}, query.getKeyword())<#if (field_index + 1) == keywordFields?size>;<#else >.or()</#if>
+    </#list>
+                })
+</#if>
+<#list columns as column>
+    <#if column.javaType == 'String'>
+                .like(StrUtil.isNotEmpty(query.get${column.javaName?cap_first}()), ${entityName}::get${column.javaName?cap_first}, query.get${column.javaName?cap_first}())
+    <#else >
+                .eq(StrUtil.isNotEmpty(query.get${column.javaName?cap_first}()), ${entityName}::get${column.javaName?cap_first}, query.get${column.javaName?cap_first}())
+    </#if>
+</#list>
+                .orderByDesc(${entityName}::getCreateTime)
                 .page(page);
     }
 

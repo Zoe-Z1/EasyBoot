@@ -74,7 +74,8 @@ public class AdminUserServiceImpl extends ServiceImpl<AdminUserMapper, AdminUser
         .eq(query.getSex() != null, AdminUser::getSex, query.getSex())
         .eq(query.getStatus() != null, AdminUser::getStatus, query.getStatus())
         .and(StrUtil.isNotEmpty(query.getKeyword()), keywordQuery -> {
-            keywordQuery.like(AdminUser::getUsername, query.getKeyword()).or()
+            keywordQuery
+                    .like(AdminUser::getUsername, query.getKeyword()).or()
                     .like(AdminUser::getName, query.getKeyword()).or()
                     .like(AdminUser::getMobile, query.getKeyword()).or()
                     .like(AdminUser::getEmail, query.getKeyword());
@@ -86,7 +87,7 @@ public class AdminUserServiceImpl extends ServiceImpl<AdminUserMapper, AdminUser
         .between(Objects.nonNull(query.getStartTime()) && Objects.nonNull(query.getEndTime()),
                     BaseEntity::getCreateTime, query.getStartTime(), query.getEndTime())
         .orderByAsc(AdminUser::getSort)
-        .orderByDesc(BaseEntity::getCreateTime)
+        .orderByDesc(AdminUser::getCreateTime)
         .page(page);
     }
 

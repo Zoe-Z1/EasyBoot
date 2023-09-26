@@ -54,8 +54,8 @@ public class SysConfigController extends BaseController {
 
 
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "获取系统配置列表")
-    @EasyLog(module = "获取系统配置列表", operateType = OperateTypeEnum.SELECT)
+    @ApiOperation(value = "分页获取系统配置列表")
+    @EasyLog(module = "分页获取系统配置列表", operateType = OperateTypeEnum.SELECT)
     @GetMapping("/page")
     public Result<IPage<SysConfig>> page(@Validated SysConfigQuery query) {
         return Result.success(sysConfigService.selectPage(query));

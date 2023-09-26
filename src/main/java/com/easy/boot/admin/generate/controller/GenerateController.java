@@ -42,8 +42,8 @@ public class GenerateController extends BaseController {
 
 
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "获取代码生成Table列表")
-    @EasyLog(module = "获取代码生成Table列表", operateType = OperateTypeEnum.SELECT)
+    @ApiOperation(value = "分页获取代码生成Table列表")
+    @EasyLog(module = "分页获取代码生成Table列表", operateType = OperateTypeEnum.SELECT)
     @GetMapping(value = "/page")
     public Result<Page<DatabaseTable>> page(@Validated GenerateTableQuery query) {
         return Result.success(generateService.selectPage(query));

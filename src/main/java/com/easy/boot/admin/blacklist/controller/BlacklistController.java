@@ -40,8 +40,8 @@ public class BlacklistController extends BaseController {
 
 
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "获取黑名单列表")
-    @EasyLog(module = "获取黑名单列表", operateType = OperateTypeEnum.SELECT)
+    @ApiOperation(value = "分页获取黑名单列表")
+    @EasyLog(module = "分页获取黑名单列表", operateType = OperateTypeEnum.SELECT)
     @GetMapping("/page")
     public Result<IPage<Blacklist>> page(@Validated BlacklistQuery query) {
         return Result.success(blacklistService.selectPage(query));

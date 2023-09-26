@@ -50,8 +50,8 @@ public class PostController extends BaseController {
 
 
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "获取岗位列表")
-    @EasyLog(module = "获取岗位列表", operateType = OperateTypeEnum.SELECT)
+    @ApiOperation(value = "分页获取岗位列表")
+    @EasyLog(module = "分页获取岗位列表", operateType = OperateTypeEnum.SELECT)
     @GetMapping("/page")
     public Result<IPage<Post>> page(@Validated PostQuery query) {
         return Result.success(postService.selectPage(query));

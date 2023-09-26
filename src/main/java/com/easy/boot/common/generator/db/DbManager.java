@@ -223,6 +223,7 @@ public class DbManager {
                         .javaType(javaType.getValue())
                         .javaTypePackageName(javaType.getPackageName())
                         .isForm(isPrimaryKey ? 1:0)
+                        .isKeyword(isPrimaryKey ? 1:0)
                         .isAdvancedSearch(isPrimaryKey ? 1:0)
                         .listShow(isPrimaryKey ? 1:0)
                         .detailShow(isPrimaryKey ? 1:0)
