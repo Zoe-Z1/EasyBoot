@@ -5,7 +5,7 @@
       v-drag
       :title="ruleForm.id ? '编辑${remarks!}' : '新增${remarks!}'"
       :visible.sync="dialogVisible"
-      width="25rem"
+      width="30rem"
       @closed="closedDialog"
     >
       <el-form
@@ -44,7 +44,7 @@
           />
           </#if>
           <#if column.optElement == 'select'>
-            <#if column.dictDomainCode??>
+            <#if column.dictDomainCode?? && column.dictDomainCode != "">
           <el-select v-model="ruleForm.${column.javaName}" placeholder="请选择${column.columnRemarks}">
             <el-option
               v-for="(item, index) in dict.${column.javaName}List"
@@ -64,7 +64,7 @@
             </#if>
           </#if>
           <#if column.optElement == 'radio'>
-            <#if column.dictDomainCode??>
+            <#if column.dictDomainCode?? && column.dictDomainCode != "">
           <el-radio
             v-model="ruleForm.${column.javaName}"
             v-for="(item, index) in dict.${column.javaName}List"
@@ -83,7 +83,7 @@
             </#if>
           </#if>
           <#if column.optElement == 'checkbox'>
-            <#if column.dictDomainCode??>
+            <#if column.dictDomainCode?? && column.dictDomainCode != "">
           <el-checkbox-group v-model="ruleForm.${column.javaName}">
             <el-checkbox
               v-for="(item, index) in dict.${column.javaName}List"

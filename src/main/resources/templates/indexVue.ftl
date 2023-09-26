@@ -38,7 +38,7 @@
         }}</span>
       </template>
       <#list columns as column>
-      <#if column.dictDomainCode??>
+      <#if column.dictDomainCode?? && column.dictDomainCode != "">
       <!-- ${column.columnRemarks!} -->
       <template #${column.javaName}="scope">
         <template v-for="(item, index) in ${column.javaName}List">
@@ -72,9 +72,11 @@
       </template>
     </common-table>
     <!-- 新增or编辑组件 -->
-    <add-or-update ref="addOrUpdate" <#if hasDict>:dict="{ <#list columns as column><#if column.dictDomainCode??>${column.javaName}List, </#if></#list> }"</#if> @ok="getList" />
+    <add-or-update ref="addOrUpdate" <#if hasDict>:dict="{ <#list columns as column><#if column.dictDomainCode?? && column.dictDomainCode != "">${column.javaName}List, </#if></#list> }"</#if> @ok="getList" />
+    <#if global.enableImport>
     <!-- 全局导入组件 -->
     <to-channel ref="toChannel" title="${remarks!}导入" @change="getList" />
+    </#if>
   </div>
 </template>
 <script>
@@ -90,7 +92,7 @@
     data() {
       return {
         <#list columns as column>
-        <#if column.dictDomainCode??>
+        <#if column.dictDomainCode?? && column.dictDomainCode != "">
         ${column.javaName}List: [], // ${column.columnRemarks!}数组
         </#if>
         </#list>
@@ -112,8 +114,8 @@
           {
             prop: '${column.javaName}',
             label: '${column.columnRemarks!}',
-            align: 'center'<#if column.dictDomainCode??>,</#if>
-            <#if column.dictDomainCode??>
+            align: 'center'<#if column.dictDomainCode?? && column.dictDomainCode != "">,</#if>
+            <#if column.dictDomainCode?? && column.dictDomainCode != "">
             type: 'slot',
             slotType: '${column.javaName}'
             </#if>
@@ -129,7 +131,87 @@
             align: 'center',
             fixed: 'right'
           }
+        ],
+        <#if !global.enableImport || !global.enableExport>
+        // 顶部表单按钮组
+        options: [{
+          type: 'button',
+          icon: 'el-icon-refresh',
+          handler: 'handlerRefresh',
+          float: 'left',
+          class: 'refreshBtn',
+          text: '刷新'
+        },
+        {
+          type: 'button',
+          icon: 'el-icon-plus',
+          handler: 'handlerSave',
+          float: 'left',
+          btnType: 'primary',
+          permission: 'add',
+          text: '新增'
+        },
+        <#if global.enableImport>
+        {
+          type: 'button',
+          icon: 'el-icon-upload2',
+          handler: 'handlerUpload',
+          float: 'left',
+          permission: 'import',
+          text: '导入'
+        },
+        </#if>
+        <#if global.enableExport>
+        {
+          type: 'button',
+          icon: 'el-icon-download',
+          handler: 'handlerExport',
+          permission: 'download',
+          btnType: 'info',
+          float: 'left',
+          text: '导出'
+        },
+        </#if>
+        {
+          type: 'button',
+          icon: 'el-icon-delete',
+          handler: 'handlerDels',
+          class: 'deleteBtn',
+          permission: 'del',
+          text: '删除',
+          float: 'left'
+        },
+        {
+          type: 'button',
+          handler: 'handlerAdvanced',
+          class: 'refreshBtn',
+          advanced: true,
+          float: 'right',
+          text: '高级查询'
+        },
+        {
+          type: 'button',
+          handler: 'handlerReset',
+          float: 'right',
+          class: 'infoBtn',
+          text: '重置'
+        },
+        {
+          type: 'button',
+          handler: 'handlerQuery',
+          float: 'right',
+          text: '查询',
+          btnType: 'primary'
+        },
+        {
+          type: 'search',
+          bindValue: '',
+          float: 'right',
+          label: 'keyword',
+          placeholder: '输入关键字搜索'
+        }
         ]
+        </#if>
       }
     },
     async created() {
@@ -137,7 +219,7 @@
       // 通过全局方法取数据字典
       </#if>
       <#list columns as column>
-      <#if column.dictDomainCode??>
+      <#if column.dictDomainCode?? && column.dictDomainCode != "">
       this.${column.javaName}List = await this.getDictInfo('${column.dictDomainCode}')
       </#if>
       </#list>

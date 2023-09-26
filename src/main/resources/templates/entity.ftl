@@ -47,7 +47,12 @@ public class ${className} {
         </#if>
     </#if>
     <#if enableExcel?? && column.isExcel == 0>
+        <#if column.dictDomainCode?? && column.dictDomainCode != "" && column.dictDomainCode != "">
+    @EasyExcelSelect(code = "${column.dictDomainCode!}")
+        </#if>
     @ExcelProperty(value = "${column.columnRemarks!}")
+    <#else >
+    @ExcelIgnore
     </#if>
     <#-- 遍历字段 -->
     private ${column.javaType} ${column.javaName};
