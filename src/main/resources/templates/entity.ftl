@@ -46,14 +46,18 @@ public class ${className} {
     @TableField("${column.columnName}")
         </#if>
     </#if>
-    <#if enableExcel?? && column.isExcel == 0>
+<#if enableExcel??>
+    <#if column.isExcel == 0>
         <#if column.dictDomainCode?? && column.dictDomainCode != "" && column.dictDomainCode != "">
     @EasyExcelSelect(code = "${column.dictDomainCode!}")
-        </#if>
+    @ExcelProperty(value = "${column.columnRemarks!?substring(0, column.columnRemarks!?index_of('#'))?trim}")
+        <#else >
     @ExcelProperty(value = "${column.columnRemarks!}")
+        </#if>
     <#else >
     @ExcelIgnore
     </#if>
+</#if>
     <#-- 遍历字段 -->
     private ${column.javaType} ${column.javaName};
 </#list>

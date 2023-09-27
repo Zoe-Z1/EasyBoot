@@ -3,6 +3,8 @@ package com.easy.boot.admin.generateConfig.entity;
 import cn.hutool.core.util.StrUtil;
 import com.easy.boot.utils.JsonUtil;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
@@ -52,6 +54,7 @@ public class GenerateConfigVO {
     @ApiModelProperty("RequestMapping 路径前缀")
     private String requestMappingPrefix;
 
+    @JsonSerialize(using = ToStringSerializer.class)
     @ApiModelProperty("所属菜单")
     private Long parentMenuId;
 

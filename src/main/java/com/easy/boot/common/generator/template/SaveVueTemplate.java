@@ -130,11 +130,6 @@ public class SaveVueTemplate extends AbstractTemplate {
         List<GenerateColumn> columns = JsonUtil.copyList(metaTable.getColumns(), GenerateColumn.class);
         columns.removeIf(item -> filter.getExcludeField().contains(item.getJavaName()));
         String jsName = jsTemplate.getFileName(metaTable.getBeanName()).replace(GenConstant.JS_SUFFIX, "");
-        for (GenerateColumn column : columns) {
-            if (column.getJavaName().equals("os") || column.getJavaName().equals("proCode")) {
-                column.setDictDomainCode(column.getColumnName() + "code");
-            }
-        }
         long count = columns.stream().filter(item -> StrUtil.isNotEmpty(item.getDictDomainCode())).count();
         buildDataMap.put(GenConstant.DATA_MAP_KEY_HAS_DICT, count > 0);
         buildDataMap.put(GenConstant.DATA_MAP_KEY_JS_NAME, jsName);

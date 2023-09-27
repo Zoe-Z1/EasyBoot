@@ -69,7 +69,7 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements IP
     @Override
     public Boolean updateById(PostUpdateDTO dto) {
         Post post = lambdaQuery().eq(Post::getCode, dto.getCode()).one();
-        if (post != null) {
+        if (post != null && !post.getId().equals(dto.getId())) {
             throw new BusinessException("岗位编码已存在");
         }
         Post entity = BeanUtil.copyBean(dto, Post.class);

@@ -14,6 +14,7 @@ import com.easy.boot.admin.generateColumn.service.IGenerateColumnService;
 import com.easy.boot.admin.generateConfig.entity.GenerateConfigQuery;
 import com.easy.boot.admin.generateConfig.entity.GenerateConfigVO;
 import com.easy.boot.admin.generateConfig.service.IGenerateConfigService;
+import com.easy.boot.common.generator.OptElementEnum;
 import com.easy.boot.common.generator.config.FilterConfig;
 import com.easy.boot.common.generator.db.DbManager;
 import com.easy.boot.common.generator.db.convert.ColumnConvertHandler;
@@ -62,12 +63,9 @@ public class GenerateColumnServiceImpl extends ServiceImpl<GenerateColumnMapper,
             if (StrUtil.isNotEmpty(tableConfig.getExcludeTableSuffix())) {
                 tableSuffix = Arrays.stream(tableConfig.getExcludeTableSuffix().split(",")).collect(Collectors.toSet());
             }
-            Set<String> excludeField = CollUtil.newHashSet("createBy","createUsername","createTime","updateBy","updateUsername","updateTime","isDel");
             FilterConfig filterConfig = FilterConfig.builder()
                     .excludeTablePrefix(tablePrefix)
                     .excludeTableSuffix(tableSuffix)
-                    .excludeField(tableSuffix)
-                    .excludeField(excludeField)
                     .build();
             list = DbManager.init(dataSource, filterConfig, ColumnConvertHandler.defaultHandler())
                     .getGenerateColumns(query);
@@ -80,6 +78,9 @@ public class GenerateColumnServiceImpl extends ServiceImpl<GenerateColumnMapper,
         Map<String, DataDictDomain> domainMap = domains.stream().collect(Collectors.toMap(DataDictDomain::getCode, x -> x));
         list.forEach(item -> {
             item.setIsCreate(StrUtil.isNotEmpty(item.getDictDomainCode()) && domainMap.get(item.getDictDomainCode()) == null);
+            if (StrUtil.isNotEmpty(item.getDictDomainCode())) {
+                item.setOptElement(OptElementEnum.SELECT.getValue());
+            }
         });
         return list;
     }
@@ -94,7 +95,7 @@ public class GenerateColumnServiceImpl extends ServiceImpl<GenerateColumnMapper,
         String tableName = list.get(0).getTableName();
         deleteByTableName(tableName);
         list.forEach(item -> {
-            String pkgName = DbColumnTypeEnum.toOptElement(item.getColumnType()).getValue();
+            String pkgName = DbColumnTypeEnum.toJavaType(item.getColumnType()).getPackageName();
             item.setJavaTypePackageName(pkgName);
         });
         return saveBatch(list);

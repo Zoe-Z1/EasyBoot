@@ -11,7 +11,11 @@
         <el-form ref="advancedForm" style="margin-top: 20px;" :model="queryForm" label-width="80px">
           <#list columns as column>
             <#if column.isAdvancedSearch == 0>
+              <#if column.dictDomainCode?? && column.dictDomainCode != "">
+          <el-form-item label="${column.columnRemarks!?substring(0, column.columnRemarks!?index_of('#'))?trim}">
+              <#else >
           <el-form-item label="${column.columnRemarks!}">
+              </#if>
             <#if column.optElement == 'input' || column.optElement == 'textarea' ||  column.optElement == 'inputnumber'>
             <el-input v-model="queryForm.${column.javaName}" clearable />
             </#if>
@@ -145,11 +149,13 @@
           <#if column.listShow == 0>
           {
             prop: '${column.javaName}',
-            label: '${column.columnRemarks!}',
-            align: 'center'<#if column.dictDomainCode?? && column.dictDomainCode != "">,</#if>
+            align: 'center'
             <#if column.dictDomainCode?? && column.dictDomainCode != "">
             type: 'slot',
-            slotType: '${column.javaName}'
+            slotType: '${column.javaName}',
+            label: '${column.columnRemarks!?substring(0, column.columnRemarks!?index_of('#'))?trim}',
+            <#else >
+            label: '${column.columnRemarks!}',
             </#if>
           },
           </#if>

@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.easy.boot.common.base.BaseEntity;
 import com.easy.boot.common.generator.GenConstant;
 import com.easy.boot.utils.JsonUtil;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
@@ -65,6 +67,7 @@ public class GenerateConfig extends BaseEntity {
     @ExcelProperty(value = "RequestMapping 路径前缀	")
     private String requestMappingPrefix;
 
+    @JsonSerialize(using = ToStringSerializer.class)
     @ApiModelProperty("所属菜单")
     @TableField("parent_menu_id")
     @ExcelProperty(value = "所属菜单")

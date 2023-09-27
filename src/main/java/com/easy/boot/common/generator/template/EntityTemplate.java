@@ -207,7 +207,8 @@ public class EntityTemplate extends AbstractTemplate {
         pkgs.add(TableName.class.getName());
         pkgs.add(ApiModel.class.getName());
         pkgs.add(ApiModelProperty.class.getName());
-        pkgs.addAll(metaTable.getColumns().stream().map(GenerateColumn::getJavaTypePackageName).collect(Collectors.toSet()));
+        List<GenerateColumn> columns = (List<GenerateColumn>) buildDataMap.get(GenConstant.DATA_MAP_KEY_COLUMNS);
+        pkgs.addAll(columns.stream().map(GenerateColumn::getJavaTypePackageName).collect(Collectors.toSet()));
         pkgs.add("lombok.*");
         List<String> list = new ArrayList<>(pkgs);
         Collections.sort(list);

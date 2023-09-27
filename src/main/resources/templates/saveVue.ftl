@@ -23,7 +23,11 @@
       >
         <#list columns as column>
         <#if column.isForm == 0>
-        <el-form-item label="${column.columnRemarks}" prop="${column.javaName}">
+          <#if column.dictDomainCode?? && column.dictDomainCode != "">
+        <el-form-item label="${column.columnRemarks!?substring(0, column.columnRemarks!?index_of('#'))?trim}" prop="${column.javaName}">
+          <#else >
+        <el-form-item label="${column.columnRemarks!}" prop="${column.javaName}">
+          </#if>
           <#if column.optElement == 'input'>
           <el-input
             v-model.trim="ruleForm.${column.javaName}"
@@ -45,7 +49,7 @@
           </#if>
           <#if column.optElement == 'select'>
             <#if column.dictDomainCode?? && column.dictDomainCode != "">
-          <el-select v-model="ruleForm.${column.javaName}" placeholder="请选择${column.columnRemarks}">
+          <el-select v-model="ruleForm.${column.javaName}" placeholder="请选择${column.columnRemarks!?substring(0, column.columnRemarks!?index_of('#'))?trim}">
             <el-option
               v-for="(item, index) in dict.${column.javaName}List"
               :key="index"
@@ -148,7 +152,11 @@
         rules: {
           <#list columns as column>
           <#if column.isRequired == 0>
+            <#if column.dictDomainCode?? && column.dictDomainCode != "">
+          ${column.javaName}: [{ required: true, message: '请输入${column.columnRemarks!?substring(0, column.columnRemarks!?index_of('#'))?trim}', trigger: 'change' }],
+            <#else >
           ${column.javaName}: [{ required: true, message: '请输入${column.columnRemarks}', trigger: 'change' }],
+            </#if>
           </#if>
           </#list>
         }
