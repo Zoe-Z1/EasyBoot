@@ -11,7 +11,7 @@
         <el-form ref="advancedForm" style="margin-top: 20px;" :model="queryForm" label-width="80px">
           <#list columns as column>
             <#if column.isAdvancedSearch == 0>
-              <#if column.dictDomainCode?? && column.dictDomainCode != "">
+              <#if column.dictDomainCode?? && column.dictDomainCode != "" && (column.columnRemarks!?index_of('#') > -1)>
           <el-form-item label="${column.columnRemarks!?substring(0, column.columnRemarks!?index_of('#'))?trim}">
               <#else >
           <el-form-item label="${column.columnRemarks!}">
@@ -21,12 +21,20 @@
             </#if>
             <#if column.optElement == 'select' || column.optElement == 'radio' || column.optElement == 'checkbox'>
               <#if column.dictDomainCode?? && column.dictDomainCode != "">
-            <el-select v-model="queryForm.${column.javaName}" placeholder="请选择${column.columnRemarks}">
+                <#if (column.columnRemarks!?index_of('#') > -1)>
+            <el-select v-model="queryForm.${column.javaName}" clearable style="width: 100%;" placeholder="请选择${column.columnRemarks!?substring(0, column.columnRemarks!?index_of('#'))?trim}">
+                <#else >
+            <el-select v-model="queryForm.${column.javaName}" clearable style="width: 100%;" placeholder="请选择${column.columnRemarks!}">
+                </#if>
               <el-option
                 v-for="(item, index) in dict.${column.javaName}List"
                 :key="index"
                 :label="item.label"
+                  <#if column.javaType == 'Integer'>
+                :value="Number(item.code)"
+                  <#else >
                 :value="item.code"
+                  </#if>
               />
             </el-select>
               <#else >
@@ -41,6 +49,7 @@
             </#if>
             <#if column.optElement == 'timepicker' || column.optElement == 'datapicker' || column.optElement == 'datetimepicker'>
             <el-date-picker
+              style="width: 100%;"
               v-model="queryForm.${column.javaName}"
               type="datetimerange"
               placeholder="选择时间"
@@ -79,10 +88,19 @@
       <template #${column.javaName}="scope">
         <template v-for="(item, index) in ${column.javaName}List">
           <el-tag
-            v-if="scope.row.${column.javaName} == item.code"
+            <#if column.javaType == 'Integer'>
+            v-if="scope.row.${column.javaName} === Number(item.code)"
+            <#else >
+            v-if="scope.row.${column.javaName} === item.code"
+            </#if>
             :key="index"
           >{{ item.label }}</el-tag>
         </template>
+      </template>
+      <#elseif column.optElement == 'timepicker' || column.optElement == 'datepicker' || column.optElement == 'datetimepicker' >
+      <!-- ${column.columnRemarks!} -->
+      <template #${column.javaName}="scope">
+        {{ scope.row.createTime | formatTime }}
       </template>
       </#if>
       </#list>
@@ -149,13 +167,17 @@
           <#if column.listShow == 0>
           {
             prop: '${column.javaName}',
-            align: 'center'
-            <#if column.dictDomainCode?? && column.dictDomainCode != "">
+            align: 'center',
+            <#if (column.dictDomainCode?? && column.dictDomainCode != "") || column.optElement == 'timepicker' || column.optElement == 'datepicker' || column.optElement == 'datetimepicker'>
             type: 'slot',
             slotType: '${column.javaName}',
-            label: '${column.columnRemarks!?substring(0, column.columnRemarks!?index_of('#'))?trim}',
+              <#if (column.columnRemarks!?index_of('#') > -1)>
+            label: '${column.columnRemarks!?substring(0, column.columnRemarks!?index_of('#'))?trim}'
+              <#else >
+            label: '${column.columnRemarks!}'
+              </#if>
             <#else >
-            label: '${column.columnRemarks!}',
+            label: '${column.columnRemarks!}'
             </#if>
           },
           </#if>

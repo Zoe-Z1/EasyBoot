@@ -5,14 +5,14 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.easy.boot.admin.post.service.IPostService;
-import com.easy.boot.admin.userPost.entity.UserPost;
-import com.easy.boot.admin.userPost.service.IUserPostService;
 import com.easy.boot.admin.post.entity.Post;
 import com.easy.boot.admin.post.entity.PostCreateDTO;
 import com.easy.boot.admin.post.entity.PostQuery;
 import com.easy.boot.admin.post.entity.PostUpdateDTO;
 import com.easy.boot.admin.post.mapper.PostMapper;
+import com.easy.boot.admin.post.service.IPostService;
+import com.easy.boot.admin.userPost.entity.UserPost;
+import com.easy.boot.admin.userPost.service.IUserPostService;
 import com.easy.boot.common.base.BaseEntity;
 import com.easy.boot.common.excel.entity.ImportExcelError;
 import com.easy.boot.exception.BusinessException;
@@ -41,8 +41,13 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements IP
     public IPage<Post> selectPage(PostQuery query) {
         Page<Post> page = new Page<>(query.getPageNum(), query.getPageSize());
         return lambdaQuery()
+                .and(StrUtil.isNotEmpty(query.getKeyword()), keywordQuery -> {
+                    keywordQuery
+                            .like(Post::getCode, query.getKeyword()).or()
+                            .like(Post::getName, query.getKeyword());
+                })
                 .like(StrUtil.isNotEmpty(query.getCode()), Post::getCode, query.getCode())
-                .like(StrUtil.isNotEmpty(query.getName()), Post::getCode, query.getName())
+                .like(StrUtil.isNotEmpty(query.getName()), Post::getName, query.getName())
                 .eq(Objects.nonNull(query.getStatus()), Post::getStatus, query.getStatus())
                 .between(Objects.nonNull(query.getStartTime()) && Objects.nonNull(query.getEndTime()),
                         BaseEntity::getCreateTime, query.getStartTime(), query.getEndTime())

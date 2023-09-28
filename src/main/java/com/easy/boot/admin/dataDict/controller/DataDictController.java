@@ -15,6 +15,7 @@ import com.easy.boot.common.excel.entity.ImportExcelError;
 import com.easy.boot.common.excel.entity.ImportVO;
 import com.easy.boot.common.excel.entity.UploadDTO;
 import com.easy.boot.common.excel.handler.ExportExcelErrorCellWriteHandler;
+import com.easy.boot.common.excel.handler.ExportExcelSelectCellWriteHandler;
 import com.easy.boot.common.log.EasyLog;
 import com.easy.boot.exception.BusinessException;
 import com.easy.boot.utils.BeanUtil;
@@ -157,7 +158,9 @@ public class DataDictController extends BaseController {
     public void exportExcel(@Validated @RequestBody DataDictQuery query) throws IOException {
         query.setPageNum(1L);
         query.setPageSize(maxLimit);
-        ExcelWriter build = EasyExcel.write(response.getOutputStream(), DataDictExcelDO.class).build();
+        ExcelWriter build = EasyExcel.write(response.getOutputStream(), DataDictExcelDO.class)
+                .registerWriteHandler(new ExportExcelSelectCellWriteHandler(DataDictExcelDO.class))
+                .build();
         WriteSheet writeSheet = EasyExcel.writerSheet("数据字典信息列表").build();
         while (true) {
             IPage<DataDict> page = dataDictService.selectPage(query);
@@ -186,6 +189,7 @@ public class DataDictController extends BaseController {
     @PostMapping("/download")
     public void downloadTemplate() throws IOException {
         EasyExcel.write(response.getOutputStream(), DataDict.class)
+                .registerWriteHandler(new ExportExcelSelectCellWriteHandler(DataDict.class))
                 .excludeColumnFieldNames(Collections.singletonList("createTime"))
                 .sheet("数据字典导入模板")
                 .doWrite(new ArrayList<>());

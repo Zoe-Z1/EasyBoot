@@ -165,7 +165,7 @@ public class CreateDTOTemplate extends AbstractTemplate {
             Set<String> superFieldSet = Arrays.stream(superFields).map(java.lang.reflect.Field::getName).collect(Collectors.toSet());
             columns.removeIf(item -> superFieldSet.contains(item.getJavaName()));
         }
-        buildDataMap.put(GenConstant.DATA_MAP_KEY_IS_ENTITY, false);
+        buildDataMap.put(GenConstant.DATA_MAP_KEY_ENTITY_TYPE, "createDTO");
         buildDataMap.put(GenConstant.DATA_MAP_KEY_COLUMNS, columns);
         buildDataMap.put(GenConstant.DATA_MAP_KEY_ENABLE_TABLE_FIELD, getEnableTableField());
     }
@@ -188,6 +188,7 @@ public class CreateDTOTemplate extends AbstractTemplate {
         pkgs.add(ApiModelProperty.class.getName());
         pkgs.addAll(metaTable.getColumns().stream().map(GenerateColumn::getJavaTypePackageName).collect(Collectors.toSet()));
         pkgs.add("lombok.*");
+        pkgs.add("javax.validation.constraints.*");
         List<String> list = new ArrayList<>(pkgs);
         Collections.sort(list);
         buildDataMap.put(GenConstant.DATA_MAP_KEY_PKGS, list);

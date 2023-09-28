@@ -14,6 +14,7 @@ import com.easy.boot.common.base.BaseController;
 import com.easy.boot.common.base.Result;
 import com.easy.boot.common.excel.entity.ImportVO;
 import com.easy.boot.common.excel.entity.UploadDTO;
+import com.easy.boot.common.excel.handler.ExportExcelSelectCellWriteHandler;
 import com.easy.boot.common.log.EasyLog;
 import com.easy.boot.utils.JsonUtil;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
@@ -113,7 +114,9 @@ public class OperationLogController extends BaseController {
     public void exportExcel(@Validated @RequestBody OperationLogQuery query) throws IOException {
         query.setPageNum(1L);
         query.setPageSize(maxLimit);
-        ExcelWriter build = EasyExcel.write(response.getOutputStream(), OperationLog.class).build();
+        ExcelWriter build = EasyExcel.write(response.getOutputStream(), OperationLog.class)
+                .registerWriteHandler(new ExportExcelSelectCellWriteHandler(OperationLog.class))
+                .build();
         WriteSheet writeSheet = EasyExcel.writerSheet("操作日志信息列表").build();
         while (true) {
             IPage<OperationLog> page = operationLogService.selectPage(query);

@@ -14,6 +14,7 @@ import com.easy.boot.common.excel.entity.ImportExcelError;
 import com.easy.boot.common.excel.entity.ImportVO;
 import com.easy.boot.common.excel.entity.UploadDTO;
 import com.easy.boot.common.excel.handler.ExportExcelErrorCellWriteHandler;
+import com.easy.boot.common.excel.handler.ExportExcelSelectCellWriteHandler;
 import com.easy.boot.common.log.EasyLog;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.annotations.Api;
@@ -145,7 +146,9 @@ public class RoleController extends BaseController {
     public void exportExcel(@Validated @RequestBody RoleQuery query) throws IOException {
         query.setPageNum(1L);
         query.setPageSize(maxLimit);
-        ExcelWriter build = EasyExcel.write(response.getOutputStream(), Role.class).build();
+        ExcelWriter build = EasyExcel.write(response.getOutputStream(), Role.class)
+                .registerWriteHandler(new ExportExcelSelectCellWriteHandler(Role.class))
+                .build();
         WriteSheet writeSheet = EasyExcel.writerSheet("角色信息列表").build();
         while (true) {
             IPage<Role> page = roleService.selectPage(query);
@@ -164,6 +167,7 @@ public class RoleController extends BaseController {
     @PostMapping("/download")
     public void downloadTemplate() throws IOException {
         EasyExcel.write(response.getOutputStream(), Role.class)
+                .registerWriteHandler(new ExportExcelSelectCellWriteHandler(Role.class))
                 .excludeColumnFieldNames(Collections.singletonList("createTime"))
                 .sheet("角色导入模板")
                 .doWrite(new ArrayList<>());

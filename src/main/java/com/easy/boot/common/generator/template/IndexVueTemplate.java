@@ -121,7 +121,6 @@ public class IndexVueTemplate extends AbstractTemplate {
      * @param buildDataMap 已构建过的参数
      */
     private void handleField(DataMap buildDataMap) {
-        GlobalConfig global = buildDataMap.getGlobalConfig();
         FilterConfig filter = buildDataMap.getFilterConfig();
         MetaTable metaTable = buildDataMap.getMetaTable();
         JsTemplate jsTemplate = buildDataMap.getTemplateConfig().getJs();
@@ -133,9 +132,6 @@ public class IndexVueTemplate extends AbstractTemplate {
         buildDataMap.put(GenConstant.DATA_MAP_KEY_HAS_DICT, count > 0);
         buildDataMap.put(GenConstant.DATA_MAP_KEY_JS_NAME, jsName);
         buildDataMap.put(GenConstant.DATA_MAP_KEY_COLUMNS, columns);
-        if (global.getEnableExport() || global.getEnableImport()) {
-            buildDataMap.put(GenConstant.DATA_MAP_KEY_ENABLE_EXCEL, true);
-        }
     }
 
 }

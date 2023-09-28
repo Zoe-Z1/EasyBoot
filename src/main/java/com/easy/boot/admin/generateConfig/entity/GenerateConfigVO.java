@@ -1,6 +1,8 @@
 package com.easy.boot.admin.generateConfig.entity;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
+import com.easy.boot.utils.BeanUtil;
 import com.easy.boot.utils.JsonUtil;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -10,11 +12,13 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 import lombok.experimental.Accessors;
 import lombok.experimental.SuperBuilder;
+import org.apache.tomcat.util.buf.StringUtils;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 
 /**
@@ -61,7 +65,7 @@ public class GenerateConfigVO {
     @ApiModelProperty("生成代码路径")
     private String outputPath;
 
-    @ApiModelProperty("生成完代码后是否打开目录 #0：打开，1：不打开")
+    @ApiModelProperty("生成完代码后是否打开目录	0：打开 1：不打开")
     private Integer isOpen;
 
     @ApiModelProperty("作者")
@@ -85,14 +89,14 @@ public class GenerateConfigVO {
     @ApiModelProperty("生成模板json配置转list")
     private List<Map<String, Object>> templateList;
 
-    @ApiModelProperty("过滤表前缀 多个用,分隔")
-    private String excludeTablePrefix;
+    @ApiModelProperty("过滤表前缀")
+    private Set<String> excludeTablePrefix;
 
-    @ApiModelProperty("过滤表后缀 多个用,分隔")
-    private String excludeTableSuffix;
+    @ApiModelProperty("过滤表后缀")
+    private Set<String> excludeTableSuffix;
 
-    @ApiModelProperty("过滤实体类属性 多个用,分隔")
-    private String excludeField;
+    @ApiModelProperty("过滤实体类属性")
+    private Set<String> excludeField;
 
     @ApiModelProperty("备注")
     private String remarks;
@@ -112,5 +116,36 @@ public class GenerateConfigVO {
             }
         }
         return templateList;
+    }
+
+    public static GenerateConfig toGenerateConfig(GenerateConfigVO vo) {
+        GenerateConfig generateConfig = BeanUtil.copyBean(vo, GenerateConfig.class);
+        if (CollUtil.isNotEmpty(vo.getExcludeTablePrefix())) {
+            generateConfig.setExcludeTablePrefix(StringUtils.join(vo.getExcludeTablePrefix(), ','));
+        }
+        if (CollUtil.isNotEmpty(vo.getExcludeTableSuffix())) {
+            generateConfig.setExcludeTableSuffix(StringUtils.join(vo.getExcludeTableSuffix(), ','));
+        }
+        if (CollUtil.isNotEmpty(vo.getExcludeField())) {
+            generateConfig.setExcludeField(StringUtils.join(vo.getExcludeField(), ','));
+        }
+        return generateConfig;
+    }
+
+    public static GenerateConfigVO toGenerateConfigVO(GenerateConfig generateConfig) {
+        if (generateConfig == null) {
+            return null;
+        }
+        GenerateConfigVO vo = BeanUtil.copyBean(generateConfig, GenerateConfigVO.class);
+        if (StrUtil.isNotEmpty(generateConfig.getExcludeTablePrefix())) {
+            vo.setExcludeTablePrefix(CollUtil.newHashSet(generateConfig.getExcludeTablePrefix().split(",")));
+        }
+        if (StrUtil.isNotEmpty(generateConfig.getExcludeTableSuffix())) {
+            vo.setExcludeTableSuffix(CollUtil.newHashSet(generateConfig.getExcludeTableSuffix().split(",")));
+        }
+        if (StrUtil.isNotEmpty(generateConfig.getExcludeField())) {
+            vo.setExcludeField(CollUtil.newHashSet(generateConfig.getExcludeField().split(",")));
+        }
+        return vo;
     }
 }

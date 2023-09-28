@@ -119,7 +119,7 @@ public class GenConstant {
 
     public static final String DATA_MAP_KEY_TABLE = "table";
 
-    public static final String DATA_MAP_KEY_IS_ENTITY = "isEntity";
+    public static final String DATA_MAP_KEY_ENTITY_TYPE = "entityType";
 
     public static final String DATA_MAP_KEY_COLUMNS = "columns";
 

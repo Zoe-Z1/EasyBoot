@@ -55,20 +55,16 @@ public class GenerateColumnServiceImpl extends ServiceImpl<GenerateColumnMapper,
         if (CollUtil.isEmpty(list)) {
             GenerateConfigQuery generateConfigQuery = new GenerateConfigQuery(query.getTableName());
             GenerateConfigVO tableConfig = generateConfigService.getTableConfig(generateConfigQuery);
-            Set<String> tablePrefix = new HashSet<>();
-            Set<String> tableSuffix = new HashSet<>();
-            if (StrUtil.isNotEmpty(tableConfig.getExcludeTablePrefix())) {
-                tablePrefix = Arrays.stream(tableConfig.getExcludeTablePrefix().split(",")).collect(Collectors.toSet());
-            }
-            if (StrUtil.isNotEmpty(tableConfig.getExcludeTableSuffix())) {
-                tableSuffix = Arrays.stream(tableConfig.getExcludeTableSuffix().split(",")).collect(Collectors.toSet());
-            }
-            FilterConfig filterConfig = FilterConfig.builder()
-                    .excludeTablePrefix(tablePrefix)
-                    .excludeTableSuffix(tableSuffix)
-                    .build();
+            FilterConfig filterConfig = new FilterConfig();
             list = DbManager.init(dataSource, filterConfig, ColumnConvertHandler.defaultHandler())
                     .getGenerateColumns(query);
+            // 创建时间特化，默认给定一个日期时间选择框
+            String createTime = "createTime";
+            list.forEach(item -> {
+                if (createTime.equals(item.getJavaName())) {
+                    item.setOptElement(OptElementEnum.DATETIMEPICKER.getValue());
+                }
+            });
         }
         List<String> domainCodes = list.stream()
                 .map(GenerateColumn::getDictDomainCode)

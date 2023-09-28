@@ -47,6 +47,9 @@ public class DbManager {
      */
     private ColumnConvertHandler columnConvertHandler;
 
+    /**
+     * 字段类型转换处理器
+     */
     private OptElementConvertHandler optElementConvertHandler;
 
     private DbManager(Connection connection, FilterConfig filterConfig, ColumnConvertHandler columnConvertHandler) {
@@ -254,25 +257,21 @@ public class DbManager {
      * @param tableName 表名
      * @return
      */
-    public static String filterTableName(String tableName, String excludeTablePrefix, String excludeTableSuffix) {
-        Set<String> excludeTablePrefixSet = new HashSet<>();
-        Set<String> excludeTableSuffixSet = new HashSet<>();
-        if (StrUtil.isNotEmpty(excludeTablePrefix)) {
-            excludeTablePrefixSet = Arrays.stream(excludeTablePrefix.split(",")).collect(Collectors.toSet());
-        }
-        if (StrUtil.isNotEmpty(excludeTableSuffix)) {
-            excludeTableSuffixSet = Arrays.stream(excludeTableSuffix.split(",")).collect(Collectors.toSet());
-        }
-        for (String tablePrefix : excludeTablePrefixSet) {
-            if (tableName.startsWith(tablePrefix)) {
-                tableName = tableName.replace(tablePrefix, "");
-                break;
+    public static String filterTableName(String tableName,  Set<String> excludeTablePrefixSet, Set<String> excludeTableSuffixSet) {
+        if (CollUtil.isNotEmpty(excludeTablePrefixSet)) {
+            for (String tablePrefix : excludeTablePrefixSet) {
+                if (tableName.startsWith(tablePrefix)) {
+                    tableName = tableName.replace(tablePrefix, "");
+                    break;
+                }
             }
         }
-        for (String tableSuffix : excludeTableSuffixSet) {
-            if (tableName.endsWith(tableSuffix)) {
-                tableName = tableName.replace(tableSuffix, "");
-                break;
+        if (CollUtil.isNotEmpty(excludeTableSuffixSet)) {
+            for (String tableSuffix : excludeTableSuffixSet) {
+                if (tableName.endsWith(tableSuffix)) {
+                    tableName = tableName.replace(tableSuffix, "");
+                    break;
+                }
             }
         }
         if (StrUtil.isEmpty(tableName)) {

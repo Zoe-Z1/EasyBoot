@@ -11,7 +11,6 @@ import com.easy.boot.utils.JsonUtil;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
-import lombok.experimental.SuperBuilder;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -166,7 +165,7 @@ public class VOTemplate extends AbstractTemplate {
             Set<String> superFieldSet = Arrays.stream(superFields).map(java.lang.reflect.Field::getName).collect(Collectors.toSet());
             columns.removeIf(item -> superFieldSet.contains(item.getJavaName()));
         }
-        buildDataMap.put(GenConstant.DATA_MAP_KEY_IS_ENTITY, false);
+        buildDataMap.put(GenConstant.DATA_MAP_KEY_ENTITY_TYPE, "vo");
         buildDataMap.put(GenConstant.DATA_MAP_KEY_COLUMNS, columns);
         buildDataMap.put(GenConstant.DATA_MAP_KEY_ENABLE_TABLE_FIELD, getEnableTableField());
     }

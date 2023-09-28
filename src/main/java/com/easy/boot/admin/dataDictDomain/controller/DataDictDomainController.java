@@ -16,6 +16,7 @@ import com.easy.boot.common.excel.entity.ImportExcelError;
 import com.easy.boot.common.excel.entity.ImportVO;
 import com.easy.boot.common.excel.entity.UploadDTO;
 import com.easy.boot.common.excel.handler.ExportExcelErrorCellWriteHandler;
+import com.easy.boot.common.excel.handler.ExportExcelSelectCellWriteHandler;
 import com.easy.boot.common.log.EasyLog;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.annotations.Api;
@@ -135,7 +136,9 @@ public class DataDictDomainController extends BaseController {
     public void exportExcel(@Validated @RequestBody DataDictDomainQuery query) throws IOException {
         query.setPageNum(1L);
         query.setPageSize(maxLimit);
-        ExcelWriter build = EasyExcel.write(response.getOutputStream(), DataDictDomain.class).build();
+        ExcelWriter build = EasyExcel.write(response.getOutputStream(), DataDictDomain.class)
+                .registerWriteHandler(new ExportExcelSelectCellWriteHandler(DataDictDomain.class))
+                .build();
         WriteSheet writeSheet = EasyExcel.writerSheet("数据字典域信息列表").build();
         while (true) {
             IPage<DataDictDomain> page = dataDictDomainService.selectPage(query);
@@ -154,6 +157,7 @@ public class DataDictDomainController extends BaseController {
     @PostMapping("/download")
     public void downloadTemplate() throws IOException {
         EasyExcel.write(response.getOutputStream(), DataDictDomain.class)
+                .registerWriteHandler(new ExportExcelSelectCellWriteHandler(DataDictDomain.class))
                 .excludeColumnFieldNames(Collections.singletonList("createTime"))
                 .sheet("数据字典域导入模板")
                 .doWrite(new ArrayList<>());

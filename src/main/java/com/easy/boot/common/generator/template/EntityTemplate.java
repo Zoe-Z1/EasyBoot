@@ -176,7 +176,7 @@ public class EntityTemplate extends AbstractTemplate {
             Set<String> superFieldSet = Arrays.stream(superFields).map(java.lang.reflect.Field::getName).collect(Collectors.toSet());
             columns.removeIf(item -> superFieldSet.contains(item.getJavaName()));
         }
-        buildDataMap.put(GenConstant.DATA_MAP_KEY_IS_ENTITY, true);
+        buildDataMap.put(GenConstant.DATA_MAP_KEY_ENTITY_TYPE, "entity");
         buildDataMap.put(GenConstant.DATA_MAP_KEY_COLUMNS, columns);
         buildDataMap.put(GenConstant.DATA_MAP_KEY_ENABLE_TABLE_FIELD, getEnableTableField());
         if (global.getEnableExport() || global.getEnableImport()) {

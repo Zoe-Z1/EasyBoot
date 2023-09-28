@@ -10,7 +10,7 @@ import ${pkg};
  * @date ${date}
  * @description ${remarks!}实体
  */
-<#if isEntity>
+<#if entityType == 'entity'>
 @TableName("${table.name}")
 </#if>
 @ApiModel(value = "${remarks!}实体")
@@ -48,14 +48,33 @@ public class ${className} {
     </#if>
 <#if enableExcel??>
     <#if column.isExcel == 0>
-        <#if column.dictDomainCode?? && column.dictDomainCode != "" && column.dictDomainCode != "">
+        <#if column.dictDomainCode?? && column.dictDomainCode != "">
     @EasyExcelSelect(code = "${column.dictDomainCode!}")
+            <#if (column.columnRemarks!?index_of('#') > -1)>
     @ExcelProperty(value = "${column.columnRemarks!?substring(0, column.columnRemarks!?index_of('#'))?trim}")
+            <#else >
+    @ExcelProperty(value = "${column.columnRemarks!}")
+            </#if>
         <#else >
     @ExcelProperty(value = "${column.columnRemarks!}")
         </#if>
     <#else >
     @ExcelIgnore
+    </#if>
+</#if>
+<#if (entityType == 'createDTO' || entityType == 'updateDTO') && (column.isRequired == 0)>
+    <#if column.javaType == 'String'>
+        <#if column.dictDomainCode?? && column.dictDomainCode != "" && (column.columnRemarks!?index_of('#') > -1)>
+    @NotBlank(message = "${column.columnRemarks!?substring(0, column.columnRemarks!?index_of('#'))?trim}不能为空")
+        <#else>
+    @NotBlank(message = "${column.columnRemarks!}不能为空")
+        </#if>
+    <#else >
+        <#if column.dictDomainCode?? && column.dictDomainCode != "" && (column.columnRemarks!?index_of('#') > -1)>
+    @NotNull(message = "${column.columnRemarks!?substring(0, column.columnRemarks!?index_of('#'))?trim}不能为空")
+        <#else>
+    @NotNull(message = "${column.columnRemarks!}不能为空")
+        </#if>
     </#if>
 </#if>
     <#-- 遍历字段 -->

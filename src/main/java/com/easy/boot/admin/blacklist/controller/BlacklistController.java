@@ -12,6 +12,7 @@ import com.easy.boot.admin.blacklist.service.IBlacklistService;
 import com.easy.boot.admin.operationLog.enums.OperateTypeEnum;
 import com.easy.boot.common.base.BaseController;
 import com.easy.boot.common.base.Result;
+import com.easy.boot.common.excel.handler.ExportExcelSelectCellWriteHandler;
 import com.easy.boot.common.log.EasyLog;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.annotations.Api;
@@ -94,7 +95,9 @@ public class BlacklistController extends BaseController {
     public void exportExcel(@Validated @RequestBody BlacklistQuery query) throws IOException {
         query.setPageNum(1L);
         query.setPageSize(maxLimit);
-        ExcelWriter build = EasyExcel.write(response.getOutputStream(), Blacklist.class).build();
+        ExcelWriter build = EasyExcel.write(response.getOutputStream(), Blacklist.class)
+                .registerWriteHandler(new ExportExcelSelectCellWriteHandler(Blacklist.class))
+                .build();
         WriteSheet writeSheet = EasyExcel.writerSheet("黑名单信息列表").build();
         while (true) {
             IPage<Blacklist> page = blacklistService.selectPage(query);

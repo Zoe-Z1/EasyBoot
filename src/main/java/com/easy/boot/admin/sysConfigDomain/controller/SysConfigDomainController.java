@@ -16,6 +16,7 @@ import com.easy.boot.common.excel.entity.ImportExcelError;
 import com.easy.boot.common.excel.entity.ImportVO;
 import com.easy.boot.common.excel.entity.UploadDTO;
 import com.easy.boot.common.excel.handler.ExportExcelErrorCellWriteHandler;
+import com.easy.boot.common.excel.handler.ExportExcelSelectCellWriteHandler;
 import com.easy.boot.common.log.EasyLog;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.annotations.Api;
@@ -127,7 +128,9 @@ public class SysConfigDomainController extends BaseController {
     public void exportExcel(@Validated @RequestBody SysConfigDomainQuery query) throws IOException {
         query.setPageNum(1L);
         query.setPageSize(maxLimit);
-        ExcelWriter build = EasyExcel.write(response.getOutputStream(), SysConfigDomain.class).build();
+        ExcelWriter build = EasyExcel.write(response.getOutputStream(), SysConfigDomain.class)
+                .registerWriteHandler(new ExportExcelSelectCellWriteHandler(SysConfigDomain.class))
+                .build();
         WriteSheet writeSheet = EasyExcel.writerSheet("系统配置域信息列表").build();
         while (true) {
             IPage<SysConfigDomain> page = sysConfigDomainService.selectPage(query);
@@ -146,6 +149,7 @@ public class SysConfigDomainController extends BaseController {
     @PostMapping("/download")
     public void downloadTemplate() throws IOException {
         EasyExcel.write(response.getOutputStream(), SysConfigDomain.class)
+                .registerWriteHandler(new ExportExcelSelectCellWriteHandler(SysConfigDomain.class))
                 .excludeColumnFieldNames(Collections.singletonList("createTime"))
                 .sheet("系统配置域导入模板")
                 .doWrite(new ArrayList<>());

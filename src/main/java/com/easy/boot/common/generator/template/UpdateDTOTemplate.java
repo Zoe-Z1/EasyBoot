@@ -14,7 +14,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -192,7 +191,7 @@ public class UpdateDTOTemplate extends AbstractTemplate {
                 columns.removeIf(item -> superFieldSet.contains(item.getJavaName()));
             }
         }
-        buildDataMap.put(GenConstant.DATA_MAP_KEY_IS_ENTITY, false);
+        buildDataMap.put(GenConstant.DATA_MAP_KEY_ENTITY_TYPE, "updateDTO");
         buildDataMap.put(GenConstant.DATA_MAP_KEY_COLUMNS, columns);
         buildDataMap.put(GenConstant.DATA_MAP_KEY_ENABLE_TABLE_FIELD, getEnableTableField());
     }
@@ -215,6 +214,7 @@ public class UpdateDTOTemplate extends AbstractTemplate {
         pkgs.add(ApiModelProperty.class.getName());
         pkgs.addAll(metaTable.getColumns().stream().map(GenerateColumn::getJavaTypePackageName).collect(Collectors.toSet()));
         pkgs.add("lombok.*");
+        pkgs.add("javax.validation.constraints.*");
         List<String> list = new ArrayList<>(pkgs);
         Collections.sort(list);
         buildDataMap.put(GenConstant.DATA_MAP_KEY_PKGS, list);

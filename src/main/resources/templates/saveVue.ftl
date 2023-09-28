@@ -23,7 +23,7 @@
       >
         <#list columns as column>
         <#if column.isForm == 0>
-          <#if column.dictDomainCode?? && column.dictDomainCode != "">
+          <#if column.dictDomainCode?? && column.dictDomainCode != "" && (column.columnRemarks!?index_of('#') > -1)>
         <el-form-item label="${column.columnRemarks!?substring(0, column.columnRemarks!?index_of('#'))?trim}" prop="${column.javaName}">
           <#else >
         <el-form-item label="${column.columnRemarks!}" prop="${column.javaName}">
@@ -48,7 +48,7 @@
           />
           </#if>
           <#if column.optElement == 'select'>
-            <#if column.dictDomainCode?? && column.dictDomainCode != "">
+            <#if column.dictDomainCode?? && column.dictDomainCode != "" && (column.columnRemarks!?index_of('#') > -1)>
           <el-select v-model="ruleForm.${column.javaName}" placeholder="请选择${column.columnRemarks!?substring(0, column.columnRemarks!?index_of('#'))?trim}">
             <el-option
               v-for="(item, index) in dict.${column.javaName}List"
@@ -128,6 +128,7 @@
           <#if column.optElement == 'inputnumber'>
           <el-input-number
             v-model="ruleForm.${column.javaName}"
+            style="width: 100%;"
           />
           </#if>
         </el-form-item>
@@ -152,7 +153,7 @@
         rules: {
           <#list columns as column>
           <#if column.isRequired == 0>
-            <#if column.dictDomainCode?? && column.dictDomainCode != "">
+            <#if column.dictDomainCode?? && column.dictDomainCode != "" && (column.columnRemarks!?index_of('#') > -1)>
           ${column.javaName}: [{ required: true, message: '请输入${column.columnRemarks!?substring(0, column.columnRemarks!?index_of('#'))?trim}', trigger: 'change' }],
             <#else >
           ${column.javaName}: [{ required: true, message: '请输入${column.columnRemarks}', trigger: 'change' }],

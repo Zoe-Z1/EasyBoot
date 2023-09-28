@@ -1,9 +1,15 @@
 package com.easy.boot.admin.generateConfig.entity;
 
+import cn.hutool.core.collection.CollUtil;
+import com.easy.boot.utils.BeanUtil;
+import com.easy.boot.utils.JsonUtil;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.apache.tomcat.util.buf.StringUtils;
+
+import java.util.Set;
 
 
 /**
@@ -56,13 +62,28 @@ public class GenerateConfigGlobalUpdateDTO {
     @ApiModelProperty("生成模板配置")
     private GenerateTemplate templateJson;
 
-    @ApiModelProperty("过滤表前缀 多个用,分隔")
-    private String excludeTablePrefix;
+    @ApiModelProperty("过滤表前缀")
+    private Set<String> excludeTablePrefix;
 
-    @ApiModelProperty("过滤表后缀 多个用,分隔")
-    private String excludeTableSuffix;
+    @ApiModelProperty("过滤表后缀")
+    private Set<String> excludeTableSuffix;
 
-    @ApiModelProperty("过滤实体类属性 多个用,分隔")
-    private String excludeField;
+    @ApiModelProperty("过滤实体类属性")
+    private Set<String> excludeField;
+
+    public static GenerateConfig toGenerateConfig(GenerateConfigGlobalUpdateDTO dto) {
+        GenerateConfig generateConfig = BeanUtil.copyBean(dto, GenerateConfig.class);
+        generateConfig.setTemplateJson(JsonUtil.toJsonStr(dto.getTemplateJson()));
+        if (CollUtil.isNotEmpty(dto.getExcludeTablePrefix())) {
+            generateConfig.setExcludeTablePrefix(StringUtils.join(dto.getExcludeTablePrefix(), ','));
+        }
+        if (CollUtil.isNotEmpty(dto.getExcludeTableSuffix())) {
+            generateConfig.setExcludeTableSuffix(StringUtils.join(dto.getExcludeTableSuffix(), ','));
+        }
+        if (CollUtil.isNotEmpty(dto.getExcludeField())) {
+            generateConfig.setExcludeField(StringUtils.join(dto.getExcludeField(), ','));
+        }
+        return generateConfig;
+    }
 
 }

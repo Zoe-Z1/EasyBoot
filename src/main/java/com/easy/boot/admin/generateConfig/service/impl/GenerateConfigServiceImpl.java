@@ -12,8 +12,6 @@ import com.easy.boot.admin.generateConfig.service.IGenerateConfigService;
 import com.easy.boot.common.generator.db.DbManager;
 import com.easy.boot.common.redisson.EasyLock;
 import com.easy.boot.exception.GeneratorException;
-import com.easy.boot.utils.BeanUtil;
-import com.easy.boot.utils.JsonUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,7 +36,7 @@ public class GenerateConfigServiceImpl extends ServiceImpl<GenerateConfigMapper,
             generateConfig = GenerateConfig.defaultGlobalBuild();
             save(generateConfig);
         }
-        GenerateConfigVO vo = BeanUtil.copyBean(generateConfig, GenerateConfigVO.class);
+        GenerateConfigVO vo = GenerateConfigVO.toGenerateConfigVO(generateConfig);
         return vo;
     }
 
@@ -54,7 +52,7 @@ public class GenerateConfigServiceImpl extends ServiceImpl<GenerateConfigMapper,
                 .eq(GenerateConfig::getType, 2)
                 .eq(GenerateConfig::getTableName, query.getTableName())
                 .one();
-        GenerateConfigVO vo = BeanUtil.copyBean(generateConfig, GenerateConfigVO.class);
+        GenerateConfigVO vo = GenerateConfigVO.toGenerateConfigVO(generateConfig);
         if (generateConfig == null) {
             vo = getGlobalConfig();
             String filterName = DbManager.filterTableName(databaseTable.getTableName(),
@@ -71,9 +69,8 @@ public class GenerateConfigServiceImpl extends ServiceImpl<GenerateConfigMapper,
     @Transactional(rollbackFor = Exception.class)
     @Override
     public Boolean updateGlobalConfig(GenerateConfigGlobalUpdateDTO dto) {
-        GenerateConfig generateConfig = BeanUtil.copyBean(dto, GenerateConfig.class);
-        generateConfig.setTemplateJson(JsonUtil.toJsonStr(dto.getTemplateJson()))
-                .setType(1)
+        GenerateConfig generateConfig = GenerateConfigGlobalUpdateDTO.toGenerateConfig(dto);
+        generateConfig.setType(1)
                 .setTableName("")
                 .setTableRemarks("");
         deleteGlobal();
@@ -82,8 +79,7 @@ public class GenerateConfigServiceImpl extends ServiceImpl<GenerateConfigMapper,
 
     @Override
     public Boolean updateByTableName(GenerateConfigUpdateDTO dto) {
-        GenerateConfig generateConfig = BeanUtil.copyBean(dto, GenerateConfig.class);
-        generateConfig.setTemplateJson(JsonUtil.toJsonStr(dto.getTemplateJson()));
+        GenerateConfig generateConfig = GenerateConfigUpdateDTO.toGenerateConfig(dto);
         deleteByTableName(generateConfig.getTableName());
         return save(generateConfig);
     }

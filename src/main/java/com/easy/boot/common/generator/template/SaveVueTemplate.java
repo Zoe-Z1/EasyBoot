@@ -134,9 +134,6 @@ public class SaveVueTemplate extends AbstractTemplate {
         buildDataMap.put(GenConstant.DATA_MAP_KEY_HAS_DICT, count > 0);
         buildDataMap.put(GenConstant.DATA_MAP_KEY_JS_NAME, jsName);
         buildDataMap.put(GenConstant.DATA_MAP_KEY_COLUMNS, columns);
-        if (global.getEnableExport() || global.getEnableImport()) {
-            buildDataMap.put(GenConstant.DATA_MAP_KEY_ENABLE_EXCEL, true);
-        }
     }
 
 }

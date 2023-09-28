@@ -20,7 +20,6 @@ import com.easy.boot.common.generator.db.DbManager;
 import com.easy.boot.common.generator.db.MetaTable;
 import com.easy.boot.common.generator.execute.GeneratorExecute;
 import com.easy.boot.exception.GeneratorException;
-import com.easy.boot.utils.BeanUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -117,11 +116,11 @@ public class GenerateServiceImpl implements GenerateService {
         }
         GenerateConfigQuery query = new GenerateConfigQuery(tableName);
         GenerateConfigVO vo = generateConfigService.getTableConfig(query);
-        GenerateConfig generateConfig = BeanUtil.copyBean(vo, GenerateConfig.class);
+        GenerateConfig generateConfig = GenerateConfigVO.toGenerateConfig(vo);
         GenerateColumnQuery columnQuery = new GenerateColumnQuery(tableName);
         List<GenerateColumn> columns = generateColumnService.selectList(columnQuery);
         String filterName = DbManager.filterTableName(generateConfig.getTableName(),
-                generateConfig.getExcludeTablePrefix(), generateConfig.getExcludeTableSuffix());
+                vo.getExcludeTablePrefix(), vo.getExcludeTableSuffix());
         MetaTable metaTable = MetaTable.builder()
                 .name(generateConfig.getTableName())
                 .beanName(NamingCase.toPascalCase(filterName))

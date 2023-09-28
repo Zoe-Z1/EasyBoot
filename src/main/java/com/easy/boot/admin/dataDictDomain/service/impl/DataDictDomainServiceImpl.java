@@ -9,13 +9,13 @@ import com.easy.boot.admin.dataDict.entity.DataDict;
 import com.easy.boot.admin.dataDict.service.IDataDictService;
 import com.easy.boot.admin.dataDictDomain.entity.DataDictDomain;
 import com.easy.boot.admin.dataDictDomain.entity.DataDictDomainCreateDTO;
+import com.easy.boot.admin.dataDictDomain.entity.DataDictDomainQuery;
 import com.easy.boot.admin.dataDictDomain.entity.DataDictDomainUpdateDTO;
+import com.easy.boot.admin.dataDictDomain.mapper.DataDictDomainMapper;
+import com.easy.boot.admin.dataDictDomain.service.IDataDictDomainService;
 import com.easy.boot.common.base.BaseEntity;
 import com.easy.boot.common.excel.entity.ImportExcelError;
 import com.easy.boot.exception.BusinessException;
-import com.easy.boot.admin.dataDictDomain.entity.DataDictDomainQuery;
-import com.easy.boot.admin.dataDictDomain.mapper.DataDictDomainMapper;
-import com.easy.boot.admin.dataDictDomain.service.IDataDictDomainService;
 import com.easy.boot.utils.BeanUtil;
 import org.springframework.stereotype.Service;
 
@@ -38,6 +38,10 @@ public class DataDictDomainServiceImpl extends ServiceImpl<DataDictDomainMapper,
     public IPage<DataDictDomain> selectPage(DataDictDomainQuery query) {
         Page<DataDictDomain> page = new Page<>(query.getPageNum(), query.getPageSize());
         return lambdaQuery()
+                .and(StrUtil.isNotEmpty(query.getKeyword()), keywordQuery -> {
+                    keywordQuery.like(DataDictDomain::getCode, query.getKeyword()).or()
+                            .like(DataDictDomain::getName, query.getKeyword());
+                })
                 .like(StrUtil.isNotEmpty(query.getCode()), DataDictDomain::getCode, query.getCode())
                 .like(StrUtil.isNotEmpty(query.getName()), DataDictDomain::getName, query.getName())
                 .eq(Objects.nonNull(query.getStatus()), DataDictDomain::getStatus, query.getStatus())

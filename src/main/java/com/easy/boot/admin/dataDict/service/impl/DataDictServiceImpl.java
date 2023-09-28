@@ -35,6 +35,10 @@ public class DataDictServiceImpl extends ServiceImpl<DataDictMapper, DataDict> i
     public IPage<DataDict> selectPage(DataDictQuery query) {
         Page<DataDict> page = new Page<>(query.getPageNum(), query.getPageSize());
         return lambdaQuery()
+                .and(StrUtil.isNotEmpty(query.getKeyword()), keywordQuery -> {
+                    keywordQuery.like(DataDict::getCode, query.getKeyword()).or()
+                            .like(DataDict::getLabel, query.getKeyword());
+                })
                 .like(StrUtil.isNotEmpty(query.getCode()), DataDict::getCode, query.getCode())
                 .like(StrUtil.isNotEmpty(query.getLabel()), DataDict::getLabel, query.getLabel())
                 .eq(Objects.nonNull(query.getStatus()) , DataDict::getStatus, query.getStatus())
