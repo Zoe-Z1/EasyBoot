@@ -49,7 +49,7 @@ public class DataDict extends BaseEntity {
     @TableField("label")
     private String label;
 
-    @EasyExcelSelect(code = "data_dict_status")
+    @EasyExcelSelect(code = "dict_status")
     @ExcelProperty(value = "字典状态", converter = IntegerStatusToStringConvert.class)
     @ApiModelProperty("字典状态 1：正常 2：禁用")
     @TableField("status")

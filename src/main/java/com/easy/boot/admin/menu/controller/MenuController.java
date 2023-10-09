@@ -32,8 +32,8 @@ public class MenuController extends BaseController {
 
 
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "获取可用菜单树")
-    @EasyLog(module = "获取可用菜单树", operateType = OperateTypeEnum.SELECT)
+    @ApiOperation(value = "获取菜单树")
+    @EasyLog(module = "获取菜单树", operateType = OperateTypeEnum.SELECT)
     @GetMapping("/tree")
     public Result<List<MenuTree>> tree(@Validated MenuTreeQuery query) {
         return Result.success(menuService.treeList(query));

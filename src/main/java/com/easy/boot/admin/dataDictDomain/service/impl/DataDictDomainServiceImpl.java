@@ -32,7 +32,7 @@ import java.util.stream.Collectors;
 public class DataDictDomainServiceImpl extends ServiceImpl<DataDictDomainMapper, DataDictDomain> implements IDataDictDomainService {
 
     @Resource
-    private IDataDictService dataDictionaryService;
+    private IDataDictService dataDictService;
 
     @Override
     public IPage<DataDictDomain> selectPage(DataDictDomainQuery query) {
@@ -61,7 +61,7 @@ public class DataDictDomainServiceImpl extends ServiceImpl<DataDictDomainMapper,
             return new HashMap<>();
         }
         List<Long> ids = list.stream().map(DataDictDomain::getId).collect(Collectors.toList());
-        List<DataDict> dataDicts = dataDictionaryService.selectListByDomainIds(ids);
+        List<DataDict> dataDicts = dataDictService.selectListByDomainIds(ids);
         Map<Long, List<DataDict>> dataDictMap = dataDicts.stream().collect(Collectors.groupingBy(DataDict::getDomainId));
         Map<String, List<DataDict>> resMap = new HashMap<>();
         list.forEach(item -> resMap.put(item.getCode(), dataDictMap.get(item.getId())));
@@ -92,7 +92,7 @@ public class DataDictDomainServiceImpl extends ServiceImpl<DataDictDomainMapper,
         if (domain == null || domain.getStatus() == 2) {
             return new ArrayList<>();
         }
-        return dataDictionaryService.getByDomainId(domain.getId());
+        return dataDictService.getByDomainId(domain.getId());
     }
 
     @Override
@@ -121,7 +121,7 @@ public class DataDictDomainServiceImpl extends ServiceImpl<DataDictDomainMapper,
     public Boolean deleteById(Long id) {
         List<Long> ids = new ArrayList<>();
         ids.add(id);
-        List<DataDict> list = dataDictionaryService.selectListByDomainIds(ids);
+        List<DataDict> list = dataDictService.selectListByDomainIds(ids);
         if (CollUtil.isNotEmpty(list)) {
             throw new BusinessException("存在下级数据字典，不允许删除");
         }
@@ -130,7 +130,7 @@ public class DataDictDomainServiceImpl extends ServiceImpl<DataDictDomainMapper,
 
     @Override
     public Boolean deleteBatchByIds(List<Long> ids) {
-        List<DataDict> list = dataDictionaryService.selectListByDomainIds(ids);
+        List<DataDict> list = dataDictService.selectListByDomainIds(ids);
         if (CollUtil.isNotEmpty(list)) {
             throw new BusinessException("存在下级数据字典，不允许删除");
         }

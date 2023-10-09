@@ -55,7 +55,7 @@ public class AdminUser extends BaseEntity {
     @ApiModelProperty(value = "昵称")
     private String name;
 
-    @EasyExcelSelect(code = "data_dictionary_status")
+    @EasyExcelSelect(code = "dict_sex")
     @ExcelProperty(value = "性别-保密/男/女", converter = IntegerSexToStringConvert.class)
     @ApiModelProperty(value = "性别 0：保密 1：男 2：女")
     private Integer sex;
@@ -73,8 +73,8 @@ public class AdminUser extends BaseEntity {
     @ApiModelProperty(value = "密码盐")
     private String salt;
 
-    @EasyExcelSelect(code = "data_dictionary_status")
-    @ExcelProperty(value = "账号状态-正常/禁用", converter = IntegerStatusToStringConvert.class)
+    @EasyExcelSelect(code = "dict_status")
+    @ExcelProperty(value = "账号状态", converter = IntegerStatusToStringConvert.class)
     @ApiModelProperty(value = "账号状态 1：正常，2：禁用")
     private Integer status;
 

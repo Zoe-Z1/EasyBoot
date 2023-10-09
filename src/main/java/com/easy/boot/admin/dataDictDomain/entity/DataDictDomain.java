@@ -41,7 +41,7 @@ public class DataDictDomain extends BaseEntity {
     @TableField("name")
     private String name;
 
-    @EasyExcelSelect(code = "data_dict_domain_status")
+    @EasyExcelSelect(code = "dict_status")
     @ExcelProperty(value = "字典域状态", converter = IntegerStatusToStringConvert.class)
     @ApiModelProperty("字典域状态 1：正常 2：禁用")
     @TableField("status")

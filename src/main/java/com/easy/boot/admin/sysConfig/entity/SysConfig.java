@@ -53,7 +53,7 @@ public class SysConfig extends BaseEntity {
     @TableField("name")
     private String name;
 
-    @ExcelProperty(value = "系统配置状态-正常/禁用", converter = IntegerStatusToStringConvert.class)
+    @ExcelProperty(value = "系统配置状态", converter = IntegerStatusToStringConvert.class)
     @ApiModelProperty("系统配置状态 1：正常 2：禁用")
     @TableField("status")
     private Integer status;

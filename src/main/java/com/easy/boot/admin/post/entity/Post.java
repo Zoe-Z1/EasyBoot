@@ -42,7 +42,7 @@ public class Post extends BaseEntity {
 
     @ColumnWidth(30)
     @ExcelProperty(value = "岗位状态", converter = IntegerStatusToStringConvert.class)
-    @EasyExcelSelect(code = "post_status")
+    @EasyExcelSelect(code = "dict_status")
     @ApiModelProperty("岗位状态 1：正常 2：禁用")
     @TableField("status")
     private Integer status;

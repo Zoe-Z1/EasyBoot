@@ -139,9 +139,8 @@ public class GenerateServiceImpl implements GenerateService {
     @Override
     public void runSql(List<String> tableNames, List<GenerateCode> codes) {
         StringBuffer sb = new StringBuffer();
-        String sql = "sql";
         codes.forEach(item -> {
-            if (item.getExecute() && sql.equals(item.getFilename())) {
+            if (item.getExecute() && item.getFilename().endsWith(GenConstant.SQL_SUFFIX)) {
                 sb.append(item.getFileContent());
             }
         });
