@@ -118,6 +118,7 @@ public class PostController extends BaseController {
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             EasyExcel.write(out).head(Post.class)
                     .sheet("岗位导入错误信息列表")
+                    .registerWriteHandler(new ExportExcelSelectCellWriteHandler(Post.class))
                     .registerWriteHandler(new ExportExcelErrorCellWriteHandler(errors))
                     .doWrite(errorList);
             base64 = Base64.getEncoder().encodeToString(out.toByteArray());

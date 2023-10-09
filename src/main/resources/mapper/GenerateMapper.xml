@@ -56,6 +56,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			AND TABLE_COMMENT like concat('%', #{comment} , '%')
 		</if>
 		ORDER BY
+		CREATE_TIME DESC,
 		TABLE_NAME ASC
 		limit ${pageSize * (pageNum - 1)},#{pageSize}
 	</select>

@@ -40,11 +40,11 @@ public class Menu extends BaseEntity {
     @TableField("label")
     private String label;
 
-    @ApiModelProperty("路由地址")
+    @ApiModelProperty("组件路径")
     @TableField("component")
     private String component;
 
-    @ApiModelProperty("组件路径")
+    @ApiModelProperty("路由地址")
     @TableField("path")
     private String path;
 

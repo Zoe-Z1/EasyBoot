@@ -5,6 +5,7 @@ import com.alibaba.excel.annotation.write.style.ColumnWidth;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.easy.boot.common.base.BaseEntity;
+import com.easy.boot.common.excel.EasyExcelSelect;
 import com.easy.boot.common.excel.converter.IntegerStatusToStringConvert;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -40,7 +41,8 @@ public class DataDictDomain extends BaseEntity {
     @TableField("name")
     private String name;
 
-    @ExcelProperty(value = "字典域状态-正常/禁用", converter = IntegerStatusToStringConvert.class)
+    @EasyExcelSelect(code = "data_dict_domain_status")
+    @ExcelProperty(value = "字典域状态", converter = IntegerStatusToStringConvert.class)
     @ApiModelProperty("字典域状态 1：正常 2：禁用")
     @TableField("status")
     private Integer status;

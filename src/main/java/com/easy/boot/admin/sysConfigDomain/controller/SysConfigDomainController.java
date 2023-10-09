@@ -109,6 +109,7 @@ public class SysConfigDomainController extends BaseController {
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             EasyExcel.write(out).head(SysConfigDomain.class)
                     .sheet("系统配置域导入错误信息列表")
+                    .registerWriteHandler(new ExportExcelSelectCellWriteHandler(SysConfigDomain.class))
                     .registerWriteHandler(new ExportExcelErrorCellWriteHandler(errors))
                     .doWrite(errorList);
             base64 = Base64.getEncoder().encodeToString(out.toByteArray());

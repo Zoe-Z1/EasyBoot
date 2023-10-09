@@ -2,10 +2,7 @@ package com.easy.boot.common.saToken;
 
 import cn.dev33.satoken.interceptor.SaInterceptor;
 import cn.dev33.satoken.router.SaRouter;
-import cn.dev33.satoken.stp.StpLogic;
-import cn.dev33.satoken.stp.StpUtil;
 import com.easy.boot.admin.login.service.AdminLoginService;
-import com.easy.boot.admin.operationLog.enums.RoleTypeEnum;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -30,17 +27,11 @@ public class SaTokenConfig implements WebMvcConfigurer {
             SaRouter.match("/admin/**", r -> {
                 adminLoginService.checkLogin();
             });
-            SaRouter.match("/api/**", r -> {
-                StpLogic stpLogic = new StpLogic(String.valueOf(RoleTypeEnum.MOBILE));
-                StpUtil.setStpLogic(stpLogic);
-                StpUtil.checkLogin();
-            });
         }))
                 .addPathPatterns("/**")
                 .excludePathPatterns("/admin/login",
                         "/admin/test",
                         "/admin/user/download",
-                        "/api/login",
                         "/favicon.ico",
                         "/doc.html",
                         "/swagger-resources/**",

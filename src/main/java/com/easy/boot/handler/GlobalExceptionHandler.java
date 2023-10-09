@@ -158,7 +158,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(NotPermissionException.class)
     public Result exceptionHandler(NotPermissionException e,HttpServletRequest request) {
         log.error("无菜单权限异常，异常路径： {} ，请求方式： {} ",request.getRequestURI(),request.getMethod(),e);
-        return new Result(new SystemException(SystemErrorEnum.NO_PERMISSION) ,request.getRequestURI(),request.getMethod());
+        return new Result(new SystemException(SystemErrorEnum.NO_ACCESS_PERMISSION) ,request.getRequestURI(),request.getMethod());
     }
 
     /**
@@ -170,7 +170,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(NotRoleException.class)
     public Result exceptionHandler(NotRoleException e,HttpServletRequest request) {
         log.error("无角色权限异常，异常路径： {} ，请求方式： {} ",request.getRequestURI(),request.getMethod(),e);
-        return new Result(new SystemException(SystemErrorEnum.NO_ROLE) ,request.getRequestURI(),request.getMethod());
+        return new Result(new SystemException(SystemErrorEnum.NO_ACCESS_PERMISSION) ,request.getRequestURI(),request.getMethod());
     }
 
     /**

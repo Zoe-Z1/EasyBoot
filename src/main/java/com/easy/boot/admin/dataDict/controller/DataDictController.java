@@ -139,6 +139,7 @@ public class DataDictController extends BaseController {
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             EasyExcel.write(out).head(DataDict.class)
                     .sheet("数据字典导入错误信息列表")
+                    .registerWriteHandler(new ExportExcelSelectCellWriteHandler(DataDict.class))
                     .registerWriteHandler(new ExportExcelErrorCellWriteHandler(errors))
                     .doWrite(errorList);
             base64 = Base64.getEncoder().encodeToString(out.toByteArray());

@@ -24,11 +24,8 @@ public enum SystemErrorEnum {
     /** IP未知 */
     IP_UNKNOWN(205,"IP未知，无法访问"),
 
-    /** 没有角色权限 */
-    NO_ROLE(401,"没有角色权限，无法访问"),
-
-    /** 没有菜单权限 */
-    NO_PERMISSION(402,"没有菜单权限，无法访问"),
+    /** 没有访问权限 */
+    NO_ACCESS_PERMISSION(401,"没有访问权限，无法访问"),
 
     /** 认证失败 */
     AUTHENTICATION_FAILURE(403,"身份认证失败,请重新授权"),
@@ -87,9 +84,9 @@ public enum SystemErrorEnum {
 
     USER_DISABLED(1002,"账号已被禁用，无法操作"),
 
-    USER_IS_BLACKLIST(1003,"账号已被拉黑，无法操作"),
+    USER_IS_BLACKLIST(1003,"您已被拉黑，无法操作"),
 
-    IP_IS_BLACKLIST(1003,"IP已被拉黑，无法操作"),
+    IP_IS_BLACKLIST(1003,"您已被拉黑，无法操作"),
 
     USER_NULL_ERROR(1004,"用户不存在"),
 

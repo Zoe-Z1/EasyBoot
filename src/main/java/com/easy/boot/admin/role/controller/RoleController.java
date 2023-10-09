@@ -127,6 +127,7 @@ public class RoleController extends BaseController {
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             EasyExcel.write(out).head(Role.class)
                     .sheet("角色导入错误信息列表")
+                    .registerWriteHandler(new ExportExcelSelectCellWriteHandler(Role.class))
                     .registerWriteHandler(new ExportExcelErrorCellWriteHandler(errors))
                     .doWrite(errorList);
             base64 = Base64.getEncoder().encodeToString(out.toByteArray());

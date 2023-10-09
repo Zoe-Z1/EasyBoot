@@ -36,15 +36,15 @@ public class MenuCreateDTO {
     @ApiModelProperty(required = true, value = "菜单名称")
     private String label;
 
-    @Length(min = 1, max = 30, message = "路由地址在{min}-{max}个字符之间")
-    @ApiModelProperty(required = false, value = "路由地址")
+    @Length(min = 1, max = 50, message = "组件路径在{min}-{max}个字符之间")
+    @ApiModelProperty(required = false, value = "组件路径")
     private String component;
 
-    @Length(min = 1, max = 30, message = "组件路径在{min}-{max}个字符之间")
-    @ApiModelProperty(required = false, value = "组件路径")
+    @Length(min = 1, max = 50, message = "路由地址在{min}-{max}个字符之间")
+    @ApiModelProperty(required = false, value = "路由地址")
     private String path;
 
-    @Length(min = 1, max = 30, message = "权限字符在{min}-{max}个字符之间")
+    @Length(min = 1, max = 100, message = "权限字符在{min}-{max}个字符之间")
     @ApiModelProperty(required = false, value = "权限字符")
     private String permission;
 

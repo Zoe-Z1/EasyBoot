@@ -132,6 +132,7 @@ public class SysConfigController extends BaseController {
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             EasyExcel.write(out).head(SysConfig.class)
                     .sheet("系统配置导入错误信息列表")
+                    .registerWriteHandler(new ExportExcelSelectCellWriteHandler(SysConfig.class))
                     .registerWriteHandler(new ExportExcelErrorCellWriteHandler(errors))
                     .doWrite(errorList);
             base64 = Base64.getEncoder().encodeToString(out.toByteArray());
