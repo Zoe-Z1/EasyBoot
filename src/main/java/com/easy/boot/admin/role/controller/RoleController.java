@@ -50,6 +50,13 @@ public class RoleController extends BaseController {
     private IUserRoleService userRoleService;
 
 
+    @ApiOperationSupport(author = "zoe")
+    @ApiOperation(value = "获取角色列表")
+    @EasyLog(module = "获取角色列表", operateType = OperateTypeEnum.SELECT)
+    @GetMapping("/all")
+    public Result<List<Role>> all() {
+        return Result.success(roleService.selectAll());
+    }
 
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "分页获取角色列表")

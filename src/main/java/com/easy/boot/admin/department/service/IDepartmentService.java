@@ -59,7 +59,7 @@ public interface IDepartmentService extends IService<Department> {
      * @param id
      * @return
      */
-    Department detail(Long id);
+    DepartmentVO detail(Long id);
 
     /**
     * 创建部门

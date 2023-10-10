@@ -48,6 +48,16 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IR
     private IMenuService menuService;
 
     @Override
+    public List<Role> selectAll() {
+        return lambdaQuery()
+                .select(Role::getCode, Role::getName, BaseEntity::getId)
+                .eq(Role::getStatus, 1)
+                .orderByAsc(Role::getSort)
+                .orderByDesc(BaseEntity::getCreateTime)
+                .list();
+    }
+
+    @Override
     public IPage<Role> selectPage(RoleQuery query) {
         Page<Role> page = new Page<>(query.getPageNum(), query.getPageSize());
         return lambdaQuery()
@@ -159,7 +169,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IR
             ImportExcelError.ImportExcelErrorBuilder builder = ImportExcelError.builder();
             if (StrUtil.isEmpty(role.getCode())) {
                 isError = true;
-                builder.columnIndex(0).rowIndex(rowIndex).msg("角色编码不能为空");
+                builder.columnIndex(1).rowIndex(rowIndex).msg("角色编码不能为空");
                 errors.add(builder.build());
             } else if (role.getCode().length() < 1 || role.getCode().length() > 20) {
                 isError = true;
@@ -168,16 +178,16 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IR
             }
             if (codes.contains(role.getCode())) {
                 isError = true;
-                builder.columnIndex(0).rowIndex(rowIndex).msg("角色编码已存在");
+                builder.columnIndex(1).rowIndex(rowIndex).msg("角色编码已存在");
                 errors.add(builder.build());
             }
             if (StrUtil.isEmpty(role.getName())) {
                 isError = true;
-                builder.columnIndex(1).rowIndex(rowIndex).msg("角色名称不能为空");
+                builder.columnIndex(0).rowIndex(rowIndex).msg("角色名称不能为空");
                 errors.add(builder.build());
             } else if (role.getName().length() < 1 || role.getName().length() > 20) {
                 isError = true;
-                builder.columnIndex(1).rowIndex(rowIndex).msg("角色名称在1-20个字符之间");
+                builder.columnIndex(0).rowIndex(rowIndex).msg("角色名称在1-20个字符之间");
                 errors.add(builder.build());
             }
             if (role.getStatus() == null) {

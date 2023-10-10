@@ -18,6 +18,12 @@ import java.util.List;
 public interface IRoleService extends IService<Role> {
 
     /**
+     * 查询角色列表
+     * @return
+     */
+    List<Role> selectAll();
+
+    /**
     * 查询角色列表
     * @param query
     * @return
@@ -80,4 +86,5 @@ public interface IRoleService extends IService<Role> {
      * @param errors
      */
     void importExcel(List<Role> list, List<Role> errorList, List<ImportExcelError> errors);
+
 }

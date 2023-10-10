@@ -110,8 +110,30 @@ public class DepartmentServiceImpl extends ServiceImpl<DepartmentMapper, Departm
     }
 
     @Override
-    public Department detail(Long id) {
-        return getById(id);
+    public DepartmentVO detail(Long id) {
+        Department department = getById(id);
+        DepartmentVO vo = BeanUtil.copyBean(department, DepartmentVO.class);
+        List<Long> ids = new ArrayList<>();
+        if (!department.getParentId().equals(0L)) {
+            ids = getParentIds(department.getParentId(), ids);
+        }
+        vo.setParentIds(ids);
+        return vo;
+    }
+
+    /**
+     * 递归获取所有父级ID
+     * @param id 父级ID
+     * @param ids 父级ID集合
+     * @return
+     */
+    private List<Long> getParentIds(Long id, List<Long> ids) {
+        ids.add(0, id);
+        Department department = getById(id);
+        if (department == null || department.getParentId().equals(0L)) {
+            return ids;
+        }
+        return getParentIds(department.getParentId(), ids);
     }
 
     @Override
