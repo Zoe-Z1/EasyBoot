@@ -147,6 +147,8 @@ public class GenConstant {
 
     public static final String DATA_MAP_KEY_IS_OVERRIDE = "isOverride";
 
+    public static final String DATA_MAP_KEY_QUERY_ENABLE = "queryEnable";
+
     public static final String DATA_MAP_KEY_GEN_PATH = "genPath";
 
     public static final String DATA_MAP_KEY_ZIP_PATH = "zipPath";

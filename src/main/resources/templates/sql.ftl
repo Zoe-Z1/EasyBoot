@@ -3,10 +3,16 @@
 insert into menu (id, parent_id, label, path, component, permission, type, status, show_status, sort, create_by, create_username, create_time)
 values(${menuId?c}, ${parentMenuId?c}, '${remarks!}', '${menuPath}', '${component}', '${permission}', 2, 1, 1, 1, '${createBy?c}', '${createUsername}', '${createTime?c}');
 
--- 按钮 SQL
+-- 接口 SQL
+<#if queryEnable>
 insert into menu (id, parent_id, label, permission, type, status, show_status, sort, create_by, create_username, create_time)
 values(${pageMenuId?c}, ${menuId?c}, '分页获取${remarks!}列表', '${permission}:page', 3, 1, 1, 1, '${createBy?c}', '${createUsername}', '${createTime?c}');
 
+<#else >
+insert into menu (id, parent_id, label, permission, type, status, show_status, sort, create_by, create_username, create_time)
+values(${pageMenuId?c}, ${menuId?c}, '获取${remarks!}列表', '${permission}:list', 3, 1, 1, 1, '${createBy?c}', '${createUsername}', '${createTime?c}');
+
+</#if>
 insert into menu (id, parent_id, label, permission, type, status, show_status, sort, create_by, create_username, create_time)
 values(${detailMenuId?c}, ${menuId?c}, '获取${remarks!}详情', '${permission}:detail', 3, 1, 1, 1, '${createBy?c}', '${createUsername}', '${createTime?c}');
 

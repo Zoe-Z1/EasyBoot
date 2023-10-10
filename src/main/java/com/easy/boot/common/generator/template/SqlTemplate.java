@@ -127,7 +127,7 @@ public class SqlTemplate extends AbstractTemplate {
         Long createBy = UserContext.getId();
         String createUsername = UserContext.getUsername();
         Long createTime = DateUtil.current();
-
+        Boolean queryEnable = buildDataMap.getTemplateConfig().getQuery().isEnable();
         buildDataMap.put(GenConstant.DATA_MAP_KEY_GEN_PATH, genPath);
         buildDataMap.put(GenConstant.DATA_MAP_KEY_ZIP_PATH, zipPath);
         buildDataMap.put(GenConstant.DATA_MAP_KEY_MENU_ID, IdWorker.getId());
@@ -147,6 +147,7 @@ public class SqlTemplate extends AbstractTemplate {
         buildDataMap.put(GenConstant.DATA_MAP_KEY_CREATE_BY, createBy);
         buildDataMap.put(GenConstant.DATA_MAP_KEY_CREATE_USERNAME, createUsername);
         buildDataMap.put(GenConstant.DATA_MAP_KEY_CREATE_TIME, createTime);
+        buildDataMap.put(GenConstant.DATA_MAP_KEY_QUERY_ENABLE, queryEnable);
     }
 
     /**
