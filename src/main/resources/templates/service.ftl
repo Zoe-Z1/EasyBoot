@@ -47,7 +47,11 @@ public interface ${className} extends ${superName}<${entityName}> {
      * @param <#if updateDTOName??>dto<#else >${entityCamelName}</#if>
      * @return
      */
-    Boolean edit(<#if updateDTOName??>${updateDTOName} dto<#else >${entityName} ${entityCamelName}</#if>);
+<#if updateDTOName??>
+    Boolean updateById(${updateDTOName} dto);
+<#else >
+    Boolean edit(${entityName} ${entityCamelName});
+</#if>
 
     /**
      * 删除${remarks!}

@@ -65,10 +65,13 @@ public class ${className} extends ${superName}<${mapperName}, ${entityName}> imp
     }
 
     @Override
-    public Boolean edit(<#if updateDTOName??>${updateDTOName} dto<#else >${entityName} ${entityCamelName}</#if>) {
-        <#if updateDTOName??>
+
+<#if updateDTOName??>
+    public Boolean updateById(${updateDTOName} dto) {
         ${entityName} ${entityCamelName} = BeanUtil.copyBean(dto, ${entityName}.class);
-        </#if>
+    <#else >
+    public Boolean edit(${entityName} ${entityCamelName}) {
+</#if>
         return updateById(${entityCamelName});
     }
 

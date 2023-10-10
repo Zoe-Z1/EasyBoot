@@ -74,7 +74,11 @@ public class ${className} {
     @EasyLog(module = "编辑${remarks!}", operateType = OperateTypeEnum.UPDATE)
     @PostMapping(value = "/update")
     public Result update(@Validated @RequestBody <#if updateDTOName??>${updateDTOName} dto<#else >${entityName} ${entityCamelName}</#if>) {
-        return Result.r(${serviceCamelName}.edit(<#if updateDTOName??>dto<#else >${entityCamelName}</#if>));
+<#if updateDTOName??>
+        return Result.r(${serviceCamelName}.updateById(dto));
+<#else >
+        return Result.r(${serviceCamelName}.edit(${entityCamelName});
+</#if>
     }
 
     @SaCheckPermission(value = "${permission}:del")
