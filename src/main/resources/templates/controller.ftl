@@ -56,11 +56,7 @@ public class ${className} {
     </#if>
     @GetMapping("/detail/{id}")
     public Result<<#if voName??>${voName}<#else >${entityName}</#if>> detail(@PathVariable Long id) {
-    <#if voName??>
-        return Result.success(BeanUtil.copyBean(${serviceCamelName}.detail(id), ${voName}.class));
-    <#else >
         return Result.success(${serviceCamelName}.detail(id));
-    </#if>
     }
 
     @SaCheckPermission(value = "${permission}:create")

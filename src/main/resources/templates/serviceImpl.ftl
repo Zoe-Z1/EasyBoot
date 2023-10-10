@@ -48,8 +48,9 @@ public class ${className} extends ${superName}<${mapperName}, ${entityName}> imp
     @Override
     public <#if voName??>${voName}<#else >${entityName}</#if> detail(Long id) {
         <#if voName??>
-        ${entityName} ${entityCamelName} = BeanUtil.copyBean(dto, ${voName}.class);
-        return ${entityCamelName};
+        ${entityName} ${entityCamelName} = getById(id);
+        ${voName} vo = BeanUtil.copyBean(${entityCamelName}, ${voName}.class);
+        return vo;
         <#else >
         return getById(id);
         </#if>
