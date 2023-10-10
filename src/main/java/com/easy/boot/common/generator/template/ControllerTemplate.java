@@ -1,5 +1,6 @@
 package com.easy.boot.common.generator.template;
 
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.ExcelWriter;
@@ -209,6 +210,7 @@ public class ControllerTemplate extends AbstractTemplate {
         if (getSuperClass() != null) {
             pkgs.add(getSuperClass().getName());
         }
+        pkgs.add(SaCheckPermission.class.getName());
         pkgs.add(Api.class.getName());
         pkgs.add(ApiOperation.class.getName());
         pkgs.add(ApiOperationSupport.class.getName());
@@ -222,27 +224,33 @@ public class ControllerTemplate extends AbstractTemplate {
         String pkgName = String.join(".", global.getPackageName(), metaTable.getModuleName());
         String serviceName = buildDataMap.getString(GenConstant.DATA_MAP_KEY_SERVICE_NAME);
         String entityName = buildDataMap.getString(GenConstant.DATA_MAP_KEY_ENTITY_NAME);
-        String createDTOName = buildDataMap.getString(GenConstant.DATA_MAP_KEY_CREATE_DTO_NAME);
-        String updateDTOName = buildDataMap.getString(GenConstant.DATA_MAP_KEY_UPDATE_DTO_NAME);
-        String queryName = buildDataMap.getString(GenConstant.DATA_MAP_KEY_QUERY_NAME);
-        String voName = buildDataMap.getString(GenConstant.DATA_MAP_KEY_VO_NAME);
         ServiceTemplate serviceTemplate = buildDataMap.getTemplateConfig().getService();
         EntityTemplate entityTemplate = buildDataMap.getTemplateConfig().getEntity();
         CreateDTOTemplate createDTOTemplate = buildDataMap.getTemplateConfig().getCreateDTO();
         UpdateDTOTemplate updateDTOTemplate = buildDataMap.getTemplateConfig().getUpdateDTO();
         QueryTemplate queryTemplate = buildDataMap.getTemplateConfig().getQuery();
+        VOTemplate voTemplate = buildDataMap.getTemplateConfig().getVo();
         String servicePkgName = String.join(".", pkgName, serviceTemplate.getModuleName(), serviceName);
         String entityPkgName = String.join(".", pkgName, entityTemplate.getModuleName(), entityName);
-        String createDTOPkgName = String.join(".", pkgName, createDTOTemplate.getModuleName(), createDTOName);
-        String updateDTOPkgName = String.join(".", pkgName, updateDTOTemplate.getModuleName(), updateDTOName);
-        String queryPkgName = String.join(".", pkgName, queryTemplate.getModuleName(), queryName);
         pkgs.add(servicePkgName);
         pkgs.add(entityPkgName);
-        pkgs.add(createDTOPkgName);
-        pkgs.add(updateDTOPkgName);
-        pkgs.add(queryPkgName);
-        VOTemplate voTemplate = buildDataMap.getTemplateConfig().getVo();
+        if (createDTOTemplate.isEnable()) {
+            String createDTOName = buildDataMap.getString(GenConstant.DATA_MAP_KEY_CREATE_DTO_NAME);
+            String createDTOPkgName = String.join(".", pkgName, createDTOTemplate.getModuleName(), createDTOName);
+            pkgs.add(createDTOPkgName);
+        }
+        if (updateDTOTemplate.isEnable()) {
+            String updateDTOName = buildDataMap.getString(GenConstant.DATA_MAP_KEY_UPDATE_DTO_NAME);
+            String updateDTOPkgName = String.join(".", pkgName, updateDTOTemplate.getModuleName(), updateDTOName);
+            pkgs.add(updateDTOPkgName);
+        }
+        if (queryTemplate.isEnable()) {
+            String queryName = buildDataMap.getString(GenConstant.DATA_MAP_KEY_QUERY_NAME);
+            String queryPkgName = String.join(".", pkgName, queryTemplate.getModuleName(), queryName);
+            pkgs.add(queryPkgName);
+        }
         if (voTemplate.isEnable()) {
+            String voName = buildDataMap.getString(GenConstant.DATA_MAP_KEY_VO_NAME);
             String voPkgName = String.join(".", pkgName, voTemplate.getModuleName(), voName);
             pkgs.add(voPkgName);
             pkgs.add(BeanUtil.class.getName());

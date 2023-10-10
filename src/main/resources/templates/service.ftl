@@ -11,6 +11,7 @@ import ${pkg};
 */
 public interface ${className} extends ${superName}<${entityName}> {
 
+<#if queryName??>
     /**
      * 分页查询${remarks!}
      * @param query
@@ -18,26 +19,35 @@ public interface ${className} extends ${superName}<${entityName}> {
      */
     IPage<${entityName}> selectPage(${queryName} query);
 
+<#else >
+    /**
+     * 查询${remarks!}列表
+     * @param ${entityCamelName}
+     * @return
+     */
+    List<${entityName}> selectList(${entityName} ${entityCamelName});
+
+</#if>
     /**
      * 获取${remarks!}详情
      * @param id
      * @return
      */
-    ${entityName} detail(Long id);
+    <#if voName??>${voName}<#else >${entityName}</#if> detail(Long id);
 
     /**
      * 创建${remarks!}
-     * @param dto
+     * @param <#if createDTOName??>dto<#else >${entityCamelName}</#if>
      * @return
      */
-    Boolean create(${createDTOName} dto);
+    Boolean create(<#if createDTOName??>${createDTOName} dto<#else >${entityName} ${entityCamelName}</#if>);
 
     /**
      * 编辑${remarks!}
-     * @param dto
+     * @param <#if updateDTOName??>dto<#else >${entityCamelName}</#if>
      * @return
      */
-    Boolean updateById(${updateDTOName} dto);
+    Boolean edit(<#if updateDTOName??>${updateDTOName} dto<#else >${entityName} ${entityCamelName}</#if>);
 
     /**
      * 删除${remarks!}

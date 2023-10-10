@@ -13,42 +13,61 @@ import ${pkg};
 public class ${className} extends ${superName}<${mapperName}, ${entityName}> implements ${serviceName} {
 
     @Override
+<#if queryName??>
     public IPage<${entityName}> selectPage(${queryName} query) {
+<#else >
+    public List<${entityName}> selectList(${entityName} ${entityCamelName}) {
+</#if>
+    <#if queryName??>
         Page<${entityName}> page = new Page<>(query.getPageNum(), query.getPageSize());
+    </#if>
         return lambdaQuery()
-<#if (keywordFields?size > 0)>
+            <#if queryName?? && (keywordFields?size > 0)>
                 .and(StrUtil.isNotEmpty(query.getKeyword()), keywordQuery -> {
                     keywordQuery
-    <#list keywordFields as field>
+                <#list keywordFields as field>
                     .like(${entityName}::get${field?cap_first}, query.getKeyword())<#if (field_index + 1) == keywordFields?size>;<#else >.or()</#if>
-    </#list>
+                </#list>
                 })
-</#if>
+            </#if>
 <#list columns as column>
-    <#if column.javaType == 'String'>
-                .like(StrUtil.isNotEmpty(query.get${column.javaName?cap_first}()), ${entityName}::get${column.javaName?cap_first}, query.get${column.javaName?cap_first}())
-    <#else >
-                .eq(StrUtil.isNotEmpty(query.get${column.javaName?cap_first}()), ${entityName}::get${column.javaName?cap_first}, query.get${column.javaName?cap_first}())
-    </#if>
+            <#if column.javaType == 'String'>
+                .like(StrUtil.isNotEmpty(<#if queryName??>query<#else >${entityCamelName}</#if>.get${column.javaName?cap_first}()), ${entityName}::get${column.javaName?cap_first}, <#if queryName??>query<#else >${entityCamelName}</#if>.get${column.javaName?cap_first}())
+            <#else >
+                .eq(<#if queryName??>query<#else >${entityCamelName}</#if>.get${column.javaName?cap_first}() != null, ${entityName}::get${column.javaName?cap_first}, <#if queryName??>query<#else >${entityCamelName}</#if>.get${column.javaName?cap_first}())
+            </#if>
 </#list>
                 .orderByDesc(${entityName}::getCreateTime)
+            <#if queryName??>
                 .page(page);
+            <#else >
+                .list();
+            </#if>
     }
 
     @Override
-    public ${entityName} detail(Long id) {
+    public <#if voName??>${voName}<#else >${entityName}</#if> detail(Long id) {
+        <#if voName??>
+        ${entityName} ${entityCamelName} = BeanUtil.copyBean(dto, ${voName}.class);
+        return ${entityCamelName};
+        <#else >
         return getById(id);
+        </#if>
     }
 
     @Override
-    public Boolean create(${createDTOName} dto) {
+    public Boolean create(<#if createDTOName??>${createDTOName} dto<#else >${entityName} ${entityCamelName}</#if>) {
+        <#if createDTOName??>
         ${entityName} ${entityCamelName} = BeanUtil.copyBean(dto, ${entityName}.class);
+        </#if>
         return save(${entityCamelName});
     }
 
     @Override
-    public Boolean updateById(${updateDTOName} dto) {
+    public Boolean edit(<#if updateDTOName??>${updateDTOName} dto<#else >${entityName} ${entityCamelName}</#if>) {
+        <#if updateDTOName??>
         ${entityName} ${entityCamelName} = BeanUtil.copyBean(dto, ${entityName}.class);
+        </#if>
         return updateById(${entityCamelName});
     }
 

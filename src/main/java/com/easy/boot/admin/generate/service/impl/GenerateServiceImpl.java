@@ -119,12 +119,10 @@ public class GenerateServiceImpl implements GenerateService {
         GenerateConfig generateConfig = GenerateConfigVO.toGenerateConfig(vo);
         GenerateColumnQuery columnQuery = new GenerateColumnQuery(tableName);
         List<GenerateColumn> columns = generateColumnService.selectList(columnQuery);
-        String filterName = DbManager.filterTableName(generateConfig.getTableName(),
-                vo.getExcludeTablePrefix(), vo.getExcludeTableSuffix());
         MetaTable metaTable = MetaTable.builder()
                 .name(generateConfig.getTableName())
-                .beanName(NamingCase.toPascalCase(filterName))
-                .camelName(NamingCase.toCamelCase(filterName))
+                .beanName(NamingCase.toPascalCase(generateConfig.getModuleName()))
+                .camelName(NamingCase.toCamelCase(generateConfig.getModuleName()))
                 .moduleName(generateConfig.getModuleName())
                 .uiModuleName(generateConfig.getUiModuleName())
                 .parentMenuId(generateConfig.getParentMenuId())

@@ -23,6 +23,7 @@ public class ${className} {
     private ${serviceName} ${serviceCamelName};
 
 
+<#if queryName??>
     @SaCheckPermission(value = "${permission}:page")
     @ApiOperationSupport(author = "${global.author}")
     @ApiOperation(value = "分页获取${remarks!}列表")
@@ -30,10 +31,23 @@ public class ${className} {
     @EasyLog(module = "分页获取${remarks!}列表", operateType = OperateTypeEnum.SELECT)
     </#if>
     @GetMapping("/page")
-    public Result<IPage<${entityName}>> page(@Validated <#if queryName??>${queryName} query<#else >${entityName} ${entityCamelName}</#if>) {
-        return Result.success(${serviceCamelName}.selectPage(<#if queryName??>query<#else >${entityCamelName}</#if>));
+    public Result<IPage<${entityName}>> page(@Validated ${queryName} query) {
+        return Result.success(${serviceCamelName}.selectPage(query));
     }
 
+<#else >
+    @SaCheckPermission(value = "${permission}:list")
+    @ApiOperationSupport(author = "${global.author}")
+    @ApiOperation(value = "获取${remarks!}列表")
+    <#if annotation.enableLog>
+    @EasyLog(module = "获取${remarks!}列表", operateType = OperateTypeEnum.SELECT)
+    </#if>
+    @GetMapping("/list")
+    public Result<List<${entityName}>> list(@Validated ${entityName} ${entityCamelName}) {
+        return Result.success(${serviceCamelName}.selectList(${entityCamelName}));
+    }
+
+</#if>
     @SaCheckPermission(value = "${permission}:detail")
     @ApiOperationSupport(author = "${global.author}")
     @ApiOperation(value = "获取${remarks!}详情")
@@ -64,7 +78,7 @@ public class ${className} {
     @EasyLog(module = "编辑${remarks!}", operateType = OperateTypeEnum.UPDATE)
     @PostMapping(value = "/update")
     public Result update(@Validated @RequestBody <#if updateDTOName??>${updateDTOName} dto<#else >${entityName} ${entityCamelName}</#if>) {
-        return Result.r(${serviceCamelName}.updateById(<#if updateDTOName??>dto<#else >${entityCamelName}</#if>));
+        return Result.r(${serviceCamelName}.edit(<#if updateDTOName??>dto<#else >${entityCamelName}</#if>));
     }
 
     @SaCheckPermission(value = "${permission}:del")

@@ -67,28 +67,27 @@ public class AdminUserServiceImpl extends ServiceImpl<AdminUserMapper, AdminUser
     @Override
     public IPage<AdminUser> selectPage(AdminUserQuery query) {
         Page<AdminUser> page = new Page<>(query.getPageNum(), query.getPageSize());
-    return lambdaQuery()
-        .eq(Objects.nonNull(query.getDepartmentId()) && query.getDepartmentId() != 0,
-            AdminUser::getDepartmentId,
-            query.getDepartmentId())
-        .eq(query.getSex() != null, AdminUser::getSex, query.getSex())
-        .eq(query.getStatus() != null, AdminUser::getStatus, query.getStatus())
-        .and(StrUtil.isNotEmpty(query.getKeyword()), keywordQuery -> {
-            keywordQuery
-                    .like(AdminUser::getUsername, query.getKeyword()).or()
-                    .like(AdminUser::getName, query.getKeyword()).or()
-                    .like(AdminUser::getMobile, query.getKeyword()).or()
-                    .like(AdminUser::getEmail, query.getKeyword());
-        })
-        .like(StrUtil.isNotEmpty(query.getUsername()), AdminUser::getUsername, query.getUsername())
-        .like(StrUtil.isNotEmpty(query.getName()), AdminUser::getName, query.getName())
-        .like(StrUtil.isNotEmpty(query.getMobile()), AdminUser::getMobile, query.getMobile())
-        .like(StrUtil.isNotEmpty(query.getEmail()), AdminUser::getEmail, query.getEmail())
-        .between(Objects.nonNull(query.getStartTime()) && Objects.nonNull(query.getEndTime()),
-                    BaseEntity::getCreateTime, query.getStartTime(), query.getEndTime())
-        .orderByAsc(AdminUser::getSort)
-        .orderByDesc(AdminUser::getCreateTime)
-        .page(page);
+        return lambdaQuery()
+                .eq(Objects.nonNull(query.getDepartmentId()) && query.getDepartmentId() != 0,
+                        AdminUser::getDepartmentId, query.getDepartmentId())
+                .eq(query.getSex() != null, AdminUser::getSex, query.getSex())
+                .eq(query.getStatus() != null, AdminUser::getStatus, query.getStatus())
+                .and(StrUtil.isNotEmpty(query.getKeyword()), keywordQuery -> {
+                    keywordQuery
+                            .like(AdminUser::getUsername, query.getKeyword()).or()
+                            .like(AdminUser::getName, query.getKeyword()).or()
+                            .like(AdminUser::getMobile, query.getKeyword()).or()
+                            .like(AdminUser::getEmail, query.getKeyword());
+                })
+                .like(StrUtil.isNotEmpty(query.getUsername()), AdminUser::getUsername, query.getUsername())
+                .like(StrUtil.isNotEmpty(query.getName()), AdminUser::getName, query.getName())
+                .like(StrUtil.isNotEmpty(query.getMobile()), AdminUser::getMobile, query.getMobile())
+                .like(StrUtil.isNotEmpty(query.getEmail()), AdminUser::getEmail, query.getEmail())
+                .between(Objects.nonNull(query.getStartTime()) && Objects.nonNull(query.getEndTime()),
+                            BaseEntity::getCreateTime, query.getStartTime(), query.getEndTime())
+                .orderByAsc(AdminUser::getSort)
+                .orderByDesc(AdminUser::getCreateTime)
+                .page(page);
     }
 
     @Override
