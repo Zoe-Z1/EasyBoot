@@ -30,8 +30,8 @@ public class ${className} {
     @EasyLog(module = "分页获取${remarks!}列表", operateType = OperateTypeEnum.SELECT)
     </#if>
     @GetMapping("/page")
-    public Result<IPage<${entityName}>> page(@Validated ${queryName} query) {
-        return Result.success(${serviceCamelName}.selectPage(query));
+    public Result<IPage<${entityName}>> page(@Validated <#if queryName??>${queryName} query<#else >${entityName} ${entityCamelName}</#if>) {
+        return Result.success(${serviceCamelName}.selectPage(<#if queryName??>query<#else >${entityCamelName}</#if>));
     }
 
     @SaCheckPermission(value = "${permission}:detail")
@@ -54,8 +54,8 @@ public class ${className} {
     @ApiOperation(value = "创建${remarks!}")
     @EasyLog(module = "创建${remarks!}", operateType = OperateTypeEnum.CREATE)
     @PostMapping(value = "/create")
-    public Result create(@Validated @RequestBody ${entityName}CreateDTO dto) {
-        return Result.r(${serviceCamelName}.create(dto));
+    public Result create(@Validated @RequestBody <#if createDTOName??>${createDTOName} dto<#else >${entityName} ${entityCamelName}</#if>) {
+        return Result.r(${serviceCamelName}.create(<#if createDTOName??>dto<#else >${entityCamelName}</#if>));
     }
 
     @SaCheckPermission(value = "${permission}:update")
@@ -63,8 +63,8 @@ public class ${className} {
     @ApiOperation(value = "编辑${remarks!}")
     @EasyLog(module = "编辑${remarks!}", operateType = OperateTypeEnum.UPDATE)
     @PostMapping(value = "/update")
-    public Result update(@Validated @RequestBody ${entityName}UpdateDTO dto) {
-        return Result.r(${serviceCamelName}.updateById(dto));
+    public Result update(@Validated @RequestBody <#if updateDTOName??>${updateDTOName} dto<#else >${entityName} ${entityCamelName}</#if>) {
+        return Result.r(${serviceCamelName}.updateById(<#if updateDTOName??>dto<#else >${entityCamelName}</#if>));
     }
 
     @SaCheckPermission(value = "${permission}:del")

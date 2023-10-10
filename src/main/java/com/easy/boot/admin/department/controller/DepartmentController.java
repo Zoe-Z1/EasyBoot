@@ -62,8 +62,16 @@ public class DepartmentController extends BaseController {
     @ApiOperation(value = "获取部门详情")
     @EasyLog(module = "获取部门详情", operateType = OperateTypeEnum.SELECT)
     @GetMapping("/detail/{id}")
-    public Result<DepartmentVO> detail(@PathVariable Long id) {
+    public Result<Department> detail(@PathVariable Long id) {
         return Result.success(departmentService.detail(id));
+    }
+
+    @ApiOperationSupport(author = "zoe")
+    @ApiOperation(value = "获取父级部门列表")
+    @EasyLog(module = "获取父级部门列表", operateType = OperateTypeEnum.SELECT)
+    @GetMapping("/parentIds/{id}")
+    public Result<List<Long>> parentIds(@PathVariable Long id) {
+        return Result.success(departmentService.getParentIds(id));
     }
 
     @ApiOperationSupport(author = "zoe")

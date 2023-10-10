@@ -128,6 +128,8 @@
           <#if column.optElement == 'inputnumber'>
           <el-input-number
             v-model="ruleForm.${column.javaName}"
+            :min="0"
+            placeholder="请输入${column.columnRemarks}"
             style="width: 100%;"
           />
           </#if>
@@ -164,7 +166,15 @@
       }
     },
     methods: {
-
+      // 弹出窗口加载
+      openDialog(rows) {
+        this.dialogVisible = true
+        if (rows) {
+          this.ruleForm = { ...this.ruleForm, ...rows }
+        } else {
+          this.ruleForm = { }
+        }
+      },
     }
   }
 </script>

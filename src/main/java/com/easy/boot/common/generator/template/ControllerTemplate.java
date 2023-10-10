@@ -137,9 +137,6 @@ public class ControllerTemplate extends AbstractTemplate {
         }
         String entityName = template.getEntity().getFileName(javaName).replace(GenConstant.SUFFIX, "");
         String entityCamelName = template.getEntity().getFileName(camelName).replace(GenConstant.SUFFIX, "");
-        String createDTOName = template.getCreateDTO().getFileName(javaName).replace(GenConstant.SUFFIX, "");
-        String updateDTOName = template.getUpdateDTO().getFileName(javaName).replace(GenConstant.SUFFIX, "");
-        String queryName = template.getQuery().getFileName(javaName).replace(GenConstant.SUFFIX, "");
         String permission = metaTable.getName().replaceAll("_", ":");
         if (StrUtil.isNotEmpty(metaTable.getUiModuleName())) {
             permission = String.join(":", metaTable.getUiModuleName(), permission);
@@ -149,10 +146,19 @@ public class ControllerTemplate extends AbstractTemplate {
         buildDataMap.put(GenConstant.DATA_MAP_KEY_SERVICE_CAMEL_NAME, serviceCamelName);
         buildDataMap.put(GenConstant.DATA_MAP_KEY_ENTITY_NAME, entityName);
         buildDataMap.put(GenConstant.DATA_MAP_KEY_ENTITY_CAMEL_NAME, entityCamelName);
-        buildDataMap.put(GenConstant.DATA_MAP_KEY_CREATE_DTO_NAME, createDTOName);
-        buildDataMap.put(GenConstant.DATA_MAP_KEY_UPDATE_DTO_NAME, updateDTOName);
-        buildDataMap.put(GenConstant.DATA_MAP_KEY_QUERY_NAME, queryName);
         buildDataMap.put(GenConstant.DATA_MAP_KEY_PERMISSION, permission);
+        if (template.getCreateDTO().isEnable()) {
+            String createDTOName = template.getCreateDTO().getFileName(javaName).replace(GenConstant.SUFFIX, "");
+            buildDataMap.put(GenConstant.DATA_MAP_KEY_CREATE_DTO_NAME, createDTOName);
+        }
+        if (template.getUpdateDTO().isEnable()) {
+            String updateDTOName = template.getUpdateDTO().getFileName(javaName).replace(GenConstant.SUFFIX, "");
+            buildDataMap.put(GenConstant.DATA_MAP_KEY_UPDATE_DTO_NAME, updateDTOName);
+        }
+        if (template.getQuery().isEnable()) {
+            String queryName = template.getQuery().getFileName(javaName).replace(GenConstant.SUFFIX, "");
+            buildDataMap.put(GenConstant.DATA_MAP_KEY_QUERY_NAME, queryName);
+        }
         if (template.getVo().isEnable()) {
             String voName = template.getVo().getFileName(javaName).replace(GenConstant.SUFFIX, "");
             buildDataMap.put(GenConstant.DATA_MAP_KEY_VO_NAME, voName);

@@ -59,7 +59,14 @@ public interface IDepartmentService extends IService<Department> {
      * @param id
      * @return
      */
-    DepartmentVO detail(Long id);
+    Department detail(Long id);
+
+    /**
+     * 获取所有父级ID
+     * @param id 父级ID
+     * @return
+     */
+    List<Long> getParentIds(Long id);
 
     /**
     * 创建部门
