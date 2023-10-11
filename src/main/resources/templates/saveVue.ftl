@@ -51,7 +51,7 @@
             <#if column.dictDomainCode?? && column.dictDomainCode != "" && (column.columnRemarks!?index_of('#') > -1)>
           <el-select v-model="ruleForm.${column.javaName}" placeholder="请选择${column.columnRemarks!?substring(0, column.columnRemarks!?index_of('#'))?trim}">
             <el-option
-              v-for="(item, index) in dict.${column.javaName}List"
+              v-for="(item, index) in obj.${column.javaName}List"
               :key="index"
               :label="item.label"
               :value="item.code"
@@ -71,7 +71,7 @@
             <#if column.dictDomainCode?? && column.dictDomainCode != "">
           <el-radio
             v-model="ruleForm.${column.javaName}"
-            v-for="(item, index) in dict.${column.javaName}List"
+            v-for="(item, index) in obj.${column.javaName}List"
             :key="index"
             :label="item.code">
             {{ item.label }}
@@ -90,7 +90,7 @@
             <#if column.dictDomainCode?? && column.dictDomainCode != "">
           <el-checkbox-group v-model="ruleForm.${column.javaName}">
             <el-checkbox
-              v-for="(item, index) in dict.${column.javaName}List"
+              v-for="(item, index) in obj.${column.javaName}List"
               :key="index"
               :label="item.code"
             >{{ item.label }}</el-checkbox>

@@ -29,6 +29,12 @@ public class OperationLogServiceImpl extends ServiceImpl<OperationLogMapper, Ope
     public IPage<OperationLog> selectPage(OperationLogQuery query) {
         Page<OperationLog> page = new Page<>(query.getPageNum(), query.getPageSize());
         return lambdaQuery()
+                .and(StrUtil.isNotEmpty(query.getKeyword()), keywordQuery -> {
+                    keywordQuery
+                            .like(OperationLog::getIp, query.getKeyword()).or()
+                            .like(OperationLog::getRequestUrl, query.getKeyword()).or()
+                            .like(OperationLog::getOperateModule, query.getKeyword());
+                })
                 .like(StrUtil.isNotEmpty(query.getIp()), OperationLog::getIp, query.getIp())
                 .like(StrUtil.isNotEmpty(query.getRequestWay()), OperationLog::getRequestWay, query.getRequestWay())
                 .like(StrUtil.isNotEmpty(query.getRequestUrl()), OperationLog::getRequestUrl, query.getRequestUrl())

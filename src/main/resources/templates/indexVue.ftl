@@ -27,7 +27,7 @@
             <el-select v-model="queryForm.${column.javaName}" clearable style="width: 100%;" placeholder="请选择${column.columnRemarks!}">
                 </#if>
               <el-option
-                v-for="(item, index) in dict.${column.javaName}List"
+                v-for="(item, index) in ${column.javaName}List"
                 :key="index"
                 :label="item.label"
                   <#if column.javaType == 'Integer'>
@@ -100,7 +100,7 @@
       <#elseif column.optElement == 'timepicker' || column.optElement == 'datepicker' || column.optElement == 'datetimepicker' >
       <!-- ${column.columnRemarks!} -->
       <template #${column.javaName}="scope">
-        {{ scope.row.createTime | formatTime }}
+        {{ scope.row.${column.javaName} | formatTime }}
       </template>
       </#if>
       </#list>
@@ -126,7 +126,7 @@
       </template>
     </common-table>
     <!-- 新增or编辑组件 -->
-    <add-or-update ref="addOrUpdate" <#if hasDict>:dict="{ <#list columns as column><#if column.dictDomainCode?? && column.dictDomainCode != "">${column.javaName}List, </#if></#list> }"</#if> @ok="getList" />
+    <add-or-update ref="addOrUpdate" <#if hasDict>:obj="{ <#list columns as column><#if column.dictDomainCode?? && column.dictDomainCode != "">${column.javaName}List, </#if></#list> }"</#if> @ok="getList" />
     <#if global.enableImport>
     <!-- 全局导入组件 -->
     <to-channel ref="toChannel" title="${remarks!}导入" @change="getList" />

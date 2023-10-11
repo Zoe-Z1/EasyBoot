@@ -1,27 +1,21 @@
 package com.easy.boot.admin.operationLog.controller;
 
-import cn.hutool.core.date.DateUtil;
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.ExcelWriter;
 import com.alibaba.excel.write.metadata.WriteSheet;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.easy.boot.admin.operationLog.entity.OperationLog;
 import com.easy.boot.admin.operationLog.entity.OperationLogQuery;
-import com.easy.boot.admin.operationLog.entity.OperationLogUpdateDTO;
 import com.easy.boot.admin.operationLog.enums.OperateTypeEnum;
 import com.easy.boot.admin.operationLog.service.IOperationLogService;
 import com.easy.boot.common.base.BaseController;
 import com.easy.boot.common.base.Result;
-import com.easy.boot.common.excel.entity.ImportVO;
-import com.easy.boot.common.excel.entity.UploadDTO;
 import com.easy.boot.common.excel.handler.ExportExcelSelectCellWriteHandler;
 import com.easy.boot.common.log.EasyLog;
-import com.easy.boot.utils.JsonUtil;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.util.Assert;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -83,28 +77,6 @@ public class OperationLogController extends BaseController {
     @PostMapping("/clear")
     public Result clear() {
         return Result.r(operationLogService.clear());
-    }
-
-    @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "导入操作日志 - 用于测试")
-    @EasyLog(module = "导入操作日志 - 用于测试", operateType = OperateTypeEnum.IMPORT)
-    @PostMapping("/import")
-    public Result<ImportVO> importExcel(UploadDTO dto) throws IOException {
-        Assert.notNull(dto.getFile(), "文件不能为空");
-        List<OperationLog> list = EasyExcel.read(dto.getFile().getInputStream())
-                .head(OperationLog.class)
-                .sheet()
-                .doReadSync();
-        long start = DateUtil.current();
-        List<OperationLogUpdateDTO> updateDTOS = JsonUtil.copyList(list, OperationLogUpdateDTO.class);
-        long end = DateUtil.current();
-        long time = end - start;
-//            operationLogService.saveBatch(list);
-        System.out.println("DateUtil.start() = " + start);
-        System.out.println("DateUtil.end() = " + end);
-        System.out.println("DateUtil.time() = " + time);
-
-        return Result.success();
     }
 
     @ApiOperationSupport(author = "zoe")

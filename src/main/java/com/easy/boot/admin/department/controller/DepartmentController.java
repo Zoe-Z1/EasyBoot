@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author zoe
@@ -70,8 +71,10 @@ public class DepartmentController extends BaseController {
     @ApiOperation(value = "获取父级部门列表")
     @EasyLog(module = "获取父级部门列表", operateType = OperateTypeEnum.SELECT)
     @GetMapping("/parentIds/{id}")
-    public Result<List<Long>> parentIds(@PathVariable Long id) {
-        return Result.success(departmentService.getParentIds(id));
+    public Result<List<String>> parentIds(@PathVariable Long id) {
+        List<Long> parentIds = departmentService.getParentIds(id);
+        List<String> ids = parentIds.stream().map(x -> x + "").collect(Collectors.toList());
+        return Result.success(ids);
     }
 
     @ApiOperationSupport(author = "zoe")
