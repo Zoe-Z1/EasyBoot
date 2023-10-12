@@ -21,23 +21,14 @@ import org.hibernate.validator.constraints.Range;
 @ApiModel(value = "OperationLogQuery对象", description = "操作日志")
 public class OperationLogQuery extends BasePageQuery {
 
-    @ApiModelProperty("ip地址")
-    private String ip;
-
     @ApiModelProperty("请求方式")
     private String requestWay;
-
-    @ApiModelProperty("请求url")
-    private String requestUrl;
 
     @ApiModelProperty("操作模块")
     private String operateModule;
 
     @ApiModelProperty("操作类别")
     private String operateType;
-
-    @ApiModelProperty("操作人类别")
-    private String operatorType;
 
     @ApiModelProperty("开始时间")
     private Long startTime;
@@ -48,8 +39,8 @@ public class OperationLogQuery extends BasePageQuery {
     @ApiModelProperty("处理时间/ms")
     private Long handleTime;
 
-    @Range(min = 1, max = 2, message = "处理时间操作符不正确")
-    @ApiModelProperty("处理时间操作符 1：大于等于 2：小于等于")
+    @Range(min = 1, max = 6, message = "处理时间操作符不正确")
+    @ApiModelProperty("处理时间操作符 1：≥ 2：≤ 3：＞ 4：＜ 5：= 6：≠")
     private Integer handleTimeOperator;
 
     @ApiModelProperty("操作状态 SUCCESS：成功，FAIL：失败")

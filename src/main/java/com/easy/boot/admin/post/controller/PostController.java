@@ -51,6 +51,14 @@ public class PostController extends BaseController {
 
 
     @ApiOperationSupport(author = "zoe")
+    @ApiOperation(value = "获取岗位列表")
+    @EasyLog(module = "获取岗位列表", operateType = OperateTypeEnum.SELECT)
+    @GetMapping("/all")
+    public Result<List<Post>> all() {
+        return Result.success(postService.selectAll());
+    }
+
+    @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "分页获取岗位列表")
     @EasyLog(module = "分页获取岗位列表", operateType = OperateTypeEnum.SELECT)
     @GetMapping("/page")

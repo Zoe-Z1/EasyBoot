@@ -18,6 +18,12 @@ import java.util.List;
 public interface IPostService extends IService<Post> {
 
     /**
+     * 获取岗位列表
+     * @return
+     */
+    List<Post> selectAll();
+
+    /**
     * 查询岗位
     * @param query
     * @return
@@ -66,4 +72,5 @@ public interface IPostService extends IService<Post> {
      * @param errors 错误标注集合
      */
     void importExcel(List<Post> list, List<Post> errorList, List<ImportExcelError> errors);
+
 }

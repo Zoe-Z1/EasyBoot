@@ -68,12 +68,12 @@ public class OperationLog extends BaseEntity {
     @TableField("operator_type")
     private String operatorType;
 
-    @ExcelProperty(value = "请求开始时间/ms", converter = LongTimeToStingTimeConvert.class)
+    @ExcelProperty(value = "请求开始时间", converter = LongTimeToStingTimeConvert.class)
     @ApiModelProperty("请求开始时间/ms")
     @TableField("start_time")
     private Long startTime;
 
-    @ExcelProperty(value = "请求结束时间/ms", converter = LongTimeToStingTimeConvert.class)
+    @ExcelProperty(value = "请求结束时间", converter = LongTimeToStingTimeConvert.class)
     @ApiModelProperty("请求结束时间/ms")
     @TableField("end_time")
     private Long endTime;

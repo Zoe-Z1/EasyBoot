@@ -29,24 +29,33 @@ public class OperationLogServiceImpl extends ServiceImpl<OperationLogMapper, Ope
     public IPage<OperationLog> selectPage(OperationLogQuery query) {
         Page<OperationLog> page = new Page<>(query.getPageNum(), query.getPageSize());
         return lambdaQuery()
+                .select(BaseEntity::getId, OperationLog::getIp,OperationLog::getOperateModule, OperationLog::getOperateStatus,
+                        OperationLog::getOperateType, OperationLog::getOperatorType, OperationLog::getRequestUrl,
+                        OperationLog::getRequestWay, OperationLog::getStartTime, OperationLog::getEndTime,
+                        BaseEntity::getCreateTime,BaseEntity::getCreateUsername, OperationLog::getHandleTime)
                 .and(StrUtil.isNotEmpty(query.getKeyword()), keywordQuery -> {
                     keywordQuery
                             .like(OperationLog::getIp, query.getKeyword()).or()
                             .like(OperationLog::getRequestUrl, query.getKeyword()).or()
                             .like(OperationLog::getOperateModule, query.getKeyword());
                 })
-                .like(StrUtil.isNotEmpty(query.getIp()), OperationLog::getIp, query.getIp())
                 .like(StrUtil.isNotEmpty(query.getRequestWay()), OperationLog::getRequestWay, query.getRequestWay())
-                .like(StrUtil.isNotEmpty(query.getRequestUrl()), OperationLog::getRequestUrl, query.getRequestUrl())
                 .like(StrUtil.isNotEmpty(query.getOperateModule()), OperationLog::getOperateModule, query.getOperateModule())
                 .eq(StrUtil.isNotEmpty(query.getOperateType()), OperationLog::getOperateType, query.getOperateType())
-                .eq(StrUtil.isNotEmpty(query.getOperatorType()), OperationLog::getOperatorType, query.getOperatorType())
                 .eq(StrUtil.isNotEmpty(query.getOperateStatus()), OperationLog::getOperateStatus, query.getOperateStatus())
                 .between(Objects.nonNull(query.getStartTime()) && Objects.nonNull(query.getEndTime()),
-                        BaseEntity::getCreateTime, query.getStartTime(), query.getEndTime())
+                        OperationLog::getStartTime, query.getStartTime(), query.getEndTime())
                 .ge(Objects.nonNull(query.getHandleTime()) && Objects.nonNull(query.getHandleTimeOperator()) && query.getHandleTimeOperator() == 1,
                         OperationLog::getHandleTime, query.getHandleTime())
                 .le(Objects.nonNull(query.getHandleTime()) && Objects.nonNull(query.getHandleTimeOperator()) && query.getHandleTimeOperator() == 2,
+                        OperationLog::getHandleTime, query.getHandleTime())
+                .gt(Objects.nonNull(query.getHandleTime()) && Objects.nonNull(query.getHandleTimeOperator()) && query.getHandleTimeOperator() == 3,
+                        OperationLog::getHandleTime, query.getHandleTime())
+                .lt(Objects.nonNull(query.getHandleTime()) && Objects.nonNull(query.getHandleTimeOperator()) && query.getHandleTimeOperator() == 4,
+                        OperationLog::getHandleTime, query.getHandleTime())
+                .eq(Objects.nonNull(query.getHandleTime()) && Objects.nonNull(query.getHandleTimeOperator()) && query.getHandleTimeOperator() == 5,
+                        OperationLog::getHandleTime, query.getHandleTime())
+                .ne(Objects.nonNull(query.getHandleTime()) && Objects.nonNull(query.getHandleTimeOperator()) && query.getHandleTimeOperator() == 6,
                         OperationLog::getHandleTime, query.getHandleTime())
                 .orderByDesc(BaseEntity::getCreateTime)
                 .page(page);

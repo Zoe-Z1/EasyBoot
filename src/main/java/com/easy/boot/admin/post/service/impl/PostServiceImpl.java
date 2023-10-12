@@ -38,6 +38,16 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements IP
     private IUserPostService userPostService;
 
     @Override
+    public List<Post> selectAll() {
+        return lambdaQuery()
+                .select(BaseEntity::getId, Post::getCode,  Post::getName)
+                .eq(Post::getStatus, 1)
+                .orderByAsc(Post::getSort)
+                .orderByDesc(BaseEntity::getCreateTime)
+                .list();
+    }
+
+    @Override
     public IPage<Post> selectPage(PostQuery query) {
         Page<Post> page = new Page<>(query.getPageNum(), query.getPageSize());
         return lambdaQuery()

@@ -33,9 +33,9 @@ public enum OperateTypeEnum {
     CREATE("创建"),
 
     /**
-     * 修改
+     * 编辑
      */
-    UPDATE("修改"),
+    UPDATE("编辑"),
 
     /**
      * 删除

@@ -120,7 +120,7 @@
           :size="size"
           type="text"
           icon="el-icon-delete"
-          style="color: red"
+          style="color: #F56C6C;"
           @click.stop="handlerDel(funs['del'], scope.row)"
         >删除</el-button>
       </template>
@@ -265,6 +265,7 @@
         },
         {
           type: 'search',
+          handler: 'handlerQuery',
           bindValue: '',
           float: 'right',
           label: 'keyword',

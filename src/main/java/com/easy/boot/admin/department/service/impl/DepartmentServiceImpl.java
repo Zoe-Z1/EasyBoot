@@ -168,20 +168,23 @@ public class DepartmentServiceImpl extends ServiceImpl<DepartmentMapper, Departm
         if (department == null) {
             throw new BusinessException("当前部门不存在");
         }
-        if (department.getParentId() == 0 && department.getParentId() != null && department.getParentId() != 0) {
+        if (dto.getParentId() == null) {
+            throw new BusinessException("上级部门不能为空");
+        }
+        if (department.getParentId() != null && department.getParentId() == 0 && dto.getParentId() != 0) {
             throw new BusinessException("最上级部门不可选择上级部门");
         }
-        if (Objects.nonNull(dto.getParentId())) {
-            if (dto.getParentId() == 0) {
+        if (dto.getParentId() == 0) {
+            if (department.getParentId() != 0) {
                 department = this.getRoot();
                 if (department != null) {
                     throw new BusinessException("已存在最上级部门");
                 }
-            } else {
-                department = this.getById(dto.getParentId());
-                if (department == null) {
-                    throw new BusinessException("上级部门不存在");
-                }
+            }
+        } else {
+            department = this.getById(dto.getParentId());
+            if (department == null) {
+                throw new BusinessException("上级部门不存在");
             }
         }
         department = lambdaQuery().eq(Department::getName, dto.getName())
