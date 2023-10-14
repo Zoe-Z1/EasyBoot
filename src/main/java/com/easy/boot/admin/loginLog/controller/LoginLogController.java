@@ -48,14 +48,6 @@ public class LoginLogController extends BaseController {
     }
 
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "获取登录日志详情")
-    @EasyLog(module = "获取登录日志详情", operateType = OperateTypeEnum.SELECT)
-    @GetMapping("/detail/{id}")
-    public Result<LoginLog> detail(@PathVariable Long id) {
-        return Result.success(loginLogService.detail(id));
-    }
-
-    @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "删除登录日志")
     @EasyLog(module = "删除登录日志", operateType = OperateTypeEnum.DELETE)
     @PostMapping("/delete/{id}")

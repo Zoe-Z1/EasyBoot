@@ -23,13 +23,6 @@ public interface ILoginLogService extends IService<LoginLog> {
     IPage<LoginLog> selectPage(LoginLogQuery query);
 
     /**
-     * 获取登录日志详情
-     * @param id
-     * @return
-     */
-    LoginLog detail(Long id);
-
-    /**
     * 异步创建登录日志
     * @param dto
     * @return

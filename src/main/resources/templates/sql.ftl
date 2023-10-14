@@ -1,7 +1,7 @@
 <#if parentMenuId??>
 -- 菜单 SQL
-insert into menu (id, parent_id, label, path, component, permission, type, status, show_status, sort, create_by, create_username, create_time)
-values(${menuId?c}, ${parentMenuId?c}, '${remarks!}', '${menuPath}', '${component}', '', 2, 1, 1, 1, '${createBy?c}', '${createUsername}', '${createTime?c}');
+insert into menu (id, parent_id, label, path, component, type, status, show_status, sort, create_by, create_username, create_time)
+values(${menuId?c}, ${parentMenuId?c}, '${remarks!}', '${menuPath}', '${component}', 2, 1, 1, 1, '${createBy?c}', '${createUsername}', '${createTime?c}');
 
 -- 接口 SQL
 <#if queryEnable>
@@ -27,7 +27,6 @@ values(${delMenuId?c}, ${menuId?c}, '删除${remarks!}', '${permission}:del', 3,
 
 insert into menu (id, parent_id, label, permission, type, status, show_status, sort, create_by, create_username, create_time)
 values(${batchDelMenuId?c}, ${menuId?c}, '批量删除${remarks!}', '${permission}:batch:del', 3, 1, 1, 1, '${createBy?c}', '${createUsername}', '${createTime?c}');
-
 <#if global.enableImport>
 insert into menu (id, parent_id, label, permission, type, status, show_status, sort, create_by, create_username, create_time)
 values(${importMenuId?c}, ${menuId?c}, '导入${remarks!}', '${permission}:import', 3, 1, 1, 1, '${createBy?c}', '${createUsername}', '${createTime?c}');

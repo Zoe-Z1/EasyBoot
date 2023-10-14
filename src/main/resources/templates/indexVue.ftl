@@ -5,7 +5,7 @@
       :disabled="disabled"
       :options="options"
       @handlerClick="handlerClick"
-      @advancedSearch="getList"
+      @advancedSearch="handlerQuery"
     >
       <template slot="advanced-content">
         <el-form ref="advancedForm" style="margin-top: 20px;" :model="queryForm" label-width="80px">
