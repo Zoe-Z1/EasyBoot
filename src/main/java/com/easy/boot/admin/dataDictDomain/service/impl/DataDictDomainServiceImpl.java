@@ -45,6 +45,8 @@ public class DataDictDomainServiceImpl extends ServiceImpl<DataDictDomainMapper,
                 .like(StrUtil.isNotEmpty(query.getCode()), DataDictDomain::getCode, query.getCode())
                 .like(StrUtil.isNotEmpty(query.getName()), DataDictDomain::getName, query.getName())
                 .eq(Objects.nonNull(query.getStatus()), DataDictDomain::getStatus, query.getStatus())
+                .between(Objects.nonNull(query.getStartTime()) && Objects.nonNull(query.getEndTime()),
+                        BaseEntity::getCreateTime, query.getStartTime(), query.getEndTime())
                 .orderByAsc(DataDictDomain::getSort)
                 .orderByDesc(BaseEntity::getCreateTime)
                 .page(page);

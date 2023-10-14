@@ -26,7 +26,7 @@ public interface AdminUserService extends IService<AdminUser> {
      * @param id
      * @return
      */
-    AdminUser detail(Long id);
+    AdminUserVO detail(Long id);
 
     /**
      * 登录

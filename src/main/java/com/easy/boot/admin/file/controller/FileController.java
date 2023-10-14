@@ -25,7 +25,7 @@ import java.io.IOException;
 @Slf4j
 @Api(tags = "文件相关接口")
 @RestController
-@RequestMapping("/admin")
+@RequestMapping("/common")
 public class FileController extends BaseController {
 
 

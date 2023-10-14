@@ -27,6 +27,9 @@ public class SaTokenConfig implements WebMvcConfigurer {
             SaRouter.match("/admin/**", r -> {
                 adminLoginService.checkLogin();
             });
+            SaRouter.match("/common/**", r -> {
+                UserContext.checkAdminUserLogin();
+            });
         }))
                 .addPathPatterns("/**")
                 .excludePathPatterns("/admin/login",

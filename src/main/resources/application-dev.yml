@@ -41,6 +41,8 @@ mybatis-plus:
 
 # 配置文档 https://sa-token.cc/doc.html#/use/config
 sa-token:
-  token-name: easy-token
-  tokenPrefix: "Bearer"
+  token-name: Easy-Token
+  tokenPrefix: Bearer
   is-print: false
+  is-read-cookie: false
+  is-read-body: false

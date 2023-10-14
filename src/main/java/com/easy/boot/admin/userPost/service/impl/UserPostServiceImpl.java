@@ -24,6 +24,16 @@ public class UserPostServiceImpl extends ServiceImpl<UserPostMapper, UserPost> i
 
 
     @Override
+    public List<Long> selectIdsByUserId(Long userId) {
+        List<UserPost> list = lambdaQuery()
+                .select(BaseEntity::getId, UserPost::getPostId)
+                .eq(UserPost::getUserId, userId)
+                .orderByDesc(BaseEntity::getCreateTime)
+                .list();
+        return list.stream().map(UserPost::getPostId).distinct().collect(Collectors.toList());
+    }
+
+    @Override
     public List<UserPost> selectListByUserId(@NonNull Long userId) {
         return lambdaQuery().eq(UserPost::getUserId, userId)
                 .orderByDesc(BaseEntity::getCreateTime)

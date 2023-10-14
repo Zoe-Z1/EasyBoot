@@ -31,4 +31,10 @@ public class DataDictDomainQuery extends BasePageQuery {
     @ApiModelProperty("字典域状态 1：正常 2：禁用")
     private Integer status;
 
+    @ApiModelProperty("开始时间")
+    private Long startTime;
+
+    @ApiModelProperty("结束时间")
+    private Long endTime;
+
 }

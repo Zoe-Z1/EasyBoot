@@ -91,14 +91,19 @@ public class AdminUserServiceImpl extends ServiceImpl<AdminUserMapper, AdminUser
     }
 
     @Override
-    public AdminUser detail(Long id) {
+    public AdminUserVO detail(Long id) {
         String key = RedisKeyEnum.USER_DETAIL.getKey(id);
-        AdminUser adminUser = (AdminUser) easyRedisManager.get(key);
-        if (adminUser == null) {
-            adminUser = this.getById(id);
-            easyRedisManager.put(key, adminUser);
+        AdminUserVO vo = (AdminUserVO) easyRedisManager.get(key);
+        if (vo == null) {
+            AdminUser adminUser = this.getById(id);
+            vo = BeanUtil.copyBean(adminUser, AdminUserVO.class);
+            List<Long> roleIds = userRoleService.selectListByUserId(id);
+            List<Long> postIds = userPostService.selectIdsByUserId(id);
+            vo.setRoleIds(roleIds);
+            vo.setPostIds(postIds);
+            easyRedisManager.put(key, vo);
         }
-        return adminUser;
+        return vo;
     }
 
     @Override

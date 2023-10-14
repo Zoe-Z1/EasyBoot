@@ -59,7 +59,7 @@ public class AdminUserController extends BaseController {
     @ApiOperation(value = "获取用户详情")
     @EasyLog(module = "获取用户详情", operateType = OperateTypeEnum.SELECT)
     @GetMapping("/detail/{id}")
-    public Result<AdminUser> detail(@PathVariable Long id) {
+    public Result<AdminUserVO> detail(@PathVariable Long id) {
         return Result.success(adminUserService.detail(id));
     }
 

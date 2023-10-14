@@ -13,6 +13,13 @@ import java.util.List;
 public interface IUserPostService extends IService<UserPost> {
 
     /**
+     * 查询用户绑定的所有岗位ID
+     * @param userId
+     * @return
+     */
+    List<Long> selectIdsByUserId(Long userId);
+
+    /**
     * 查询用户岗位关联
     * @param userId
     * @return
