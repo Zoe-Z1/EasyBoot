@@ -22,6 +22,9 @@ public class DepartmentLazyQuery {
     @ApiModelProperty("关键词")
     private String keyword;
 
+    @ApiModelProperty(required = false, value = "部门ID")
+    private Long id;
+
     @ApiModelProperty(required = false, value = "父级部门ID，为0则代表最上级部门")
     private Long parentId;
 

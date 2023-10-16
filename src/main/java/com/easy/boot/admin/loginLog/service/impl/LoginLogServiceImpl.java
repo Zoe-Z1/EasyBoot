@@ -42,13 +42,8 @@ public class LoginLogServiceImpl extends ServiceImpl<LoginLogMapper, LoginLog> i
                             .like(LoginLog::getUsername, query.getKeyword()).or()
                             .like(LoginLog::getAddr, query.getKeyword());
                 })
-                .like(StrUtil.isNotEmpty(query.getIp()), LoginLog::getIp, query.getIp())
-                .like(StrUtil.isNotEmpty(query.getUsername()), LoginLog::getUsername, query.getUsername())
                 .like(StrUtil.isNotEmpty(query.getBrowser()), LoginLog::getBrowser, query.getBrowser())
                 .like(StrUtil.isNotEmpty(query.getOs()), LoginLog::getOs, query.getOs())
-                .like(StrUtil.isNotEmpty(query.getPro()), LoginLog::getPro, query.getPro())
-                .like(StrUtil.isNotEmpty(query.getCity()), LoginLog::getCity, query.getCity())
-                .like(StrUtil.isNotEmpty(query.getAddr()), LoginLog::getAddr, query.getAddr())
                 .eq(StrUtil.isNotEmpty(query.getStatus()), LoginLog::getStatus, query.getStatus())
                 .between(Objects.nonNull(query.getStartTime()) && Objects.nonNull(query.getEndTime()),
                         BaseEntity::getCreateTime, query.getStartTime(), query.getEndTime())

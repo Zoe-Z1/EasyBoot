@@ -34,14 +34,6 @@ public class DepartmentController extends BaseController {
 
 
 
-//    @ApiOperationSupport(author = "zoe")
-//    @ApiOperation(value = "获取可用部门树")
-//    @EasyLog(module = "获取可用部门树", operateType = OperateTypeEnum.SELECT)
-//    @GetMapping("/tree")
-//    public Result<List<DepartmentTree>> tree(@Validated DepartmentTreeQuery query) {
-//        return Result.success(departmentService.treeList(query));
-//    }
-
     @EasyNoRepeatIgnore
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "懒加载部门树")
@@ -50,14 +42,6 @@ public class DepartmentController extends BaseController {
     public Result<List<DepartmentLazyVO>> list(@Validated DepartmentLazyQuery query) {
         return Result.success(departmentService.selectList(query));
     }
-
-//    @ApiOperationSupport(author = "zoe")
-//    @ApiOperation(value = "分页获取部门列表")
-//    @EasyLog(module = "分页获取部门列表", operateType = OperateTypeEnum.SELECT)
-//    @GetMapping("/page")
-//    public Result<IPage<Department>> page(@Validated DepartmentQuery query) {
-//        return Result.success(departmentService.selectPage(query));
-//    }
 
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "获取部门详情")
