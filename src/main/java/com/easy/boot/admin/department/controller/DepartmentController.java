@@ -1,6 +1,10 @@
 package com.easy.boot.admin.department.controller;
 
-import com.easy.boot.admin.department.entity.*;
+import cn.dev33.satoken.annotation.SaCheckPermission;
+import com.easy.boot.admin.department.entity.DepartmentCreateDTO;
+import com.easy.boot.admin.department.entity.DepartmentLazyQuery;
+import com.easy.boot.admin.department.entity.DepartmentLazyVO;
+import com.easy.boot.admin.department.entity.DepartmentUpdateDTO;
 import com.easy.boot.admin.department.service.IDepartmentService;
 import com.easy.boot.admin.operationLog.enums.OperateTypeEnum;
 import com.easy.boot.common.base.BaseController;
@@ -35,6 +39,7 @@ public class DepartmentController extends BaseController {
 
 
     @EasyNoRepeatIgnore
+    @SaCheckPermission(value = "system:department:list")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "懒加载部门树")
     @EasyLog(module = "懒加载部门树", operateType = OperateTypeEnum.SELECT)
@@ -43,14 +48,7 @@ public class DepartmentController extends BaseController {
         return Result.success(departmentService.selectList(query));
     }
 
-    @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "获取部门详情")
-    @EasyLog(module = "获取部门详情", operateType = OperateTypeEnum.SELECT)
-    @GetMapping("/detail/{id}")
-    public Result<Department> detail(@PathVariable Long id) {
-        return Result.success(departmentService.detail(id));
-    }
-
+    @SaCheckPermission(value = "system:department:parent:ids")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "获取父级部门列表")
     @EasyLog(module = "获取父级部门列表", operateType = OperateTypeEnum.SELECT)
@@ -61,6 +59,7 @@ public class DepartmentController extends BaseController {
         return Result.success(ids);
     }
 
+    @SaCheckPermission(value = "system:department:create")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "创建部门")
     @EasyLog(module = "创建部门", operateType = OperateTypeEnum.CREATE)
@@ -69,6 +68,7 @@ public class DepartmentController extends BaseController {
         return Result.r(departmentService.create(dto));
     }
 
+    @SaCheckPermission(value = "system:department:update")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "编辑部门")
     @EasyLog(module = "编辑部门", operateType = OperateTypeEnum.UPDATE)
@@ -77,6 +77,7 @@ public class DepartmentController extends BaseController {
         return Result.r(departmentService.updateById(dto));
     }
 
+    @SaCheckPermission(value = "system:department:del")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "删除部门")
     @EasyLog(module = "删除部门", operateType = OperateTypeEnum.DELETE)
