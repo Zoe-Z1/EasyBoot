@@ -30,7 +30,7 @@
                 v-for="(item, index) in ${column.javaName}List"
                 :key="index"
                 :label="item.label"
-                  <#if column.javaType == 'Integer'>
+                  <#if column.javaType == 'Integer' || column.javaType == 'Long'>
                 :value="Number(item.code)"
                   <#else >
                 :value="item.code"
@@ -88,7 +88,7 @@
       <template #${column.javaName}="scope">
         <template v-for="(item, index) in ${column.javaName}List">
           <el-tag
-            <#if column.javaType == 'Integer'>
+            <#if column.javaType == 'Integer' || column.javaType == 'Long'>
             v-if="scope.row.${column.javaName} === Number(item.code)"
             <#else >
             v-if="scope.row.${column.javaName} === item.code"

@@ -157,7 +157,43 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
             }
         }
         Menu entity = BeanUtil.copyBean(dto, Menu.class);
+        validateMenu(entity);
         return save(entity);
+    }
+
+    /**
+     * 校验菜单
+     * @param menu
+     */
+    private void validateMenu(Menu menu) {
+        if (menu.getType() == 1) {
+            // 校验目录
+            if (StrUtil.isEmpty(menu.getLabel())) {
+                throw new BusinessException("菜单名称不能为空");
+            }
+            if (StrUtil.isEmpty(menu.getPath())) {
+                throw new BusinessException("路由地址不能为空");
+            }
+        } else if (menu.getType() == 2) {
+            // 校验菜单
+            if (StrUtil.isEmpty(menu.getLabel())) {
+                throw new BusinessException("菜单名称不能为空");
+            }
+            if (StrUtil.isEmpty(menu.getPath())) {
+                throw new BusinessException("路由地址不能为空");
+            }
+            if (StrUtil.isEmpty(menu.getComponent())) {
+                throw new BusinessException("组件路径不能为空");
+            }
+        } else if (menu.getType() == 3) {
+            // 校验接口
+            if (StrUtil.isEmpty(menu.getLabel())) {
+                throw new BusinessException("菜单名称不能为空");
+            }
+            if (StrUtil.isEmpty(menu.getPermission())) {
+                throw new BusinessException("权限字符不能为空");
+            }
+        }
     }
 
     @Override
@@ -183,6 +219,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
             }
         }
         Menu entity = BeanUtil.copyBean(dto, Menu.class);
+        validateMenu(entity);
         return updateById(entity);
     }
 

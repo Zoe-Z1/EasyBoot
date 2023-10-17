@@ -35,7 +35,7 @@ public class ScheduledTask extends BaseEntity {
     @TableField("job_key")
     private String jobKey;
 
-    @ApiModelProperty("超时策略  0：全部补偿 1：补偿1次 2：不补偿")
+    @ApiModelProperty("超时策略  #0：全部补偿， 1：补偿1次， 2：不补偿")
     @TableField("instruction")
     private Integer instruction;
 

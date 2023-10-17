@@ -54,10 +54,15 @@ public class ScheduledTaskServiceImpl extends ServiceImpl<ScheduledTaskMapper, S
     public IPage<ScheduledTask> selectPage(ScheduledTaskQuery query) {
         Page<ScheduledTask> page = new Page<>(query.getPageNum(), query.getPageSize());
         return lambdaQuery()
-                .like(StrUtil.isNotEmpty(query.getJobName()), ScheduledTask::getJobName, query.getJobName())
-                .like(StrUtil.isNotEmpty(query.getJobGroup()), ScheduledTask::getJobGroup, query.getJobGroup())
-                .like(StrUtil.isNotEmpty(query.getJobKey()), ScheduledTask::getJobKey, query.getJobKey())
+                .and(StrUtil.isNotEmpty(query.getKeyword()), keywordQuery -> {
+                    keywordQuery
+                            .like(ScheduledTask::getJobName, query.getKeyword()).or()
+                            .like(ScheduledTask::getJobGroup, query.getKeyword()).or()
+                            .like(ScheduledTask::getJobKey, query.getKeyword());
+                })
                 .eq(Objects.nonNull(query.getJobStatus()), ScheduledTask::getJobStatus, query.getJobStatus())
+                .between(Objects.nonNull(query.getStartTime()) && Objects.nonNull(query.getEndTime()),
+                        BaseEntity::getCreateTime, query.getStartTime(), query.getEndTime())
                 .orderByAsc(ScheduledTask::getSort)
                 .orderByDesc(BaseEntity::getCreateTime)
                 .page(page);

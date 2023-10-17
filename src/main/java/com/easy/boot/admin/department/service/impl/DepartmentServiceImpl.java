@@ -93,7 +93,6 @@ public class DepartmentServiceImpl extends ServiceImpl<DepartmentMapper, Departm
                 })
                 .eq(query.getParentId() != null, Department::getParentId, query.getParentId())
                 .eq(query.getId() != null, Department::getId, query.getId())
-                .like(StrUtil.isNotEmpty(query.getName()), Department::getName, query.getName())
                 .orderByAsc(Department::getSort)
                 .orderByDesc(BaseEntity::getCreateTime)
                 .list();

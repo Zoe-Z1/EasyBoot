@@ -49,12 +49,12 @@
           </#if>
           <#if column.optElement == 'select'>
             <#if column.dictDomainCode?? && column.dictDomainCode != "" && (column.columnRemarks!?index_of('#') > -1)>
-          <el-select v-model="ruleForm.${column.javaName}" placeholder="请选择${column.columnRemarks!?substring(0, column.columnRemarks!?index_of('#'))?trim}">
+          <el-select v-model="ruleForm.${column.javaName}" style="width: 100%;" placeholder="请选择${column.columnRemarks!?substring(0, column.columnRemarks!?index_of('#'))?trim}">
             <el-option
               v-for="(item, index) in obj.${column.javaName}List"
               :key="index"
               :label="item.label"
-              :value="item.code"
+              :value="<#if column.javaType == 'Integer' || column.javaType == 'Long'>Number(item.code)<#else >item.code</#if>"
             />
           </el-select>
             <#else >
@@ -73,7 +73,7 @@
             v-model="ruleForm.${column.javaName}"
             v-for="(item, index) in obj.${column.javaName}List"
             :key="index"
-            :label="item.code">
+            :label="<#if column.javaType == 'Integer' || column.javaType == 'Long'>Number(item.code)<#else >item.code</#if>">
             {{ item.label }}
           </el-radio>
             <#else >

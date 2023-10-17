@@ -41,7 +41,7 @@ public class ScheduledTaskCreateDTO {
 
     @Range(min = 0, max = 2, message = "超时策略不正确")
     @NotNull(message = "超时策略不能为空")
-    @ApiModelProperty(required = true, value = "超时策略  0：全部补偿 1：补偿1次 2：不补偿")
+    @ApiModelProperty(required = true, value = "超时策略  #0：全部补偿， 1：补偿1次， 2：不补偿")
     private Integer instruction;
 
     @ApiModelProperty(required = false, value = "任务描述")

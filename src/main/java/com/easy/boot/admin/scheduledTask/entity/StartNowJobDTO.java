@@ -26,7 +26,7 @@ public class StartNowJobDTO {
     @ApiModelProperty(required = true, value = "任务ID")
     private Long id;
 
-    @Range(min = 1, max = 100, message = "执行次数在{min}-{max}次之间")
+    @Range(min = 1, max = 10, message = "执行次数在{min}-{max}次之间")
     @NotNull(message = "执行次数不能为空")
     @ApiModelProperty(required = true, value = "执行次数")
     private Integer count;

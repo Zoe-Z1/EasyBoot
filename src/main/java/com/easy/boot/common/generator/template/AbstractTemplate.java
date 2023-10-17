@@ -21,29 +21,24 @@ public abstract class AbstractTemplate {
      */
     protected String getRemarks(String tableRemarks) {
         return tableRemarks;
-    }
+    };
 
     /**
      * 模块名
      */
-    protected String getModuleName() {
-        return null;
-    }
+    protected abstract String getModuleName();
 
     /**
      * 父类class
      */
     protected Class<?> getSuperClass() {
         return null;
-    }
+    };
 
     /**
      * 模板文件名
      */
-    protected String getTemplateName() {
-        return null;
-    }
-
+    protected abstract String getTemplateName();
     /**
      * 模板类型
      */
@@ -55,9 +50,7 @@ public abstract class AbstractTemplate {
      * 生成文件名
      * @param javaName 实体类Java名称
      */
-    protected String getFileName(String javaName) {
-        return null;
-    }
+    protected abstract String getFileName(String javaName);
 
     /**
      * 是否开启代码生成

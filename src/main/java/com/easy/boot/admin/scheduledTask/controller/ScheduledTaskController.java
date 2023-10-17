@@ -33,7 +33,7 @@ public class ScheduledTaskController extends BaseController {
     @ApiOperation(value = "立即执行定时任务")
     @EasyLog(module = "立即执行定时任务", operateType = OperateTypeEnum.START_JOB)
     @PostMapping("/startNow")
-    public Result startNow(@Validated StartNowJobDTO dto) {
+    public Result startNow(@Validated @RequestBody StartNowJobDTO dto) {
         scheduledTaskService.startNow(dto);
         return Result.success();
     }
@@ -42,7 +42,7 @@ public class ScheduledTaskController extends BaseController {
     @ApiOperation(value = "恢复/暂停定时任务")
     @EasyLog(module = "恢复/暂停定时任务", operateType = OperateTypeEnum.RESUME_OR_PAUSE_JOB)
     @PostMapping("/change")
-    public Result change(@Validated ChangeJobDTO dto) {
+    public Result change(@Validated @RequestBody ChangeJobDTO dto) {
         scheduledTaskService.change(dto);
         return Result.success();
     }
