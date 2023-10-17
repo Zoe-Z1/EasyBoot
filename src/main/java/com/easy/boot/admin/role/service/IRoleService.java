@@ -2,10 +2,7 @@ package com.easy.boot.admin.role.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.easy.boot.admin.role.entity.Role;
-import com.easy.boot.admin.role.entity.RoleCreateDTO;
-import com.easy.boot.admin.role.entity.RoleQuery;
-import com.easy.boot.admin.role.entity.RoleUpdateDTO;
+import com.easy.boot.admin.role.entity.*;
 import com.easy.boot.common.excel.entity.ImportExcelError;
 
 import java.util.List;
@@ -35,7 +32,7 @@ public interface IRoleService extends IService<Role> {
      * @param id
      * @return
      */
-    Role detail(Long id);
+    RoleVO detail(Long id);
 
     /**
      * 根据编码获取角色

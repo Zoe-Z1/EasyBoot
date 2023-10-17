@@ -21,6 +21,13 @@ public interface IRoleMenuService extends IService<RoleMenu> {
     List<RoleMenu> selectList(RoleMenuQuery query);
 
     /**
+     * 根据角色ID查询菜单ID集合
+     * @param roleId 角色ID
+     * @return
+     */
+    List<Long> selectMenuIdsByRoleId(Long roleId);
+
+    /**
      * 根据角色ID集合查询菜单ID集合
      * @param roleIds 角色ID集合
      * @return

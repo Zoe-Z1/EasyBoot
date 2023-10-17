@@ -201,7 +201,7 @@ public class DepartmentServiceImpl extends ServiceImpl<DepartmentMapper, Departm
     public Boolean deleteById(Long id) {
         List<Department> list = this.selectListByParentId(id);
         if (CollUtil.isNotEmpty(list)) {
-            throw new BusinessException("部门存在子部门，不允许删除");
+            throw new BusinessException("存在子部门，不允许删除");
         }
         return removeById(id);
     }

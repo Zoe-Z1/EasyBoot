@@ -9,5 +9,8 @@ public class Constant {
 
     private Constant(){}
 
-
+    /**
+     * admin角色编码
+     */
+    public static final String ADMIN = "admin";
 }

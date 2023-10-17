@@ -24,6 +24,9 @@ public class OperationLogQuery extends BasePageQuery {
     @ApiModelProperty("操作模块")
     private String operateModule;
 
+    @ApiModelProperty("操作人")
+    private String createUsername;
+
     @ApiModelProperty("操作类别")
     private String operateType;
 

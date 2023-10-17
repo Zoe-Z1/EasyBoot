@@ -7,10 +7,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.easy.boot.admin.menu.entity.Menu;
 import com.easy.boot.admin.menu.service.IMenuService;
-import com.easy.boot.admin.role.entity.Role;
-import com.easy.boot.admin.role.entity.RoleCreateDTO;
-import com.easy.boot.admin.role.entity.RoleQuery;
-import com.easy.boot.admin.role.entity.RoleUpdateDTO;
+import com.easy.boot.admin.role.entity.*;
 import com.easy.boot.admin.role.mapper.RoleMapper;
 import com.easy.boot.admin.role.service.IRoleService;
 import com.easy.boot.admin.roleMenu.service.IRoleMenuService;
@@ -20,6 +17,7 @@ import com.easy.boot.common.base.BaseEntity;
 import com.easy.boot.common.excel.entity.ImportExcelError;
 import com.easy.boot.exception.BusinessException;
 import com.easy.boot.utils.BeanUtil;
+import com.easy.boot.utils.Constant;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -76,8 +74,15 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IR
     }
 
     @Override
-    public Role detail(Long id) {
-        return getById(id);
+    public RoleVO detail(Long id) {
+        Role role = getById(id);
+        if (role == null) {
+            throw new BusinessException("当前角色不存在");
+        }
+        RoleVO vo = BeanUtil.copyBean(role, RoleVO.class);
+        List<Long> ids = roleMenuService.selectMenuIdsByRoleId(id);
+        vo.setMenuIds(ids);
+        return vo;
     }
 
     @Override
@@ -107,15 +112,26 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IR
     @Transactional(rollbackFor = Exception.class)
     @Override
     public Boolean updateById(RoleUpdateDTO dto) {
-        Role role = this.getByCode(dto.getCode());
+        Role role = getById(dto.getId());
+        if (role == null) {
+            throw new BusinessException("角色不存在");
+        } else {
+            if (Constant.ADMIN.equals(role.getCode()) && !Constant.ADMIN.equals(dto.getCode())) {
+                throw new BusinessException("该角色编码不允许编辑");
+            }
+            if (Constant.ADMIN.equals(role.getCode()) && dto.getStatus() == 2) {
+                throw new BusinessException("该角色不允许禁用");
+            }
+        }
+        role = this.getByCode(dto.getCode());
         if (Objects.nonNull(role) && !dto.getId().equals(role.getId())) {
             throw new BusinessException("角色编码已存在");
         }
         // 必须要有最上级菜单
-        Menu menu = menuService.getRoot();
-        if (CollUtil.isNotEmpty(dto.getMenuIds()) && !dto.getMenuIds().contains(menu.getId())) {
-            throw new BusinessException("必须勾选最上级菜单");
-        }
+//        Menu menu = menuService.getRoot();
+//        if (CollUtil.isNotEmpty(dto.getMenuIds()) && !dto.getMenuIds().contains(menu.getId())) {
+//            throw new BusinessException("必须勾选最上级菜单");
+//        }
         // 删除菜单后新增
         roleMenuService.deleteByRoleId(dto.getId());
         roleMenuService.batchCreate(dto.getMenuIds(), dto.getId());

@@ -70,7 +70,7 @@ public class RoleController extends BaseController {
     @ApiOperation(value = "获取角色详情")
     @EasyLog(module = "获取角色详情", operateType = OperateTypeEnum.SELECT)
     @GetMapping("/detail/{id}")
-    public Result<Role> detail(@PathVariable Long id) {
+    public Result<RoleVO> detail(@PathVariable Long id) {
         return Result.success(roleService.detail(id));
     }
 

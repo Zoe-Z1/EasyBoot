@@ -33,6 +33,15 @@ public class RoleMenuServiceImpl extends ServiceImpl<RoleMenuMapper, RoleMenu> i
     }
 
     @Override
+    public List<Long> selectMenuIdsByRoleId(Long roleId) {
+        if (roleId == null) {
+            return new ArrayList<>();
+        }
+        List<RoleMenu> list = lambdaQuery().eq(RoleMenu::getRoleId, roleId).list();
+        return list.stream().map(RoleMenu::getMenuId).distinct().collect(Collectors.toList());
+    }
+
+    @Override
     public List<Long> selectMenuIdsByRoleIds(List<Long> roleIds) {
         if (CollUtil.isEmpty(roleIds)) {
             return new ArrayList<>();

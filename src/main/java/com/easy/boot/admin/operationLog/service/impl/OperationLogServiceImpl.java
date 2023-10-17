@@ -39,6 +39,7 @@ public class OperationLogServiceImpl extends ServiceImpl<OperationLogMapper, Ope
                             .like(OperationLog::getOperateModule, query.getKeyword()).or()
                             .like(OperationLog::getRequestUrl, query.getKeyword());
                 })
+                .like(StrUtil.isNotEmpty(query.getCreateUsername()), OperationLog::getCreateUsername, query.getCreateUsername())
                 .like(StrUtil.isNotEmpty(query.getOperateModule()), OperationLog::getOperateModule, query.getOperateModule())
                 .eq(StrUtil.isNotEmpty(query.getOperateType()), OperationLog::getOperateType, query.getOperateType())
                 .eq(StrUtil.isNotEmpty(query.getOperateStatus()), OperationLog::getOperateStatus, query.getOperateStatus())
