@@ -20,7 +20,7 @@ pipeline {
     post {
         success {
             echo '上传jar包和脚本'
-            sshPublisher(publishers: [sshPublisherDesc(configName: '本人服务器', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: 'sh /data/java/easy.sh backup', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '',  remoteDirectorySDF: false, removePrefix: 'script', sourceFiles: 'script/easy.sh'), sshTransfer(cleanRemote: false, excludes: '', execCommand: 'nohup sh /data/java/easy.sh restart > /dev/null 2>&1 &', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: 'target', sourceFiles: 'target/EasyBoot.jar')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: true)])
+            sshPublisher(publishers: [sshPublisherDesc(configName: '本人服务器', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: 'sh /data/java/easy.sh backup', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '/java', remoteDirectorySDF: false, removePrefix: 'script', sourceFiles: 'script/easy.sh'), sshTransfer(cleanRemote: false, excludes: '', execCommand: 'nohup sh /data/java/easy.sh restart > /dev/null 2>&1 &', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: 'target', sourceFiles: 'target/EasyBoot.jar')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: true)])
         }
     }
 }
