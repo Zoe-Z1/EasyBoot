@@ -13,8 +13,6 @@ import com.easy.boot.admin.blacklist.service.IBlacklistService;
 import com.easy.boot.admin.user.entity.AdminUser;
 import com.easy.boot.admin.user.service.AdminUserService;
 import com.easy.boot.common.base.BaseEntity;
-import com.easy.boot.common.redis.EasyRedisManager;
-import com.easy.boot.common.redis.RedisKeyEnum;
 import com.easy.boot.exception.BusinessException;
 import com.easy.boot.utils.BeanUtil;
 import org.springframework.stereotype.Service;
@@ -22,7 +20,6 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 /**
  * @author zoe
@@ -34,9 +31,6 @@ public class BlacklistServiceImpl extends ServiceImpl<BlacklistMapper, Blacklist
 
     @Resource
     private AdminUserService adminUserService;
-
-    @Resource
-    private EasyRedisManager easyRedisManager;
 
     @Override
     public IPage<Blacklist> selectPage(BlacklistQuery query) {
@@ -54,29 +48,12 @@ public class BlacklistServiceImpl extends ServiceImpl<BlacklistMapper, Blacklist
 
     @Override
     public List<Blacklist> selectNotForeverList() {
-        String key = RedisKeyEnum.NOT_FOREVER_BLACKLIST.getKey();
-        List<Blacklist> list = null;
-        if (easyRedisManager.hasKey(key)) {
-            list = (List<Blacklist>) easyRedisManager.get(key);
-        } else {
-            list = lambdaQuery().ne(Blacklist::getDuration, -1).list();
-            easyRedisManager.put(key, list);
-        }
-        return list;
+        return lambdaQuery().ne(Blacklist::getDuration, 0).list();
     }
 
     @Override
     public Blacklist detail(Long id) {
-        String key = RedisKeyEnum.BLACKLIST_DETAIL.getKey(id);
-        boolean isExist = easyRedisManager.hasKey(key);
-        Blacklist blacklist = null;
-        if (isExist) {
-            blacklist = (Blacklist) easyRedisManager.get(key);
-        } else {
-            blacklist = getById(id);
-            easyRedisManager.put(key, blacklist);
-        }
-        return blacklist;
+        return getById(id);
     }
 
     @Override
@@ -92,22 +69,10 @@ public class BlacklistServiceImpl extends ServiceImpl<BlacklistMapper, Blacklist
 
     @Override
     public Blacklist getByRelevanceDataAndType(String relevanceData, Integer type) {
-        String key = RedisKeyEnum.IP_BLACKLIST.getKey(relevanceData);
-        if (type == 1) {
-            key = RedisKeyEnum.USER_BLACKLIST.getKey(relevanceData);
-        }
-        boolean isExist = easyRedisManager.hasKey(key);
-        Blacklist blacklist = null;
-        if (isExist) {
-            blacklist = (Blacklist) easyRedisManager.get(key);
-        } else {
-            blacklist = lambdaQuery()
-                    .eq(Blacklist::getRelevanceData, relevanceData)
-                    .eq(Blacklist::getType, type)
-                    .one();
-            easyRedisManager.put(key, blacklist);
-        }
-        return blacklist;
+        return lambdaQuery()
+                .eq(Blacklist::getRelevanceData, relevanceData)
+                .eq(Blacklist::getType, type)
+                .one();
     }
 
     @Override
@@ -125,8 +90,6 @@ public class BlacklistServiceImpl extends ServiceImpl<BlacklistMapper, Blacklist
             }
             entity.setUsername(adminUser.getUsername());
         }
-        String key = RedisKeyEnum.NOT_FOREVER_BLACKLIST.getKey();
-        easyRedisManager.remove(key);
         return save(entity);
     }
 
@@ -138,55 +101,23 @@ public class BlacklistServiceImpl extends ServiceImpl<BlacklistMapper, Blacklist
             String name = dto.getType() == 1 ? "账号" : "IP";
             throw new BusinessException(name + "已经被拉黑，无法再次拉黑");
         }
-        String key = RedisKeyEnum.IP_BLACKLIST.getKey(dto.getRelevanceData());
         if (dto.getType() == 1) {
-            key = RedisKeyEnum.USER_BLACKLIST.getKey(dto.getRelevanceData());
             AdminUser adminUser = adminUserService.detail(Long.valueOf(dto.getRelevanceData()));
             if (adminUser == null) {
                 throw new BusinessException("拉黑账号不存在");
             }
             entity.setUsername(adminUser.getUsername());
         }
-        String detailKey = RedisKeyEnum.BLACKLIST_DETAIL.getKey(dto.getId());
-        String notForeverKey = RedisKeyEnum.NOT_FOREVER_BLACKLIST.getKey();
-        easyRedisManager.remove(notForeverKey);
-        easyRedisManager.remove(detailKey);
-        easyRedisManager.remove(key);
         return updateById(entity);
     }
 
     @Override
     public Boolean deleteById(Long id) {
-        Blacklist blacklist = this.detail(id);
-        String key = RedisKeyEnum.IP_BLACKLIST.getKey(blacklist.getRelevanceData());
-        if (blacklist.getType() == 1) {
-            key = RedisKeyEnum.USER_BLACKLIST.getKey(blacklist.getRelevanceData());
-        }
-        String notForeverKey = RedisKeyEnum.NOT_FOREVER_BLACKLIST.getKey();
-        easyRedisManager.remove(notForeverKey);
-        easyRedisManager.remove(key);
         return removeById(id);
     }
 
     @Override
     public Boolean deleteBatchByIds(List<Long> ids) {
-        List<Blacklist> blacklists = this.listByIds(ids);
-        List<String> userData = blacklists.stream()
-                .filter(item -> item.getType() == 1)
-                .map(Blacklist::getRelevanceData)
-                .collect(Collectors.toList());
-        List<String> ipData = blacklists.stream()
-                .filter(item -> item.getType() == 2)
-                .map(Blacklist::getRelevanceData)
-                .collect(Collectors.toList());
-        List<String> ipKeys = RedisKeyEnum.IP_BLACKLIST.getKeys(ipData);
-        List<String> userKeys = RedisKeyEnum.USER_BLACKLIST.getKeys(userData);
-        List<String> detailKeys = RedisKeyEnum.BLACKLIST_DETAIL.getKeys(ids);
-        String notForeverKey = RedisKeyEnum.NOT_FOREVER_BLACKLIST.getKey();
-        easyRedisManager.remove(notForeverKey);
-        easyRedisManager.remove(detailKeys);
-        easyRedisManager.remove(ipKeys);
-        easyRedisManager.remove(userKeys);
         return removeBatchByIds(ids);
     }
 

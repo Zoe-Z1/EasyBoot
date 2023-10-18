@@ -72,7 +72,7 @@ public class AdminLoginServiceImpl implements AdminLoginService {
         // 查询用户黑名单
         Blacklist blacklist = blacklistService.getByUserId(user.getId());
         if (Objects.nonNull(blacklist)) {
-            if (blacklist.getDuration() != -1) {
+            if (blacklist.getDuration() != 0) {
                 // 计算拉黑结束时间 大于当前时间则代表拉黑中
                 long endTime = blacklist.getCreateTime() + blacklist.getDuration() * 60 * 1000;
                 if (endTime > DateUtil.current()) {
@@ -89,7 +89,7 @@ public class AdminLoginServiceImpl implements AdminLoginService {
         // 查询IP黑名单
         blacklist = blacklistService.getByIp(ip);
         if (Objects.nonNull(blacklist)) {
-            if (blacklist.getDuration() != -1) {
+            if (blacklist.getDuration() != 0) {
                 // 计算拉黑结束时间 大于当前时间则代表拉黑中
                 long endTime = blacklist.getCreateTime() + blacklist.getDuration() * 60 * 1000;
                 if (endTime > DateUtil.current()) {
@@ -120,7 +120,7 @@ public class AdminLoginServiceImpl implements AdminLoginService {
         // 查询用户黑名单
         Blacklist blacklist = blacklistService.getByUserId(user.getId());
         if (Objects.nonNull(blacklist)) {
-            if (blacklist.getDuration() == -1) {
+            if (blacklist.getDuration() == 0) {
                 throw new BusinessException(SystemErrorEnum.USER_IS_BLACKLIST);
             }
             // 计算拉黑结束时间 大于当前时间则代表拉黑中
@@ -133,7 +133,7 @@ public class AdminLoginServiceImpl implements AdminLoginService {
         // 查询IP黑名单
         blacklist = blacklistService.getByIp(ip);
         if (Objects.nonNull(blacklist)) {
-            if (blacklist.getDuration() == -1) {
+            if (blacklist.getDuration() == 0) {
                 throw new BusinessException(SystemErrorEnum.IP_IS_BLACKLIST);
             }
             // 计算拉黑结束时间 大于当前时间则代表拉黑中

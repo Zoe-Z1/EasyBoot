@@ -47,7 +47,7 @@ public class Blacklist extends BaseEntity {
     private String relevanceData;
 
     @ExcelProperty(value = "拉黑时长/分钟", converter = LongBlacklistDurationToStringConvert.class)
-    @ApiModelProperty("拉黑时长/分钟  -1代表永久")
+    @ApiModelProperty("拉黑时长/分钟  0代表永久")
     @TableField("duration")
     private Long duration;
 }

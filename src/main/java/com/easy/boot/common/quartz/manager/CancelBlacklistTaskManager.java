@@ -5,9 +5,7 @@ import cn.hutool.core.date.DateUtil;
 import com.easy.boot.admin.blacklist.entity.Blacklist;
 import com.easy.boot.admin.blacklist.service.IBlacklistService;
 import com.easy.boot.admin.scheduledTask.entity.ScheduledTask;
-import com.easy.boot.common.redis.EasyRedisManager;
 import com.easy.boot.common.quartz.EasyJobTaskInterface;
-import com.easy.boot.common.redis.RedisKeyEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -29,8 +27,6 @@ public class CancelBlacklistTaskManager implements EasyJobTaskInterface {
     @Resource
     private IBlacklistService blacklistService;
 
-    @Resource
-    private EasyRedisManager easyRedisManager;
 
     @Override
     public String getKey() {
@@ -61,8 +57,5 @@ public class CancelBlacklistTaskManager implements EasyJobTaskInterface {
         }
         // 从黑名单中删除
         blacklistService.deleteBatchByIds(cancelIds);
-        // 剩下的重新加入缓存
-        String key = RedisKeyEnum.NOT_FOREVER_BLACKLIST.getKey();
-        easyRedisManager.put(key, list);
     }
 }

@@ -33,6 +33,6 @@ public class BlacklistCreateDTO {
     private String relevanceData;
 
     @NotNull(message = "拉黑时长不能为空")
-    @ApiModelProperty(required = true, value = "拉黑时长/分钟 -1代表永久")
+    @ApiModelProperty(required = true, value = "拉黑时长/分钟 0代表永久")
     private Long duration;
 }

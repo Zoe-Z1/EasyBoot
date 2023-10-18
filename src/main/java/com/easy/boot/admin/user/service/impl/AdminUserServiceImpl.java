@@ -22,8 +22,6 @@ import com.easy.boot.admin.userPost.service.IUserPostService;
 import com.easy.boot.admin.userRole.service.IUserRoleService;
 import com.easy.boot.common.base.BaseEntity;
 import com.easy.boot.common.excel.entity.ImportExcelError;
-import com.easy.boot.common.redis.EasyRedisManager;
-import com.easy.boot.common.redis.RedisKeyEnum;
 import com.easy.boot.common.saToken.UserContext;
 import com.easy.boot.exception.BusinessException;
 import com.easy.boot.utils.BeanUtil;
@@ -61,9 +59,6 @@ public class AdminUserServiceImpl extends ServiceImpl<AdminUserMapper, AdminUser
     @Resource
     private IMenuService menuService;
 
-    @Resource
-    private EasyRedisManager easyRedisManager;
-
     @Override
     public IPage<AdminUser> selectPage(AdminUserQuery query) {
         Page<AdminUser> page = new Page<>(query.getPageNum(), query.getPageSize());
@@ -92,17 +87,12 @@ public class AdminUserServiceImpl extends ServiceImpl<AdminUserMapper, AdminUser
 
     @Override
     public AdminUserVO detail(Long id) {
-        String key = RedisKeyEnum.USER_DETAIL.getKey(id);
-        AdminUserVO vo = (AdminUserVO) easyRedisManager.get(key);
-        if (vo == null) {
-            AdminUser adminUser = this.getById(id);
-            vo = BeanUtil.copyBean(adminUser, AdminUserVO.class);
-            List<Long> roleIds = userRoleService.selectListByUserId(id);
-            List<Long> postIds = userPostService.selectIdsByUserId(id);
-            vo.setRoleIds(roleIds);
-            vo.setPostIds(postIds);
-            easyRedisManager.put(key, vo);
-        }
+        AdminUser adminUser = this.getById(id);
+        AdminUserVO vo = BeanUtil.copyBean(adminUser, AdminUserVO.class);
+        List<Long> roleIds = userRoleService.selectListByUserId(id);
+        List<Long> postIds = userPostService.selectIdsByUserId(id);
+        vo.setRoleIds(roleIds);
+        vo.setPostIds(postIds);
         return vo;
     }
 
@@ -156,10 +146,6 @@ public class AdminUserServiceImpl extends ServiceImpl<AdminUserMapper, AdminUser
         if (dto.getStatus() != null && dto.getStatus() == 2) {
             StpUtil.kickout(dto.getId());
         }
-        String key = RedisKeyEnum.USER_DETAIL.getKey(user.getId());
-        String infoKey = RedisKeyEnum.USER_INFO.getKey(user.getId());
-        easyRedisManager.remove(key);
-        easyRedisManager.remove(infoKey);
         return updateById(user);
     }
 
@@ -182,10 +168,6 @@ public class AdminUserServiceImpl extends ServiceImpl<AdminUserMapper, AdminUser
             // 改密码踢下线
             StpUtil.kickout(dto.getId());
         }
-        String key = RedisKeyEnum.USER_DETAIL.getKey(user.getId());
-        String infoKey = RedisKeyEnum.USER_INFO.getKey(user.getId());
-        easyRedisManager.remove(key);
-        easyRedisManager.remove(infoKey);
         return status;
     }
 
@@ -203,10 +185,6 @@ public class AdminUserServiceImpl extends ServiceImpl<AdminUserMapper, AdminUser
             // 改密码踢下线
             StpUtil.kickout(dto.getId());
         }
-        String key = RedisKeyEnum.USER_DETAIL.getKey(user.getId());
-        String infoKey = RedisKeyEnum.USER_INFO.getKey(user.getId());
-        easyRedisManager.remove(key);
-        easyRedisManager.remove(infoKey);
         return status;
     }
 
@@ -245,10 +223,6 @@ public class AdminUserServiceImpl extends ServiceImpl<AdminUserMapper, AdminUser
         userPostService.deleteByUserId(id);
         // 删除用户角色关联
         userRoleService.deleteByUserId(id);
-        String key = RedisKeyEnum.USER_DETAIL.getKey(id);
-        String infoKey = RedisKeyEnum.USER_INFO.getKey(id);
-        easyRedisManager.remove(key);
-        easyRedisManager.remove(infoKey);
         // 删除用户
         return removeById(id);
     }
@@ -260,10 +234,6 @@ public class AdminUserServiceImpl extends ServiceImpl<AdminUserMapper, AdminUser
         userPostService.deleteBatchByUserIds(ids);
         // 删除用户角色关联
         userRoleService.deleteBatchByUserIds(ids);
-        List<String> keys = RedisKeyEnum.USER_DETAIL.getKeys(ids);
-        List<String> infoKeys = RedisKeyEnum.USER_INFO.getKeys(ids);
-        easyRedisManager.remove(keys);
-        easyRedisManager.remove(infoKeys);
         // 删除用户
         return removeBatchByIds(ids);
     }

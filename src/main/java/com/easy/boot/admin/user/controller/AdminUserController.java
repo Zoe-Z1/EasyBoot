@@ -1,5 +1,6 @@
 package com.easy.boot.admin.user.controller;
 
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.ExcelWriter;
 import com.alibaba.excel.write.metadata.WriteSheet;
@@ -46,7 +47,7 @@ public class AdminUserController extends BaseController {
     private AdminUserService adminUserService;
 
 
-//    @SaCheckPermission(value = "system:admin:user:page")
+    @SaCheckPermission(value = "system:admin:user:page")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "分页获取用户列表")
     @EasyLog(module = "分页获取用户列表", operateType = OperateTypeEnum.SELECT)
@@ -55,6 +56,7 @@ public class AdminUserController extends BaseController {
         return Result.success(adminUserService.selectPage(query));
     }
 
+    @SaCheckPermission(value = "system:admin:user:detail")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "获取用户详情")
     @EasyLog(module = "获取用户详情", operateType = OperateTypeEnum.SELECT)
@@ -71,6 +73,7 @@ public class AdminUserController extends BaseController {
         return Result.success(adminUserService.getInfo());
     }
 
+    @SaCheckPermission(value = "system:admin:user:create")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "创建用户")
     @EasyLog(module = "创建用户", operateType = OperateTypeEnum.CREATE)
@@ -79,6 +82,7 @@ public class AdminUserController extends BaseController {
         return Result.r(adminUserService.create(dto));
     }
 
+    @SaCheckPermission(value = "system:admin:user:update")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "编辑用户")
     @EasyLog(module = "编辑用户", operateType = OperateTypeEnum.UPDATE)
@@ -87,6 +91,7 @@ public class AdminUserController extends BaseController {
         return Result.r(adminUserService.updateById(dto));
     }
 
+    @SaCheckPermission(value = "system:admin:user:edit:password")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "修改密码")
     @EasyLog(module = "修改密码", operateType = OperateTypeEnum.UPDATE)
@@ -95,6 +100,7 @@ public class AdminUserController extends BaseController {
         return Result.r(adminUserService.editPassword(dto));
     }
 
+    @SaCheckPermission(value = "system:admin:user:reset:password")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "重置密码")
     @EasyLog(module = "重置密码", operateType = OperateTypeEnum.UPDATE)
@@ -103,6 +109,7 @@ public class AdminUserController extends BaseController {
         return Result.r(adminUserService.resetPassword(dto));
     }
 
+    @SaCheckPermission(value = "system:admin:user:del")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "删除用户")
     @EasyLog(module = "删除用户", operateType = OperateTypeEnum.DELETE)
@@ -111,6 +118,7 @@ public class AdminUserController extends BaseController {
         return Result.r(adminUserService.deleteById(id));
     }
 
+    @SaCheckPermission(value = "system:admin:user:batch:del")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "批量删除用户")
     @EasyLog(module = "批量删除用户", operateType = OperateTypeEnum.DELETE)
@@ -119,6 +127,7 @@ public class AdminUserController extends BaseController {
         return Result.r(adminUserService.deleteBatchByIds(ids));
     }
 
+    @SaCheckPermission(value = "system:admin:user:import")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "导入用户")
     @EasyLog(module = "导入用户", operateType = OperateTypeEnum.IMPORT)
@@ -152,6 +161,7 @@ public class AdminUserController extends BaseController {
         return Result.success(importVO);
     }
 
+    @SaCheckPermission(value = "system:admin:user:export")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "导出用户")
     @EasyLog(module = "导出用户", operateType = OperateTypeEnum.EXPORT)
@@ -175,6 +185,7 @@ public class AdminUserController extends BaseController {
         writer.finish();
     }
 
+    @SaCheckPermission(value = "system:admin:user:download")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "下载用户导入模板")
     @EasyLog(module = "下载用户导入模板", operateType = OperateTypeEnum.DOWNLOAD)

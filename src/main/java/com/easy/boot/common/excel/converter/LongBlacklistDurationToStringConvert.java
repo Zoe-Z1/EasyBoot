@@ -25,7 +25,7 @@ public class LongBlacklistDurationToStringConvert implements Converter<Long> {
      */
     @Override
     public Long convertToJavaData(ReadCellData<?> cellData, ExcelContentProperty contentProperty, GlobalConfiguration globalConfiguration) throws Exception {
-        return STR.equals(cellData.getStringValue()) ? -1 : Long.parseLong(cellData.getStringValue());
+        return STR.equals(cellData.getStringValue()) ? 0 : Long.parseLong(cellData.getStringValue());
     }
 
     /**
@@ -38,6 +38,6 @@ public class LongBlacklistDurationToStringConvert implements Converter<Long> {
      */
     @Override
     public WriteCellData<?> convertToExcelData(Long value, ExcelContentProperty contentProperty, GlobalConfiguration globalConfiguration) throws Exception {
-        return new WriteCellData(value.intValue() == -1 ? STR : value.toString());
+        return new WriteCellData(value.intValue() == 0 ? STR : value.toString());
     }
 }
