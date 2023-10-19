@@ -52,7 +52,7 @@ public class Menu extends BaseEntity {
     @TableField("permission")
     private String permission;
 
-    @ApiModelProperty("菜单类型 1：目录  2：菜单 3：按钮")
+    @ApiModelProperty("菜单类型 1：目录  2：菜单 3：接口")
     @TableField("type")
     private Integer type;
 

@@ -1,5 +1,6 @@
 package com.easy.boot.admin.operationLog.controller;
 
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.ExcelWriter;
 import com.alibaba.excel.write.metadata.WriteSheet;
@@ -39,6 +40,7 @@ public class OperationLogController extends BaseController {
 
 
 
+    @SaCheckPermission(value = "system:operation:log:page")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "分页获取操作日志列表")
     @EasyLog(module = "分页获取操作日志列表", operateType = OperateTypeEnum.SELECT)
@@ -47,6 +49,7 @@ public class OperationLogController extends BaseController {
         return Result.success(operationLogService.selectPage(query));
     }
 
+    @SaCheckPermission(value = "system:operation:log:detail")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "获取操作日志详情")
     @EasyLog(module = "获取操作日志详情", operateType = OperateTypeEnum.SELECT)
@@ -55,6 +58,7 @@ public class OperationLogController extends BaseController {
         return Result.success(operationLogService.detail(id));
     }
 
+    @SaCheckPermission(value = "system:operation:log:del")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "删除操作日志")
     @EasyLog(module = "删除操作日志", operateType = OperateTypeEnum.DELETE)
@@ -63,6 +67,7 @@ public class OperationLogController extends BaseController {
         return Result.r(operationLogService.deleteById(id));
     }
 
+    @SaCheckPermission(value = "system:operation:log:batch:del")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "批量删除操作日志")
     @EasyLog(module = "批量删除操作日志", operateType = OperateTypeEnum.DELETE)
@@ -71,6 +76,7 @@ public class OperationLogController extends BaseController {
         return Result.r(operationLogService.deleteBatchByIds(ids));
     }
 
+    @SaCheckPermission(value = "system:operation:log:clear")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "清空操作日志")
     @EasyLog(module = "清空操作日志", operateType = OperateTypeEnum.CLEAR)
@@ -79,6 +85,7 @@ public class OperationLogController extends BaseController {
         return Result.r(operationLogService.clear());
     }
 
+    @SaCheckPermission(value = "system:operation:log:export")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "导出操作日志")
     @EasyLog(module = "导出操作日志", operateType = OperateTypeEnum.EXPORT)

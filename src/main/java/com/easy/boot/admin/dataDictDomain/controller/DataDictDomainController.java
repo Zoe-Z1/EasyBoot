@@ -1,5 +1,6 @@
 package com.easy.boot.admin.dataDictDomain.controller;
 
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.ExcelWriter;
 import com.alibaba.excel.write.metadata.WriteSheet;
@@ -49,6 +50,7 @@ public class DataDictDomainController extends BaseController {
     private IDataDictDomainService dataDictDomainService;
 
 
+    @SaCheckPermission(value = "system:data:dict:domain:page")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "分页获取数据字典域列表")
     @EasyLog(module = "分页获取数据字典域列表", operateType = OperateTypeEnum.SELECT)
@@ -57,6 +59,7 @@ public class DataDictDomainController extends BaseController {
         return Result.success(dataDictDomainService.selectPage(query));
     }
 
+    @SaCheckPermission(value = "system:data:dict:domain:detail")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "获取数据字典域详情")
     @EasyLog(module = "获取数据字典域详情", operateType = OperateTypeEnum.SELECT)
@@ -65,6 +68,7 @@ public class DataDictDomainController extends BaseController {
         return Result.success(dataDictDomainService.detail(id));
     }
 
+    @SaCheckPermission(value = "system:data:dict:domain:create")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "创建数据字典域")
     @EasyLog(module = "创建数据字典域", operateType = OperateTypeEnum.CREATE)
@@ -73,6 +77,7 @@ public class DataDictDomainController extends BaseController {
         return Result.r(dataDictDomainService.create(dto));
     }
 
+    @SaCheckPermission(value = "system:data:dict:domain:update")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "编辑数据字典域")
     @EasyLog(module = "编辑数据字典域", operateType = OperateTypeEnum.UPDATE)
@@ -81,6 +86,7 @@ public class DataDictDomainController extends BaseController {
         return Result.r(dataDictDomainService.updateById(dto));
     }
 
+    @SaCheckPermission(value = "system:data:dict:domain:del")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "删除数据字典域")
     @EasyLog(module = "删除数据字典域", operateType = OperateTypeEnum.DELETE)
@@ -89,6 +95,7 @@ public class DataDictDomainController extends BaseController {
         return Result.r(dataDictDomainService.deleteById(id));
     }
 
+    @SaCheckPermission(value = "system:data:dict:domain:batch:del")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "批量删除数据字典域")
     @EasyLog(module = "批量删除数据字典域", operateType = OperateTypeEnum.DELETE)
@@ -97,6 +104,7 @@ public class DataDictDomainController extends BaseController {
         return Result.r(dataDictDomainService.deleteBatchByIds(ids));
     }
 
+    @SaCheckPermission(value = "system:data:dict:domain:import")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "导入数据字典域")
     @EasyLog(module = "导入数据字典域", operateType = OperateTypeEnum.IMPORT)
@@ -130,6 +138,7 @@ public class DataDictDomainController extends BaseController {
         return Result.success(importVO);
     }
 
+    @SaCheckPermission(value = "system:data:dict:domain:export")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "导出数据字典域")
     @EasyLog(module = "导出数据字典域", operateType = OperateTypeEnum.EXPORT)
@@ -152,6 +161,7 @@ public class DataDictDomainController extends BaseController {
         build.finish();
     }
 
+    @SaCheckPermission(value = "system:data:dict:domain:download")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "下载数据字典域导入模板")
     @EasyLog(module = "下载数据字典域导入模板", operateType = OperateTypeEnum.DOWNLOAD)

@@ -9,7 +9,6 @@ import cn.hutool.crypto.digest.DigestUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.easy.boot.admin.menu.entity.Menu;
 import com.easy.boot.admin.menu.entity.MenuTree;
 import com.easy.boot.admin.menu.entity.MenuTreeQuery;
 import com.easy.boot.admin.menu.service.IMenuService;
@@ -30,6 +29,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
@@ -201,20 +201,42 @@ public class AdminUserServiceImpl extends ServiceImpl<AdminUserMapper, AdminUser
         MenuTreeQuery query = MenuTreeQuery.builder()
                 .status(1)
                 .parentId(0L)
-                .menuIds(menuIds)
                 .build();
         List<MenuTree> menus = menuService.treeList(query);
         if (!menus.isEmpty()) {
             menus = menus.get(0).getChildren();
         }
-        // 获取权限字符集合
-        List<String> permissions = menus.stream().map(Menu::getPermission).distinct().collect(Collectors.toList());
+        List<String> permissions = new ArrayList<>();
+        eachMenus(menus, menuIds, permissions);
 
         info.setRoles(roles);
         info.setMenus(menus);
         info.setPermissions(permissions);
         return info;
     }
+
+    /**
+     * 递归处理当前用户菜单
+     * @param menus
+     * @param menuIds
+     * @param permissions
+     */
+    private void eachMenus(List<MenuTree> menus, List<Long> menuIds, List<String> permissions) {
+        Iterator<MenuTree> iterator = menus.iterator();
+        while (iterator.hasNext()) {
+            MenuTree menuTree = iterator.next();
+            if (!menuTree.getChildren().isEmpty()) {
+                eachMenus(menuTree.getChildren(), menuIds, permissions);
+            }
+            if (menuTree.getChildren().isEmpty() && !menuIds.contains(menuTree.getId())) {
+                iterator.remove();
+            }
+            if (menuTree.getType() == 3 && StrUtil.isNotEmpty(menuTree.getPermission())) {
+                permissions.add(menuTree.getPermission());
+            }
+        }
+    }
+
 
     @Transactional(rollbackFor = Exception.class)
     @Override

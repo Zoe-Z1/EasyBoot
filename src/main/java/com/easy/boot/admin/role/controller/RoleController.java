@@ -1,5 +1,6 @@
 package com.easy.boot.admin.role.controller;
 
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.ExcelWriter;
 import com.alibaba.excel.write.metadata.WriteSheet;
@@ -50,14 +51,16 @@ public class RoleController extends BaseController {
     private IUserRoleService userRoleService;
 
 
+    @SaCheckPermission(value = "system:role:all")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "获取角色列表")
-    @EasyLog(module = "获取角色列表", operateType = OperateTypeEnum.SELECT)
+    @ApiOperation(value = "获取全部角色")
+    @EasyLog(module = "获取全部角色", operateType = OperateTypeEnum.SELECT)
     @GetMapping("/all")
     public Result<List<Role>> all() {
         return Result.success(roleService.selectAll());
     }
 
+    @SaCheckPermission(value = "system:role:page")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "分页获取角色列表")
     @EasyLog(module = "分页获取角色列表", operateType = OperateTypeEnum.SELECT)
@@ -66,6 +69,7 @@ public class RoleController extends BaseController {
         return Result.success(roleService.selectPage(query));
     }
 
+    @SaCheckPermission(value = "system:role:detail")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "获取角色详情")
     @EasyLog(module = "获取角色详情", operateType = OperateTypeEnum.SELECT)
@@ -74,6 +78,7 @@ public class RoleController extends BaseController {
         return Result.success(roleService.detail(id));
     }
 
+    @SaCheckPermission(value = "system:role:create")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "创建角色")
     @EasyLog(module = "创建角色", operateType = OperateTypeEnum.CREATE)
@@ -82,14 +87,16 @@ public class RoleController extends BaseController {
         return Result.r(roleService.create(dto));
     }
 
+    @SaCheckPermission(value = "system:role:allot:user")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "角色分配用户")
     @EasyLog(module = "角色分配用户", operateType = OperateTypeEnum.CREATE)
-    @PostMapping(value = "/roleAllotUser")
+    @PostMapping(value = "/allotUser")
     public Result roleAllotUser(@Validated @RequestBody RoleAllotUserDTO dto) {
         return Result.r(userRoleService.roleAllotUser(dto.getUserIds(), dto.getRoleId()));
     }
 
+    @SaCheckPermission(value = "system:role:update")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "编辑角色")
     @EasyLog(module = "编辑角色", operateType = OperateTypeEnum.UPDATE)
@@ -98,6 +105,7 @@ public class RoleController extends BaseController {
         return Result.r(roleService.updateById(dto));
     }
 
+    @SaCheckPermission(value = "system:role:del")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "删除角色")
     @EasyLog(module = "删除角色", operateType = OperateTypeEnum.DELETE)
@@ -106,6 +114,7 @@ public class RoleController extends BaseController {
         return Result.r(roleService.deleteById(id));
     }
 
+    @SaCheckPermission(value = "system:role:batch:del")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "批量删除角色")
     @EasyLog(module = "批量删除角色", operateType = OperateTypeEnum.DELETE)
@@ -114,6 +123,7 @@ public class RoleController extends BaseController {
         return Result.r(roleService.deleteBatchByIds(ids));
     }
 
+    @SaCheckPermission(value = "system:role:import")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "导入角色")
     @EasyLog(module = "导入角色", operateType = OperateTypeEnum.IMPORT)
@@ -147,6 +157,7 @@ public class RoleController extends BaseController {
         return Result.success(importVO);
     }
 
+    @SaCheckPermission(value = "system:role:export")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "导出角色")
     @EasyLog(module = "导出角色", operateType = OperateTypeEnum.EXPORT)
@@ -169,6 +180,7 @@ public class RoleController extends BaseController {
         build.finish();
     }
 
+    @SaCheckPermission(value = "system:role:download")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "下载角色导入模板")
     @EasyLog(module = "下载角色导入模板", operateType = OperateTypeEnum.DOWNLOAD)

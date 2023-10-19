@@ -36,7 +36,7 @@ public class MenuQuery extends BasePageQuery {
     private String permission;
 
     @Range(min = 1, max = 3, message = "菜单类型不正确")
-    @ApiModelProperty("菜单类型 1：目录  2：菜单 3：按钮")
+    @ApiModelProperty("菜单类型 1：目录  2：菜单 3：接口")
     private Integer type;
 
     @Range(min = 1, max = 2, message = "菜单状态不正确")

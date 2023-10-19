@@ -61,7 +61,6 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
     public List<MenuTree> treeList(MenuTreeQuery query) {
         List<Menu> list = lambdaQuery()
                 .eq(query.getStatus() != null, Menu::getStatus, query.getStatus())
-                .in(CollUtil.isNotEmpty(query.getMenuIds()), BaseEntity::getId, query.getMenuIds())
                 .list();
         if (CollUtil.isEmpty(list)) {
             return new ArrayList<>();
@@ -69,11 +68,10 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
         // 转换list，直接去数据库查可以省略这一步
         List<MenuTree> treeList = list.stream().map(item -> BeanUtil.copyBean(item, MenuTree.class)).collect(Collectors.toList());
         Map<Long, List<MenuTree>> map = treeList.stream().collect(Collectors.groupingBy(Menu::getParentId));
-        List<MenuTree> empList = new ArrayList<>();
         treeList.forEach(item -> {
             List<MenuTree> children = map.get(item.getId());
             if (children == null) {
-                children = empList;
+                children = new ArrayList<>();
             }
             // 根据sort升序排序，再根据createTime降序排序
             children.sort(Comparator.comparing(MenuTree::getSort)

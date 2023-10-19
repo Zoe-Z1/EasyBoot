@@ -1,5 +1,6 @@
 package com.easy.boot.admin.scheduledTask.controller;
 
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.easy.boot.admin.operationLog.enums.OperateTypeEnum;
 import com.easy.boot.admin.scheduledTask.entity.*;
@@ -29,6 +30,7 @@ public class ScheduledTaskController extends BaseController {
     @Resource
     private IScheduledTaskService scheduledTaskService;
 
+    @SaCheckPermission(value = "ops:scheduled:task:start:now")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "立即执行定时任务")
     @EasyLog(module = "立即执行定时任务", operateType = OperateTypeEnum.START_JOB)
@@ -38,6 +40,7 @@ public class ScheduledTaskController extends BaseController {
         return Result.success();
     }
 
+    @SaCheckPermission(value = "ops:scheduled:task:change")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "恢复/暂停定时任务")
     @EasyLog(module = "恢复/暂停定时任务", operateType = OperateTypeEnum.RESUME_OR_PAUSE_JOB)
@@ -47,6 +50,7 @@ public class ScheduledTaskController extends BaseController {
         return Result.success();
     }
 
+    @SaCheckPermission(value = "ops:scheduled:task:page")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "分页获取定时任务列表")
     @EasyLog(module = "分页获取定时任务列表", operateType = OperateTypeEnum.SELECT)
@@ -55,6 +59,7 @@ public class ScheduledTaskController extends BaseController {
         return Result.success(scheduledTaskService.selectPage(query));
     }
 
+    @SaCheckPermission(value = "ops:scheduled:task:detail")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "获取定时任务详情")
     @EasyLog(module = "获取定时任务详情", operateType = OperateTypeEnum.SELECT)
@@ -63,6 +68,7 @@ public class ScheduledTaskController extends BaseController {
         return Result.success(scheduledTaskService.detail(id));
     }
 
+    @SaCheckPermission(value = "ops:scheduled:task:create")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "创建定时任务")
     @EasyLog(module = "创建定时任务", operateType = OperateTypeEnum.CREATE)
@@ -71,6 +77,7 @@ public class ScheduledTaskController extends BaseController {
         return Result.r(scheduledTaskService.create(dto));
     }
 
+    @SaCheckPermission(value = "ops:scheduled:task:update")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "编辑定时任务")
     @EasyLog(module = "编辑定时任务", operateType = OperateTypeEnum.UPDATE)
@@ -79,6 +86,7 @@ public class ScheduledTaskController extends BaseController {
         return Result.r(scheduledTaskService.updateById(dto));
     }
 
+    @SaCheckPermission(value = "ops:scheduled:task:del")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "删除定时任务")
     @EasyLog(module = "删除定时任务", operateType = OperateTypeEnum.DELETE)
@@ -87,6 +95,7 @@ public class ScheduledTaskController extends BaseController {
         return Result.r(scheduledTaskService.deleteById(id));
     }
 
+    @SaCheckPermission(value = "ops:scheduled:task:batch:del")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "批量删除定时任务")
     @EasyLog(module = "批量删除定时任务", operateType = OperateTypeEnum.DELETE)

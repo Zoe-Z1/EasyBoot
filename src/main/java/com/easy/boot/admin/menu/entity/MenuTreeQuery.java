@@ -9,7 +9,6 @@ import lombok.experimental.SuperBuilder;
 import org.hibernate.validator.constraints.Range;
 
 import javax.validation.constraints.NotNull;
-import java.util.List;
 
 /**
  * @author zoe
@@ -27,9 +26,6 @@ public class MenuTreeQuery {
     @ApiModelProperty(required = true, value = "父级菜单ID，为0则代表最上级菜单")
     private Long parentId;
 
-    @ApiModelProperty(required = false, value = "菜单ID集合")
-    private List<Long> menuIds;
-
     @ApiModelProperty("菜单名称")
     private String label;
 
@@ -37,7 +33,7 @@ public class MenuTreeQuery {
     private String permission;
 
     @Range(min = 1, max = 3, message = "菜单类型不正确")
-    @ApiModelProperty("菜单类型 1：目录  2：菜单 3：按钮")
+    @ApiModelProperty("菜单类型 1：目录  2：菜单 3：接口")
     private Integer type;
 
     @Range(min = 1, max = 2, message = "菜单状态不正确")

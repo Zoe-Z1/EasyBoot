@@ -25,7 +25,7 @@ public enum SystemErrorEnum {
     IP_UNKNOWN(205,"IP未知，无法访问"),
 
     /** 没有访问权限 */
-    NO_ACCESS_PERMISSION(401,"没有访问权限，无法访问"),
+    NO_ACCESS_PERMISSION(401,"没有接口权限，无法访问"),
 
     /** 认证失败 */
     AUTHENTICATION_FAILURE(403,"身份认证失败,请重新授权"),

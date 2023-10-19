@@ -1,5 +1,6 @@
 package com.easy.boot.admin.post.controller;
 
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.ExcelWriter;
 import com.alibaba.excel.write.metadata.WriteSheet;
@@ -50,14 +51,16 @@ public class PostController extends BaseController {
 
 
 
+    @SaCheckPermission(value = "system:post:all")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "获取岗位列表")
-    @EasyLog(module = "获取岗位列表", operateType = OperateTypeEnum.SELECT)
+    @ApiOperation(value = "获取全部岗位")
+    @EasyLog(module = "获取全部岗位", operateType = OperateTypeEnum.SELECT)
     @GetMapping("/all")
     public Result<List<Post>> all() {
         return Result.success(postService.selectAll());
     }
 
+    @SaCheckPermission(value = "system:post:page")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "分页获取岗位列表")
     @EasyLog(module = "分页获取岗位列表", operateType = OperateTypeEnum.SELECT)
@@ -66,6 +69,7 @@ public class PostController extends BaseController {
         return Result.success(postService.selectPage(query));
     }
 
+    @SaCheckPermission(value = "system:post:detail")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "获取岗位详情")
     @EasyLog(module = "获取岗位详情", operateType = OperateTypeEnum.SELECT)
@@ -74,6 +78,7 @@ public class PostController extends BaseController {
         return Result.success(postService.detail(id));
     }
 
+    @SaCheckPermission(value = "system:post:create")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "创建岗位")
     @EasyLog(module = "创建岗位", operateType = OperateTypeEnum.CREATE)
@@ -82,6 +87,7 @@ public class PostController extends BaseController {
         return Result.r(postService.create(dto));
     }
 
+    @SaCheckPermission(value = "system:post:update")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "编辑岗位")
     @EasyLog(module = "编辑岗位", operateType = OperateTypeEnum.UPDATE)
@@ -90,6 +96,7 @@ public class PostController extends BaseController {
         return Result.r(postService.updateById(dto));
     }
 
+    @SaCheckPermission(value = "system:post:del")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "删除岗位")
     @EasyLog(module = "删除岗位", operateType = OperateTypeEnum.DELETE)
@@ -98,6 +105,7 @@ public class PostController extends BaseController {
         return Result.r(postService.deleteById(id));
     }
 
+    @SaCheckPermission(value = "system:post:batch:del")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "批量删除岗位")
     @EasyLog(module = "批量删除岗位", operateType = OperateTypeEnum.DELETE)
@@ -106,6 +114,7 @@ public class PostController extends BaseController {
         return Result.r(postService.deleteBatchByIds(ids));
     }
 
+    @SaCheckPermission(value = "system:post:import")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "导入岗位")
     @EasyLog(module = "导入岗位", operateType = OperateTypeEnum.IMPORT)
@@ -139,6 +148,7 @@ public class PostController extends BaseController {
         return Result.success(importVO);
     }
 
+    @SaCheckPermission(value = "system:post:export")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "导出岗位")
     @EasyLog(module = "导出岗位", operateType = OperateTypeEnum.EXPORT)
@@ -161,6 +171,7 @@ public class PostController extends BaseController {
         build.finish();
     }
 
+    @SaCheckPermission(value = "system:post:download")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "下载岗位导入模板")
     @EasyLog(module = "下载岗位导入模板", operateType = OperateTypeEnum.DOWNLOAD)

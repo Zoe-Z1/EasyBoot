@@ -1,6 +1,6 @@
 package com.easy.boot.admin.menu.controller;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.easy.boot.admin.menu.entity.*;
 import com.easy.boot.admin.menu.service.IMenuService;
 import com.easy.boot.admin.operationLog.enums.OperateTypeEnum;
@@ -31,6 +31,7 @@ public class MenuController extends BaseController {
     private IMenuService menuService;
 
 
+    @SaCheckPermission(value = "system:menu:tree")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "获取菜单树")
     @EasyLog(module = "获取菜单树", operateType = OperateTypeEnum.SELECT)
@@ -40,6 +41,7 @@ public class MenuController extends BaseController {
     }
 
     @EasyNoRepeatIgnore
+    @SaCheckPermission(value = "system:menu:list")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "懒加载菜单树")
     @EasyLog(module = "懒加载菜单树", operateType = OperateTypeEnum.SELECT)
@@ -48,14 +50,7 @@ public class MenuController extends BaseController {
         return Result.success(menuService.selectList(query));
     }
 
-    @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "分页获取菜单列表")
-    @EasyLog(module = "分页获取菜单列表", operateType = OperateTypeEnum.SELECT)
-    @GetMapping("/page")
-    public Result<IPage<Menu>> page(@Validated MenuQuery query) {
-        return Result.success(menuService.selectPage(query));
-    }
-
+    @SaCheckPermission(value = "system:menu:detail")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "获取菜单详情")
     @EasyLog(module = "获取菜单详情", operateType = OperateTypeEnum.SELECT)
@@ -64,6 +59,7 @@ public class MenuController extends BaseController {
         return Result.success(menuService.detail(id));
     }
 
+    @SaCheckPermission(value = "system:menu:create")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "创建菜单")
     @EasyLog(module = "创建菜单", operateType = OperateTypeEnum.CREATE)
@@ -72,6 +68,7 @@ public class MenuController extends BaseController {
         return Result.r(menuService.create(dto));
     }
 
+    @SaCheckPermission(value = "system:menu:update")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "编辑菜单")
     @EasyLog(module = "编辑菜单", operateType = OperateTypeEnum.UPDATE)
@@ -80,6 +77,7 @@ public class MenuController extends BaseController {
         return Result.r(menuService.updateById(dto));
     }
 
+    @SaCheckPermission(value = "system:menu:del")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "删除菜单")
     @EasyLog(module = "删除菜单", operateType = OperateTypeEnum.DELETE)

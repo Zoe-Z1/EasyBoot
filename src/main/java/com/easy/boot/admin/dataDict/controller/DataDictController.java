@@ -1,5 +1,6 @@
 package com.easy.boot.admin.dataDict.controller;
 
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.ExcelWriter;
 import com.alibaba.excel.write.metadata.WriteSheet;
@@ -51,6 +52,7 @@ public class DataDictController extends BaseController {
     private IDataDictDomainService dataDictDomainService;
 
 
+    @SaCheckPermission(value = "system:data:dict:page")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "分页获取数据字典列表")
     @EasyLog(module = "分页获取数据字典列表", operateType = OperateTypeEnum.SELECT)
@@ -59,7 +61,7 @@ public class DataDictController extends BaseController {
         return Result.success(dataDictService.selectPage(query));
     }
 
-
+//    @SaCheckPermission(value = "system:data:dict:all")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "获取全部数据字典")
     @EasyLog(module = "获取全部数据字典", operateType = OperateTypeEnum.SELECT)
@@ -69,6 +71,7 @@ public class DataDictController extends BaseController {
         return Result.success(map);
     }
 
+//    @SaCheckPermission(value = "system:data:dict:page")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "使用编码获取数据字典列表")
     @EasyLog(module = "使用编码获取数据字典列表", operateType = OperateTypeEnum.SELECT)
@@ -77,6 +80,7 @@ public class DataDictController extends BaseController {
         return Result.success(dataDictDomainService.selectListByDomainCode(query.getCode()));
     }
 
+    @SaCheckPermission(value = "system:data:dict:detail")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "获取数据字典详情")
     @EasyLog(module = "获取数据字典详情", operateType = OperateTypeEnum.SELECT)
@@ -85,6 +89,7 @@ public class DataDictController extends BaseController {
         return Result.success(dataDictService.detail(id));
     }
 
+    @SaCheckPermission(value = "system:data:dict:create")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "创建数据字典")
     @EasyLog(module = "创建数据字典", operateType = OperateTypeEnum.CREATE)
@@ -93,6 +98,7 @@ public class DataDictController extends BaseController {
         return Result.r(dataDictService.create(dto));
     }
 
+    @SaCheckPermission(value = "system:data:dict:update")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "编辑数据字典")
     @EasyLog(module = "编辑数据字典", operateType = OperateTypeEnum.UPDATE)
@@ -101,6 +107,7 @@ public class DataDictController extends BaseController {
         return Result.r(dataDictService.updateById(dto));
     }
 
+    @SaCheckPermission(value = "system:data:dict:delete")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "删除数据字典")
     @EasyLog(module = "删除数据字典", operateType = OperateTypeEnum.DELETE)
@@ -109,6 +116,7 @@ public class DataDictController extends BaseController {
         return Result.r(dataDictService.deleteById(id));
     }
 
+    @SaCheckPermission(value = "system:data:dict:batch:del")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "批量删除数据字典")
     @EasyLog(module = "批量删除数据字典", operateType = OperateTypeEnum.DELETE)
@@ -117,6 +125,7 @@ public class DataDictController extends BaseController {
         return Result.r(dataDictService.deleteBatchByIds(ids));
     }
 
+    @SaCheckPermission(value = "system:data:dict:import")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "导入数据字典")
     @EasyLog(module = "导入数据字典", operateType = OperateTypeEnum.IMPORT)
@@ -152,6 +161,7 @@ public class DataDictController extends BaseController {
         return Result.success(importVO);
     }
 
+    @SaCheckPermission(value = "system:data:dict:export")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "导出数据字典")
     @EasyLog(module = "导出数据字典", operateType = OperateTypeEnum.EXPORT)
@@ -184,6 +194,7 @@ public class DataDictController extends BaseController {
         build.finish();
     }
 
+    @SaCheckPermission(value = "system:data:dict:download")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "下载数据字典导入模板")
     @EasyLog(module = "下载数据字典导入模板", operateType = OperateTypeEnum.DOWNLOAD)

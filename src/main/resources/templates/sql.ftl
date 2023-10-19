@@ -1,44 +1,44 @@
 <#if parentMenuId??>
 -- 菜单 SQL
 insert into menu (id, parent_id, label, path, component, type, status, show_status, sort, create_by, create_username, create_time)
-values(${menuId?c}, ${parentMenuId?c}, '${remarks!}', '${menuPath}', '${component}', 2, 1, 1, 1, '${createBy?c}', '${createUsername}', '${createTime?c}');
+values(${menuId?c}, ${parentMenuId?c}, '${remarks!}', '${menuPath}', '${component}', 2, 1, 1, 0, '${createBy?c}', '${createUsername}', '${createTime?c}');
 
 -- 接口 SQL
 <#if queryEnable>
 insert into menu (id, parent_id, label, permission, type, status, show_status, sort, create_by, create_username, create_time)
-values(${pageMenuId?c}, ${menuId?c}, '分页获取${remarks!}列表', '${permission}:page', 3, 1, 1, 1, '${createBy?c}', '${createUsername}', '${createTime?c}');
+values(${pageMenuId?c}, ${menuId?c}, '分页获取${remarks!}列表', '${permission}:page', 3, 1, 1, 0, '${createBy?c}', '${createUsername}', '${createTime?c}');
 
 <#else >
 insert into menu (id, parent_id, label, permission, type, status, show_status, sort, create_by, create_username, create_time)
-values(${pageMenuId?c}, ${menuId?c}, '获取${remarks!}列表', '${permission}:list', 3, 1, 1, 1, '${createBy?c}', '${createUsername}', '${createTime?c}');
+values(${pageMenuId?c}, ${menuId?c}, '获取${remarks!}列表', '${permission}:list', 3, 1, 1, 0, '${createBy?c}', '${createUsername}', '${createTime?c}');
 
 </#if>
 insert into menu (id, parent_id, label, permission, type, status, show_status, sort, create_by, create_username, create_time)
-values(${detailMenuId?c}, ${menuId?c}, '获取${remarks!}详情', '${permission}:detail', 3, 1, 1, 1, '${createBy?c}', '${createUsername}', '${createTime?c}');
+values(${detailMenuId?c}, ${menuId?c}, '获取${remarks!}详情', '${permission}:detail', 3, 1, 1, 0, '${createBy?c}', '${createUsername}', '${createTime?c}');
 
 insert into menu (id, parent_id, label, permission, type, status, show_status, sort, create_by, create_username, create_time)
-values(${createMenuId?c}, ${menuId?c}, '创建${remarks!}', '${permission}:create', 3, 1, 1, 1, '${createBy?c}', '${createUsername}', '${createTime?c}');
+values(${createMenuId?c}, ${menuId?c}, '创建${remarks!}', '${permission}:create', 3, 1, 1, 0, '${createBy?c}', '${createUsername}', '${createTime?c}');
 
 insert into menu (id, parent_id, label, permission, type, status, show_status, sort, create_by, create_username, create_time)
-values(${updateMenuId?c}, ${menuId?c}, '编辑${remarks!}', '${permission}:update', 3, 1, 1, 1, '${createBy?c}', '${createUsername}', '${createTime?c}');
+values(${updateMenuId?c}, ${menuId?c}, '编辑${remarks!}', '${permission}:update', 3, 1, 1, 0, '${createBy?c}', '${createUsername}', '${createTime?c}');
 
 insert into menu (id, parent_id, label, permission, type, status, show_status, sort, create_by, create_username, create_time)
-values(${delMenuId?c}, ${menuId?c}, '删除${remarks!}', '${permission}:del', 3, 1, 1, 1, '${createBy?c}', '${createUsername}', '${createTime?c}');
+values(${delMenuId?c}, ${menuId?c}, '删除${remarks!}', '${permission}:del', 3, 1, 1, 0, '${createBy?c}', '${createUsername}', '${createTime?c}');
 
 insert into menu (id, parent_id, label, permission, type, status, show_status, sort, create_by, create_username, create_time)
-values(${batchDelMenuId?c}, ${menuId?c}, '批量删除${remarks!}', '${permission}:batch:del', 3, 1, 1, 1, '${createBy?c}', '${createUsername}', '${createTime?c}');
+values(${batchDelMenuId?c}, ${menuId?c}, '批量删除${remarks!}', '${permission}:batch:del', 3, 1, 1, 0, '${createBy?c}', '${createUsername}', '${createTime?c}');
 
 <#if global.enableImport>
 insert into menu (id, parent_id, label, permission, type, status, show_status, sort, create_by, create_username, create_time)
-values(${importMenuId?c}, ${menuId?c}, '导入${remarks!}', '${permission}:import', 3, 1, 1, 1, '${createBy?c}', '${createUsername}', '${createTime?c}');
+values(${importMenuId?c}, ${menuId?c}, '导入${remarks!}', '${permission}:import', 3, 1, 1, 0, '${createBy?c}', '${createUsername}', '${createTime?c}');
 
 insert into menu (id, parent_id, label, permission, type, status, show_status, sort, create_by, create_username, create_time)
-values(${downloadMenuId?c}, ${menuId?c}, '下载${remarks!}导入模板', '${permission}:download', 3, 1, 1, 1, '${createBy?c}', '${createUsername}', '${createTime?c}');
+values(${downloadMenuId?c}, ${menuId?c}, '下载${remarks!}导入模板', '${permission}:download', 3, 1, 1, 0, '${createBy?c}', '${createUsername}', '${createTime?c}');
 
 </#if>
 <#if global.enableExport>
 insert into menu (id, parent_id, label, permission, type, status, show_status, sort, create_by, create_username, create_time)
-values(${exportMenuId?c}, ${menuId?c}, '导出${remarks!}', '${permission}:export', 3, 1, 1, 1, '${createBy?c}', '${createUsername}', '${createTime?c}');
+values(${exportMenuId?c}, ${menuId?c}, '导出${remarks!}', '${permission}:export', 3, 1, 1, 0, '${createBy?c}', '${createUsername}', '${createTime?c}');
 </#if>
 
 </#if>
