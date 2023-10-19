@@ -5,8 +5,6 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.easy.boot.admin.menu.entity.Menu;
-import com.easy.boot.admin.menu.service.IMenuService;
 import com.easy.boot.admin.role.entity.*;
 import com.easy.boot.admin.role.mapper.RoleMapper;
 import com.easy.boot.admin.role.service.IRoleService;
@@ -41,9 +39,6 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IR
 
     @Resource
     private IRoleMenuService roleMenuService;
-
-    @Resource
-    private IMenuService menuService;
 
     @Override
     public List<Role> selectAll() {
@@ -100,10 +95,6 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IR
         Role entity = BeanUtil.copyBean(dto, Role.class);
         boolean status = save(entity);
         if (status) {
-            Menu menu = menuService.getRoot();
-            if (CollUtil.isNotEmpty(dto.getMenuIds()) && !dto.getMenuIds().contains(menu.getId())) {
-                throw new BusinessException("必须勾选最上级菜单");
-            }
             roleMenuService.batchCreate(dto.getMenuIds(), entity.getId());
         }
         return status;
@@ -127,11 +118,6 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IR
         if (Objects.nonNull(role) && !dto.getId().equals(role.getId())) {
             throw new BusinessException("角色编码已存在");
         }
-        // 必须要有最上级菜单
-//        Menu menu = menuService.getRoot();
-//        if (CollUtil.isNotEmpty(dto.getMenuIds()) && !dto.getMenuIds().contains(menu.getId())) {
-//            throw new BusinessException("必须勾选最上级菜单");
-//        }
         // 删除菜单后新增
         roleMenuService.deleteByRoleId(dto.getId());
         roleMenuService.batchCreate(dto.getMenuIds(), dto.getId());

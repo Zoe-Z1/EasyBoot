@@ -20,7 +20,6 @@ target/
 *.ipr
 /target
 /src/main/resources/application-prod.yml
-/src/main/resources/sql/easy.sql
 /script/Dockerfile
 
 ### NetBeans ###
