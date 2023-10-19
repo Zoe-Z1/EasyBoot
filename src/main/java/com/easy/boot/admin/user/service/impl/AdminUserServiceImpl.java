@@ -230,9 +230,10 @@ public class AdminUserServiceImpl extends ServiceImpl<AdminUserMapper, AdminUser
             }
             if (menuTree.getChildren().isEmpty() && !menuIds.contains(menuTree.getId())) {
                 iterator.remove();
-            }
-            if (menuTree.getType() == 3 && StrUtil.isNotEmpty(menuTree.getPermission())) {
-                permissions.add(menuTree.getPermission());
+            } else {
+                if (menuTree.getType() == 3 && StrUtil.isNotEmpty(menuTree.getPermission())) {
+                    permissions.add(menuTree.getPermission());
+                }
             }
         }
     }

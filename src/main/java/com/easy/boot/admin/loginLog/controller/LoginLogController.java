@@ -39,7 +39,7 @@ public class LoginLogController extends BaseController {
     private ILoginLogService loginLogService;
 
 
-    @SaCheckPermission(value = "system:login:log:page")
+    @SaCheckPermission(value = "log:login:log:page")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "分页获取登录日志列表")
     @EasyLog(module = "分页获取登录日志列表", operateType = OperateTypeEnum.SELECT)
@@ -48,7 +48,7 @@ public class LoginLogController extends BaseController {
         return Result.success(loginLogService.selectPage(query));
     }
 
-    @SaCheckPermission(value = "system:login:log:del")
+    @SaCheckPermission(value = "log:login:log:del")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "删除登录日志")
     @EasyLog(module = "删除登录日志", operateType = OperateTypeEnum.DELETE)
@@ -57,7 +57,7 @@ public class LoginLogController extends BaseController {
         return Result.r(loginLogService.deleteById(id));
     }
 
-    @SaCheckPermission(value = "system:login:log:batch:del")
+    @SaCheckPermission(value = "log:login:log:batch:del")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "批量删除登录日志")
     @EasyLog(module = "批量删除登录日志", operateType = OperateTypeEnum.DELETE)
@@ -66,7 +66,7 @@ public class LoginLogController extends BaseController {
         return Result.r(loginLogService.deleteBatchByIds(ids));
     }
 
-    @SaCheckPermission(value = "system:login:log:clear")
+    @SaCheckPermission(value = "log:login:log:clear")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "清空登录日志")
     @EasyLog(module = "清空登录日志", operateType = OperateTypeEnum.CLEAR)
@@ -75,7 +75,7 @@ public class LoginLogController extends BaseController {
         return Result.r(loginLogService.clear());
     }
 
-    @SaCheckPermission(value = "system:login:log:export")
+    @SaCheckPermission(value = "log:login:log:export")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "导出登录日志")
     @EasyLog(module = "导出登录日志", operateType = OperateTypeEnum.EXPORT)
