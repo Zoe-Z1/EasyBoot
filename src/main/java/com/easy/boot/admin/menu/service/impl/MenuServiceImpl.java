@@ -58,6 +58,13 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
     }
 
     @Override
+    public List<Menu> selectMenuAll() {
+        return lambdaQuery()
+                .eq(Menu::getStatus, 1)
+                .list();
+    }
+
+    @Override
     public List<MenuTree> treeList(MenuTreeQuery query) {
         List<Menu> list = lambdaQuery()
                 .eq(query.getStatus() != null, Menu::getStatus, query.getStatus())

@@ -35,10 +35,16 @@ public interface IMenuService extends IService<Menu> {
     List<String> selectPermissionsByIds(List<Long> ids);
 
     /**
-     * 查询所有菜单
+     * 查询所有菜单，组成菜单树
      * @return
      */
     List<MenuTree> all();
+
+    /**
+     * 查询所有菜单
+     * @return
+     */
+    List<Menu> selectMenuAll();
 
     /**
      * 查询树形菜单（包含当前菜单）

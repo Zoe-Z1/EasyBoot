@@ -40,6 +40,9 @@ public class AdminUserInfo {
     @ApiModelProperty(value = "账号状态 1：正常，2：禁用")
     private Integer status;
 
+    @ApiModelProperty(value = "是否超级管理员")
+    private Boolean isAdmin;
+
     @ApiModelProperty(value = "角色编码集合")
     private List<String> roles;
 

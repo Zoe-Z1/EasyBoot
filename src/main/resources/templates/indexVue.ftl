@@ -208,7 +208,7 @@
           handler: 'handlerSave',
           float: 'left',
           btnType: 'primary',
-          permission: 'add',
+          permission: 'create',
           text: '新增'
         },
         <#if global.enableImport>
@@ -226,7 +226,7 @@
           type: 'button',
           icon: 'el-icon-download',
           handler: 'handlerExport',
-          permission: 'download',
+          permission: 'export',
           btnType: 'info',
           float: 'left',
           text: '导出'
@@ -237,13 +237,14 @@
           icon: 'el-icon-delete',
           handler: 'handlerDels',
           class: 'deleteBtn',
-          permission: 'del',
+          permission: 'batch:del',
           text: '删除',
           float: 'left'
         },
         {
           type: 'button',
           handler: 'handlerAdvanced',
+          permission: 'page',
           class: 'refreshBtn',
           advanced: true,
           float: 'right',
@@ -252,6 +253,7 @@
         {
           type: 'button',
           handler: 'handlerReset',
+          permission: 'page',
           float: 'right',
           class: 'infoBtn',
           text: '重置'
@@ -259,6 +261,7 @@
         {
           type: 'button',
           handler: 'handlerQuery',
+          permission: 'page',
           float: 'right',
           text: '查询',
           btnType: 'primary'
@@ -266,6 +269,7 @@
         {
           type: 'search',
           handler: 'handlerQuery',
+          permission: 'page',
           bindValue: '',
           float: 'right',
           label: 'keyword',

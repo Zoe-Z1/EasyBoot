@@ -26,7 +26,7 @@ public interface IUserRoleService extends IService<UserRole> {
      * @param userId
      * @return
      */
-    List<Long> selectListByUserId(Long userId);
+    List<Long> selectRoleIdsByUserId(Long userId);
 
     /**
      * 查询绑定角色ID的用户

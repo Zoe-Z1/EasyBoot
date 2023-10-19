@@ -42,12 +42,15 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IR
 
     @Override
     public List<Role> selectAll() {
-        return lambdaQuery()
+        List<Role> list = lambdaQuery()
                 .select(Role::getCode, Role::getName, BaseEntity::getId)
                 .eq(Role::getStatus, 1)
                 .orderByAsc(Role::getSort)
                 .orderByDesc(BaseEntity::getCreateTime)
                 .list();
+        // 超级管理员不存在于列表中 不允许绑定
+        list.removeIf(item -> Constant.ADMIN.equals(item.getCode()));
+        return list;
     }
 
     @Override
@@ -107,11 +110,12 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IR
         if (role == null) {
             throw new BusinessException("角色不存在");
         } else {
-            if (Constant.ADMIN.equals(role.getCode()) && !Constant.ADMIN.equals(dto.getCode())) {
-                throw new BusinessException("该角色编码不允许编辑");
-            }
-            if (Constant.ADMIN.equals(role.getCode()) && dto.getStatus() == 2) {
-                throw new BusinessException("该角色不允许禁用");
+            if (Constant.ADMIN.equals(role.getCode())) {
+                if (dto.getStatus() == 2) {
+                    throw new BusinessException("该角色不允许禁用");
+                } else {
+                    throw new BusinessException("该角色不允许编辑");
+                }
             }
         }
         role = this.getByCode(dto.getCode());

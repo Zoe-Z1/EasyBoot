@@ -25,6 +25,9 @@ import java.util.List;
 @ToString(callSuper = true)
 public class AdminUserVO extends AdminUser {
 
+    @ApiModelProperty("是否超级管理员")
+    private Boolean isAdmin;
+
     @JsonSerialize(using = ToStringListSerializer.class)
     @ApiModelProperty("角色ID集合")
     private List<Long> roleIds;
