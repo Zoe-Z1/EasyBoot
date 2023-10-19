@@ -183,6 +183,9 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
             if (StrUtil.isEmpty(menu.getComponent())) {
                 throw new BusinessException("组件路径不能为空");
             }
+            if (StrUtil.isEmpty(menu.getPermission())) {
+                throw new BusinessException("权限字符不能为空");
+            }
         } else if (menu.getType() == 3) {
             // 校验接口
             if (StrUtil.isEmpty(menu.getLabel())) {

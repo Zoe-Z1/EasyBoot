@@ -222,16 +222,26 @@ public class AdminUserServiceImpl extends ServiceImpl<AdminUserMapper, AdminUser
      * @param permissions
      */
     private void eachMenus(List<MenuTree> menus, List<Long> menuIds, List<String> permissions) {
+        // todo 先写死 后续可能配置
+        Integer mode = 1;   // 1：严格模式 2：非严格模式
         Iterator<MenuTree> iterator = menus.iterator();
         while (iterator.hasNext()) {
             MenuTree menuTree = iterator.next();
             if (!menuTree.getChildren().isEmpty()) {
                 eachMenus(menuTree.getChildren(), menuIds, permissions);
             }
-            if (menuTree.getChildren().isEmpty() && !menuIds.contains(menuTree.getId())) {
-                iterator.remove();
+            if (mode == 1) {
+                // 严格模式 勾选了菜单才显示菜单
+                if (!menuIds.contains(menuTree.getId())) {
+                    iterator.remove();
+                } else if (StrUtil.isNotEmpty(menuTree.getPermission())) {
+                    permissions.add(menuTree.getPermission());
+                }
             } else {
-                if (menuTree.getType() == 3 && StrUtil.isNotEmpty(menuTree.getPermission())) {
+                // 非严格模式 勾选了菜单下的权限就显示菜单
+                if (menuTree.getChildren().isEmpty() && !menuIds.contains(menuTree.getId())) {
+                    iterator.remove();
+                } else if (StrUtil.isNotEmpty(menuTree.getPermission())) {
                     permissions.add(menuTree.getPermission());
                 }
             }
