@@ -47,6 +47,18 @@ public class UserRoleServiceImpl extends ServiceImpl<UserRoleMapper, UserRole> i
     }
 
     @Override
+    public List<Long> selectRoleIdsByUserIds(List<Long> userIds) {
+        if (CollUtil.isEmpty(userIds)) {
+            return new ArrayList<>();
+        }
+        List<UserRole> list = lambdaQuery().in(UserRole::getUserId, userIds).list();
+        if (CollUtil.isEmpty(list)) {
+            return new ArrayList<>();
+        }
+        return list.stream().map(UserRole::getRoleId).distinct().collect(Collectors.toList());
+    }
+
+    @Override
     public List<UserRole> selectListByRoleIds(List<Long> roleIds) {
         if (CollUtil.isEmpty(roleIds)) {
             return new ArrayList<>();

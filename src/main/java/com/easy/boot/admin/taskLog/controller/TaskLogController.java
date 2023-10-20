@@ -1,5 +1,6 @@
 package com.easy.boot.admin.taskLog.controller;
 
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.ExcelWriter;
 import com.alibaba.excel.write.metadata.WriteSheet;
@@ -38,6 +39,7 @@ public class TaskLogController extends BaseController {
     private ITaskLogService taskLogService;
 
 
+    @SaCheckPermission(value = "log:task:log:page")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "分页获取调度日志列表")
     @EasyLog(module = "分页获取调度日志列表", operateType = OperateTypeEnum.SELECT)
@@ -46,14 +48,7 @@ public class TaskLogController extends BaseController {
         return Result.success(taskLogService.selectPage(query));
     }
 
-    @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "获取调度日志详情")
-    @EasyLog(module = "获取调度日志详情", operateType = OperateTypeEnum.SELECT)
-    @GetMapping("/detail/{id}")
-    public Result<TaskLog> detail(@PathVariable Long id) {
-        return Result.success(taskLogService.detail(id));
-    }
-
+    @SaCheckPermission(value = "log:task:log:del")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "删除调度日志")
     @EasyLog(module = "删除调度日志", operateType = OperateTypeEnum.DELETE)
@@ -62,6 +57,7 @@ public class TaskLogController extends BaseController {
         return Result.r(taskLogService.deleteById(id));
     }
 
+    @SaCheckPermission(value = "log:task:log:batch:del")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "批量删除调度日志")
     @EasyLog(module = "批量删除调度日志", operateType = OperateTypeEnum.DELETE)
@@ -70,6 +66,7 @@ public class TaskLogController extends BaseController {
         return Result.r(taskLogService.deleteBatchByIds(ids));
     }
 
+    @SaCheckPermission(value = "log:task:log:clear")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "清空调度日志")
     @EasyLog(module = "清空调度日志", operateType = OperateTypeEnum.CLEAR)
@@ -78,6 +75,7 @@ public class TaskLogController extends BaseController {
         return Result.r(taskLogService.clear());
     }
 
+    @SaCheckPermission(value = "log:task:log:export")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "导出调度日志")
     @EasyLog(module = "导出调度日志", operateType = OperateTypeEnum.EXPORT)

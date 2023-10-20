@@ -133,6 +133,10 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IR
 
     @Override
     public Boolean deleteById(Long id) {
+        Role role = getById(id);
+        if (role != null && Constant.ADMIN.equals(role.getCode())) {
+            throw new BusinessException("该角色不允许删除");
+        }
         List<Long> ids = new ArrayList<>();
         ids.add(id);
         List<UserRole> userRoles = userRoleService.selectListByRoleIds(ids);
@@ -144,6 +148,10 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IR
 
     @Override
     public Boolean deleteBatchByIds(List<Long> ids) {
+        List<String> codes = selectCodesInRoleIds(ids);
+        if (codes.contains(Constant.ADMIN)) {
+            throw new BusinessException("存在不允许删除的角色，无法删除");
+        }
         List<UserRole> userRoles = userRoleService.selectListByRoleIds(ids);
         if (CollUtil.isNotEmpty(userRoles)) {
             throw new BusinessException("已有用户绑定选中的角色，不允许删除");

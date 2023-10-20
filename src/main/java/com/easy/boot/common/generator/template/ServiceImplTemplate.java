@@ -162,7 +162,9 @@ public class ServiceImplTemplate extends AbstractTemplate {
         // 不要直接获取处理，会导致其他地方没有数据
         List<GenerateColumn> columns = JsonUtil.copyList(metaTable.getColumns(), GenerateColumn.class);
         columns.removeIf(item -> filter.getExcludeField().contains(item.getJavaName()));
-        List<String> keywordFields = columns.stream().map(GenerateColumn::getJavaName).collect(Collectors.toList());
+        List<String> keywordFields = columns.stream()
+                .filter(item -> item.getIsKeyword() == 0)
+                .map(GenerateColumn::getJavaName).collect(Collectors.toList());
         buildDataMap.put(GenConstant.DATA_MAP_KEY_KEYWORD_FIELDS, keywordFields);
         buildDataMap.put(GenConstant.DATA_MAP_KEY_COLUMNS, columns);
     }

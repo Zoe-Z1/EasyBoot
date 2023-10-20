@@ -29,12 +29,30 @@ public class TaskLogServiceImpl extends ServiceImpl<TaskLogMapper, TaskLog> impl
     public IPage<TaskLog> selectPage(TaskLogQuery query) {
         Page<TaskLog> page = new Page<>(query.getPageNum(), query.getPageSize());
         return lambdaQuery()
-                .like(StrUtil.isNotEmpty(query.getJobName()), TaskLog::getJobName, query.getJobName())
-                .like(StrUtil.isNotEmpty(query.getJobGroup()), TaskLog::getJobGroup, query.getJobGroup())
-                .like(StrUtil.isNotEmpty(query.getJobKey()), TaskLog::getJobKey, query.getJobKey())
+                .and(StrUtil.isNotEmpty(query.getKeyword()), keywordQuery -> {
+                    keywordQuery
+                            .like(TaskLog::getJobName, query.getKeyword()).or()
+                            .like(TaskLog::getJobGroup, query.getKeyword()).or()
+                            .like(TaskLog::getJobKey, query.getKeyword()).or()
+                            .like(TaskLog::getCron, query.getKeyword());
+                })
+                .eq(query.getInstruction() != null, TaskLog::getInstruction, query.getInstruction())
+                .like(StrUtil.isNotEmpty(query.getJobParams()), TaskLog::getJobParams, query.getJobParams())
                 .eq(StrUtil.isNotEmpty(query.getStatus()), TaskLog::getStatus, query.getStatus())
                 .between(Objects.nonNull(query.getStartTime()) && Objects.nonNull(query.getEndTime()),
-                        BaseEntity::getCreateTime, query.getStartTime(), query.getEndTime())
+                        TaskLog::getStartTime, query.getStartTime(), query.getEndTime())
+                .ge(Objects.nonNull(query.getHandleTime()) && Objects.nonNull(query.getHandleTimeOperator()) && query.getHandleTimeOperator() == 1,
+                        TaskLog::getHandleTime, query.getHandleTime())
+                .le(Objects.nonNull(query.getHandleTime()) && Objects.nonNull(query.getHandleTimeOperator()) && query.getHandleTimeOperator() == 2,
+                        TaskLog::getHandleTime, query.getHandleTime())
+                .gt(Objects.nonNull(query.getHandleTime()) && Objects.nonNull(query.getHandleTimeOperator()) && query.getHandleTimeOperator() == 3,
+                        TaskLog::getHandleTime, query.getHandleTime())
+                .lt(Objects.nonNull(query.getHandleTime()) && Objects.nonNull(query.getHandleTimeOperator()) && query.getHandleTimeOperator() == 4,
+                        TaskLog::getHandleTime, query.getHandleTime())
+                .eq(Objects.nonNull(query.getHandleTime()) && Objects.nonNull(query.getHandleTimeOperator()) && query.getHandleTimeOperator() == 5,
+                        TaskLog::getHandleTime, query.getHandleTime())
+                .ne(Objects.nonNull(query.getHandleTime()) && Objects.nonNull(query.getHandleTimeOperator()) && query.getHandleTimeOperator() == 6,
+                        TaskLog::getHandleTime, query.getHandleTime())
                 .orderByDesc(BaseEntity::getCreateTime)
                 .page(page);
     }

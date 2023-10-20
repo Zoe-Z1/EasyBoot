@@ -46,37 +46,37 @@ public class ${className} {
     @TableField("${column.columnName}")
         </#if>
     </#if>
-<#if enableExcel??>
-    <#if column.isExcel == 0>
-        <#if column.dictDomainCode?? && column.dictDomainCode != "">
+    <#if enableExcel??>
+        <#if column.isExcel == 0>
+            <#if column.dictDomainCode?? && column.dictDomainCode != "">
     @EasyExcelSelect(code = "${column.dictDomainCode!}")
-            <#if (column.columnRemarks!?index_of('#') > -1)>
+                <#if (column.columnRemarks!?index_of('#') > -1)>
     @ExcelProperty(value = "${column.columnRemarks!?substring(0, column.columnRemarks!?index_of('#'))?trim}")
+                <#else >
+    @ExcelProperty(value = "${column.columnRemarks!}")
+                </#if>
             <#else >
     @ExcelProperty(value = "${column.columnRemarks!}")
             </#if>
         <#else >
-    @ExcelProperty(value = "${column.columnRemarks!}")
-        </#if>
-    <#else >
     @ExcelIgnore
+        </#if>
     </#if>
-</#if>
-<#if (entityType == 'createDTO' || entityType == 'updateDTO') && (column.isRequired == 0)>
-    <#if column.javaType == 'String'>
-        <#if column.dictDomainCode?? && column.dictDomainCode != "" && (column.columnRemarks!?index_of('#') > -1)>
+    <#if (entityType == 'createDTO' || entityType == 'updateDTO') && (column.isRequired == 0)>
+        <#if column.javaType == 'String'>
+            <#if column.dictDomainCode?? && column.dictDomainCode != "" && (column.columnRemarks!?index_of('#') > -1)>
     @NotBlank(message = "${column.columnRemarks!?substring(0, column.columnRemarks!?index_of('#'))?trim}不能为空")
-        <#else>
+            <#else>
     @NotBlank(message = "${column.columnRemarks!}不能为空")
-        </#if>
-    <#else >
-        <#if column.dictDomainCode?? && column.dictDomainCode != "" && (column.columnRemarks!?index_of('#') > -1)>
+            </#if>
+        <#else >
+            <#if column.dictDomainCode?? && column.dictDomainCode != "" && (column.columnRemarks!?index_of('#') > -1)>
     @NotNull(message = "${column.columnRemarks!?substring(0, column.columnRemarks!?index_of('#'))?trim}不能为空")
-        <#else>
+            <#else>
     @NotNull(message = "${column.columnRemarks!}不能为空")
+            </#if>
         </#if>
     </#if>
-</#if>
     <#-- 遍历字段 -->
     private ${column.javaType} ${column.javaName};
 </#list>

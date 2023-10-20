@@ -31,11 +31,13 @@ public class ${className} extends ${superName}<${mapperName}, ${entityName}> imp
                 })
             </#if>
 <#list columns as column>
+    <#if column.isAdvancedSearch == 0>
             <#if column.javaType == 'String'>
                 .like(StrUtil.isNotEmpty(<#if queryName??>query<#else >${entityCamelName}</#if>.get${column.javaName?cap_first}()), ${entityName}::get${column.javaName?cap_first}, <#if queryName??>query<#else >${entityCamelName}</#if>.get${column.javaName?cap_first}())
             <#else >
                 .eq(<#if queryName??>query<#else >${entityCamelName}</#if>.get${column.javaName?cap_first}() != null, ${entityName}::get${column.javaName?cap_first}, <#if queryName??>query<#else >${entityCamelName}</#if>.get${column.javaName?cap_first}())
             </#if>
+    </#if>
 </#list>
                 .orderByDesc(${entityName}::getCreateTime)
             <#if queryName??>

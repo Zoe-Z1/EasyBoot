@@ -164,7 +164,7 @@ public class AdminUserServiceImpl extends ServiceImpl<AdminUserMapper, AdminUser
             }
         } else {
             if (dto.getStatus() != null && dto.getStatus() == 2) {
-                throw new BusinessException("无法禁用超级管理员");
+                throw new BusinessException("无法禁用该用户");
             }
         }
         AdminUser user = BeanUtil.copyBean(dto, AdminUser.class);
@@ -293,6 +293,10 @@ public class AdminUserServiceImpl extends ServiceImpl<AdminUserMapper, AdminUser
     @Transactional(rollbackFor = Exception.class)
     @Override
     public Boolean deleteById(Long id) {
+        boolean isAdmin = roleService.isAdmin(id);
+        if (isAdmin) {
+            throw new BusinessException("该用户不允许删除");
+        }
         // 删除用户岗位关联
         userPostService.deleteByUserId(id);
         // 删除用户角色关联
@@ -304,6 +308,11 @@ public class AdminUserServiceImpl extends ServiceImpl<AdminUserMapper, AdminUser
     @Transactional(rollbackFor = Exception.class)
     @Override
     public Boolean deleteBatchByIds(List<Long> ids) {
+        List<Long> roleIds = userRoleService.selectRoleIdsByUserIds(ids);
+        List<String> codes = roleService.selectCodesInRoleIds(roleIds);
+        if (codes.contains(Constant.ADMIN)) {
+            throw new BusinessException("存在不允许删除的用户，无法删除");
+        }
         // 删除用户岗位关联
         userPostService.deleteBatchByUserIds(ids);
         // 删除用户角色关联
