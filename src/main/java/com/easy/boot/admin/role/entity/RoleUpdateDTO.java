@@ -27,4 +27,8 @@ public class RoleUpdateDTO extends RoleCreateDTO {
     @ApiModelProperty(required = true, value = "角色ID")
     private Long id;
 
+    @NotNull(message = "是否为状态切换不能为空")
+    @ApiModelProperty(required = true, value = "是否为状态切换")
+    private Boolean isStatusChange;
+
 }

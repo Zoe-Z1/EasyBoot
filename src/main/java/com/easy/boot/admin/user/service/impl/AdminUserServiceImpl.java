@@ -144,9 +144,11 @@ public class AdminUserServiceImpl extends ServiceImpl<AdminUserMapper, AdminUser
     @Transactional(rollbackFor = Exception.class)
     @Override
     public Boolean updateById(AdminUserUpdateDTO dto) {
-        // 删除所有岗位重新分配
-        userPostService.deleteByUserId(dto.getId());
-        userPostService.userBindPost(dto.getPostIds(), dto.getId());
+        if (!dto.getIsStatusChange()) {
+            // 删除所有岗位重新分配
+            userPostService.deleteByUserId(dto.getId());
+            userPostService.userBindPost(dto.getPostIds(), dto.getId());
+        }
         List<Long> roleIds = userRoleService.selectRoleIdsByUserId(dto.getId());
         List<String> codes = roleService.selectCodesInRoleIds(roleIds);
         if (!codes.contains(Constant.ADMIN)) {
@@ -155,9 +157,11 @@ public class AdminUserServiceImpl extends ServiceImpl<AdminUserMapper, AdminUser
             if (codes.contains(Constant.ADMIN)) {
                 throw new BusinessException("无法绑定超级管理员");
             }
-            // 删除所有角色重新分配
-            userRoleService.deleteByUserId(dto.getId());
-            userRoleService.userBindRole(dto.getRoleIds(), dto.getId());
+            if (!dto.getIsStatusChange()) {
+                // 删除所有角色重新分配
+                userRoleService.deleteByUserId(dto.getId());
+                userRoleService.userBindRole(dto.getRoleIds(), dto.getId());
+            }
         } else {
             if (dto.getStatus() != null && dto.getStatus() == 2) {
                 throw new BusinessException("无法禁用超级管理员");
@@ -195,6 +199,14 @@ public class AdminUserServiceImpl extends ServiceImpl<AdminUserMapper, AdminUser
 
     @Override
     public Boolean resetPassword(ResetPasswordDTO dto) {
+        boolean isAdmin = roleService.isAdmin(dto.getId());
+        if (isAdmin) {
+            Long id = UserContext.getId();
+            isAdmin = roleService.isAdmin(id);
+            if (!isAdmin) {
+                throw new BusinessException("无法重置该用户密码");
+            }
+        }
         String salt = IdUtil.randomUUID();
         String password = DigestUtil.md5Hex(dto.getPassword() + salt);
         AdminUser user = AdminUser.builder()

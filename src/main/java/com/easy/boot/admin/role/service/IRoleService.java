@@ -84,4 +84,11 @@ public interface IRoleService extends IService<Role> {
      */
     void importExcel(List<Role> list, List<Role> errorList, List<ImportExcelError> errors);
 
+    /**
+     * 判断用户是否超级管理员角色
+     * @param userId
+     * @return
+     */
+    Boolean isAdmin(Long userId);
+
 }

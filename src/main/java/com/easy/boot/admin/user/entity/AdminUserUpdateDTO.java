@@ -64,4 +64,8 @@ public class AdminUserUpdateDTO {
 
     @ApiModelProperty(value = "排序")
     private Integer sort;
+
+    @NotNull(message = "是否为状态切换不能为空")
+    @ApiModelProperty(required = true, value = "是否为状态切换")
+    private Boolean isStatusChange;
 }

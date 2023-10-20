@@ -122,9 +122,11 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IR
         if (Objects.nonNull(role) && !dto.getId().equals(role.getId())) {
             throw new BusinessException("角色编码已存在");
         }
-        // 删除菜单后新增
-        roleMenuService.deleteByRoleId(dto.getId());
-        roleMenuService.batchCreate(dto.getMenuIds(), dto.getId());
+        if (!dto.getIsStatusChange()) {
+            // 删除菜单后新增
+            roleMenuService.deleteByRoleId(dto.getId());
+            roleMenuService.batchCreate(dto.getMenuIds(), dto.getId());
+        }
         Role entity = BeanUtil.copyBean(dto, Role.class);
         return updateById(entity);
     }
@@ -212,6 +214,13 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IR
             }
         }
         saveBatch(list);
+    }
+
+    @Override
+    public Boolean isAdmin(Long userId) {
+        List<Long> roleIds = userRoleService.selectRoleIdsByUserId(userId);
+        List<String> roles = selectCodesInRoleIds(roleIds);
+        return roles.contains(Constant.ADMIN);
     }
 
 }
