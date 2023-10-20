@@ -1,5 +1,7 @@
 package com.easy.boot.admin.generateConfig.controller;
 
+import cn.dev33.satoken.annotation.SaCheckPermission;
+import cn.dev33.satoken.annotation.SaCheckRole;
 import com.easy.boot.admin.generateConfig.entity.GenerateConfigGlobalUpdateDTO;
 import com.easy.boot.admin.generateConfig.entity.GenerateConfigQuery;
 import com.easy.boot.admin.generateConfig.entity.GenerateConfigUpdateDTO;
@@ -49,6 +51,7 @@ public class GenerateConfigController extends BaseController {
         return Result.success(generateConfigService.getTableConfig(query));
     }
 
+    @SaCheckPermission(value = "dev:generate:config:update:global")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "编辑代码生成全局参数配置")
     @EasyLog(module = "编辑代码生成全局参数配置", operateType = OperateTypeEnum.UPDATE)
@@ -58,6 +61,8 @@ public class GenerateConfigController extends BaseController {
         return Result.success();
     }
 
+    @SaCheckRole("admin")
+//    @SaCheckPermission(value = "dev:generate:config:update:table")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "编辑代码生成Table参数配置")
     @EasyLog(module = "编辑代码生成Table参数配置", operateType = OperateTypeEnum.UPDATE)
@@ -67,6 +72,8 @@ public class GenerateConfigController extends BaseController {
         return Result.success();
     }
 
+    @SaCheckRole("admin")
+//    @SaCheckPermission(value = "dev:generate:config:del:global")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "重置代码生成全局参数配置")
     @EasyLog(module = "重置代码生成全局参数配置", operateType = OperateTypeEnum.DELETE)
@@ -76,6 +83,8 @@ public class GenerateConfigController extends BaseController {
         return Result.success();
     }
 
+    @SaCheckRole("admin")
+//    @SaCheckPermission(value = "dev:generate:config:del:table")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "重置代码生成Table参数配置")
     @EasyLog(module = "重置代码生成Table参数配置", operateType = OperateTypeEnum.DELETE)
