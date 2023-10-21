@@ -82,7 +82,7 @@ public class OperationLogController extends BaseController {
     @EasyLog(module = "清空操作日志", operateType = OperateTypeEnum.CLEAR)
     @PostMapping("/clear")
     public Result clear() {
-        return Result.r(operationLogService.clear());
+        return Result.success(operationLogService.clear());
     }
 
     @SaCheckPermission(value = "log:operation:log:export")

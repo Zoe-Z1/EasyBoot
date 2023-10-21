@@ -36,6 +36,7 @@ public class TaskLogServiceImpl extends ServiceImpl<TaskLogMapper, TaskLog> impl
                             .like(TaskLog::getJobKey, query.getKeyword()).or()
                             .like(TaskLog::getCron, query.getKeyword());
                 })
+                .eq(query.getTaskId() != null, TaskLog::getTaskId, query.getTaskId())
                 .eq(query.getInstruction() != null, TaskLog::getInstruction, query.getInstruction())
                 .like(StrUtil.isNotEmpty(query.getJobParams()), TaskLog::getJobParams, query.getJobParams())
                 .eq(StrUtil.isNotEmpty(query.getStatus()), TaskLog::getStatus, query.getStatus())

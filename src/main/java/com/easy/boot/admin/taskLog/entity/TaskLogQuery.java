@@ -23,6 +23,9 @@ import org.hibernate.validator.constraints.Range;
 @ApiModel(value = "TaskLogQuery对象", description = "调度日志查询DTO")
 public class TaskLogQuery extends BasePageQuery {
 
+    @ApiModelProperty("定时任务ID")
+    private Long taskId;
+
     @ApiModelProperty("超时策略  #0：全部补偿， 1：补偿1次 ，2：不补偿")
     private Integer instruction;
 

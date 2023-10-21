@@ -72,7 +72,7 @@ public class TaskLogController extends BaseController {
     @EasyLog(module = "清空调度日志", operateType = OperateTypeEnum.CLEAR)
     @PostMapping("/clear")
     public Result clear() {
-        return Result.r(taskLogService.clear());
+        return Result.success(taskLogService.clear());
     }
 
     @SaCheckPermission(value = "log:task:log:export")
