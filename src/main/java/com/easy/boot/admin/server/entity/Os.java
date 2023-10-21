@@ -43,6 +43,9 @@ public class Os {
     @ApiModelProperty(value = "系统运行时间")
     private Long systemUptime;
 
+    @ApiModelProperty(value = "转化后的系统运行时间")
+    private String systemUptimeStr;
+
     @ApiModelProperty(value = "运行进程数")
     private Integer processCount;
 

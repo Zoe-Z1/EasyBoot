@@ -9,4 +9,6 @@ public class RedisKeyConstant {
 
     public static final String EASY_REDIS_LOCK = "easy:redis:lock:";
 
+    public static final String PROJECT_START_TIME = "project:start:time";
+
 }

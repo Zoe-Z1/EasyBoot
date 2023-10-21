@@ -1,11 +1,12 @@
 package com.easy.boot.utils;
 
+import cn.hutool.core.date.BetweenFormatter;
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.unit.DataSizeUtil;
 import cn.hutool.core.io.unit.DataUnit;
 import cn.hutool.core.thread.ThreadUtil;
 import cn.hutool.core.util.NumberUtil;
 import cn.hutool.system.oshi.OshiUtil;
-import com.easy.boot.admin.server.entity.*;
 import com.easy.boot.admin.server.entity.*;
 import lombok.extern.slf4j.Slf4j;
 import oshi.hardware.CentralProcessor;
@@ -61,7 +62,8 @@ public class ServerUtil extends OshiUtil {
         os.setBuildNumber(operatingSystem.getVersionInfo().getBuildNumber());
         os.setCodeName(operatingSystem.getVersionInfo().getCodeName());
         os.setAllName(operatingSystem.getVersionInfo().toString());
-
+        String systemUptimeStr = DateUtil.formatBetween(os.getSystemUptime() * 1000, BetweenFormatter.Level.SECOND);
+        os.setSystemUptimeStr(systemUptimeStr);
         Properties props = System.getProperties();
         os.setName(props.getProperty("os.name"));
         os.setArch(props.getProperty("os.arch"));

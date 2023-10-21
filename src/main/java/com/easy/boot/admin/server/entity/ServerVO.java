@@ -19,8 +19,8 @@ import lombok.experimental.SuperBuilder;
 @ApiModel(value = "Server对象", description = "服务器")
 public class ServerVO {
 
-    @ApiModelProperty(value = "工作目录")
-    private String userDir;
+    @ApiModelProperty(value = "项目信息")
+    private Project project;
 
     @ApiModelProperty(value = "处理器信息")
     private Cpu cpu;

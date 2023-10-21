@@ -1,9 +1,13 @@
 package com.easy.boot;
 
+import com.easy.boot.common.redis.EasyRedisManager;
+import com.easy.boot.common.redis.RedisKeyConstant;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+
+import javax.annotation.Resource;
 
 /**
  * @author zoe
@@ -21,8 +25,12 @@ public class EasyCommandRunner implements CommandLineRunner {
     @Value("${server.port}")
     private String port;
 
+    @Resource
+    private EasyRedisManager easyRedisManager;
+
     @Override
     public void run(String... args) throws Exception {
+        easyRedisManager.put(RedisKeyConstant.PROJECT_START_TIME, System.currentTimeMillis());
         if (enable){
             String os = System.getProperty("os.name");
             String path = "http://localhost:" + port + "/doc.html";
