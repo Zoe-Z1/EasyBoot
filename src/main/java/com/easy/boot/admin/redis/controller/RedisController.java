@@ -1,8 +1,9 @@
 package com.easy.boot.admin.redis.controller;
 
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.easy.boot.admin.operationLog.enums.OperateTypeEnum;
-import com.easy.boot.admin.redis.service.RedisService;
 import com.easy.boot.admin.redis.entity.RedisVO;
+import com.easy.boot.admin.redis.service.RedisService;
 import com.easy.boot.common.base.Result;
 import com.easy.boot.common.log.EasyLog;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
@@ -21,7 +22,7 @@ import javax.annotation.Resource;
  * @description 服务器监控接口
  */
 @Slf4j
-@Api(tags = "缓存监控接口")
+@Api(tags = "Redis监控接口")
 @RestController
 @RequestMapping("/admin/redis")
 public class RedisController {
@@ -29,8 +30,9 @@ public class RedisController {
     @Resource
     private RedisService redisService;
 
+    @SaCheckPermission(value = "ops:redis:detail")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "获取缓存详情")
+    @ApiOperation(value = "获取Redis详情")
     @EasyLog(module = "获取缓存详情", operateType = OperateTypeEnum.SELECT)
     @GetMapping("/detail")
     public Result<RedisVO> detail() {

@@ -1,7 +1,9 @@
 package com.easy.boot.admin.redis.service.impl;
 
-import com.easy.boot.admin.redis.service.RedisService;
+import cn.hutool.core.date.BetweenFormatter;
+import cn.hutool.core.date.DateUtil;
 import com.easy.boot.admin.redis.entity.RedisVO;
+import com.easy.boot.admin.redis.service.RedisService;
 import com.easy.boot.common.redis.EasyRedisManager;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -60,6 +62,7 @@ public class RedisServiceImpl implements RedisService {
         String rejectedConnections = info.getProperty("rejected_connections");
         String expiredKeys = info.getProperty("expired_keys");
         String keyspace = info.getProperty("db" + database);
+        String runningTime = DateUtil.formatBetween(Long.parseLong(seconds) * 1000, BetweenFormatter.Level.SECOND);
 
 
         return RedisVO.builder()
@@ -68,9 +71,10 @@ public class RedisServiceImpl implements RedisService {
                 .os(os)
                 .archBits(Integer.valueOf(archBits))
                 .gccVersion(gccVersion)
-                .port(Integer.valueOf(port))
+//                .port(Integer.valueOf(port))
                 .seconds(Long.valueOf(seconds))
                 .day(Integer.valueOf(days))
+                .runningTime(runningTime)
                 .executable(executable)
                 .configFile(configFile)
                 .connectedClients(Integer.valueOf(connectedClients))

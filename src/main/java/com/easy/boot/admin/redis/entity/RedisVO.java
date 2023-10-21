@@ -34,14 +34,17 @@ public class RedisVO {
     @ApiModelProperty(value = "GCC版本")
     private String gccVersion;
 
-    @ApiModelProperty(value = "端口号")
-    private Integer port;
+//    @ApiModelProperty(value = "端口号")
+//    private Integer port;
 
     @ApiModelProperty(value = "运行时间 秒")
     private Long seconds;
 
     @ApiModelProperty(value = "运行时间 天")
     private Integer day;
+
+    @ApiModelProperty(value = "转换后的运行时间")
+    private String runningTime;
 
     @ApiModelProperty(value = "服务启动路径")
     private String executable;

@@ -1,5 +1,6 @@
 package com.easy.boot.admin.server.controller;
 
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.hutool.core.date.DateUtil;
 import com.easy.boot.admin.operationLog.enums.OperateTypeEnum;
 import com.easy.boot.admin.server.entity.*;
@@ -32,6 +33,7 @@ public class ServerController {
     @Resource
     private ServerService serverService;
 
+    @SaCheckPermission(value = "ops:server:detail")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "获取服务器详情")
     @EasyLog(module = "获取服务器详情", operateType = OperateTypeEnum.SELECT)
