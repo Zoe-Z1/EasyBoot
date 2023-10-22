@@ -1,5 +1,6 @@
 package com.easy.boot.admin.generateColumn.controller;
 
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.easy.boot.admin.generateColumn.entity.GenerateColumn;
 import com.easy.boot.admin.generateColumn.entity.GenerateColumnQuery;
 import com.easy.boot.admin.generateColumn.entity.GenerateColumnUpdateDTO;
@@ -33,6 +34,7 @@ public class GenerateColumnController extends BaseController {
     private IGenerateColumnService generateColumnService;
 
 
+    @SaCheckPermission(value = "dev:gen:column:list")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "获取代码生成Table中的列")
     @EasyLog(module = "获取代码生成Table中的列", operateType = OperateTypeEnum.SELECT)
@@ -41,6 +43,7 @@ public class GenerateColumnController extends BaseController {
         return Result.success(generateColumnService.selectList(query));
     }
 
+    @SaCheckPermission(value = "dev:gen:column:update")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "编辑代码生成列配置")
     @EasyLog(module = "编辑代码生成列配置", operateType = OperateTypeEnum.UPDATE)
@@ -50,6 +53,7 @@ public class GenerateColumnController extends BaseController {
         return Result.success();
     }
 
+    @SaCheckPermission(value = "dev:gen:column:del")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "重置代码生成列配置")
     @EasyLog(module = "重置代码生成列配置", operateType = OperateTypeEnum.DELETE)

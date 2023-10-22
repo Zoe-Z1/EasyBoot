@@ -1,5 +1,6 @@
 package com.easy.boot.admin.generate.controller;
 
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.hutool.core.collection.CollUtil;
 import com.easy.boot.admin.generate.entity.DatabaseTable;
 import com.easy.boot.admin.generate.entity.GenerateCode;
@@ -42,6 +43,7 @@ public class GenerateController extends BaseController {
     private GenerateService generateService;
 
 
+    @SaCheckPermission(value = "dev:gen:page")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "分页获取代码生成Table列表")
     @EasyLog(module = "分页获取代码生成Table列表", operateType = OperateTypeEnum.SELECT)
@@ -50,6 +52,7 @@ public class GenerateController extends BaseController {
         return Result.success(generateService.selectPage(query));
     }
 
+    @SaCheckPermission(value = "dev:gen:batch:del")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "批量重置代码生成配置")
     @EasyLog(module = "批量重置代码生成配置", operateType = OperateTypeEnum.DELETE)
@@ -59,6 +62,7 @@ public class GenerateController extends BaseController {
         return Result.success();
     }
 
+    @SaCheckPermission(value = "dev:gen:preview")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "代码生成预览")
     @EasyLog(module = "代码生成预览", operateType = OperateTypeEnum.SELECT)
@@ -69,6 +73,7 @@ public class GenerateController extends BaseController {
     }
 
     @EasyNoRepeatSubmit
+    @SaCheckPermission(value = "dev:gen:batch:code")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "批量生成代码")
     @EasyLog(module = "批量生成代码", operateType = OperateTypeEnum.GENERATE)
