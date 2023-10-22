@@ -1,6 +1,5 @@
 package com.easy.boot.admin.generateConfig.controller;
 
-import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.dev33.satoken.annotation.SaCheckRole;
 import com.easy.boot.admin.generateConfig.entity.GenerateConfigGlobalUpdateDTO;
 import com.easy.boot.admin.generateConfig.entity.GenerateConfigQuery;
@@ -11,6 +10,7 @@ import com.easy.boot.admin.operationLog.enums.OperateTypeEnum;
 import com.easy.boot.common.base.BaseController;
 import com.easy.boot.common.base.Result;
 import com.easy.boot.common.log.EasyLog;
+import com.easy.boot.common.noRepeatSubmit.EasyNoRepeatIgnore;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -43,6 +43,7 @@ public class GenerateConfigController extends BaseController {
         return Result.success(generateConfigService.getGlobalConfig());
     }
 
+    @EasyNoRepeatIgnore
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "获取代码生成Table参数配置")
     @EasyLog(module = "获取代码生成Table参数配置", operateType = OperateTypeEnum.SELECT)
@@ -51,7 +52,8 @@ public class GenerateConfigController extends BaseController {
         return Result.success(generateConfigService.getTableConfig(query));
     }
 
-    @SaCheckPermission(value = "dev:generate:config:update:global")
+    @SaCheckRole("admin")
+//    @SaCheckPermission(value = "dev:generate:config:update:global")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "编辑代码生成全局参数配置")
     @EasyLog(module = "编辑代码生成全局参数配置", operateType = OperateTypeEnum.UPDATE)

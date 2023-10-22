@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.easy.boot.admin.generateColumn.entity.GenerateColumn;
 import com.easy.boot.common.base.BaseEntity;
+import com.easy.boot.common.excel.EasyExcelSelect;
 import com.easy.boot.common.generator.DataMap;
 import com.easy.boot.common.generator.GenConstant;
 import com.easy.boot.common.generator.config.AnnotationConfig;
@@ -201,6 +202,7 @@ public class EntityTemplate extends AbstractTemplate {
         }
         if (global.getEnableExport() || global.getEnableImport()) {
             pkgs.add(ExcelProperty.class.getName());
+            pkgs.add(EasyExcelSelect.class.getName());
         }
         pkgs.add(TableId.class.getName());
         pkgs.add(TableField.class.getName());

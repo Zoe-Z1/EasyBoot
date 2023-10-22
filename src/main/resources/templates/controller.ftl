@@ -146,7 +146,6 @@ public class ${className} {
         query.setPageNum(1L);
         query.setPageSize(maxLimit);
         ExcelWriter writer = EasyExcel.write(response.getOutputStream(), ${entityName}.class)
-                .registerWriteHandler(new ExportExcelSelectCellWriteHandler(${entityName}.class))
                 .build();
         WriteSheet writeSheet = EasyExcel.writerSheet("${remarks!}信息列表").build();
         while (true) {

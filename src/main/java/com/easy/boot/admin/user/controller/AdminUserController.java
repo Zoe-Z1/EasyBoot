@@ -170,7 +170,6 @@ public class AdminUserController extends BaseController {
         query.setPageNum(1L);
         query.setPageSize(maxLimit);
         ExcelWriter writer = EasyExcel.write(response.getOutputStream(), AdminUser.class)
-                .registerWriteHandler(new ExportExcelSelectCellWriteHandler(AdminUser.class))
                 .excludeColumnFieldNames(Collections.singletonList("password"))
                 .build();
         WriteSheet writeSheet = EasyExcel.writerSheet("用户信息列表").build();

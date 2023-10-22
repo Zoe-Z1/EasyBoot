@@ -153,7 +153,6 @@ public class SysConfigController extends BaseController {
         query.setPageNum(1L);
         query.setPageSize(maxLimit);
         ExcelWriter build = EasyExcel.write(response.getOutputStream(), SysConfigExcelDO.class)
-                .registerWriteHandler(new ExportExcelSelectCellWriteHandler(SysConfigExcelDO.class))
                 .build();
         WriteSheet writeSheet = EasyExcel.writerSheet("系统配置信息列表").build();
         while (true) {

@@ -56,7 +56,7 @@ public class AdminUser extends BaseEntity {
     private String name;
 
     @EasyExcelSelect(code = "dict_sex")
-    @ExcelProperty(value = "性别-保密/男/女", converter = IntegerSexToStringConvert.class)
+    @ExcelProperty(value = "性别", converter = IntegerSexToStringConvert.class)
     @ApiModelProperty(value = "性别 0：保密 1：男 2：女")
     private Integer sex;
 

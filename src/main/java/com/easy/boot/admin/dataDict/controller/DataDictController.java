@@ -170,7 +170,6 @@ public class DataDictController extends BaseController {
         query.setPageNum(1L);
         query.setPageSize(maxLimit);
         ExcelWriter build = EasyExcel.write(response.getOutputStream(), DataDictExcelDO.class)
-                .registerWriteHandler(new ExportExcelSelectCellWriteHandler(DataDictExcelDO.class))
                 .build();
         WriteSheet writeSheet = EasyExcel.writerSheet("数据字典信息列表").build();
         while (true) {

@@ -11,7 +11,6 @@ import com.easy.boot.admin.operationLog.enums.OperateTypeEnum;
 import com.easy.boot.admin.operationLog.service.IOperationLogService;
 import com.easy.boot.common.base.BaseController;
 import com.easy.boot.common.base.Result;
-import com.easy.boot.common.excel.handler.ExportExcelSelectCellWriteHandler;
 import com.easy.boot.common.log.EasyLog;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.annotations.Api;
@@ -94,7 +93,6 @@ public class OperationLogController extends BaseController {
         query.setPageNum(1L);
         query.setPageSize(maxLimit);
         ExcelWriter build = EasyExcel.write(response.getOutputStream(), OperationLog.class)
-                .registerWriteHandler(new ExportExcelSelectCellWriteHandler(OperationLog.class))
                 .build();
         WriteSheet writeSheet = EasyExcel.writerSheet("操作日志信息列表").build();
         while (true) {

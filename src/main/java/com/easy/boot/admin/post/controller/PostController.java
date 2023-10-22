@@ -157,7 +157,6 @@ public class PostController extends BaseController {
         query.setPageNum(1L);
         query.setPageSize(maxLimit);
         ExcelWriter build = EasyExcel.write(response.getOutputStream(), Post.class)
-                .registerWriteHandler(new ExportExcelSelectCellWriteHandler(Post.class))
                 .build();
         WriteSheet writeSheet = EasyExcel.writerSheet("岗位信息列表").build();
         while (true) {

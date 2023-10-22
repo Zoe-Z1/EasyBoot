@@ -166,7 +166,6 @@ public class RoleController extends BaseController {
         query.setPageNum(1L);
         query.setPageSize(maxLimit);
         ExcelWriter build = EasyExcel.write(response.getOutputStream(), Role.class)
-                .registerWriteHandler(new ExportExcelSelectCellWriteHandler(Role.class))
                 .build();
         WriteSheet writeSheet = EasyExcel.writerSheet("角色信息列表").build();
         while (true) {

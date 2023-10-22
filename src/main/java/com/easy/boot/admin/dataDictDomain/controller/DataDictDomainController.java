@@ -147,7 +147,6 @@ public class DataDictDomainController extends BaseController {
         query.setPageNum(1L);
         query.setPageSize(maxLimit);
         ExcelWriter build = EasyExcel.write(response.getOutputStream(), DataDictDomain.class)
-                .registerWriteHandler(new ExportExcelSelectCellWriteHandler(DataDictDomain.class))
                 .build();
         WriteSheet writeSheet = EasyExcel.writerSheet("数据字典域信息列表").build();
         while (true) {
