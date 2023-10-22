@@ -24,7 +24,7 @@
         <test.version>2.7.15-SNAPSHOT</test.version>
         <validator.version>6.2.5.Final</validator.version>
         <spring-boot-starter-web.version>2.7.13</spring-boot-starter-web.version>
-        <knife4j.version>4.1.0</knife4j.version>
+        <knife4j.version>4.3.0</knife4j.version>
         <processor.version>2.7.13</processor.version>
         <sa-token.version>1.35.0.RC</sa-token.version>
         <redis.version>2.7.15-SNAPSHOT</redis.version>

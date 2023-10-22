@@ -1,6 +1,5 @@
 package com.easy.boot.admin.user.entity;
 
-import com.alibaba.excel.annotation.write.style.ColumnWidth;
 import com.easy.boot.common.Jackson.ToStringListSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.swagger.annotations.ApiModel;
@@ -18,7 +17,6 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @ApiModel("用户视图实体")
 @Data
-@ColumnWidth(20)
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder

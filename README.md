@@ -20,7 +20,7 @@
 
 4.启动项目
 
-<font style="color:red;">如果使用的是windows电脑，还需要修改application-dev.yml中的file-path配置和image-path配置</font>
+如果使用的是windows系统，还需要修改application-dev.yml中的file-path配置和image-path配置
 
 
 ## 已有功能
@@ -38,6 +38,7 @@
     <li>接口文档</li>
     <li>调度日志</li>
     <li>服务器监控</li>
+    <li>Redis监控</li>
 </ul>
 
 ## 后续功能规划
@@ -45,7 +46,6 @@
     <li>通知管理</li>
     <li>黑名单管理</li>
     <li>单向消息推送</li>
-    <li>缓存监控</li>
     <li>......</li>
 </ul>
 

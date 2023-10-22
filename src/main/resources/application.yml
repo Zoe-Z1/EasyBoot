@@ -1,6 +1,6 @@
 easy:
   no-repeat-submit:
-    enable: false
+    enable: true
     timeout: 300
   log:
     enable: true
@@ -121,3 +121,5 @@ knife4j:
         api-rule: package
         api-rule-resources:
           - com.easy.boot.admin
+  setting:
+    enable-footer: false
