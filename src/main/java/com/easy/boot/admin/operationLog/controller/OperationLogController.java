@@ -12,6 +12,7 @@ import com.easy.boot.admin.operationLog.service.IOperationLogService;
 import com.easy.boot.common.base.BaseController;
 import com.easy.boot.common.base.Result;
 import com.easy.boot.common.log.EasyLog;
+import com.easy.boot.common.noRepeatSubmit.EasyNoRepeatSubmit;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -84,6 +85,7 @@ public class OperationLogController extends BaseController {
         return Result.success(operationLogService.clear());
     }
 
+    @EasyNoRepeatSubmit
     @SaCheckPermission(value = "log:operation:log:export")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "导出操作日志")

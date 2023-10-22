@@ -6,6 +6,7 @@ import java.lang.annotation.*;
 /**
  * @author zoe
  * @describe 自定义防重复提交注解
+ *           校验机制为 账户+IP+调用方法+参数
  * @date 2023/7/22
  */
 @Target({ElementType.METHOD, ElementType.TYPE})

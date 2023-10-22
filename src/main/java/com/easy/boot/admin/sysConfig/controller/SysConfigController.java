@@ -17,6 +17,7 @@ import com.easy.boot.common.excel.entity.UploadDTO;
 import com.easy.boot.common.excel.handler.ExportExcelErrorCellWriteHandler;
 import com.easy.boot.common.excel.handler.ExportExcelSelectCellWriteHandler;
 import com.easy.boot.common.log.EasyLog;
+import com.easy.boot.common.noRepeatSubmit.EasyNoRepeatSubmit;
 import com.easy.boot.exception.BusinessException;
 import com.easy.boot.utils.BeanUtil;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
@@ -78,6 +79,7 @@ public class SysConfigController extends BaseController {
         return Result.success(sysConfigService.detail(id));
     }
 
+    @EasyNoRepeatSubmit
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "创建系统配置")
     @EasyLog(module = "创建系统配置", operateType = OperateTypeEnum.CREATE)
@@ -145,6 +147,7 @@ public class SysConfigController extends BaseController {
         return Result.success(importVO);
     }
 
+    @EasyNoRepeatSubmit
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "导出系统配置")
     @EasyLog(module = "导出系统配置", operateType = OperateTypeEnum.EXPORT)
@@ -176,6 +179,7 @@ public class SysConfigController extends BaseController {
         build.finish();
     }
 
+    @EasyNoRepeatSubmit
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "下载系统配置导入模板")
     @EasyLog(module = "下载系统配置导入模板", operateType = OperateTypeEnum.DOWNLOAD)

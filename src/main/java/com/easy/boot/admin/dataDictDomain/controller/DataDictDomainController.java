@@ -19,6 +19,7 @@ import com.easy.boot.common.excel.entity.UploadDTO;
 import com.easy.boot.common.excel.handler.ExportExcelErrorCellWriteHandler;
 import com.easy.boot.common.excel.handler.ExportExcelSelectCellWriteHandler;
 import com.easy.boot.common.log.EasyLog;
+import com.easy.boot.common.noRepeatSubmit.EasyNoRepeatSubmit;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -68,6 +69,7 @@ public class DataDictDomainController extends BaseController {
         return Result.success(dataDictDomainService.detail(id));
     }
 
+    @EasyNoRepeatSubmit
     @SaCheckPermission(value = "system:data:dict:domain:create")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "创建数据字典域")
@@ -138,6 +140,7 @@ public class DataDictDomainController extends BaseController {
         return Result.success(importVO);
     }
 
+    @EasyNoRepeatSubmit
     @SaCheckPermission(value = "system:data:dict:domain:export")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "导出数据字典域")
@@ -160,6 +163,7 @@ public class DataDictDomainController extends BaseController {
         build.finish();
     }
 
+    @EasyNoRepeatSubmit
     @SaCheckPermission(value = "system:data:dict:domain:download")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "下载数据字典域导入模板")

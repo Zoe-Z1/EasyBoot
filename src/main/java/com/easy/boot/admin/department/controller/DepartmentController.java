@@ -10,7 +10,7 @@ import com.easy.boot.admin.operationLog.enums.OperateTypeEnum;
 import com.easy.boot.common.base.BaseController;
 import com.easy.boot.common.base.Result;
 import com.easy.boot.common.log.EasyLog;
-import com.easy.boot.common.noRepeatSubmit.EasyNoRepeatIgnore;
+import com.easy.boot.common.noRepeatSubmit.EasyNoRepeatSubmit;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -37,8 +37,6 @@ public class DepartmentController extends BaseController {
     private IDepartmentService departmentService;
 
 
-
-    @EasyNoRepeatIgnore
     @SaCheckPermission(value = "system:department:list")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "懒加载部门树")
@@ -59,6 +57,7 @@ public class DepartmentController extends BaseController {
         return Result.success(ids);
     }
 
+    @EasyNoRepeatSubmit
     @SaCheckPermission(value = "system:department:create")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "创建部门")

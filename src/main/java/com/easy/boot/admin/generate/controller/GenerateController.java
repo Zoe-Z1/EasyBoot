@@ -11,6 +11,7 @@ import com.easy.boot.common.base.BaseController;
 import com.easy.boot.common.base.Page;
 import com.easy.boot.common.base.Result;
 import com.easy.boot.common.log.EasyLog;
+import com.easy.boot.common.noRepeatSubmit.EasyNoRepeatSubmit;
 import com.easy.boot.exception.GeneratorException;
 import com.easy.boot.utils.FileUtil;
 import com.easy.boot.utils.JsonUtil;
@@ -67,6 +68,7 @@ public class GenerateController extends BaseController {
         return Result.success(JsonUtil.copyList(codes, GeneratePreviewVO.class));
     }
 
+    @EasyNoRepeatSubmit
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "批量生成代码")
     @EasyLog(module = "批量生成代码", operateType = OperateTypeEnum.GENERATE)

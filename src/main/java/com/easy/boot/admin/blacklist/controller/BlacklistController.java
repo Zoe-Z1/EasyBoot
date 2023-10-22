@@ -13,6 +13,7 @@ import com.easy.boot.admin.operationLog.enums.OperateTypeEnum;
 import com.easy.boot.common.base.BaseController;
 import com.easy.boot.common.base.Result;
 import com.easy.boot.common.log.EasyLog;
+import com.easy.boot.common.noRepeatSubmit.EasyNoRepeatSubmit;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -55,6 +56,7 @@ public class BlacklistController extends BaseController {
         return Result.success(blacklistService.detail(id));
     }
 
+    @EasyNoRepeatSubmit
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "创建黑名单")
     @EasyLog(module = "创建黑名单", operateType = OperateTypeEnum.CREATE)
@@ -87,6 +89,7 @@ public class BlacklistController extends BaseController {
         return Result.r(blacklistService.deleteBatchByIds(ids));
     }
 
+    @EasyNoRepeatSubmit
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "导出黑名单")
     @EasyLog(module = "导出黑名单", operateType = OperateTypeEnum.EXPORT)

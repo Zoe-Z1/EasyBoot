@@ -17,6 +17,7 @@ import com.easy.boot.common.excel.entity.UploadDTO;
 import com.easy.boot.common.excel.handler.ExportExcelErrorCellWriteHandler;
 import com.easy.boot.common.excel.handler.ExportExcelSelectCellWriteHandler;
 import com.easy.boot.common.log.EasyLog;
+import com.easy.boot.common.noRepeatSubmit.EasyNoRepeatSubmit;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -78,6 +79,7 @@ public class RoleController extends BaseController {
         return Result.success(roleService.detail(id));
     }
 
+    @EasyNoRepeatSubmit
     @SaCheckPermission(value = "system:role:create")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "创建角色")
@@ -157,6 +159,7 @@ public class RoleController extends BaseController {
         return Result.success(importVO);
     }
 
+    @EasyNoRepeatSubmit
     @SaCheckPermission(value = "system:role:export")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "导出角色")
@@ -179,6 +182,7 @@ public class RoleController extends BaseController {
         build.finish();
     }
 
+    @EasyNoRepeatSubmit
     @SaCheckPermission(value = "system:role:download")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "下载角色导入模板")

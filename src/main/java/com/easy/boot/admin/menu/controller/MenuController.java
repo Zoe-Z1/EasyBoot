@@ -7,7 +7,7 @@ import com.easy.boot.admin.operationLog.enums.OperateTypeEnum;
 import com.easy.boot.common.base.BaseController;
 import com.easy.boot.common.base.Result;
 import com.easy.boot.common.log.EasyLog;
-import com.easy.boot.common.noRepeatSubmit.EasyNoRepeatIgnore;
+import com.easy.boot.common.noRepeatSubmit.EasyNoRepeatSubmit;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -40,7 +40,6 @@ public class MenuController extends BaseController {
         return Result.success(menuService.treeList(query));
     }
 
-    @EasyNoRepeatIgnore
     @SaCheckPermission(value = "system:menu:list")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "懒加载菜单树")
@@ -59,6 +58,7 @@ public class MenuController extends BaseController {
         return Result.success(menuService.detail(id));
     }
 
+    @EasyNoRepeatSubmit
     @SaCheckPermission(value = "system:menu:create")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "创建菜单")

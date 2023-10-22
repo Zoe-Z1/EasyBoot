@@ -59,6 +59,7 @@ public class ${className} {
         return Result.success(${serviceCamelName}.detail(id));
     }
 
+    @EasyNoRepeatSubmit
     @SaCheckPermission(value = "${permission}:create")
     @ApiOperationSupport(author = "${global.author}")
     @ApiOperation(value = "创建${remarks!}")
@@ -137,6 +138,7 @@ public class ${className} {
 </#if>
 
 <#if global.enableExport>
+    @EasyNoRepeatSubmit
     @SaCheckPermission(value = "${permission}:export")
     @ApiOperationSupport(author = "${global.author}")
     @ApiOperation(value = "导出${remarks!}")
@@ -161,6 +163,7 @@ public class ${className} {
 </#if>
 
 <#if global.enableImport>
+    @EasyNoRepeatSubmit
     @SaCheckPermission(value = "${permission}:download")
     @ApiOperationSupport(author = "${global.author}")
     @ApiOperation(value = "下载${remarks!}导入模板")

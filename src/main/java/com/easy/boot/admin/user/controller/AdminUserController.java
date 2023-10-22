@@ -16,6 +16,7 @@ import com.easy.boot.common.excel.entity.UploadDTO;
 import com.easy.boot.common.excel.handler.ExportExcelErrorCellWriteHandler;
 import com.easy.boot.common.excel.handler.ExportExcelSelectCellWriteHandler;
 import com.easy.boot.common.log.EasyLog;
+import com.easy.boot.common.noRepeatSubmit.EasyNoRepeatSubmit;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -73,6 +74,7 @@ public class AdminUserController extends BaseController {
         return Result.success(adminUserService.getInfo());
     }
 
+    @EasyNoRepeatSubmit
     @SaCheckPermission(value = "system:admin:user:create")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "创建用户")
@@ -161,6 +163,7 @@ public class AdminUserController extends BaseController {
         return Result.success(importVO);
     }
 
+    @EasyNoRepeatSubmit
     @SaCheckPermission(value = "system:admin:user:export")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "导出用户")
@@ -184,6 +187,7 @@ public class AdminUserController extends BaseController {
         writer.finish();
     }
 
+    @EasyNoRepeatSubmit
     @SaCheckPermission(value = "system:admin:user:download")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "下载用户导入模板")

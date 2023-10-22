@@ -18,6 +18,7 @@ import com.easy.boot.common.excel.entity.UploadDTO;
 import com.easy.boot.common.excel.handler.ExportExcelErrorCellWriteHandler;
 import com.easy.boot.common.excel.handler.ExportExcelSelectCellWriteHandler;
 import com.easy.boot.common.log.EasyLog;
+import com.easy.boot.common.noRepeatSubmit.EasyNoRepeatSubmit;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -65,6 +66,7 @@ public class SysConfigDomainController extends BaseController {
         return Result.success(sysConfigDomainService.detail(id));
     }
 
+    @EasyNoRepeatSubmit
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "创建系统配置域")
     @EasyLog(module = "创建系统配置域", operateType = OperateTypeEnum.CREATE)
@@ -122,6 +124,7 @@ public class SysConfigDomainController extends BaseController {
         return Result.success(importVO);
     }
 
+    @EasyNoRepeatSubmit
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "导出系统配置域")
     @EasyLog(module = "导出系统配置域", operateType = OperateTypeEnum.EXPORT)
@@ -143,6 +146,7 @@ public class SysConfigDomainController extends BaseController {
         build.finish();
     }
 
+    @EasyNoRepeatSubmit
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "下载系统配置域导入模板")
     @EasyLog(module = "下载系统配置域导入模板", operateType = OperateTypeEnum.DOWNLOAD)

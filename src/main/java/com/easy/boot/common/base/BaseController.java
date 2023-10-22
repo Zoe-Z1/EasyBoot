@@ -1,7 +1,6 @@
 package com.easy.boot.common.base;
 
 
-import com.easy.boot.common.noRepeatSubmit.EasyNoRepeatSubmit;
 import com.easy.boot.common.properties.EasyFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,7 +14,6 @@ import javax.servlet.http.HttpServletResponse;
  * @date 2023/7/22
  * @description 控制器基类
  */
-@EasyNoRepeatSubmit
 public class BaseController {
 
     @Resource

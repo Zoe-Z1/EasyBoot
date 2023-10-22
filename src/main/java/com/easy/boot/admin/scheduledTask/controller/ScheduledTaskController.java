@@ -8,6 +8,7 @@ import com.easy.boot.admin.scheduledTask.service.IScheduledTaskService;
 import com.easy.boot.common.base.BaseController;
 import com.easy.boot.common.base.Result;
 import com.easy.boot.common.log.EasyLog;
+import com.easy.boot.common.noRepeatSubmit.EasyNoRepeatSubmit;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -30,6 +31,7 @@ public class ScheduledTaskController extends BaseController {
     @Resource
     private IScheduledTaskService scheduledTaskService;
 
+    @EasyNoRepeatSubmit
     @SaCheckPermission(value = "ops:scheduled:task:start:now")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "立即执行定时任务")
@@ -40,6 +42,7 @@ public class ScheduledTaskController extends BaseController {
         return Result.success();
     }
 
+    @EasyNoRepeatSubmit
     @SaCheckPermission(value = "ops:scheduled:task:change")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "恢复/暂停定时任务")
@@ -68,6 +71,7 @@ public class ScheduledTaskController extends BaseController {
         return Result.success(scheduledTaskService.detail(id));
     }
 
+    @EasyNoRepeatSubmit
     @SaCheckPermission(value = "ops:scheduled:task:create")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "创建定时任务")

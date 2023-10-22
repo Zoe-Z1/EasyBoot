@@ -4,6 +4,7 @@ import cn.hutool.core.net.NetUtil;
 import cn.hutool.core.util.StrUtil;
 import com.easy.boot.common.redis.EasyRedisManager;
 import com.easy.boot.common.redis.RedisKeyEnum;
+import com.easy.boot.common.saToken.UserContext;
 import com.easy.boot.exception.BusinessException;
 import com.easy.boot.exception.enums.SystemErrorEnum;
 import com.easy.boot.utils.IpUtil;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 
 /**
  * @author zoe
@@ -96,7 +98,11 @@ public class EasyNoRepeatSubmitAspect {
         if (StrUtil.isEmpty(ip) || NetUtil.isUnknown(ip)) {
             throw new BusinessException(SystemErrorEnum.IP_UNKNOWN);
         }
-        String key = RedisKeyEnum.NO_REPEAT_SUBMIT.getKey(ip + ":" + method);
+        String value = ip + ":" + method + ":" + Arrays.toString(joinPoint.getArgs());
+        if (UserContext.isLogin()) {
+            value = UserContext.getId() + ":" + value;
+        }
+        String key = RedisKeyEnum.NO_REPEAT_SUBMIT.getKey(value);
         return key;
     }
 

@@ -21,6 +21,7 @@ import com.easy.boot.common.generator.config.GlobalConfig;
 import com.easy.boot.common.generator.config.TemplateConfig;
 import com.easy.boot.common.generator.db.MetaTable;
 import com.easy.boot.common.log.EasyLog;
+import com.easy.boot.common.noRepeatSubmit.EasyNoRepeatSubmit;
 import com.easy.boot.utils.BeanUtil;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.annotations.Api;
@@ -210,6 +211,7 @@ public class ControllerTemplate extends AbstractTemplate {
         if (getSuperClass() != null) {
             pkgs.add(getSuperClass().getName());
         }
+        pkgs.add(EasyNoRepeatSubmit.class.getName());
         pkgs.add(SaCheckPermission.class.getName());
         pkgs.add(Api.class.getName());
         pkgs.add(ApiOperation.class.getName());
