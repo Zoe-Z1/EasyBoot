@@ -99,21 +99,13 @@ public class LoginLogController extends BaseController {
         build.finish();
     }
 
-//    @SaCheckPermission(value = "log:login:log:kickout")
+    @SaCheckPermission(value = "log:login:log:kickout")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "下线用户")
     @EasyLog(module = "下线用户", operateType = OperateTypeEnum.KICKOUT)
     @PostMapping("/kickout/{id}")
     public Result kickout(@PathVariable Long id) {
-        return Result.r(true);
+        return Result.r(loginLogService.kickoutById(id));
     }
 
-//    @SaCheckPermission(value = "log:login:log:batch:del")
-    @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "批量下线用户")
-    @EasyLog(module = "批量下线用户", operateType = OperateTypeEnum.KICKOUT)
-    @PostMapping("/batchKickout")
-    public Result batchKickout(@RequestBody List<Long> ids) {
-        return Result.r(true);
-    }
 }

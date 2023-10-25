@@ -68,4 +68,12 @@ public interface ILoginLogService extends IService<LoginLog> {
      * 更新用户在线状态
      */
     void updateIsOnline();
+
+    /**
+     * 根据登录日志ID下线用户
+     * @param id
+     * @return
+     */
+    Boolean kickoutById(Long id);
+
 }

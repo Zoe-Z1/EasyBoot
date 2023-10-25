@@ -1,5 +1,6 @@
 package com.easy.boot.admin.loginLog.service.impl;
 
+import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpUtil;
 import cn.hutool.http.useragent.UserAgent;
@@ -17,6 +18,7 @@ import com.easy.boot.admin.loginLog.service.ILoginLogService;
 import com.easy.boot.admin.operationLog.enums.RoleTypeEnum;
 import com.easy.boot.common.base.BaseEntity;
 import com.easy.boot.common.redis.EasyRedisManager;
+import com.easy.boot.exception.BusinessException;
 import com.easy.boot.utils.JsonUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
@@ -149,6 +151,17 @@ public class LoginLogServiceImpl extends ServiceImpl<LoginLogMapper, LoginLog> i
         if (!list.isEmpty()) {
             updateBatchById(list);
         }
+    }
+
+    @Override
+    public Boolean kickoutById(Long id) {
+        LoginLog loginLog = getById(id);
+        if (loginLog.getIsOnline() == 1) {
+            throw new BusinessException("操作失败，用户已下线");
+        }
+        loginLog.setIsOnline(1);
+        StpUtil.kickoutByTokenValue(loginLog.getToken());
+        return updateById(loginLog);
     }
 
 }
