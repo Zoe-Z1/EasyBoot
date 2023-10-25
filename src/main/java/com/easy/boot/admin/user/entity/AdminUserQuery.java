@@ -28,14 +28,8 @@ public class AdminUserQuery extends BasePageQuery {
     @ApiModelProperty(value = "账号")
     private String username;
 
-    @ApiModelProperty(required = false, value = "昵称")
+    @ApiModelProperty(value = "昵称")
     private String name;
-
-    @ApiModelProperty(required = false, value = "手机号")
-    private String mobile;
-
-    @ApiModelProperty(value = "邮箱")
-    private String email;
 
     @ApiModelProperty(value = "性别 0：保密 1：男 2：女")
     private Integer sex;

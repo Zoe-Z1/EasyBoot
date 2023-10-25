@@ -1,23 +1,29 @@
 package com.easy.boot.common.quartz.manager;
 
+import com.easy.boot.admin.loginLog.service.ILoginLogService;
 import com.easy.boot.admin.scheduledTask.entity.ScheduledTask;
 import com.easy.boot.common.quartz.EasyJobTaskInterface;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
+
 /**
  * @author zoe
  * 
- * @describe quartz 定时任务执行操作实现类
- * @date 2023/8/5
+ * @describe quartz 更新用户在线状态定时任务
+ * @date 2023/10/25
  */
 @Slf4j
 @Component
-public class Test1TaskManager implements EasyJobTaskInterface {
+public class UpdateIsOnlineTaskManager implements EasyJobTaskInterface {
+
+    @Resource
+    private ILoginLogService loginLogService;
 
     @Override
     public String getKey() {
-        return "test1";
+        return "UpdateIsOnline";
     }
 
     /**
@@ -27,6 +33,7 @@ public class Test1TaskManager implements EasyJobTaskInterface {
      */
     @Override
     public void execute(ScheduledTask task) {
-        log.info("进入定时任务1，task： {} ", task);
+        log.info("更新用户在线状态定时任务，task： {} ", task);
+        loginLogService.updateIsOnline();
     }
 }

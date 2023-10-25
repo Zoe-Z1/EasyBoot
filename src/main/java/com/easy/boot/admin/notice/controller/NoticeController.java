@@ -36,6 +36,14 @@ public class NoticeController extends BaseController {
     @Resource
     private INoticeService noticeService;
 
+    @SaCheckPermission(value = "system:notice:new")
+    @ApiOperationSupport(author = "zoe")
+    @ApiOperation(value = "获取最新公告")
+    @EasyLog(module = "获取最新公告", operateType = OperateTypeEnum.SELECT)
+    @GetMapping("/new")
+    public Result<Notice> news() {
+        return Result.success(noticeService.news());
+    }
 
     @SaCheckPermission(value = "system:notice:page")
     @ApiOperationSupport(author = "zoe")

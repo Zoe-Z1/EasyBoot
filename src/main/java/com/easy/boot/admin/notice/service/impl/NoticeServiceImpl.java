@@ -11,6 +11,8 @@ import com.easy.boot.admin.notice.entity.NoticeUpdateDTO;
 import com.easy.boot.admin.notice.mapper.NoticeMapper;
 import com.easy.boot.admin.notice.service.INoticeService;
 import com.easy.boot.common.base.BaseEntity;
+import com.easy.boot.common.sse.SseMessage;
+import com.easy.boot.common.sse.SseServer;
 import com.easy.boot.utils.BeanUtil;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +26,16 @@ import java.util.Objects;
 */
 @Service
 public class NoticeServiceImpl extends ServiceImpl<NoticeMapper, Notice> implements INoticeService {
+
+    @Override
+    public Notice news() {
+        return lambdaQuery()
+                .eq(Notice::getStatus, 1)
+                .orderByAsc(Notice::getSort)
+                .orderByDesc(Notice::getCreateTime)
+                .last("limit 1")
+                .one();
+    }
 
     @Override
     public IPage<Notice> selectPage(NoticeQuery query) {
@@ -49,14 +61,24 @@ public class NoticeServiceImpl extends ServiceImpl<NoticeMapper, Notice> impleme
     @Override
     public Boolean create(NoticeCreateDTO dto) {
         Notice notice = BeanUtil.copyBean(dto, Notice.class);
-        return save(notice);
+        boolean status = save(notice);
+        if (status) {
+            SseMessage message = new SseMessage(1);
+            SseServer.sendAll(message);
+        }
+        return status;
     }
 
     @Override
 
     public Boolean updateById(NoticeUpdateDTO dto) {
         Notice notice = BeanUtil.copyBean(dto, Notice.class);
-        return updateById(notice);
+        boolean status = updateById(notice);
+        if (status) {
+            SseMessage message = new SseMessage(1);
+            SseServer.sendAll(message);
+        }
+        return status;
     }
 
     @Override

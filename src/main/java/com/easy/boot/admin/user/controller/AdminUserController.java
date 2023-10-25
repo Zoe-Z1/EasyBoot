@@ -47,7 +47,6 @@ public class AdminUserController extends BaseController {
     @Resource
     private AdminUserService adminUserService;
 
-
     @SaCheckPermission(value = "system:admin:user:page")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "分页获取用户列表")

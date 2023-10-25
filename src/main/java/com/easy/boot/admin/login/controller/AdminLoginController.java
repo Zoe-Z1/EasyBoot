@@ -45,7 +45,6 @@ public class AdminLoginController {
     @PostMapping(value = "/login")
     public Result<TokenVO> login(@Validated @RequestBody LoginDTO dto) {
         AdminUser user = adminLoginService.login(dto);
-        UserContext.login(user);
         TokenVO token = TokenVO.builder()
                 .tokenName(UserContext.getTokenName())
                 .token(UserContext.getToken())
@@ -58,7 +57,7 @@ public class AdminLoginController {
     @EasyLog(module = "注销登录", operateType = OperateTypeEnum.LOGOUT)
     @PostMapping(value = "/logout")
     public Result logout() {
-        UserContext.logout();
+        adminLoginService.logout();
         return Result.success();
     }
 

@@ -42,7 +42,11 @@ mybatis-plus:
 # 配置文档 https://sa-token.cc/doc.html#/use/config
 sa-token:
   token-name: Easy-Token
-  tokenPrefix: Bearer
+  token-prefix: Bearer
   is-print: false
   is-read-cookie: false
   is-read-body: false
+  # Token 最低活跃频率（单位：秒）
+  timeout: 1800
+  # 在多人登录同一账号时，是否共用一个 token
+  is-share: false

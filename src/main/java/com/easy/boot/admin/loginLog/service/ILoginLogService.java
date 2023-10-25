@@ -56,4 +56,16 @@ public interface ILoginLogService extends IService<LoginLog> {
      * @return
      */
     Boolean clear();
+
+    /**
+     * 根据token修改在线状态
+     * @param isOnline
+     * @param token
+     */
+    Boolean updateIsOnlineByToken(Integer isOnline, String token);
+
+    /**
+     * 更新用户在线状态
+     */
+    void updateIsOnline();
 }

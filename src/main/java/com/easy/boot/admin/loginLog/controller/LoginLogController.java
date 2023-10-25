@@ -45,7 +45,8 @@ public class LoginLogController extends BaseController {
     @EasyLog(module = "分页获取登录日志列表", operateType = OperateTypeEnum.SELECT)
     @GetMapping("/page")
     public Result<IPage<LoginLog>> page(@Validated LoginLogQuery query) {
-        return Result.success(loginLogService.selectPage(query));
+        IPage<LoginLog> page = loginLogService.selectPage(query);
+        return Result.success(page);
     }
 
     @SaCheckPermission(value = "log:login:log:del")
@@ -96,5 +97,23 @@ public class LoginLogController extends BaseController {
             query.setPageNum(query.getPageNum() + 1);
         }
         build.finish();
+    }
+
+//    @SaCheckPermission(value = "log:login:log:kickout")
+    @ApiOperationSupport(author = "zoe")
+    @ApiOperation(value = "下线用户")
+    @EasyLog(module = "下线用户", operateType = OperateTypeEnum.KICKOUT)
+    @PostMapping("/kickout/{id}")
+    public Result kickout(@PathVariable Long id) {
+        return Result.r(true);
+    }
+
+//    @SaCheckPermission(value = "log:login:log:batch:del")
+    @ApiOperationSupport(author = "zoe")
+    @ApiOperation(value = "批量下线用户")
+    @EasyLog(module = "批量下线用户", operateType = OperateTypeEnum.KICKOUT)
+    @PostMapping("/batchKickout")
+    public Result batchKickout(@RequestBody List<Long> ids) {
+        return Result.r(true);
     }
 }

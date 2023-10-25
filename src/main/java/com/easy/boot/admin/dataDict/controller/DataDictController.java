@@ -109,7 +109,7 @@ public class DataDictController extends BaseController {
         return Result.r(dataDictService.updateById(dto));
     }
 
-    @SaCheckPermission(value = "system:data:dict:delete")
+    @SaCheckPermission(value = "system:data:dict:del")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "删除数据字典")
     @EasyLog(module = "删除数据字典", operateType = OperateTypeEnum.DELETE)

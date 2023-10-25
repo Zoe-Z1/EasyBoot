@@ -31,6 +31,9 @@ public class LoginLogQuery extends BasePageQuery {
     @ApiModelProperty("登录状态 SUCCESS：成功 FAIL：失败")
     private String status;
 
+    @ApiModelProperty("在线状态 # 0：在线 1：不在线")
+    private Integer isOnline;
+
     @ApiModelProperty("开始时间")
     private Long startTime;
 

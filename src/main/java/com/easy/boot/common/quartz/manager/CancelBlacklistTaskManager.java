@@ -40,6 +40,7 @@ public class CancelBlacklistTaskManager implements EasyJobTaskInterface {
      */
     @Override
     public void execute(ScheduledTask task) {
+        log.info("取消拉黑定时任务，task： {} ", task);
         List<Blacklist> list = blacklistService.selectNotForeverList();
         if (CollUtil.isEmpty(list)) {
             return;

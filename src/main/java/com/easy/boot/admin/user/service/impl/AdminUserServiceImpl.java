@@ -65,10 +65,6 @@ public class AdminUserServiceImpl extends ServiceImpl<AdminUserMapper, AdminUser
     public IPage<AdminUser> selectPage(AdminUserQuery query) {
         Page<AdminUser> page = new Page<>(query.getPageNum(), query.getPageSize());
         return lambdaQuery()
-                .eq(Objects.nonNull(query.getDepartmentId()) && query.getDepartmentId() != 0,
-                        AdminUser::getDepartmentId, query.getDepartmentId())
-                .eq(query.getSex() != null, AdminUser::getSex, query.getSex())
-                .eq(query.getStatus() != null, AdminUser::getStatus, query.getStatus())
                 .and(StrUtil.isNotEmpty(query.getKeyword()), keywordQuery -> {
                     keywordQuery
                             .like(AdminUser::getUsername, query.getKeyword()).or()
@@ -78,8 +74,10 @@ public class AdminUserServiceImpl extends ServiceImpl<AdminUserMapper, AdminUser
                 })
                 .like(StrUtil.isNotEmpty(query.getUsername()), AdminUser::getUsername, query.getUsername())
                 .like(StrUtil.isNotEmpty(query.getName()), AdminUser::getName, query.getName())
-                .like(StrUtil.isNotEmpty(query.getMobile()), AdminUser::getMobile, query.getMobile())
-                .like(StrUtil.isNotEmpty(query.getEmail()), AdminUser::getEmail, query.getEmail())
+                .eq(Objects.nonNull(query.getDepartmentId()) && query.getDepartmentId() != 0,
+                        AdminUser::getDepartmentId, query.getDepartmentId())
+                .eq(query.getSex() != null, AdminUser::getSex, query.getSex())
+                .eq(query.getStatus() != null, AdminUser::getStatus, query.getStatus())
                 .between(Objects.nonNull(query.getStartTime()) && Objects.nonNull(query.getEndTime()),
                             BaseEntity::getCreateTime, query.getStartTime(), query.getEndTime())
                 .orderByAsc(AdminUser::getSort)
@@ -192,7 +190,7 @@ public class AdminUserServiceImpl extends ServiceImpl<AdminUserMapper, AdminUser
         boolean status = updateById(user);
         if (status) {
             // 改密码踢下线
-            StpUtil.kickout(dto.getId());
+            UserContext.kickoutAndRemoveCache(dto.getId());
         }
         return status;
     }
@@ -217,7 +215,7 @@ public class AdminUserServiceImpl extends ServiceImpl<AdminUserMapper, AdminUser
         boolean status = updateById(user);
         if (status) {
             // 改密码踢下线
-            StpUtil.kickout(dto.getId());
+            UserContext.kickoutAndRemoveCache(dto.getId());
         }
         return status;
     }

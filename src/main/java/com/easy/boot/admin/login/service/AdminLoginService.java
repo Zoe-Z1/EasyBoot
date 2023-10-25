@@ -19,8 +19,14 @@ public interface AdminLoginService {
     AdminUser login(LoginDTO dto);
 
     /**
+     * 退出登录
+     */
+    void logout();
+
+    /**
      * 检查登录状态
      * @return
      */
     void checkLogin();
+
 }

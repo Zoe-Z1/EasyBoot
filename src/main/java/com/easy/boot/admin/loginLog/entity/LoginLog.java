@@ -1,5 +1,6 @@
 package com.easy.boot.admin.loginLog.entity;
 
+import com.alibaba.excel.annotation.ExcelIgnore;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.annotation.write.style.ColumnWidth;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -83,6 +84,16 @@ public class LoginLog extends BaseEntity {
     @ApiModelProperty("登录状态 SUCCESS：成功 FAIL：失败")
     @TableField("status")
     private String status;
+
+    @ExcelIgnore
+    @ApiModelProperty("在线状态 # 0：在线 1：不在线")
+    @TableField("is_online")
+    private Integer isOnline;
+
+    @ExcelIgnore
+    @ApiModelProperty("登录token")
+    @TableField("token")
+    private String token;
 
     @ExcelProperty(value = "备注")
     @ApiModelProperty("备注")

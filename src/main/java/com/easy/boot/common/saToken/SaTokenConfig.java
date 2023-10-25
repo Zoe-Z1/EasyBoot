@@ -28,13 +28,13 @@ public class SaTokenConfig implements WebMvcConfigurer {
                 adminLoginService.checkLogin();
             });
             SaRouter.match("/common/**", r -> {
-                UserContext.checkAdminUserLogin();
+                adminLoginService.checkLogin();
             });
         }))
                 .addPathPatterns("/**")
-                .excludePathPatterns("/admin/login",
+                .excludePathPatterns("/admin/login", "/admin/logout",
                         "/admin/test",
-                        "/admin/user/download",
+                        "/admin/sse/**",
                         "/favicon.ico",
                         "/doc.html",
                         "/swagger-resources/**",

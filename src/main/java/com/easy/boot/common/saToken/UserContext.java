@@ -41,8 +41,24 @@ public class UserContext {
      * @return
      */
     public static void logout() {
-        removeAdminUser();
-        StpUtil.logout();
+        StpUtil.logoutByTokenValue(StpUtil.getTokenValue());
+    }
+
+    /**
+     * 踢人下线并清除缓存
+     * @return
+     */
+    public static void kickoutAndRemoveCache(Long userId) {
+        removeAdminUser(userId);
+        StpUtil.kickout(userId);
+    }
+
+    /**
+     * 踢除指定会话
+     * @return
+     */
+    public static void kickout(String tokenValue) {
+        StpUtil.kickoutByTokenValue(tokenValue);
     }
 
     /**

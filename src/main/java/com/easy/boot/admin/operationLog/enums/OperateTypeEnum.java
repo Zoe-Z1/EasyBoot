@@ -82,6 +82,11 @@ public enum OperateTypeEnum {
      */
     RESUME_OR_PAUSE_JOB("恢复/暂停定时任务"),
 
+    /**
+     * 强制下线
+     */
+    KICKOUT("强制下线"),
+
 
     ;
 

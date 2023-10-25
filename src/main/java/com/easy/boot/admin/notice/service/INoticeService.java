@@ -17,6 +17,12 @@ import java.util.List;
 public interface INoticeService extends IService<Notice> {
 
     /**
+     * 获取最新公告
+     * @return
+     */
+    Notice news();
+
+    /**
      * 分页查询公告
      * @param query
      * @return
