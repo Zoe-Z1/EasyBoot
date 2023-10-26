@@ -1,4 +1,4 @@
-package com.easy.boot.admin.loginLog.entity;
+package com.easy.boot.admin.onlineUser.entity;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -10,14 +10,14 @@ import lombok.experimental.SuperBuilder;
 /**
 * @author zoe
 * @date 2023/08/02
-* @description 登录日志 DTO
+* @description 在线用户 DTO
 */
 @Data
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel(value = "LoginLog对象", description = "登录日志")
-public class LoginLogCreateDTO {
+@ApiModel("在线用户新增DTO")
+public class OnlineUserCreateDTO {
 
     @ApiModelProperty("用户ID")
     private Long userId;
@@ -33,6 +33,9 @@ public class LoginLogCreateDTO {
 
     @ApiModelProperty("登录状态 SUCCESS：成功 FAIL：失败")
     private String status;
+
+    @ApiModelProperty("在线状态 # 0：在线 1：不在线")
+    private Integer isOnline;
 
     @ApiModelProperty("登录token")
     private String token;

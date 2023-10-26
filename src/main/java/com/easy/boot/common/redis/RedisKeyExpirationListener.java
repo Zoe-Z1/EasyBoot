@@ -1,6 +1,6 @@
 package com.easy.boot.common.redis;
 
-import com.easy.boot.admin.loginLog.service.ILoginLogService;
+import com.easy.boot.admin.onlineUser.service.IOnlineUserService;
 import com.easy.boot.admin.operationLog.enums.RoleTypeEnum;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.connection.Message;
@@ -19,7 +19,7 @@ import javax.annotation.Resource;
 public class RedisKeyExpirationListener extends KeyExpirationEventMessageListener {
 
     @Resource
-    private ILoginLogService loginLogService;
+    private IOnlineUserService onlineUserService;
 
     @Value("${sa-token.token-name}")
     private String tokenName;
@@ -34,7 +34,7 @@ public class RedisKeyExpirationListener extends KeyExpirationEventMessageListene
         // 监听指定key
         if (message.toString().startsWith(prefix)) {
             String token = message.toString().replace(prefix, "");
-            loginLogService.updateIsOnlineByToken(1, token);
+            onlineUserService.deleteByToken(token);
         }
     }
 }

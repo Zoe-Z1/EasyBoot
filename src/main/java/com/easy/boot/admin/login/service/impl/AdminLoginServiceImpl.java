@@ -12,13 +12,13 @@ import com.easy.boot.admin.login.service.CheckLoginHandler;
 import com.easy.boot.admin.login.service.LoginAfterHandler;
 import com.easy.boot.admin.loginLog.entity.LoginLogCreateDTO;
 import com.easy.boot.admin.loginLog.service.ILoginLogService;
+import com.easy.boot.admin.onlineUser.service.IOnlineUserService;
 import com.easy.boot.admin.operationLog.enums.OperateStatusEnum;
 import com.easy.boot.admin.sysConfig.entity.SysConfig;
 import com.easy.boot.admin.sysConfig.enums.DomainCodeEnum;
 import com.easy.boot.admin.sysConfigDomain.service.ISysConfigDomainService;
 import com.easy.boot.admin.user.entity.AdminUser;
 import com.easy.boot.admin.user.service.AdminUserService;
-import com.easy.boot.common.redis.EasyRedisManager;
 import com.easy.boot.common.saToken.UserContext;
 import com.easy.boot.exception.BusinessException;
 import com.easy.boot.utils.IpUtil;
@@ -45,6 +45,9 @@ public class AdminLoginServiceImpl implements AdminLoginService {
     private ILoginLogService loginLogService;
 
     @Resource
+    private IOnlineUserService onlineUserService;
+
+    @Resource
     private HttpServletRequest request;
 
     @Autowired
@@ -52,9 +55,6 @@ public class AdminLoginServiceImpl implements AdminLoginService {
 
     @Autowired
     private List<CheckLoginHandler> checkLoginHandlers;
-
-    @Resource
-    private EasyRedisManager easyRedisManager;
 
     @Resource
     private ImageCaptchaApplication application;
@@ -88,7 +88,6 @@ public class AdminLoginServiceImpl implements AdminLoginService {
             }
         }
         UserContext.login(user);
-        loginLog.setIsOnline(0);
         loginLog.setToken(StpUtil.getTokenValue());
         loginLog.setStatus(String.valueOf(OperateStatusEnum.SUCCESS));
         loginLog.setRemarks("登录成功");
@@ -100,7 +99,7 @@ public class AdminLoginServiceImpl implements AdminLoginService {
     public void logout() {
         if (UserContext.isLogin()) {
             String token = StpUtil.getTokenValue();
-            loginLogService.updateIsOnlineByToken(1, token);
+            onlineUserService.deleteByToken(token);
         }
         UserContext.logout();
     }

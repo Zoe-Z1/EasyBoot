@@ -99,13 +99,4 @@ public class LoginLogController extends BaseController {
         build.finish();
     }
 
-    @SaCheckPermission(value = "log:login:log:kickout")
-    @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "下线用户")
-    @EasyLog(module = "下线用户", operateType = OperateTypeEnum.KICKOUT)
-    @PostMapping("/kickout/{id}")
-    public Result kickout(@PathVariable Long id) {
-        return Result.r(loginLogService.kickoutById(id));
-    }
-
 }

@@ -1,6 +1,6 @@
 package com.easy.boot.common.quartz.manager;
 
-import com.easy.boot.admin.loginLog.service.ILoginLogService;
+import com.easy.boot.admin.onlineUser.service.IOnlineUserService;
 import com.easy.boot.admin.scheduledTask.entity.ScheduledTask;
 import com.easy.boot.common.quartz.EasyJobTaskInterface;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +19,7 @@ import javax.annotation.Resource;
 public class UpdateIsOnlineTaskManager implements EasyJobTaskInterface {
 
     @Resource
-    private ILoginLogService loginLogService;
+    private IOnlineUserService onlineUserService;
 
     @Override
     public String getKey() {
@@ -34,6 +34,6 @@ public class UpdateIsOnlineTaskManager implements EasyJobTaskInterface {
     @Override
     public void execute(ScheduledTask task) {
         log.info("更新用户在线状态定时任务，task： {} ", task);
-        loginLogService.updateIsOnline();
+        onlineUserService.updateIsOnline();
     }
 }

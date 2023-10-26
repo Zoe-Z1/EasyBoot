@@ -5,8 +5,6 @@ import cloud.tianai.captcha.spring.application.ImageCaptchaApplication;
 import cloud.tianai.captcha.spring.vo.CaptchaResponse;
 import cloud.tianai.captcha.spring.vo.ImageCaptchaVO;
 import cloud.tianai.captcha.validator.common.model.dto.ImageCaptchaTrack;
-import cn.hutool.core.date.DatePattern;
-import cn.hutool.core.date.DateUtil;
 import com.easy.boot.admin.login.entity.LoginDTO;
 import com.easy.boot.admin.login.entity.TokenVO;
 import com.easy.boot.admin.login.service.AdminLoginService;
@@ -23,7 +21,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.Date;
 
 /**
  * @author zoe
@@ -85,10 +82,6 @@ public class AdminLoginController {
             return Result.success();
         }
         return Result.fail(matching.getMsg());
-    }
-
-    public static void main(String[] args) {
-        System.out.println(" date = " + DateUtil.format(new Date(), DatePattern.UTC_PATTERN));
     }
 
 }
