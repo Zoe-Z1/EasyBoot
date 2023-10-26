@@ -42,7 +42,7 @@ public class LoginAfterHandlerIpBlacklistImpl implements LoginAfterHandler {
                 long endTime = blacklist.getCreateTime() + blacklist.getDuration() * 60 * 1000;
                 if (endTime > DateUtil.current()) {
                     afterDO.setStatus(false)
-                            .setMessage("IP已被拉黑，无法登录");
+                            .setMessage("您已被加入黑名单，无法登录");
                 } else {
                     // 不大于当前时间 解除拉黑
                     blacklistService.removeById(blacklist);

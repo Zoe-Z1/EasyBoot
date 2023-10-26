@@ -84,9 +84,9 @@ public enum SystemErrorEnum {
 
     USER_DISABLED(1002,"账号已被禁用，无法操作"),
 
-    USER_IS_BLACKLIST(1003,"您已被拉黑，无法操作"),
+    USER_IS_BLACKLIST(1003,"您已被加入黑名单，无法操作"),
 
-    IP_IS_BLACKLIST(1003,"您已被拉黑，无法操作"),
+    IP_IS_BLACKLIST(1003,"您已被加入黑名单，无法操作"),
 
     USER_NULL_ERROR(1004,"用户不存在"),
 

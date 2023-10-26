@@ -10,6 +10,7 @@ import com.easy.boot.admin.blacklist.entity.BlacklistQuery;
 import com.easy.boot.admin.blacklist.entity.BlacklistUpdateDTO;
 import com.easy.boot.admin.blacklist.mapper.BlacklistMapper;
 import com.easy.boot.admin.blacklist.service.IBlacklistService;
+import com.easy.boot.admin.role.service.IRoleService;
 import com.easy.boot.admin.user.entity.AdminUser;
 import com.easy.boot.admin.user.service.AdminUserService;
 import com.easy.boot.common.base.BaseEntity;
@@ -31,6 +32,9 @@ public class BlacklistServiceImpl extends ServiceImpl<BlacklistMapper, Blacklist
 
     @Resource
     private AdminUserService adminUserService;
+
+    @Resource
+    private IRoleService roleService;
 
     @Override
     public IPage<Blacklist> selectPage(BlacklistQuery query) {
@@ -76,12 +80,16 @@ public class BlacklistServiceImpl extends ServiceImpl<BlacklistMapper, Blacklist
         Blacklist blacklist = this.getByRelevanceDataAndType(dto.getRelevanceData(), dto.getType());
         if (Objects.nonNull(blacklist)) {
             String name = dto.getType() == 1 ? "账号" : "IP";
-            throw new BusinessException(name + "已经被拉黑，无法再次拉黑");
+            throw new BusinessException(name + "已经被加入黑名单，无法再次加入");
         }
         if (dto.getType() == 1) {
             AdminUser adminUser = adminUserService.detail(Long.valueOf(dto.getRelevanceData()));
             if (adminUser == null) {
-                throw new BusinessException("拉黑的账号不存在");
+                throw new BusinessException("加入黑名单的账号不存在");
+            }
+            Boolean isAdmin = roleService.isAdmin(adminUser.getId());
+            if (isAdmin) {
+                throw new BusinessException("无法将该账号加入黑名单");
             }
             entity.setUsername(adminUser.getUsername());
         }
@@ -90,20 +98,11 @@ public class BlacklistServiceImpl extends ServiceImpl<BlacklistMapper, Blacklist
 
     @Override
     public Boolean updateById(BlacklistUpdateDTO dto) {
-        Blacklist entity = BeanUtil.copyBean(dto, Blacklist.class);
-        Blacklist blacklist = this.getByRelevanceDataAndType(dto.getRelevanceData(), dto.getType());
-        if (Objects.nonNull(blacklist) && !blacklist.getId().equals(dto.getId())) {
-            String name = dto.getType() == 1 ? "账号" : "IP";
-            throw new BusinessException(name + "已经被拉黑，无法再次拉黑");
-        }
-        if (dto.getType() == 1) {
-            AdminUser adminUser = adminUserService.detail(Long.valueOf(dto.getRelevanceData()));
-            if (adminUser == null) {
-                throw new BusinessException("拉黑账号不存在");
-            }
-            entity.setUsername(adminUser.getUsername());
-        }
-        return updateById(entity);
+        Blacklist blacklist = Blacklist.builder()
+                .id(dto.getId())
+                .duration(dto.getDuration())
+                .build();
+        return updateById(blacklist);
     }
 
     @Override
