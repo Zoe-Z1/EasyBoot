@@ -1,8 +1,10 @@
 package com.easy.boot.admin.login.service;
 
 
-import com.easy.boot.admin.user.entity.AdminUser;
+import cloud.tianai.captcha.spring.vo.CaptchaResponse;
+import cloud.tianai.captcha.spring.vo.ImageCaptchaVO;
 import com.easy.boot.admin.login.entity.LoginDTO;
+import com.easy.boot.admin.user.entity.AdminUser;
 
 /**
  * @author zoe
@@ -29,4 +31,8 @@ public interface AdminLoginService {
      */
     void checkLogin();
 
+    /**
+     * 获取验证码
+     */
+    CaptchaResponse<ImageCaptchaVO> getCode();
 }

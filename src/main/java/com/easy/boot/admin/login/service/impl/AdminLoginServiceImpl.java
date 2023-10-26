@@ -1,5 +1,9 @@
 package com.easy.boot.admin.login.service.impl;
 
+import cloud.tianai.captcha.common.constant.CaptchaTypeConstant;
+import cloud.tianai.captcha.spring.application.ImageCaptchaApplication;
+import cloud.tianai.captcha.spring.vo.CaptchaResponse;
+import cloud.tianai.captcha.spring.vo.ImageCaptchaVO;
 import cn.dev33.satoken.stp.StpUtil;
 import com.easy.boot.admin.login.entity.LoginDTO;
 import com.easy.boot.admin.login.entity.LoginHandlerAfterDO;
@@ -9,6 +13,9 @@ import com.easy.boot.admin.login.service.LoginAfterHandler;
 import com.easy.boot.admin.loginLog.entity.LoginLogCreateDTO;
 import com.easy.boot.admin.loginLog.service.ILoginLogService;
 import com.easy.boot.admin.operationLog.enums.OperateStatusEnum;
+import com.easy.boot.admin.sysConfig.entity.SysConfig;
+import com.easy.boot.admin.sysConfig.enums.DomainCodeEnum;
+import com.easy.boot.admin.sysConfigDomain.service.ISysConfigDomainService;
 import com.easy.boot.admin.user.entity.AdminUser;
 import com.easy.boot.admin.user.service.AdminUserService;
 import com.easy.boot.common.redis.EasyRedisManager;
@@ -48,6 +55,12 @@ public class AdminLoginServiceImpl implements AdminLoginService {
 
     @Resource
     private EasyRedisManager easyRedisManager;
+
+    @Resource
+    private ImageCaptchaApplication application;
+
+    @Resource
+    private ISysConfigDomainService sysConfigDomainService;
 
     @Value("${sa-token.timeout:1800}")
     private Long timeout;
@@ -101,5 +114,25 @@ public class AdminLoginServiceImpl implements AdminLoginService {
         for (CheckLoginHandler checkLoginHandler : checkLoginHandlers) {
             checkLoginHandler.check(id);
         }
+    }
+
+    @Override
+    public CaptchaResponse<ImageCaptchaVO> getCode() {
+//        SLIDER (滑块验证码)
+//        ROTATE (旋转验证码)
+//        CONCAT (滑动还原验证码)
+//        WORD_IMAGE_CLICK (文字点选验证码)
+        List<SysConfig> global = sysConfigDomainService.selectListByDomainCode(DomainCodeEnum.GLOBAL.getCode());
+        SysConfig sysConfig = new SysConfig();
+        sysConfig.setValue(CaptchaTypeConstant.SLIDER);
+        String type = "captcha_type";
+        global.forEach(item -> {
+            if (item.getCode().equals(type)) {
+                sysConfig.setValue(item.getValue());
+            }
+        });
+        CaptchaResponse<ImageCaptchaVO> response = application.generateCaptcha(sysConfig.getValue());
+        System.out.println("response.getCaptcha() = " + response.getCaptcha());
+        return response;
     }
 }

@@ -1,7 +1,12 @@
 package com.easy.boot.admin.login.controller;
 
+import cloud.tianai.captcha.common.response.ApiResponse;
+import cloud.tianai.captcha.spring.application.ImageCaptchaApplication;
+import cloud.tianai.captcha.spring.vo.CaptchaResponse;
+import cloud.tianai.captcha.spring.vo.ImageCaptchaVO;
+import cloud.tianai.captcha.validator.common.model.dto.ImageCaptchaTrack;
+import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.DateUtil;
-import cn.hutool.core.thread.ThreadUtil;
 import com.easy.boot.admin.login.entity.LoginDTO;
 import com.easy.boot.admin.login.entity.TokenVO;
 import com.easy.boot.admin.login.service.AdminLoginService;
@@ -9,19 +14,16 @@ import com.easy.boot.admin.operationLog.enums.OperateTypeEnum;
 import com.easy.boot.admin.user.entity.AdminUser;
 import com.easy.boot.common.base.Result;
 import com.easy.boot.common.log.EasyLog;
-import com.easy.boot.common.redisson.EasyLock;
 import com.easy.boot.common.saToken.UserContext;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.Date;
 
 /**
  * @author zoe
@@ -61,20 +63,32 @@ public class AdminLoginController {
         return Result.success();
     }
 
-    @EasyLock(leaseTime = 10, waitTime = 1)
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "测试")
-    @PostMapping(value = "/test")
-    public Result test(String username) {
-        long start = DateUtil.current();
-        log.info("test start time ->>>  {}", start);
+    @ApiOperation(value = "获取验证码")
+    @EasyLog(module = "获取验证码", operateType = OperateTypeEnum.SELECT)
+    @GetMapping(value = "/code")
+    public Result<CaptchaResponse<ImageCaptchaVO>> code() {
+        return Result.success(adminLoginService.getCode());
+    }
 
-        ThreadUtil.sleep(10000L);
+    @Resource
+    private ImageCaptchaApplication application;
 
-        long end = DateUtil.current();
-        log.info("test end time ->>>  {}", end);
-        log.info("diff time ->>>  {}", end - start);
-        return Result.success();
+    @ApiOperationSupport(author = "zoe")
+    @ApiOperation(value = "校验验证码")
+    @EasyLog(module = "校验验证码", operateType = OperateTypeEnum.SELECT)
+    @PostMapping(value = "/validate/code/{id}")
+    public Result<CaptchaResponse<ImageCaptchaVO>> validateCode(@PathVariable String id, @RequestBody ImageCaptchaTrack track) {
+        ApiResponse<?> matching = application.matching(id, track);
+        log.error("msg -> " + matching.getMsg());
+        if (matching.isSuccess()) {
+            return Result.success();
+        }
+        return Result.fail(matching.getMsg());
+    }
+
+    public static void main(String[] args) {
+        System.out.println(" date = " + DateUtil.format(new Date(), DatePattern.UTC_PATTERN));
     }
 
 }
