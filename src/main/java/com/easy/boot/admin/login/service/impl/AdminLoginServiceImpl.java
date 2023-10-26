@@ -108,11 +108,11 @@ public class AdminLoginServiceImpl implements AdminLoginService {
     public void checkLogin() {
         UserContext.checkAdminUserLogin();
         Long id = UserContext.getId();
-        // 续签Token
-        StpUtil.renewTimeout(timeout);
         for (CheckLoginHandler checkLoginHandler : checkLoginHandlers) {
             checkLoginHandler.check(id);
         }
+        // 续签Token
+        StpUtil.renewTimeout(timeout);
     }
 
     @Override

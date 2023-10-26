@@ -1,5 +1,6 @@
 package com.easy.boot.admin.blacklist.controller;
 
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.ExcelWriter;
 import com.alibaba.excel.write.metadata.WriteSheet;
@@ -40,6 +41,7 @@ public class BlacklistController extends BaseController {
     private IBlacklistService blacklistService;
 
 
+    @SaCheckPermission(value = "ops:blacklist:page")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "分页获取黑名单列表")
     @EasyLog(module = "分页获取黑名单列表", operateType = OperateTypeEnum.SELECT)
@@ -48,15 +50,8 @@ public class BlacklistController extends BaseController {
         return Result.success(blacklistService.selectPage(query));
     }
 
-    @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "获取黑名单详情")
-    @EasyLog(module = "获取黑名单详情", operateType = OperateTypeEnum.SELECT)
-    @GetMapping("/detail/{id}")
-    public Result<Blacklist> detail(@PathVariable Long id) {
-        return Result.success(blacklistService.detail(id));
-    }
-
     @EasyNoRepeatSubmit
+    @SaCheckPermission(value = "ops:blacklist:create")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "创建黑名单")
     @EasyLog(module = "创建黑名单", operateType = OperateTypeEnum.CREATE)
@@ -65,6 +60,7 @@ public class BlacklistController extends BaseController {
         return Result.r(blacklistService.create(dto));
     }
 
+    @SaCheckPermission(value = "ops:blacklist:update")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "编辑黑名单")
     @EasyLog(module = "编辑黑名单", operateType = OperateTypeEnum.UPDATE)
@@ -73,6 +69,7 @@ public class BlacklistController extends BaseController {
         return Result.r(blacklistService.updateById(dto));
     }
 
+    @SaCheckPermission(value = "ops:blacklist:del")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "取消拉黑")
     @EasyLog(module = "取消拉黑", operateType = OperateTypeEnum.DELETE)
@@ -81,6 +78,7 @@ public class BlacklistController extends BaseController {
         return Result.r(blacklistService.deleteById(id));
     }
 
+    @SaCheckPermission(value = "ops:blacklist:batch:del")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "批量取消拉黑")
     @EasyLog(module = "批量取消拉黑", operateType = OperateTypeEnum.DELETE)
@@ -90,6 +88,7 @@ public class BlacklistController extends BaseController {
     }
 
     @EasyNoRepeatSubmit
+    @SaCheckPermission(value = "ops:blacklist:export")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "导出黑名单")
     @EasyLog(module = "导出黑名单", operateType = OperateTypeEnum.EXPORT)

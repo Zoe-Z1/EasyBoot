@@ -54,11 +54,19 @@ public class UserContext {
     }
 
     /**
+     * 踢除会话
+     * @return
+     */
+    public static void kickout() {
+        StpUtil.kickoutByTokenValue(StpUtil.getTokenValue());
+    }
+
+    /**
      * 踢除指定会话
      * @return
      */
-    public static void kickout(String tokenValue) {
-        StpUtil.kickoutByTokenValue(tokenValue);
+    public static void kickout(String token) {
+        StpUtil.kickoutByTokenValue(token);
     }
 
     /**

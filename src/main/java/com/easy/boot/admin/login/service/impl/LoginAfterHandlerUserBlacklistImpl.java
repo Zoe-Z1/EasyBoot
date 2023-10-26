@@ -38,9 +38,10 @@ public class LoginAfterHandlerUserBlacklistImpl implements LoginAfterHandler {
                 if (endTime > DateUtil.current()) {
                     afterDO.setStatus(false)
                             .setMessage("账号已被拉黑，无法登录");
+                } else {
+                    // 不大于当前时间 解除拉黑
+                    blacklistService.removeById(blacklist);
                 }
-                // 不大于当前时间 解除拉黑
-                blacklistService.removeById(blacklist);
             }
         }
         return afterDO;

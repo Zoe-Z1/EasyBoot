@@ -43,7 +43,8 @@ public class OnlineUserServiceImpl extends ServiceImpl<OnlineUserMapper, OnlineU
         Page<OnlineUser> page = new Page<>(query.getPageNum(), query.getPageSize());
         return lambdaQuery()
                 .select(BaseEntity::getId, OnlineUser::getUsername, OnlineUser::getIp, OnlineUser::getBrowser,
-                        OnlineUser::getOs, OnlineUser::getEngine, OnlineUser::getAddr, BaseEntity::getCreateTime)
+                        OnlineUser::getOs, OnlineUser::getEngine, OnlineUser::getAddr, BaseEntity::getCreateTime,
+                        BaseEntity::getCreateBy)
                 .and(StrUtil.isNotEmpty(query.getKeyword()), keywordQuery -> {
                     keywordQuery
                             .like(OnlineUser::getIp, query.getKeyword()).or()

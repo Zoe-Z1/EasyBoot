@@ -52,11 +52,6 @@ public class BlacklistServiceImpl extends ServiceImpl<BlacklistMapper, Blacklist
     }
 
     @Override
-    public Blacklist detail(Long id) {
-        return getById(id);
-    }
-
-    @Override
     public Blacklist getByUserId(Long userId) {
         return this.getByRelevanceDataAndType(userId.toString(), 1);
     }

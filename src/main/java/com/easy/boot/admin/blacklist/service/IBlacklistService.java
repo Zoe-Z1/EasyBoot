@@ -30,13 +30,6 @@ public interface IBlacklistService extends IService<Blacklist> {
     List<Blacklist> selectNotForeverList();
 
     /**
-     * 获取黑名单详情
-     * @param id
-     * @return
-     */
-    Blacklist detail(Long id);
-
-    /**
      * 根据用户ID获取拉黑信息
      * @param userId
      * @return
