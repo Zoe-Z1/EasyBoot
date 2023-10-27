@@ -39,12 +39,11 @@ public class CheckLoginHandlerIpBlacklistImpl implements CheckLoginHandler {
         // 查询IP黑名单
         Blacklist blacklist = blacklistService.getByIp(ip);
         if (Objects.nonNull(blacklist)) {
-            if (blacklist.getDuration() == 0) {
+            if (blacklist.getEndTime() == 0) {
                 throw new BusinessException(SystemErrorEnum.IP_IS_BLACKLIST);
             }
             // 计算拉黑结束时间 大于当前时间则代表拉黑中
-            long endTime = blacklist.getCreateTime() + blacklist.getDuration() * 60 * 1000;
-            if (endTime > DateUtil.current()) {
+            if (blacklist.getEndTime() > DateUtil.current()) {
                 String token = StpUtil.getTokenValue();
                 UserContext.kickout(token);
                 onlineUserService.deleteByToken(token);

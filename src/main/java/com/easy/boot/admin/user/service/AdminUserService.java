@@ -29,6 +29,13 @@ public interface AdminUserService extends IService<AdminUser> {
     AdminUserVO detail(Long id);
 
     /**
+     * 使用账号获取用户信息
+     * @param username
+     * @return
+     */
+    AdminUser getByUsername(String username);
+
+    /**
      * 登录
      * @param username 账号
      * @param password 密码

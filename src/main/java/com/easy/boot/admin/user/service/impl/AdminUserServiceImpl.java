@@ -99,6 +99,11 @@ public class AdminUserServiceImpl extends ServiceImpl<AdminUserMapper, AdminUser
     }
 
     @Override
+    public AdminUser getByUsername(@NonNull String username) {
+        return lambdaQuery().eq(AdminUser::getUsername, username).one();
+    }
+
+    @Override
     public AdminUser login(@NonNull String username, @NonNull String password) {
         AdminUser user = lambdaQuery()
                 .eq(AdminUser::getUsername, username)

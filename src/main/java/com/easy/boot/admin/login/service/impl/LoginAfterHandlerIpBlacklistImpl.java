@@ -37,15 +37,14 @@ public class LoginAfterHandlerIpBlacklistImpl implements LoginAfterHandler {
         // 查询IP黑名单
         Blacklist blacklist = blacklistService.getByIp(ip);
         if (Objects.nonNull(blacklist)) {
-            if (blacklist.getDuration() != 0) {
-                // 计算拉黑结束时间 大于当前时间则代表拉黑中
-                long endTime = blacklist.getCreateTime() + blacklist.getDuration() * 60 * 1000;
-                if (endTime > DateUtil.current()) {
+            if (blacklist.getEndTime() != 0) {
+                // 拉黑结束时间大于当前时间则代表拉黑中
+                if (blacklist.getEndTime() > DateUtil.current()) {
                     afterDO.setStatus(false)
                             .setMessage("您已被加入黑名单，无法登录");
                 } else {
-                    // 不大于当前时间 解除拉黑
-                    blacklistService.removeById(blacklist);
+                    // 不大于当前时间 使拉黑失效
+                    blacklistService.updateStatusById(blacklist.getId(), 2);
                 }
             }
         }

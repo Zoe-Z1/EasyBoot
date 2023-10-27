@@ -29,10 +29,10 @@ public class BlacklistCreateDTO {
     private Integer type;
 
     @NotBlank(message = "关联数据不能为空")
-    @ApiModelProperty(required = true, value = "关联数据  IP地址或账号ID")
+    @ApiModelProperty(required = true, value = "关联数据  IP地址或用户账号")
     private String relevanceData;
 
-    @NotNull(message = "拉黑时长不能为空")
-    @ApiModelProperty(required = true, value = "拉黑时长/分钟 0代表永久")
-    private Long duration;
+    @NotNull(message = "拉黑结束时间不能为空")
+    @ApiModelProperty(required = true, value = "拉黑结束时间 0代表永久")
+    private Long endTime;
 }

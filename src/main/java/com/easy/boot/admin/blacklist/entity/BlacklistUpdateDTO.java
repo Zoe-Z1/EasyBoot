@@ -25,8 +25,8 @@ public class BlacklistUpdateDTO {
     @ApiModelProperty(required = true, value = "黑名单ID")
     private Long id;
 
-    @NotNull(message = "拉黑时长不能为空")
-    @ApiModelProperty(required = true, value = "拉黑时长/分钟 0代表永久")
-    private Long duration;
+    @NotNull(message = "拉黑结束时间不能为空")
+    @ApiModelProperty(required = true, value = "拉黑结束时间 0代表永久")
+    private Long endTime;
 
 }

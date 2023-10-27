@@ -1,14 +1,12 @@
 package com.easy.boot.admin.blacklist.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
+import cn.hutool.core.date.DateUtil;
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.ExcelWriter;
 import com.alibaba.excel.write.metadata.WriteSheet;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.easy.boot.admin.blacklist.entity.Blacklist;
-import com.easy.boot.admin.blacklist.entity.BlacklistCreateDTO;
-import com.easy.boot.admin.blacklist.entity.BlacklistQuery;
-import com.easy.boot.admin.blacklist.entity.BlacklistUpdateDTO;
+import com.easy.boot.admin.blacklist.entity.*;
 import com.easy.boot.admin.blacklist.service.IBlacklistService;
 import com.easy.boot.admin.operationLog.enums.OperateTypeEnum;
 import com.easy.boot.common.base.BaseController;
@@ -25,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author zoe
@@ -96,12 +95,30 @@ public class BlacklistController extends BaseController {
     public void exportExcel(@Validated @RequestBody BlacklistQuery query) throws IOException {
         query.setPageNum(1L);
         query.setPageSize(maxLimit);
-        ExcelWriter build = EasyExcel.write(response.getOutputStream(), Blacklist.class)
+        ExcelWriter build = EasyExcel.write(response.getOutputStream(), BlacklistExportDO.class)
                 .build();
         WriteSheet writeSheet = EasyExcel.writerSheet("黑名单信息列表").build();
         while (true) {
             IPage<Blacklist> page = blacklistService.selectPage(query);
-            build.write(page.getRecords(), writeSheet);
+            List<BlacklistExportDO> dos = page.getRecords().stream().map(item -> {
+                BlacklistExportDO exportDO = BlacklistExportDO.builder()
+                        .type(item.getType())
+                        .startTime(item.getCreateTime())
+                        .createUsername(item.getCreateUsername())
+                        .build();
+                if (item.getEndTime() == 0) {
+                    exportDO.setEndTime("永久拉黑");
+                } else {
+                    exportDO.setEndTime(DateUtil.date(item.getEndTime()).toString());
+                }
+                if (item.getType() == 1) {
+                    exportDO.setRelevanceData("拉黑账号：" + item.getRelevanceData());
+                } else {
+                    exportDO.setRelevanceData("拉黑IP：" + item.getRelevanceData());
+                }
+                return exportDO;
+            }).collect(Collectors.toList());
+            build.write(dos, writeSheet);
             if (page.getCurrent() >= page.getPages()) {
                 break;
             }

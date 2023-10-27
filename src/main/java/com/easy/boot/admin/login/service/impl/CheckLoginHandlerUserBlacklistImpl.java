@@ -6,6 +6,7 @@ import com.easy.boot.admin.blacklist.entity.Blacklist;
 import com.easy.boot.admin.blacklist.service.IBlacklistService;
 import com.easy.boot.admin.login.service.CheckLoginHandler;
 import com.easy.boot.admin.onlineUser.service.IOnlineUserService;
+import com.easy.boot.admin.user.entity.AdminUser;
 import com.easy.boot.common.saToken.UserContext;
 import com.easy.boot.exception.BusinessException;
 import com.easy.boot.exception.enums.SystemErrorEnum;
@@ -30,15 +31,15 @@ public class CheckLoginHandlerUserBlacklistImpl implements CheckLoginHandler {
 
     @Override
     public void check(Long id) {
+        String username = UserContext.getUsername();
         // 查询用户黑名单
-        Blacklist blacklist = blacklistService.getByUserId(id);
+        Blacklist blacklist = blacklistService.getByUsername(username);
         if (Objects.nonNull(blacklist)) {
-            if (blacklist.getDuration() == 0) {
+            if (blacklist.getEndTime() == 0) {
                 throw new BusinessException(SystemErrorEnum.USER_IS_BLACKLIST);
             }
             // 计算拉黑结束时间 大于当前时间则代表拉黑中
-            long endTime = blacklist.getCreateTime() + blacklist.getDuration() * 60 * 1000;
-            if (endTime > DateUtil.current()) {
+            if (blacklist.getEndTime() > DateUtil.current()) {
                 String token = StpUtil.getTokenValue();
                 UserContext.kickout(token);
                 onlineUserService.deleteByToken(token);

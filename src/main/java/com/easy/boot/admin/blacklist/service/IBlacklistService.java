@@ -7,6 +7,7 @@ import com.easy.boot.admin.blacklist.entity.BlacklistCreateDTO;
 import com.easy.boot.admin.blacklist.entity.BlacklistUpdateDTO;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -24,17 +25,22 @@ public interface IBlacklistService extends IService<Blacklist> {
     IPage<Blacklist> selectPage(BlacklistQuery query);
 
     /**
-     * 获取不永久拉黑的黑名单列表
-     * @return
+     * 更新黑名单状态
      */
-    List<Blacklist> selectNotForeverList();
+    void updateBlacklistStatus();
 
     /**
-     * 根据用户ID获取拉黑信息
-     * @param userId
+     * 获取未失效且不永久拉黑的黑名单列表
      * @return
      */
-    Blacklist getByUserId(Long userId);
+    List<Blacklist> selectNotExpiredAndNotForeverList();
+
+    /**
+     * 根据用户账号获取拉黑信息
+     * @param username
+     * @return
+     */
+    Blacklist getByUsername(String username);
 
     /**
      * 根据IP获取拉黑信息
@@ -79,4 +85,18 @@ public interface IBlacklistService extends IService<Blacklist> {
      */
     Boolean deleteBatchByIds(List<Long> ids);
 
+    /**
+     * 批量更改黑名单状态
+     * @param ids
+     * @param status
+     * @return
+     */
+    Boolean updateBatchByIds(Collection<Long> ids, Integer status);
+
+    /**
+     * 根据ID修改拉黑状态
+     * @param id
+     * @param status
+     */
+    Boolean updateStatusById(Long id, Integer status);
 }

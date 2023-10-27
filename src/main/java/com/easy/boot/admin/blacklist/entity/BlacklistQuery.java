@@ -25,10 +25,19 @@ public class BlacklistQuery extends BasePageQuery {
     @ApiModelProperty("类型 1：账号 2：IP")
     private Integer type;
 
-    @ApiModelProperty("关联数据  IP地址或账号ID")
+    @ApiModelProperty("关联数据  IP地址或用户账号")
     private String relevanceData;
 
-    @ApiModelProperty("拉黑用户账号")
-    private String username;
+    @ApiModelProperty("操作人账号")
+    private String createUsername;
+
+    @ApiModelProperty("开始时间")
+    private Long startTime;
+
+    @ApiModelProperty("结束时间")
+    private Long endTime;
+
+    @ApiModelProperty("拉黑状态 1：拉黑中 2：已失效")
+    private Integer status;
 
 }

@@ -145,36 +145,36 @@
   </div>
 </template>
 <script>
-  import { mixin } from '@/views/pages/mixin/save'
-  export default {
-    name: '${className}Save',
-    mixins: [mixin],
-    data() {
-      return {
-        // 表单校验
-        rules: {
-          <#list columns as column>
-          <#if column.isRequired == 0>
-            <#if column.dictDomainCode?? && column.dictDomainCode != "" && (column.columnRemarks!?index_of('#') > -1)>
-          ${column.javaName}: [{ required: true, message: '请输入${column.columnRemarks!?substring(0, column.columnRemarks!?index_of('#'))?trim}', trigger: 'change' }],
-            <#else >
-          ${column.javaName}: [{ required: true, message: '请输入${column.columnRemarks}', trigger: 'change' }],
-            </#if>
+import { mixin } from '@/views/pages/mixin/save'
+export default {
+  name: '${className}Save',
+  mixins: [mixin],
+  data() {
+    return {
+      // 表单校验
+      rules: {
+        <#list columns as column>
+        <#if column.isRequired == 0>
+          <#if column.dictDomainCode?? && column.dictDomainCode != "" && (column.columnRemarks!?index_of('#') > -1)>
+        ${column.javaName}: [{ required: true, message: '请输入${column.columnRemarks!?substring(0, column.columnRemarks!?index_of('#'))?trim}', trigger: 'change' }],
+          <#else >
+        ${column.javaName}: [{ required: true, message: '请输入${column.columnRemarks}', trigger: 'change' }],
           </#if>
-          </#list>
-        }
+        </#if>
+        </#list>
+      }
+    }
+  },
+  methods: {
+    // 弹出窗口加载
+    openDialog(rows) {
+      this.dialogVisible = true
+      if (rows) {
+        this.ruleForm = { ...this.ruleForm, ...rows }
+      } else {
+        this.ruleForm = { }
       }
     },
-    methods: {
-      // 弹出窗口加载
-      openDialog(rows) {
-        this.dialogVisible = true
-        if (rows) {
-          this.ruleForm = { ...this.ruleForm, ...rows }
-        } else {
-          this.ruleForm = { }
-        }
-      },
-    }
   }
+}
 </script>

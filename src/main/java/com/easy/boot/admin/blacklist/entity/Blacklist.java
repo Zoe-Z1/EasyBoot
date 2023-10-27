@@ -1,12 +1,8 @@
 package com.easy.boot.admin.blacklist.entity;
 
-import com.alibaba.excel.annotation.ExcelProperty;
-import com.alibaba.excel.annotation.write.style.ColumnWidth;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.easy.boot.common.base.BaseEntity;
-import com.easy.boot.common.excel.converter.IntegerBlacklistTypeToStringConvert;
-import com.easy.boot.common.excel.converter.LongBlacklistDurationToStringConvert;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -21,7 +17,6 @@ import lombok.experimental.SuperBuilder;
 * @description 黑名单 实体
 */
 @Data
-@ColumnWidth(20)
 @EqualsAndHashCode(callSuper = true)
 @SuperBuilder
 @NoArgsConstructor
@@ -30,24 +25,19 @@ import lombok.experimental.SuperBuilder;
 @ApiModel(value = "Blacklist对象", description = "黑名单")
 public class Blacklist extends BaseEntity {
 
-    @ExcelProperty(value = "拉黑用户账号")
-    @ApiModelProperty("拉黑用户账号")
-    @TableField("username")
-    private String username;
-
-    @ExcelProperty(value = "拉黑类型", converter = IntegerBlacklistTypeToStringConvert.class)
     @ApiModelProperty("类型 1：账号 2：IP")
     @TableField("type")
     private Integer type;
 
-    @ColumnWidth(40)
-    @ExcelProperty(value = "关联数据-IP地址或用户编号")
-    @ApiModelProperty("关联数据  IP地址或账号ID")
+    @ApiModelProperty("关联数据  IP地址或用户账号")
     @TableField("relevance_data")
     private String relevanceData;
 
-    @ExcelProperty(value = "拉黑时长/分钟", converter = LongBlacklistDurationToStringConvert.class)
-    @ApiModelProperty("拉黑时长/分钟  0代表永久")
-    @TableField("duration")
-    private Long duration;
+    @ApiModelProperty("拉黑结束时间  0代表永久")
+    @TableField("end_time")
+    private Long endTime;
+
+    @ApiModelProperty("拉黑状态 1：拉黑中 2：已失效")
+    @TableField("status")
+    private Integer status;
 }
