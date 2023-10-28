@@ -186,7 +186,7 @@ public class RoleController extends BaseController {
     @SaCheckPermission(value = "system:role:download")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "下载角色导入模板")
-    @EasyLog(module = "下载角色导入模板", operateType = OperateTypeEnum.DOWNLOAD)
+    @EasyLog(module = "下载角色导入模板", operateType = OperateTypeEnum.EXPORT)
     @PostMapping("/download")
     public void downloadTemplate() throws IOException {
         EasyExcel.write(response.getOutputStream(), Role.class)

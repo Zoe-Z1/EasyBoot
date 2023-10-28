@@ -44,6 +44,9 @@ public class MenuCreateDTO {
     @ApiModelProperty(required = false, value = "路由地址")
     private String path;
 
+    @ApiModelProperty("路由名称")
+    private String name;
+
     @Length(min = 1, max = 100, message = "权限字符在{min}-{max}个字符之间")
     @ApiModelProperty(required = false, value = "权限字符")
     private String permission;
@@ -60,6 +63,21 @@ public class MenuCreateDTO {
     @Range(min = 1, max = 2, message = "显示状态不正确")
     @ApiModelProperty(required = true, value = "显示状态 1：显示 2：隐藏")
     private Integer showStatus;
+
+    @Range(min = 1, max = 2, message = "是否固钉类型不正确")
+    @ApiModelProperty("是否固钉 #1：固定， 2：不固定")
+    private Integer affix;
+
+    @Range(min = 1, max = 2, message = "是否缓存类型不正确")
+    @ApiModelProperty("是否缓存 #1：缓存， 2：不缓存")
+    private Integer cache;
+
+    @Range(min = 1, max = 2, message = "是否外链类型不正确")
+    @ApiModelProperty("是否外链	# 1：是，2：否")
+    private Integer isLink;
+
+    @ApiModelProperty("高亮路由")
+    private String activeMenu;
 
     @ApiModelProperty(required = false, value = "排序")
     private Integer sort;

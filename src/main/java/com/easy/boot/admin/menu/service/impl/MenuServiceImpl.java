@@ -187,11 +187,16 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
             if (StrUtil.isEmpty(menu.getPath())) {
                 throw new BusinessException("路由地址不能为空");
             }
-            if (StrUtil.isEmpty(menu.getComponent())) {
-                throw new BusinessException("组件路径不能为空");
-            }
-            if (StrUtil.isEmpty(menu.getPermission())) {
-                throw new BusinessException("权限字符不能为空");
+            if (menu.getIsLink() != null && menu.getIsLink() == 2) {
+                if (StrUtil.isEmpty(menu.getComponent())) {
+                    throw new BusinessException("组件路径不能为空");
+                }
+                if (StrUtil.isEmpty(menu.getPermission())) {
+                    throw new BusinessException("权限字符不能为空");
+                }
+                if (menu.getCache() == 1 && StrUtil.isEmpty(menu.getName())) {
+                    throw new BusinessException("路由名称不能为空");
+                }
             }
         } else if (menu.getType() == 3) {
             // 校验接口

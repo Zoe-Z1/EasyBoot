@@ -190,7 +190,7 @@ public class AdminUserController extends BaseController {
     @SaCheckPermission(value = "system:admin:user:download")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "下载用户导入模板")
-    @EasyLog(module = "下载用户导入模板", operateType = OperateTypeEnum.DOWNLOAD)
+    @EasyLog(module = "下载用户导入模板", operateType = OperateTypeEnum.EXPORT)
     @PostMapping("/download")
     public void downloadTemplate() throws IOException {
         EasyExcel.write(response.getOutputStream(), AdminUser.class)

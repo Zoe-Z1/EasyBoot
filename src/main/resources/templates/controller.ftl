@@ -167,7 +167,7 @@ public class ${className} {
     @SaCheckPermission(value = "${permission}:download")
     @ApiOperationSupport(author = "${global.author}")
     @ApiOperation(value = "下载${remarks!}导入模板")
-    @EasyLog(module = "下载${remarks!}导入模板", operateType = OperateTypeEnum.DOWNLOAD)
+    @EasyLog(module = "下载${remarks!}导入模板", operateType = OperateTypeEnum.EXPORT)
     @PostMapping("/download")
     public void downloadTemplate() throws IOException {
         EasyExcel.write(response.getOutputStream(), ${entityName}.class)

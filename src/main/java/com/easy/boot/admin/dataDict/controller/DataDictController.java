@@ -72,7 +72,7 @@ public class DataDictController extends BaseController {
         return Result.success(map);
     }
 
-//    @SaCheckPermission(value = "system:data:dict:page")
+//    @SaCheckPermission(value = "system:data:dict:list:code")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "使用编码获取数据字典列表")
     @EasyLog(module = "使用编码获取数据字典列表", operateType = OperateTypeEnum.SELECT)
@@ -200,7 +200,7 @@ public class DataDictController extends BaseController {
     @SaCheckPermission(value = "system:data:dict:download")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "下载数据字典导入模板")
-    @EasyLog(module = "下载数据字典导入模板", operateType = OperateTypeEnum.DOWNLOAD)
+    @EasyLog(module = "下载数据字典导入模板", operateType = OperateTypeEnum.EXPORT)
     @PostMapping("/download")
     public void downloadTemplate() throws IOException {
         EasyExcel.write(response.getOutputStream(), DataDict.class)

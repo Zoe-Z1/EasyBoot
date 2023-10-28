@@ -48,6 +48,10 @@ public class Menu extends BaseEntity {
     @TableField("path")
     private String path;
 
+    @ApiModelProperty("路由名称")
+    @TableField("name")
+    private String name;
+
     @ApiModelProperty("权限字符")
     @TableField("permission")
     private String permission;
@@ -63,6 +67,22 @@ public class Menu extends BaseEntity {
     @ApiModelProperty("显示状态 1：显示 2：隐藏")
     @TableField("show_status")
     private Integer showStatus;
+
+    @ApiModelProperty("是否固钉 #1：固定， 2：不固定")
+    @TableField("affix")
+    private Integer affix;
+
+    @ApiModelProperty("是否缓存 #1：缓存， 2：不缓存")
+    @TableField("cache")
+    private Integer cache;
+
+    @ApiModelProperty("是否外链	# 1：是，2：否")
+    @TableField("is_link")
+    private Integer isLink;
+
+    @ApiModelProperty("高亮路由")
+    @TableField("active_menu")
+    private String activeMenu;
 
     @ApiModelProperty("排序")
     @TableField("sort")

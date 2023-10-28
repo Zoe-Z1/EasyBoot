@@ -32,6 +32,9 @@ public class MenuTreeLazyQuery {
     @ApiModelProperty("权限字符")
     private String permission;
 
+    @ApiModelProperty("路由名称")
+    private String name;
+
     @Range(min = 1, max = 3, message = "菜单类型不正确")
     @ApiModelProperty("菜单类型 1：目录  2：菜单 3：接口")
     private Integer type;
@@ -43,6 +46,18 @@ public class MenuTreeLazyQuery {
     @Range(min = 1, max = 2, message = "显示状态不正确")
     @ApiModelProperty("显示状态 1：显示 2：隐藏")
     private Integer showStatus;
+
+    @ApiModelProperty("是否固钉 #1：固定， 2：不固定")
+    private Integer affix;
+
+    @ApiModelProperty("是否缓存 #1：缓存， 2：不缓存")
+    private Integer cache;
+
+    @ApiModelProperty("是否外链	# 1：是，2：否")
+    private Integer isLink;
+
+    @ApiModelProperty("高亮路由")
+    private String activeMenu;
 
     @ApiModelProperty("开始时间")
     private Long startTime;

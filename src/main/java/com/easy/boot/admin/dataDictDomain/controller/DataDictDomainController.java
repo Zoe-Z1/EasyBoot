@@ -167,7 +167,7 @@ public class DataDictDomainController extends BaseController {
     @SaCheckPermission(value = "system:data:dict:domain:download")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "下载数据字典域导入模板")
-    @EasyLog(module = "下载数据字典域导入模板", operateType = OperateTypeEnum.DOWNLOAD)
+    @EasyLog(module = "下载数据字典域导入模板", operateType = OperateTypeEnum.EXPORT)
     @PostMapping("/download")
     public void downloadTemplate() throws IOException {
         EasyExcel.write(response.getOutputStream(), DataDictDomain.class)
