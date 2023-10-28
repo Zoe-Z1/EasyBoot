@@ -71,6 +71,12 @@ public class GenerateConfigVO {
     @ApiModelProperty("作者")
     private String author;
 
+    @ApiModelProperty("表单中占用栅格的列数")
+    private Integer colSpan;
+
+    @ApiModelProperty("开启路由缓存 #0：开启，1：不开启")
+    private Integer enableCache;
+
     @ApiModelProperty("生成导入 0：生成 1：不生成")
     private Integer enableImport;
 

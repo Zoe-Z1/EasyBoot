@@ -115,6 +115,8 @@ public class SqlTemplate extends AbstractTemplate {
     private void buildGenParam(DataMap buildDataMap) {
         MetaTable metaTable = buildDataMap.getMetaTable();
         GlobalConfig global = buildDataMap.getGlobalConfig();
+        String javaName = metaTable.getBeanName();
+        String className = NamingCase.toCamelCase(javaName);
         String genPath = String.join("/", global.getOutputPath(), getModuleName());
         String zipPath = String.join("/", global.getAuthor(), getModuleName());
         String permission = metaTable.getName().replaceAll("_", ":");
@@ -128,6 +130,7 @@ public class SqlTemplate extends AbstractTemplate {
         String createUsername = UserContext.getUsername();
         Long createTime = DateUtil.current();
         Boolean queryEnable = buildDataMap.getTemplateConfig().getQuery().isEnable();
+        buildDataMap.put(GenConstant.DATA_MAP_KEY_CLASS_NAME, className);
         buildDataMap.put(GenConstant.DATA_MAP_KEY_GEN_PATH, genPath);
         buildDataMap.put(GenConstant.DATA_MAP_KEY_ZIP_PATH, zipPath);
         buildDataMap.put(GenConstant.DATA_MAP_KEY_MENU_ID, IdWorker.getId());

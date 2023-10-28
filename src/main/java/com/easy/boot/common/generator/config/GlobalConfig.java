@@ -2,7 +2,10 @@ package com.easy.boot.common.generator.config;
 
 import cn.hutool.core.util.StrUtil;
 import com.easy.boot.exception.GeneratorException;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.Map;
 
@@ -46,6 +49,16 @@ public class GlobalConfig {
      * 作者
      */
     private String author;
+
+    /**
+     * 表单中占用栅格的列数
+     */
+    private Integer colSpan;
+
+    /**
+     * 开启路由缓存
+     */
+    private Boolean enableCache;
 
     /**
      * 类注释时间格式化 例：yyyy/MM/dd
@@ -112,6 +125,20 @@ public class GlobalConfig {
             throw new GeneratorException("作者不能为空");
         }
         return author;
+    }
+
+    public Integer getColSpan() {
+        if (colSpan == null) {
+            colSpan = 24;
+        }
+        return colSpan;
+    }
+
+    public Boolean getEnableCache() {
+        if (enableCache == null) {
+            enableCache = false;
+        }
+        return enableCache;
     }
 
     public String getCommentDateFormat() {

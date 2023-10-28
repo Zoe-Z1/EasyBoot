@@ -88,6 +88,14 @@ public class GenerateConfig extends BaseEntity {
     @ExcelProperty(value = "作者")
     private String author;
 
+    @ApiModelProperty("表单中占用栅格的列数 24为默认值不显示")
+    @TableField("col_span")
+    private Integer colSpan;
+
+    @ApiModelProperty("开启路由缓存 #0：开启，1：不开启")
+    @TableField("enable_cache")
+    private Integer enableCache;
+
     @ApiModelProperty("生成导入 0：生成 1：不生成")
     @TableField("enable_import")
     @ExcelProperty(value = "生成导入 0：生成 1：不生成")
@@ -143,6 +151,8 @@ public class GenerateConfig extends BaseEntity {
                 .outputPath(GenConstant.DEFAULT_OUTPUT_PATH)
                 .isOpen(0)
                 .author(GenConstant.DEFAULT_AUTHOR)
+                .colSpan(24)
+                .enableCache(1)
                 .enableImport(0)
                 .enableExport(0)
                 .enableLog(0)

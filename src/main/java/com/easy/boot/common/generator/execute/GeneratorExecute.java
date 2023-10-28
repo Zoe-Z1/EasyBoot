@@ -128,6 +128,8 @@ public class GeneratorExecute {
                                 .isOverride(true)
                                 .isOpen(generateConfig.getIsOpen() == 0)
                                 .author(generateConfig.getAuthor())
+                                .colSpan(generateConfig.getColSpan())
+                                .enableCache(generateConfig.getEnableCache() == 0)
                                 .commentDateFormat("yyyy/MM/dd")
                                 .enableImport(generateConfig.getEnableImport() == 0)
                                 .enableExport(generateConfig.getEnableExport() == 0)
