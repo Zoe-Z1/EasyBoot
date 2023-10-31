@@ -92,7 +92,7 @@ public class EasyRedisManager {
     }
 
     /**
-     * 将值写入缓存，设置过期时间，单位/m
+     * 将值写入缓存，设置过期时间，单位/s
      * @param key
      * @param value
      * @param exp

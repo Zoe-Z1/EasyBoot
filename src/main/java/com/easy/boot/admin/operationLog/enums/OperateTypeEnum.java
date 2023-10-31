@@ -13,6 +13,11 @@ public enum OperateTypeEnum {
     UNKNOWN("未知"),
 
     /**
+     * 其他
+     */
+    OTHER("其他"),
+
+    /**
      * 登录
      */
     LOGIN("登录"),

@@ -1,8 +1,10 @@
 package com.easy.boot.admin.login.service;
 
 
+import cloud.tianai.captcha.common.response.ApiResponse;
 import cloud.tianai.captcha.spring.vo.CaptchaResponse;
 import cloud.tianai.captcha.spring.vo.ImageCaptchaVO;
+import cloud.tianai.captcha.validator.common.model.dto.ImageCaptchaTrack;
 import com.easy.boot.admin.login.entity.LoginDTO;
 import com.easy.boot.admin.user.entity.AdminUser;
 
@@ -35,4 +37,12 @@ public interface AdminLoginService {
      * 获取验证码
      */
     CaptchaResponse<ImageCaptchaVO> getCode();
+
+    /**
+     * 校验验证码
+     * @param id
+     * @param track
+     * @return
+     */
+    ApiResponse<?> validateCode(String id, ImageCaptchaTrack track);
 }

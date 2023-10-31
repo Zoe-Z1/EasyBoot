@@ -1,9 +1,11 @@
 package com.easy.boot.admin.login.service.impl;
 
 import cloud.tianai.captcha.common.constant.CaptchaTypeConstant;
+import cloud.tianai.captcha.common.response.ApiResponse;
 import cloud.tianai.captcha.spring.application.ImageCaptchaApplication;
 import cloud.tianai.captcha.spring.vo.CaptchaResponse;
 import cloud.tianai.captcha.spring.vo.ImageCaptchaVO;
+import cloud.tianai.captcha.validator.common.model.dto.ImageCaptchaTrack;
 import cn.dev33.satoken.stp.StpUtil;
 import com.easy.boot.admin.login.entity.LoginDTO;
 import com.easy.boot.admin.login.entity.LoginHandlerAfterDO;
@@ -19,9 +21,12 @@ import com.easy.boot.admin.sysConfig.enums.DomainCodeEnum;
 import com.easy.boot.admin.sysConfigDomain.service.ISysConfigDomainService;
 import com.easy.boot.admin.user.entity.AdminUser;
 import com.easy.boot.admin.user.service.AdminUserService;
+import com.easy.boot.common.redis.EasyRedisManager;
+import com.easy.boot.common.redis.RedisKeyEnum;
 import com.easy.boot.common.saToken.UserContext;
 import com.easy.boot.exception.BusinessException;
 import com.easy.boot.utils.IpUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -35,6 +40,7 @@ import java.util.List;
  * @date 2023/7/23
  * @description
  */
+@Slf4j
 @Service
 public class AdminLoginServiceImpl implements AdminLoginService {
 
@@ -64,6 +70,11 @@ public class AdminLoginServiceImpl implements AdminLoginService {
 
     @Value("${sa-token.timeout:1800}")
     private Long timeout;
+
+    @Resource
+    private EasyRedisManager easyRedisManager;
+
+
 
     @Override
     public AdminUser login(LoginDTO dto) {
@@ -130,8 +141,18 @@ public class AdminLoginServiceImpl implements AdminLoginService {
                 sysConfig.setValue(item.getValue());
             }
         });
-        CaptchaResponse<ImageCaptchaVO> response = application.generateCaptcha(sysConfig.getValue());
-        System.out.println("response.getCaptcha() = " + response.getCaptcha());
+        return application.generateCaptcha(sysConfig.getValue());
+    }
+
+    @Override
+    public ApiResponse<?> validateCode(String id, ImageCaptchaTrack track) {
+        ApiResponse<?> response = application.matching(id, track);
+        if (response.isSuccess()) {
+            String key = RedisKeyEnum.ADMIN_LOGIN_CAPTCHA.getKey(id);
+            easyRedisManager.put(key, id, 5L);
+        } else {
+            log.error("validateCode code -> {}, msg -> {} ", response.getCode(), response.getMsg());
+        }
         return response;
     }
 }

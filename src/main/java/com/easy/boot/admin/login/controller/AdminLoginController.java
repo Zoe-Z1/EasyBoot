@@ -1,7 +1,6 @@
 package com.easy.boot.admin.login.controller;
 
 import cloud.tianai.captcha.common.response.ApiResponse;
-import cloud.tianai.captcha.spring.application.ImageCaptchaApplication;
 import cloud.tianai.captcha.spring.vo.CaptchaResponse;
 import cloud.tianai.captcha.spring.vo.ImageCaptchaVO;
 import cloud.tianai.captcha.validator.common.model.dto.ImageCaptchaTrack;
@@ -68,20 +67,13 @@ public class AdminLoginController {
         return Result.success(adminLoginService.getCode());
     }
 
-    @Resource
-    private ImageCaptchaApplication application;
-
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "校验验证码")
-    @EasyLog(module = "校验验证码", operateType = OperateTypeEnum.SELECT)
+    @EasyLog(module = "校验验证码", operateType = OperateTypeEnum.OTHER)
     @PostMapping(value = "/validate/code/{id}")
     public Result<CaptchaResponse<ImageCaptchaVO>> validateCode(@PathVariable String id, @RequestBody ImageCaptchaTrack track) {
-        ApiResponse<?> matching = application.matching(id, track);
-        log.error("msg -> " + matching.getMsg());
-        if (matching.isSuccess()) {
-            return Result.success();
-        }
-        return Result.fail(matching.getMsg());
+        ApiResponse<?> matching = adminLoginService.validateCode(id, track);
+        return Result.success(String.valueOf(matching.isSuccess()));
     }
 
 }

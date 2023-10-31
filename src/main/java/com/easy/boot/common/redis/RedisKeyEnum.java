@@ -11,9 +11,9 @@ import java.util.stream.Collectors;
 public enum RedisKeyEnum {
 
     /**
-     * 后台登录验证码key
+     * 后台登录验证码验证成功回话key
      */
-    ADMIN_LOGIN_CAPTCHA("admin:login:","captcha"),
+    ADMIN_LOGIN_CAPTCHA("admin:login:captcha:","session"),
 
     /**
      * 防重复提交key

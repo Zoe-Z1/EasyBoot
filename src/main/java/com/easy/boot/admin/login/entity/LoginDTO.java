@@ -33,12 +33,8 @@ public class LoginDTO {
     @ApiModelProperty(required = true, value = "密码")
     private String password;
 
-//    @NotBlank(message = "验证码ID")
-//    @ApiModelProperty(required = true, value = "验证码ID")
-//    private String id;
-//
-//    @NotBlank(message = "验证内容")
-//    @ApiModelProperty(required = true, value = "验证内容")
-//    private ImageCaptchaTrack track;
+    @NotBlank(message = "验证码ID不能为空")
+    @ApiModelProperty(required = true, value = "验证码ID")
+    private String id;
 
 }
