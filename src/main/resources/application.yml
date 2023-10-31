@@ -133,7 +133,7 @@ captcha:
     # 针对 点选验证码 过期时间设置为 2分钟， 因为点选验证码验证比较慢，把过期时间调整大一些
     WORD_IMAGE_CLICK: 60000
   # 使用加载系统自带的资源， 默认是 false
-  init-default-resource: true
+  init-default-resource: false
   cache:
     # 缓存控制， 默认为false不开启
     enabled: true

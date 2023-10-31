@@ -1,12 +1,13 @@
 package com.easy.boot.admin.login.service.impl;
 
-import cloud.tianai.captcha.common.constant.CaptchaTypeConstant;
 import cloud.tianai.captcha.common.response.ApiResponse;
 import cloud.tianai.captcha.spring.application.ImageCaptchaApplication;
 import cloud.tianai.captcha.spring.vo.CaptchaResponse;
 import cloud.tianai.captcha.spring.vo.ImageCaptchaVO;
 import cloud.tianai.captcha.validator.common.model.dto.ImageCaptchaTrack;
 import cn.dev33.satoken.stp.StpUtil;
+import com.easy.boot.admin.dataDict.entity.DataDict;
+import com.easy.boot.admin.dataDictDomain.service.IDataDictDomainService;
 import com.easy.boot.admin.login.entity.LoginDTO;
 import com.easy.boot.admin.login.entity.LoginHandlerAfterDO;
 import com.easy.boot.admin.login.service.AdminLoginService;
@@ -17,7 +18,7 @@ import com.easy.boot.admin.loginLog.service.ILoginLogService;
 import com.easy.boot.admin.onlineUser.service.IOnlineUserService;
 import com.easy.boot.admin.operationLog.enums.OperateStatusEnum;
 import com.easy.boot.admin.sysConfig.entity.SysConfig;
-import com.easy.boot.admin.sysConfig.enums.DomainCodeEnum;
+import com.easy.boot.admin.sysConfigDomain.enums.SysConfigDomainCodeEnum;
 import com.easy.boot.admin.sysConfigDomain.service.ISysConfigDomainService;
 import com.easy.boot.admin.user.entity.AdminUser;
 import com.easy.boot.admin.user.service.AdminUserService;
@@ -33,6 +34,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -73,6 +75,9 @@ public class AdminLoginServiceImpl implements AdminLoginService {
 
     @Resource
     private EasyRedisManager easyRedisManager;
+
+    @Resource
+    private IDataDictDomainService dataDictDomainService;
 
 
 
@@ -128,19 +133,23 @@ public class AdminLoginServiceImpl implements AdminLoginService {
 
     @Override
     public CaptchaResponse<ImageCaptchaVO> getCode() {
-//        SLIDER (滑块验证码)
-//        ROTATE (旋转验证码)
-//        CONCAT (滑动还原验证码)
-//        WORD_IMAGE_CLICK (文字点选验证码)
-        List<SysConfig> global = sysConfigDomainService.selectListByDomainCode(DomainCodeEnum.GLOBAL.getCode());
+//        RANDOM (随机)、SLIDER (滑块验证码)、ROTATE (旋转验证码)、CONCAT (滑动还原验证码)、WORD_IMAGE_CLICK (文字点选验证码)
+        List<SysConfig> global = sysConfigDomainService.selectListByDomainCode(SysConfigDomainCodeEnum.GLOBAL.getCode());
         SysConfig sysConfig = new SysConfig();
-        sysConfig.setValue(CaptchaTypeConstant.SLIDER);
         String type = "captcha_type";
         global.forEach(item -> {
             if (item.getCode().equals(type)) {
                 sysConfig.setValue(item.getValue());
             }
         });
+        // 随机验证码
+        String random = "RANDOM";
+        if (sysConfig.getValue().equals(random)) {
+            List<DataDict> dataDicts = dataDictDomainService.selectListByDomainCode("captcha_type");
+            Collections.shuffle(dataDicts);
+            String code = dataDicts.get(0).getCode().equals(random) ? dataDicts.get(1).getCode() : dataDicts.get(0).getCode();
+            sysConfig.setValue(code);
+        }
         return application.generateCaptcha(sysConfig.getValue());
     }
 

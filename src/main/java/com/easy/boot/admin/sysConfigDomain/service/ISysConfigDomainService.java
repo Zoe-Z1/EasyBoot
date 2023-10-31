@@ -40,6 +40,13 @@ public interface ISysConfigDomainService extends IService<SysConfigDomain> {
     SysConfigDomain getByCode(String code);
 
     /**
+     * 根据配置域编码获取未被禁用的配置域
+     * @param code
+     * @return
+     */
+    SysConfigDomain getNotDisabledByCode(String code);
+
+    /**
      * 根据系统配置域编码获取系统配置列表
      * @param code
      * @return
@@ -74,4 +81,12 @@ public interface ISysConfigDomainService extends IService<SysConfigDomain> {
      * @param errors 错误标注集合
      */
     void importExcel(List<SysConfigDomain> list, List<SysConfigDomain> errorList, List<ImportExcelError> errors);
+
+    /**
+     * 根据系统配置域编码和系统配置编码获取配置
+     * @param domainCode
+     * @param code
+     * @return
+     */
+    SysConfig getByDomainCodeAndConfigCode(String domainCode, String code);
 }

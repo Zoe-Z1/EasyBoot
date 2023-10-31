@@ -70,7 +70,7 @@ public class GenerateColumnServiceImpl extends ServiceImpl<GenerateColumnMapper,
                 .map(GenerateColumn::getDictDomainCode)
                 .filter(StrUtil::isNotEmpty)
                 .collect(Collectors.toList());
-        List<DataDictDomain> domains = dataDictDomainService.getByCodes(domainCodes);
+        List<DataDictDomain> domains = dataDictDomainService.selectListByCodes(domainCodes);
         Map<String, DataDictDomain> domainMap = domains.stream().collect(Collectors.toMap(DataDictDomain::getCode, x -> x));
         list.forEach(item -> {
             item.setIsCreate(StrUtil.isNotEmpty(item.getDictDomainCode()) && domainMap.get(item.getDictDomainCode()) == null);

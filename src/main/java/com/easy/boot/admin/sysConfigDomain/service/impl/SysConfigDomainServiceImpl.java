@@ -63,12 +63,20 @@ public class SysConfigDomainServiceImpl extends ServiceImpl<SysConfigDomainMappe
     }
 
     @Override
+    public SysConfigDomain getNotDisabledByCode(String code) {
+        return lambdaQuery()
+                .eq(SysConfigDomain::getCode, code)
+                .eq(SysConfigDomain::getStatus, 1)
+                .one();
+    }
+
+    @Override
     public List<SysConfig> selectListByDomainCode(String code) {
-        SysConfigDomain domain = this.getByCode(code);
-        if (domain == null || domain.getStatus() == 2) {
+        SysConfigDomain domain = this.getNotDisabledByCode(code);
+        if (domain == null) {
             return new ArrayList<>();
         }
-        return sysConfigService.getByDomainId(domain.getId());
+        return sysConfigService.getNotDisabledByDomainId(domain.getId());
     }
 
     @Override
@@ -156,6 +164,15 @@ public class SysConfigDomainServiceImpl extends ServiceImpl<SysConfigDomainMappe
             }
         }
         saveBatch(list);
+    }
+
+    @Override
+    public SysConfig getByDomainCodeAndConfigCode(String domainCode, String code) {
+        SysConfigDomain configDomain = this.getNotDisabledByCode(domainCode);
+        if (configDomain == null) {
+            return null;
+        }
+        return sysConfigService.getByDomainIdAndCode(configDomain.getId(), code);
     }
 
 }

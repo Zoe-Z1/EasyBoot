@@ -1,11 +1,11 @@
-package com.easy.boot.admin.sysConfig.enums;
+package com.easy.boot.admin.sysConfigDomain.enums;
 
 /**
  * @author zoe
  * @date 2023/10/26
  * @description 系统配置域编码枚举
  */
-public enum DomainCodeEnum {
+public enum SysConfigDomainCodeEnum {
 
     GLOBAL("global", "全局参数配置"),
 
@@ -26,7 +26,7 @@ public enum DomainCodeEnum {
         return msg;
     }
 
-    DomainCodeEnum(String code, String msg) {
+    SysConfigDomainCodeEnum(String code, String msg) {
         this.code = code;
         this.msg = msg;
     }

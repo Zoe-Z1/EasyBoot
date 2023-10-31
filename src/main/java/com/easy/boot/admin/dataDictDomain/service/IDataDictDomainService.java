@@ -47,11 +47,18 @@ public interface IDataDictDomainService extends IService<DataDictDomain> {
     DataDictDomain getByCode(String code);
 
     /**
+     * 根据根据字典域编码获取未禁用的字典域详情
+     * @param code
+     * @return
+     */
+    DataDictDomain getNotDisabledByCode(String code);
+
+    /**
      * 根据根据字典域编码获取字典域列表
      * @param codes
      * @return
      */
-    List<DataDictDomain> getByCodes(List<String> codes);
+    List<DataDictDomain> selectListByCodes(List<String> codes);
 
     /**
      * 根据字典域编码获取字典列表

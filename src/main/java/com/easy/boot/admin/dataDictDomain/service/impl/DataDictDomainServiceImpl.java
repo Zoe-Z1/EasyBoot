@@ -81,17 +81,22 @@ public class DataDictDomainServiceImpl extends ServiceImpl<DataDictDomainMapper,
     }
 
     @Override
-    public List<DataDictDomain> getByCodes(List<String> codes) {
+    public DataDictDomain getNotDisabledByCode(String code) {
+        return lambdaQuery().eq(DataDictDomain::getCode, code).eq(DataDictDomain::getStatus, 1).one();
+    }
+
+    @Override
+    public List<DataDictDomain> selectListByCodes(List<String> codes) {
         if (CollUtil.isEmpty(codes)) {
             return new ArrayList<>();
         }
-        return lambdaQuery().in(DataDictDomain::getCode, codes).list();
+        return lambdaQuery().in(DataDictDomain::getCode, codes).eq(DataDictDomain::getStatus, 1).list();
     }
 
     @Override
     public List<DataDict> selectListByDomainCode(String code) {
-        DataDictDomain domain = this.getByCode(code);
-        if (domain == null || domain.getStatus() == 2) {
+        DataDictDomain domain = this.getNotDisabledByCode(code);
+        if (domain == null) {
             return new ArrayList<>();
         }
         return dataDictService.getByDomainId(domain.getId());

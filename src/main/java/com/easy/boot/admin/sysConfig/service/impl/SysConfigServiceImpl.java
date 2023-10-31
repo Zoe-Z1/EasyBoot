@@ -98,14 +98,24 @@ public class SysConfigServiceImpl extends ServiceImpl<SysConfigMapper, SysConfig
     }
 
     @Override
-    public List<SysConfig> getByDomainId(Long domainId) {
+    public List<SysConfig> getByDomainIdAndStatus(Long domainId, Integer status) {
         return lambdaQuery()
                 .select(BaseEntity::getId, SysConfig::getCode, SysConfig::getValue)
-                .eq(SysConfig::getStatus, 1)
+                .eq(status != null, SysConfig::getStatus, status)
                 .eq(SysConfig::getDomainId, domainId)
                 .orderByAsc(SysConfig::getSort)
                 .orderByDesc(BaseEntity::getCreateTime)
                 .list();
+    }
+
+    @Override
+    public List<SysConfig> getByDomainId(Long domainId) {
+        return this.getByDomainIdAndStatus(domainId, null);
+    }
+
+    @Override
+    public List<SysConfig> getNotDisabledByDomainId(Long domainId) {
+        return this.getByDomainIdAndStatus(domainId, 1);
     }
 
     @Override

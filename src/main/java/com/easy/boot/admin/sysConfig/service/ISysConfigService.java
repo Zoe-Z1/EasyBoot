@@ -75,11 +75,26 @@ public interface ISysConfigService extends IService<SysConfig> {
     SysConfig getByDomainIdAndCode(Long domainId, String code);
 
     /**
-     * 根据配置域id获取未禁用配置列表
+     * 根据配置域id和禁用状态获取配置列表
+     * @param domainId
+     * @param status
+     * @return
+     */
+    List<SysConfig> getByDomainIdAndStatus(Long domainId, Integer status);
+
+    /**
+     * 根据配置域id获取配置列表
      * @param domainId
      * @return
      */
     List<SysConfig> getByDomainId(Long domainId);
+
+    /**
+     * 根据配置域id获取未禁用配置列表
+     * @param domainId
+     * @return
+     */
+    List<SysConfig> getNotDisabledByDomainId(Long domainId);
 
     /**
      * 导入Excel
