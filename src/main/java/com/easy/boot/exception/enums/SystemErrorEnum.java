@@ -60,12 +60,6 @@ public enum SystemErrorEnum {
     /** 代码生成出错 */
     GENERATOR_ERROR(508, "代码生成失败，请稍后再试"),
 
-    /** 文件导入出错 */
-    IMPORT_ERROR(509,"文件导入失败，请稍后再试"),
-
-    /** 文件导出出错 */
-    EXPORT_ERROR(510,"文件导出失败，请稍后再试"),
-
     /** 业务逻辑出错 */
     BUSINESS_ERROR(600,"操作失败，请稍后再试"),
 
@@ -80,25 +74,11 @@ public enum SystemErrorEnum {
 
     USER_ERROR(1000,"用户异常"),
 
-    USERNAME_OR_PASSWORD_ERROR(1001,"用户名或密码错误"),
-
     USER_DISABLED(1002,"账号已被禁用，无法操作"),
 
     USER_IS_BLACKLIST(1003,"您已被加入黑名单，无法操作"),
 
     IP_IS_BLACKLIST(1003,"您已被加入黑名单，无法操作"),
-
-    USER_NULL_ERROR(1004,"用户不存在"),
-
-
-
-    /*------------------------验证码异常返回枚举------------------------*/
-
-    RENDER_ERROR(1100,"获取验证码出错，请稍后再试"),
-
-    VALIDATE_ERROR(1101,"验证码错误"),
-
-    CAPTCHA_EXPIRED(1102,"验证码已过期"),
 
 
     ;

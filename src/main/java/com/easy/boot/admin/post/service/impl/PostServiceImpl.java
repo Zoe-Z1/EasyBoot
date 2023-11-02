@@ -40,7 +40,7 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements IP
     @Override
     public List<Post> selectAll() {
         return lambdaQuery()
-                .select(BaseEntity::getId, Post::getCode,  Post::getName)
+                .select(BaseEntity::getId, Post::getCode,  Post::getName, Post::getStatus)
                 .eq(Post::getStatus, 1)
                 .orderByAsc(Post::getSort)
                 .orderByDesc(BaseEntity::getCreateTime)
@@ -165,6 +165,39 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements IP
             }
         }
         saveBatch(list);
+    }
+
+    @Override
+    public List<Long> selectNotDisabledIdsByUserId(Long userId) {
+        List<Long> postIds = userPostService.selectIdsByUserId(userId);
+        return selectNotDisabledIdsInPostIds(postIds);
+    }
+
+    @Override
+    public List<Post> selectNotDisabledListInPostIds(List<Long> postIds) {
+        if (CollUtil.isEmpty(postIds)) {
+            return new ArrayList<>();
+        }
+        return lambdaQuery().eq(Post::getStatus, 1)
+                .orderByAsc(Post::getSort)
+                .orderByDesc(BaseEntity::getCreateTime)
+                .list();
+    }
+
+    @Override
+    public List<Long> selectNotDisabledIdsInPostIds(List<Long> postIds) {
+        if (CollUtil.isEmpty(postIds)) {
+            return new ArrayList<>();
+        }
+        List<Post> list = lambdaQuery().select(BaseEntity::getId)
+                .in(BaseEntity::getId, postIds)
+                .eq(Post::getStatus, 1)
+                .orderByAsc(Post::getSort)
+                .orderByDesc(BaseEntity::getCreateTime)
+                .list();
+        return list.stream().map(BaseEntity::getId)
+                .filter(Objects::nonNull)
+                .distinct().collect(Collectors.toList());
     }
 
 }

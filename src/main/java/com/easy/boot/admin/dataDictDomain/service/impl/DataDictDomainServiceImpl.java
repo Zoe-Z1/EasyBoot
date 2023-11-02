@@ -58,6 +58,8 @@ public class DataDictDomainServiceImpl extends ServiceImpl<DataDictDomainMapper,
         List<DataDictDomain> list = lambdaQuery()
                 .select(DataDictDomain::getId, DataDictDomain::getCode)
                 .eq(DataDictDomain::getStatus, 1)
+                .orderByAsc(DataDictDomain::getSort)
+                .orderByDesc(BaseEntity::getCreateTime)
                 .list();
         if (CollUtil.isEmpty(list)) {
             return new HashMap<>();

@@ -40,15 +40,6 @@ public class MenuController extends BaseController {
         return Result.success(menuService.treeList(query));
     }
 
-//    @SaCheckPermission(value = "system:menu:list")
-//    @ApiOperationSupport(author = "zoe")
-//    @ApiOperation(value = "懒加载菜单树")
-//    @EasyLog(module = "懒加载菜单树", operateType = OperateTypeEnum.SELECT)
-//    @GetMapping("/list")
-//    public Result<List<MenuLazyVO>> list(@Validated MenuTreeLazyQuery query) {
-//        return Result.success(menuService.selectList(query));
-//    }
-
     @SaCheckPermission(value = "system:menu:detail")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "获取菜单详情")

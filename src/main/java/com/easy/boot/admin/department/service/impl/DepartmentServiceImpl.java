@@ -2,8 +2,6 @@ package com.easy.boot.admin.department.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.easy.boot.admin.department.entity.*;
 import com.easy.boot.admin.department.mapper.DepartmentMapper;
@@ -15,7 +13,10 @@ import com.easy.boot.utils.JsonUtil;
 import lombok.NonNull;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -33,56 +34,10 @@ public class DepartmentServiceImpl extends ServiceImpl<DepartmentMapper, Departm
 
     @Override
     public List<Department> selectListByParentId(@NonNull Long parentId) {
-        return lambdaQuery().eq(Department::getParentId, parentId).list();
-    }
-
-    @Override
-    public List<DepartmentTree> all() {
-        DepartmentTreeQuery query = DepartmentTreeQuery.builder()
-                .parentId(0L)
-                .build();
-        return treeList(query);
-    }
-
-    @Override
-    public List<DepartmentTree> treeList(DepartmentTreeQuery query) {
-        List<Department> list = lambdaQuery()
-                .select(BaseEntity::getId,Department::getName,Department::getParentId,Department::getStatus, Department::getSort,BaseEntity::getCreateTime)
-                .eq(Department::getStatus, 1)
-                .list();
-        if (CollUtil.isEmpty(list)) {
-            return new ArrayList<>();
-        }
-        // 转换list，直接去数据库查可以省略这一步
-        List<DepartmentTree> treeList = list.stream().map(item -> BeanUtil.copyBean(item, DepartmentTree.class)).collect(Collectors.toList());
-        Map<Long, List<DepartmentTree>> map = treeList.stream().collect(Collectors.groupingBy(Department::getParentId));
-        List<DepartmentTree> empList = new ArrayList<>();
-        treeList.forEach(item -> {
-            List<DepartmentTree> children = map.get(item.getId());
-            if (children == null) {
-                children = empList;
-            }
-            // 根据sort升序排序，再根据createTime降序排序
-            children.sort(Comparator.comparing(Department::getSort)
-                    .thenComparing(BaseEntity::getCreateTime, Comparator.reverseOrder()));
-            item.setChildren(children);
-        });
-        treeList.removeIf(res -> !res.getParentId().equals(query.getParentId()));
-        return treeList;
-    }
-
-    @Override
-    public IPage<Department> selectPage(DepartmentQuery query) {
-        Page<Department> page = new Page<>(query.getPageNum(), query.getPageSize());
-        return lambdaQuery()
-                .like(StrUtil.isNotEmpty(query.getName()), Department::getName, query.getName())
-                .eq(Objects.nonNull(query.getStatus()), Department::getStatus, query.getStatus())
-                .eq(Objects.nonNull(query.getParentId()), Department::getParentId, query.getParentId())
-                .between(Objects.nonNull(query.getStartTime()) && Objects.nonNull(query.getEndTime()),
-                        BaseEntity::getCreateTime, query.getStartTime(), query.getEndTime())
+        return lambdaQuery().eq(Department::getParentId, parentId)
                 .orderByAsc(Department::getSort)
                 .orderByDesc(BaseEntity::getCreateTime)
-                .page(page);
+                .list();
     }
 
     @Override
@@ -91,6 +46,7 @@ public class DepartmentServiceImpl extends ServiceImpl<DepartmentMapper, Departm
                 .and(StrUtil.isNotEmpty(query.getKeyword()), keywordQuery -> {
                     keywordQuery.like(Department::getName, query.getKeyword());
                 })
+                .eq(query.getStatus() != null, Department::getStatus, query.getStatus())
                 .eq(query.getParentId() != null, Department::getParentId, query.getParentId())
                 .eq(query.getId() != null, Department::getId, query.getId())
                 .orderByAsc(Department::getSort)

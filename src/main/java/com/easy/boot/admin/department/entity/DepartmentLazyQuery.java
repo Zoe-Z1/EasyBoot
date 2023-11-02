@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.validator.constraints.Range;
 
 /**
  * @author zoe
@@ -27,5 +28,9 @@ public class DepartmentLazyQuery {
 
     @ApiModelProperty(required = false, value = "父级部门ID，为0则代表最上级部门")
     private Long parentId;
+
+    @Range(min = 1, max = 2, message = "部门状态不正确")
+    @ApiModelProperty("部门状态 1：正常 2：禁用")
+    private Integer status;
 
 }

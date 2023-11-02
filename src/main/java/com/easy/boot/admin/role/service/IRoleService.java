@@ -70,11 +70,53 @@ public interface IRoleService extends IService<Role> {
     Boolean deleteBatchByIds(List<Long> ids);
 
     /**
-     * 根据角色ID获取角色编码
+     * 根据用户ID获取未被禁用的角色列表
+     * @param userId
+     * @return
+     */
+    List<Role> selectNotDisabledListByUserId(Long userId);
+
+    /**
+     * 根据用户ID获取未被禁用的角色ID列表
+     * @param id
+     * @return
+     */
+    List<Long> selectNotDisabledRoleIdsByUserId(Long id);
+
+    /**
+     * 根据用户ID获取未被禁用的角色编码列表
+     * @param id
+     * @return
+     */
+    List<String> selectNotDisabledCodesByUserId(Long id);
+
+    /**
+     * 根据角色ID集合获取角色编码集合
      * @param ids
      * @return
      */
     List<String> selectCodesInRoleIds(List<Long> ids);
+
+    /**
+     * 根据角色ID集合获取未禁用的角色集合
+     * @param roleIds
+     * @return
+     */
+    List<Role> selectNotDisabledListInRoleIds(List<Long> roleIds);
+
+    /**
+     * 根据角色ID集合获取未禁用的角色ID集合
+     * @param roleIds
+     * @return
+     */
+    List<Long> selectNotDisabledIdsInRoleIds(List<Long> roleIds);
+
+    /**
+     * 根据角色ID集合获取未禁用的角色编码集合
+     * @param ids
+     * @return
+     */
+    List<String> selectNotDisabledCodesInRoleIds(List<Long> ids);
 
     /**
      * 导入Excel

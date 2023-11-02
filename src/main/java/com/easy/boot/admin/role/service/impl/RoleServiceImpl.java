@@ -43,7 +43,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IR
     @Override
     public List<Role> selectAll() {
         List<Role> list = lambdaQuery()
-                .select(Role::getCode, Role::getName, BaseEntity::getId)
+                .select(Role::getCode, Role::getName, BaseEntity::getId, Role::getStatus)
                 .eq(Role::getStatus, 1)
                 .orderByAsc(Role::getSort)
                 .orderByDesc(BaseEntity::getCreateTime)
@@ -160,12 +160,80 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IR
     }
 
     @Override
+    public List<Role> selectNotDisabledListByUserId(Long userId) {
+        List<Long> roleIds = userRoleService.selectRoleIdsByUserId(userId);
+        return selectNotDisabledListInRoleIds(roleIds);
+    }
+
+    @Override
+    public List<Long> selectNotDisabledRoleIdsByUserId(Long id) {
+        List<Long> roleIds = userRoleService.selectRoleIdsByUserId(id);
+        return selectNotDisabledIdsInRoleIds(roleIds);
+    }
+
+    @Override
+    public List<String> selectNotDisabledCodesByUserId(Long id) {
+        List<Long> roleIds = userRoleService.selectRoleIdsByUserId(id);
+        return selectNotDisabledCodesInRoleIds(roleIds);
+    }
+
+    @Override
     public List<String> selectCodesInRoleIds(List<Long> ids) {
         if (CollUtil.isEmpty(ids)) {
             return new ArrayList<>();
         }
-        List<Role> list = lambdaQuery().in(BaseEntity::getId, ids).list();
-        return list.stream().map(Role::getCode).distinct().collect(Collectors.toList());
+        List<Role> list = lambdaQuery().select(Role::getCode)
+                .in(BaseEntity::getId, ids)
+                .orderByAsc(Role::getSort)
+                .orderByDesc(BaseEntity::getCreateTime)
+                .list();
+        return list.stream().map(Role::getCode)
+                .filter(Objects::nonNull)
+                .distinct().collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Role> selectNotDisabledListInRoleIds(List<Long> roleIds) {
+        if (CollUtil.isEmpty(roleIds)) {
+            return new ArrayList<>();
+        }
+        return lambdaQuery()
+                .in(BaseEntity::getId, roleIds)
+                .eq(Role::getStatus, 1)
+                .orderByAsc(Role::getSort)
+                .orderByDesc(BaseEntity::getCreateTime)
+                .list();
+    }
+
+    @Override
+    public List<Long> selectNotDisabledIdsInRoleIds(List<Long> roleIds) {
+        if (CollUtil.isEmpty(roleIds)) {
+            return new ArrayList<>();
+        }
+        List<Role> list = lambdaQuery().select(BaseEntity::getId)
+                .in(BaseEntity::getId, roleIds)
+                .eq(Role::getStatus, 1)
+                .orderByAsc(Role::getSort)
+                .orderByDesc(BaseEntity::getCreateTime)
+                .list();
+        return list.stream().map(BaseEntity::getId)
+                .filter(Objects::nonNull)
+                .distinct().collect(Collectors.toList());
+    }
+
+    @Override
+    public List<String> selectNotDisabledCodesInRoleIds(List<Long> ids) {
+        if (CollUtil.isEmpty(ids)) {
+            return new ArrayList<>();
+        }
+        List<Role> list = lambdaQuery().select(Role::getCode)
+                .in(BaseEntity::getId, ids).eq(Role::getStatus, 1)
+                .orderByAsc(Role::getSort)
+                .orderByDesc(BaseEntity::getCreateTime)
+                .list();
+        return list.stream().map(Role::getCode)
+                .filter(Objects::nonNull)
+                .distinct().collect(Collectors.toList());
     }
 
     @Override
@@ -227,8 +295,8 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IR
     @Override
     public Boolean isAdmin(Long userId) {
         List<Long> roleIds = userRoleService.selectRoleIdsByUserId(userId);
-        List<String> roles = selectCodesInRoleIds(roleIds);
-        return roles.contains(Constant.ADMIN);
+        List<String> codes = selectNotDisabledCodesInRoleIds(roleIds);
+        return codes.contains(Constant.ADMIN);
     }
 
 }

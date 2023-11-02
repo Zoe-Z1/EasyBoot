@@ -25,7 +25,9 @@ public class CheckLoginHandlerCheckStatusImpl implements CheckLoginHandler {
     @Override
     public void check(Long id) {
         AdminUser user = adminUserService.detail(id);
-        if (user.getStatus() == 2) {
+        if (user == null) {
+            throw new BusinessException(SystemErrorEnum.USER_ERROR);
+        } else if (user.getStatus() == 2) {
             throw new BusinessException(SystemErrorEnum.USER_DISABLED);
         }
     }

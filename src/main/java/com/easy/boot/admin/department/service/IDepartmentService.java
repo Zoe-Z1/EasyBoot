@@ -1,6 +1,5 @@
 package com.easy.boot.admin.department.service;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.easy.boot.admin.department.entity.*;
 import lombok.NonNull;
@@ -28,26 +27,6 @@ public interface IDepartmentService extends IService<Department> {
     List<Department> selectListByParentId(@NonNull Long parentId);
 
     /**
-     * 查询所有部门
-     * @return
-     */
-    List<DepartmentTree> all();
-
-    /**
-     * 查询树形部门（包含当前部门）
-     * @param query
-     * @return
-     */
-    List<DepartmentTree> treeList(DepartmentTreeQuery query);
-
-    /**
-    * 查询部门
-    * @param query
-    * @return
-    */
-    IPage<Department> selectPage(DepartmentQuery query);
-
-    /**
      * 查询部门
      * @param query
      * @return
@@ -62,8 +41,8 @@ public interface IDepartmentService extends IService<Department> {
     Department detail(Long id);
 
     /**
-     * 获取所有父级ID
-     * @param id 父级ID
+     * 获取当前部门的所有父级部门ID
+     * @param id 部门ID
      * @return
      */
     List<Long> getParentIds(Long id);

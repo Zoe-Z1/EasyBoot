@@ -1,6 +1,5 @@
 package com.easy.boot.admin.user.service.impl;
 
-import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Validator;
 import cn.hutool.core.util.IdUtil;
@@ -9,12 +8,12 @@ import cn.hutool.crypto.digest.DigestUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.easy.boot.admin.menu.entity.Menu;
 import com.easy.boot.admin.menu.entity.MenuTree;
 import com.easy.boot.admin.menu.entity.MenuTreeQuery;
 import com.easy.boot.admin.menu.service.IMenuService;
+import com.easy.boot.admin.post.service.IPostService;
+import com.easy.boot.admin.role.entity.Role;
 import com.easy.boot.admin.role.service.IRoleService;
-import com.easy.boot.admin.roleMenu.service.IRoleMenuService;
 import com.easy.boot.admin.user.entity.*;
 import com.easy.boot.admin.user.mapper.AdminUserMapper;
 import com.easy.boot.admin.user.service.AdminUserService;
@@ -56,10 +55,10 @@ public class AdminUserServiceImpl extends ServiceImpl<AdminUserMapper, AdminUser
     private IRoleService roleService;
 
     @Resource
-    private IRoleMenuService roleMenuService;
+    private IMenuService menuService;
 
     @Resource
-    private IMenuService menuService;
+    private IPostService postService;
 
     @Override
     public IPage<AdminUser> selectPage(AdminUserQuery query) {
@@ -89,9 +88,14 @@ public class AdminUserServiceImpl extends ServiceImpl<AdminUserMapper, AdminUser
     public AdminUserVO detail(Long id) {
         AdminUser adminUser = this.getById(id);
         AdminUserVO vo = BeanUtil.copyBean(adminUser, AdminUserVO.class);
-        List<Long> roleIds = userRoleService.selectRoleIdsByUserId(id);
-        List<Long> postIds = userPostService.selectIdsByUserId(id);
-        List<String> codes = roleService.selectCodesInRoleIds(roleIds);
+        List<Role> roles = roleService.selectNotDisabledListByUserId(id);
+        List<Long> roleIds = roles.stream().map(BaseEntity::getId)
+                .filter(Objects::nonNull)
+                .distinct().collect(Collectors.toList());
+        List<String> codes = roles.stream().map(Role::getCode)
+                .filter(Objects::nonNull)
+                .distinct().collect(Collectors.toList());
+        List<Long> postIds = postService.selectNotDisabledIdsByUserId(id);
         vo.setIsAdmin(codes.contains(Constant.ADMIN));
         vo.setRoleIds(roleIds);
         vo.setPostIds(postIds);
@@ -132,7 +136,7 @@ public class AdminUserServiceImpl extends ServiceImpl<AdminUserMapper, AdminUser
         boolean status = save(user);
         if (status) {
             // 不允许绑定超级管理员
-            List<String> codes = roleService.selectCodesInRoleIds(dto.getRoleIds());
+            List<String> codes = roleService.selectNotDisabledCodesInRoleIds(dto.getRoleIds());
             if (codes.contains(Constant.ADMIN)) {
                 throw new BusinessException("无法绑定超级管理员");
             }
@@ -153,17 +157,18 @@ public class AdminUserServiceImpl extends ServiceImpl<AdminUserMapper, AdminUser
             userPostService.userBindPost(dto.getPostIds(), dto.getId());
         }
         List<Long> roleIds = userRoleService.selectRoleIdsByUserId(dto.getId());
-        List<String> codes = roleService.selectCodesInRoleIds(roleIds);
+        List<String> codes = roleService.selectNotDisabledCodesInRoleIds(roleIds);
         if (!codes.contains(Constant.ADMIN)) {
             // 不允许绑定超级管理员
-            codes = roleService.selectCodesInRoleIds(dto.getRoleIds());
+            codes = roleService.selectNotDisabledCodesInRoleIds(dto.getRoleIds());
             if (codes.contains(Constant.ADMIN)) {
                 throw new BusinessException("无法绑定超级管理员");
             }
             if (!dto.getIsStatusChange()) {
                 // 删除所有角色重新分配
+                roleIds = roleService.selectNotDisabledIdsInRoleIds(dto.getRoleIds());
                 userRoleService.deleteByUserId(dto.getId());
-                userRoleService.userBindRole(dto.getRoleIds(), dto.getId());
+                userRoleService.userBindRole(roleIds, dto.getId());
             }
         } else {
             if (dto.getStatus() != null && dto.getStatus() == 2) {
@@ -173,7 +178,7 @@ public class AdminUserServiceImpl extends ServiceImpl<AdminUserMapper, AdminUser
         AdminUser user = BeanUtil.copyBean(dto, AdminUser.class);
         // 禁用账号退出登录
         if (dto.getStatus() != null && dto.getStatus() == 2) {
-            StpUtil.kickout(dto.getId());
+            UserContext.kickoutAndRemoveCache(dto.getId());
         }
         return updateById(user);
     }
@@ -230,30 +235,36 @@ public class AdminUserServiceImpl extends ServiceImpl<AdminUserMapper, AdminUser
         Long id = UserContext.getId();
         AdminUser adminUser = this.detail(id);
         AdminUserInfo info = BeanUtil.copyBean(adminUser, AdminUserInfo.class);
-        // 获取角色编码
-        List<Long> roleIds = userRoleService.selectRoleIdsByUserId(id);
-        List<String> roles = roleService.selectCodesInRoleIds(roleIds);
-        // 获取菜单集合
-        List<Long> menuIds = roleMenuService.selectMenuIdsByRoleIds(roleIds);
+        // 获取角色列表
+        List<Role> roles = roleService.selectNotDisabledListByUserId(id);
+        List<Long> roleIds = roles.stream().map(BaseEntity::getId)
+                .filter(Objects::nonNull)
+                .distinct().collect(Collectors.toList());
+        List<String> codes = roles.stream()
+                .map(Role::getCode)
+                .filter(Objects::nonNull)
+                .distinct().collect(Collectors.toList());
+        // 获取菜单ID集合
+        List<Long> menuIds = menuService.selectNotDisabledIdsInRoleIds(roleIds);
         MenuTreeQuery query = MenuTreeQuery.builder()
                 .status(1)
                 .parentId(0L)
                 .build();
+        // 获取菜单树 与已拥有的菜单进行对比
         List<MenuTree> menus = menuService.treeList(query);
         if (!menus.isEmpty()) {
             menus = menus.get(0).getChildren();
         }
         List<String> permissions = new ArrayList<>();
-        if (roles.contains(Constant.ADMIN)) {
+        if (codes.contains(Constant.ADMIN)) {
             info.setIsAdmin(true);
             // 超级管理员拥有所有权限和菜单
-            List<Menu> menuAll = menuService.selectMenuAll();
-            permissions = menuAll.stream().map(Menu::getPermission).collect(Collectors.toList());
+            permissions = menuService.selectPermissionAll();
         } else {
             info.setIsAdmin(false);
             eachMenus(menus, menuIds, permissions);
         }
-        info.setRoles(roles);
+        info.setRoles(codes);
         info.setMenus(menus);
         info.setPermissions(permissions);
         return info;
@@ -267,7 +278,7 @@ public class AdminUserServiceImpl extends ServiceImpl<AdminUserMapper, AdminUser
      */
     private void eachMenus(List<MenuTree> menus, List<Long> menuIds, List<String> permissions) {
         // todo 先写死 后续可能配置
-        Integer mode = 1;   // 1：严格模式 2：非严格模式
+        int mode = 1;   // 1：严格模式 2：非严格模式
         Iterator<MenuTree> iterator = menus.iterator();
         while (iterator.hasNext()) {
             MenuTree menuTree = iterator.next();

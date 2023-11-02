@@ -42,7 +42,7 @@ public class RoleMenuServiceImpl extends ServiceImpl<RoleMenuMapper, RoleMenu> i
     }
 
     @Override
-    public List<Long> selectMenuIdsByRoleIds(List<Long> roleIds) {
+    public List<Long> selectMenuIdsInRoleIds(List<Long> roleIds) {
         if (CollUtil.isEmpty(roleIds)) {
             return new ArrayList<>();
         }

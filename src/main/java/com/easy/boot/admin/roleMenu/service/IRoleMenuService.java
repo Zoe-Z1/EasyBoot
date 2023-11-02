@@ -32,7 +32,7 @@ public interface IRoleMenuService extends IService<RoleMenu> {
      * @param roleIds 角色ID集合
      * @return
      */
-    List<Long> selectMenuIdsByRoleIds(List<Long> roleIds);
+    List<Long> selectMenuIdsInRoleIds(List<Long> roleIds);
 
     /**
     * 批量创建角色菜单关联

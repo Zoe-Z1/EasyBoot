@@ -28,23 +28,16 @@ public interface IMenuService extends IService<Menu> {
     List<Menu> selectListByParentId(@NonNull Long parentId);
 
     /**
-     * 根据菜单集合查询菜单权限字符集合
-     * @param ids 菜单ID集合
-     * @return
-     */
-    List<String> selectPermissionsByIds(List<Long> ids);
-
-    /**
      * 查询所有菜单，组成菜单树
      * @return
      */
-    List<MenuTree> all();
+    List<MenuTree> selectAll();
 
     /**
-     * 查询所有菜单
+     * 查询所有菜单权限字符
      * @return
      */
-    List<Menu> selectMenuAll();
+    List<String> selectPermissionAll();
 
     /**
      * 查询树形菜单（包含当前菜单）
@@ -59,14 +52,6 @@ public interface IMenuService extends IService<Menu> {
     * @return
     */
     IPage<Menu> selectPage(MenuQuery query);
-
-
-    /**
-     * 查询菜单
-     * @param query
-     * @return
-     */
-    List<MenuLazyVO> selectList(MenuTreeLazyQuery query);
 
     /**
      * 获取菜单详情
@@ -96,5 +81,25 @@ public interface IMenuService extends IService<Menu> {
      */
     Boolean deleteById(Long id);
 
+    /**
+     * 根据角色ID集合获取未被禁用的菜单集合
+     * @param roleIds
+     * @return
+     */
+    List<Menu> selectNotDisabledListInRoleIds(List<Long> roleIds);
+
+    /**
+     * 根据角色ID集合获取未被禁用的菜单ID集合
+     * @param roleIds
+     * @return
+     */
+    List<Long> selectNotDisabledIdsInRoleIds(List<Long> roleIds);
+
+    /**
+     * 根据角色ID集合获取未被禁用的菜单权限字符集合
+     * @param roleIds
+     * @return
+     */
+    List<String> selectNotDisabledPermissionsInRoleIds(List<Long> roleIds);
 
 }

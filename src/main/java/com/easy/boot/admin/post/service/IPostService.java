@@ -1,11 +1,11 @@
 package com.easy.boot.admin.post.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.easy.boot.admin.post.entity.Post;
-import com.easy.boot.admin.post.entity.PostQuery;
-import com.easy.boot.admin.post.entity.PostCreateDTO;
-import com.easy.boot.admin.post.entity.PostUpdateDTO;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.easy.boot.admin.post.entity.Post;
+import com.easy.boot.admin.post.entity.PostCreateDTO;
+import com.easy.boot.admin.post.entity.PostQuery;
+import com.easy.boot.admin.post.entity.PostUpdateDTO;
 import com.easy.boot.common.excel.entity.ImportExcelError;
 
 import java.util.List;
@@ -72,5 +72,26 @@ public interface IPostService extends IService<Post> {
      * @param errors 错误标注集合
      */
     void importExcel(List<Post> list, List<Post> errorList, List<ImportExcelError> errors);
+
+    /**
+     * 根据用户ID获取未被禁用的岗位ID集合
+     * @param userId
+     * @return
+     */
+    List<Long> selectNotDisabledIdsByUserId(Long userId);
+    
+    /**
+     * 根据岗位ID集合获取未被禁用的岗位集合
+     * @param postIds
+     * @return
+     */
+    List<Post> selectNotDisabledListInPostIds(List<Long> postIds);
+
+    /**
+     * 根据岗位ID集合获取未被禁用的岗位ID集合
+     * @param postIds
+     * @return
+     */
+    List<Long> selectNotDisabledIdsInPostIds(List<Long> postIds);
 
 }

@@ -47,7 +47,7 @@ public interface IDataDictService extends IService<DataDict> {
     DataDict getByDomainIdAndCode(Long domainId, String code);
 
     /**
-     * 根据字典域获取字典列表
+     * 根据字典域ID获取字典列表
      * @param domainId
      * @return
      */
