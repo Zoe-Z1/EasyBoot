@@ -8,9 +8,12 @@ import cn.hutool.crypto.digest.DigestUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.easy.boot.admin.department.entity.Department;
+import com.easy.boot.admin.department.service.IDepartmentService;
 import com.easy.boot.admin.menu.entity.MenuTree;
 import com.easy.boot.admin.menu.entity.MenuTreeQuery;
 import com.easy.boot.admin.menu.service.IMenuService;
+import com.easy.boot.admin.post.entity.Post;
 import com.easy.boot.admin.post.service.IPostService;
 import com.easy.boot.admin.role.entity.Role;
 import com.easy.boot.admin.role.service.IRoleService;
@@ -59,6 +62,11 @@ public class AdminUserServiceImpl extends ServiceImpl<AdminUserMapper, AdminUser
 
     @Resource
     private IPostService postService;
+
+    @Resource
+    private IDepartmentService departmentService;
+
+
 
     @Override
     public IPage<AdminUser> selectPage(AdminUserQuery query) {
@@ -235,6 +243,10 @@ public class AdminUserServiceImpl extends ServiceImpl<AdminUserMapper, AdminUser
         Long id = UserContext.getId();
         AdminUser adminUser = this.detail(id);
         AdminUserInfo info = BeanUtil.copyBean(adminUser, AdminUserInfo.class);
+        if (info.getDepartmentId() != null) {
+            Department department = departmentService.detail(info.getDepartmentId());
+            info.setDepartment(department);
+        }
         // 获取角色列表
         List<Role> roles = roleService.selectNotDisabledListByUserId(id);
         List<Long> roleIds = roles.stream().map(BaseEntity::getId)
@@ -244,6 +256,8 @@ public class AdminUserServiceImpl extends ServiceImpl<AdminUserMapper, AdminUser
                 .map(Role::getCode)
                 .filter(Objects::nonNull)
                 .distinct().collect(Collectors.toList());
+        // 获取岗位列表
+        List<Post> posts = postService.selectNotDisabledListByUserId(id);
         // 获取菜单ID集合
         List<Long> menuIds = menuService.selectNotDisabledIdsInRoleIds(roleIds);
         MenuTreeQuery query = MenuTreeQuery.builder()
@@ -264,7 +278,9 @@ public class AdminUserServiceImpl extends ServiceImpl<AdminUserMapper, AdminUser
             info.setIsAdmin(false);
             eachMenus(menus, menuIds, permissions);
         }
-        info.setRoles(codes);
+        info.setRoles(roles);
+        info.setPosts(posts);
+        info.setRoleCodes(codes);
         info.setMenus(menus);
         info.setPermissions(permissions);
         return info;

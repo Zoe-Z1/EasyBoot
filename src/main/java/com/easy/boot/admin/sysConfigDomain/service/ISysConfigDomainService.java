@@ -1,13 +1,11 @@
 package com.easy.boot.admin.sysConfigDomain.service;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.easy.boot.admin.sysConfig.entity.SysConfig;
-import com.easy.boot.common.excel.entity.ImportExcelError;
 import com.easy.boot.admin.sysConfigDomain.entity.SysConfigDomain;
 import com.easy.boot.admin.sysConfigDomain.entity.SysConfigDomainCreateDTO;
-import com.easy.boot.admin.sysConfigDomain.entity.SysConfigDomainQuery;
 import com.easy.boot.admin.sysConfigDomain.entity.SysConfigDomainUpdateDTO;
+import com.easy.boot.common.excel.entity.ImportExcelError;
 
 import java.util.List;
 
@@ -20,10 +18,9 @@ public interface ISysConfigDomainService extends IService<SysConfigDomain> {
 
     /**
     * 查询系统配置域
-    * @param query
     * @return
     */
-    IPage<SysConfigDomain> selectPage(SysConfigDomainQuery query);
+    List<SysConfigDomain> selectList();
 
     /**
      * 获取系统配置域详情
@@ -89,4 +86,5 @@ public interface ISysConfigDomainService extends IService<SysConfigDomain> {
      * @return
      */
     SysConfig getByDomainCodeAndConfigCode(String domainCode, String code);
+
 }

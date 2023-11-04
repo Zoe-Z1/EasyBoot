@@ -74,6 +74,13 @@ public interface IPostService extends IService<Post> {
     void importExcel(List<Post> list, List<Post> errorList, List<ImportExcelError> errors);
 
     /**
+     * 根据用户ID获取未被禁用的岗位集合
+     * @param userId
+     * @return
+     */
+    List<Post> selectNotDisabledListByUserId(Long userId);
+
+    /**
      * 根据用户ID获取未被禁用的岗位ID集合
      * @param userId
      * @return

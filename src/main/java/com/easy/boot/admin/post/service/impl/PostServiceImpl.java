@@ -168,6 +168,12 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements IP
     }
 
     @Override
+    public List<Post> selectNotDisabledListByUserId(Long userId) {
+        List<Long> postIds = userPostService.selectIdsByUserId(userId);
+        return selectNotDisabledListInPostIds(postIds);
+    }
+
+    @Override
     public List<Long> selectNotDisabledIdsByUserId(Long userId) {
         List<Long> postIds = userPostService.selectIdsByUserId(userId);
         return selectNotDisabledIdsInPostIds(postIds);
@@ -179,6 +185,7 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements IP
             return new ArrayList<>();
         }
         return lambdaQuery().eq(Post::getStatus, 1)
+                .in(BaseEntity::getId, postIds)
                 .orderByAsc(Post::getSort)
                 .orderByDesc(BaseEntity::getCreateTime)
                 .list();

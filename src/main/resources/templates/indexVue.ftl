@@ -1,5 +1,5 @@
 <template>
-  <div class="top">
+  <div class="vue-container">
     <common-form
       ref="commonForm"
       :disabled="disabled"
@@ -147,7 +147,7 @@ export default {
     return {
       <#list columns as column>
       <#if column.dictDomainCode?? && column.dictDomainCode != "">
-      ${column.javaName}List: [], // ${column.columnRemarks!}数组
+      ${column.javaName}List: [], // ${column.columnRemarks!}
       </#if>
       </#list>
       // 表头数组

@@ -2,14 +2,11 @@ package com.easy.boot.admin.sysConfigDomain.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.easy.boot.admin.sysConfig.entity.SysConfig;
 import com.easy.boot.admin.sysConfig.service.ISysConfigService;
 import com.easy.boot.admin.sysConfigDomain.entity.SysConfigDomain;
 import com.easy.boot.admin.sysConfigDomain.entity.SysConfigDomainCreateDTO;
-import com.easy.boot.admin.sysConfigDomain.entity.SysConfigDomainQuery;
 import com.easy.boot.admin.sysConfigDomain.entity.SysConfigDomainUpdateDTO;
 import com.easy.boot.admin.sysConfigDomain.mapper.SysConfigDomainMapper;
 import com.easy.boot.admin.sysConfigDomain.service.ISysConfigDomainService;
@@ -23,7 +20,6 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -38,17 +34,11 @@ public class SysConfigDomainServiceImpl extends ServiceImpl<SysConfigDomainMappe
     private ISysConfigService sysConfigService;
 
     @Override
-    public IPage<SysConfigDomain> selectPage(SysConfigDomainQuery query) {
-        Page<SysConfigDomain> page = new Page<>(query.getPageNum(), query.getPageSize());
+    public List<SysConfigDomain> selectList() {
         return lambdaQuery()
-                .like(StrUtil.isNotEmpty(query.getCode()), SysConfigDomain::getCode, query.getCode())
-                .like(StrUtil.isNotEmpty(query.getName()), SysConfigDomain::getName, query.getName())
-                .eq(Objects.nonNull(query.getStatus()), SysConfigDomain::getStatus, query.getStatus())
-                .between(Objects.nonNull(query.getStartTime()) && Objects.nonNull(query.getEndTime()),
-                        BaseEntity::getCreateTime, query.getStartTime(), query.getEndTime())
                 .orderByAsc(SysConfigDomain::getSort)
                 .orderByDesc(BaseEntity::getCreateTime)
-                .page(page);
+                .list();
     }
 
     @Override

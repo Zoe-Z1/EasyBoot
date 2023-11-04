@@ -1,5 +1,5 @@
 <template>
-  <div class="top">
+  <div class="vue-container">
     <el-dialog
       ref="maxDialog"
       v-drag
