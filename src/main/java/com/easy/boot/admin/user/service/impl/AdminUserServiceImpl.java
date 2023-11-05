@@ -195,8 +195,11 @@ public class AdminUserServiceImpl extends ServiceImpl<AdminUserMapper, AdminUser
     public Boolean editPassword(EditPasswordDTO dto) {
         AdminUser adminUser = this.detail(dto.getId());
         String oldPassword = DigestUtil.md5Hex(dto.getOldPassword() + adminUser.getSalt());
-        if (!oldPassword.equals(dto.getOldPassword())) {
+        if (!oldPassword.equals(adminUser.getPassword())) {
             throw new BusinessException("旧密码错误");
+        }
+        if (dto.getOldPassword().equals(dto.getNewPassword())) {
+            throw new BusinessException("旧密码不能与新密码相同");
         }
         String salt = IdUtil.randomUUID();
         String password = DigestUtil.md5Hex(dto.getNewPassword() + salt);
