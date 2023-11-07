@@ -103,4 +103,5 @@ public interface ISysConfigService extends IService<SysConfig> {
      * @param errors 错误标注集合
      */
     void importExcel(List<SysConfig> list, List<SysConfig> errorList, List<ImportExcelError> errors);
+
 }

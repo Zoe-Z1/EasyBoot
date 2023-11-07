@@ -41,9 +41,9 @@ public class SysConfigDomain extends BaseEntity {
     @TableField("type")
     private Integer type;
 
-    @ApiModelProperty("渲染组件名称")
-    @TableField("component_name")
-    private String componentName;
+    @ApiModelProperty("跳转组件路径")
+    @TableField("path")
+    private String path;
 
     @ApiModelProperty("关联模板ID")
     @TableField("template_id")

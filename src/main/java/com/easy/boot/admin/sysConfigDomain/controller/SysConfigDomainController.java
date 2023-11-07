@@ -1,8 +1,11 @@
 package com.easy.boot.admin.sysConfigDomain.controller;
 
+import cn.dev33.satoken.annotation.SaCheckPermission;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.easy.boot.admin.operationLog.enums.OperateTypeEnum;
 import com.easy.boot.admin.sysConfigDomain.entity.SysConfigDomain;
 import com.easy.boot.admin.sysConfigDomain.entity.SysConfigDomainCreateDTO;
+import com.easy.boot.admin.sysConfigDomain.entity.SysConfigDomainQuery;
 import com.easy.boot.admin.sysConfigDomain.entity.SysConfigDomainUpdateDTO;
 import com.easy.boot.admin.sysConfigDomain.service.ISysConfigDomainService;
 import com.easy.boot.common.base.BaseController;
@@ -17,7 +20,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 /**
  * @author zoe
@@ -34,14 +36,16 @@ public class SysConfigDomainController extends BaseController {
     private ISysConfigDomainService sysConfigDomainService;
 
 
+    @SaCheckPermission(value = "system:sys:config:domain:page")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "获取系统配置域列表")
-    @EasyLog(module = "获取系统配置域列表", operateType = OperateTypeEnum.SELECT)
-    @GetMapping("/list")
-    public Result<List<SysConfigDomain>> list() {
-        return Result.success(sysConfigDomainService.selectList());
+    @ApiOperation(value = "分页获取系统配置域列表")
+    @EasyLog(module = "分页获取系统配置域列表", operateType = OperateTypeEnum.SELECT)
+    @GetMapping("/page")
+    public Result<IPage<SysConfigDomain>> page(@Validated SysConfigDomainQuery query) {
+        return Result.success(sysConfigDomainService.selectPage(query));
     }
 
+    @SaCheckPermission(value = "system:sys:config:domain:detail")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "获取系统配置域详情")
     @EasyLog(module = "获取系统配置域详情", operateType = OperateTypeEnum.SELECT)
@@ -51,6 +55,7 @@ public class SysConfigDomainController extends BaseController {
     }
 
     @EasyNoRepeatSubmit
+    @SaCheckPermission(value = "system:sys:config:domain:create")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "创建系统配置域")
     @EasyLog(module = "创建系统配置域", operateType = OperateTypeEnum.CREATE)
@@ -59,6 +64,7 @@ public class SysConfigDomainController extends BaseController {
         return Result.r(sysConfigDomainService.create(dto));
     }
 
+    @SaCheckPermission(value = "system:sys:config:domain:update")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "编辑系统配置域")
     @EasyLog(module = "编辑系统配置域", operateType = OperateTypeEnum.UPDATE)
@@ -67,6 +73,7 @@ public class SysConfigDomainController extends BaseController {
         return Result.r(sysConfigDomainService.updateById(dto));
     }
 
+    @SaCheckPermission(value = "system:sys:config:domain:del")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "删除系统配置域")
     @EasyLog(module = "删除系统配置域", operateType = OperateTypeEnum.DELETE)

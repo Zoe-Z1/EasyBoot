@@ -5,6 +5,7 @@ import cn.hutool.core.lang.Validator;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.digest.DigestUtil;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -187,6 +188,19 @@ public class AdminUserServiceImpl extends ServiceImpl<AdminUserMapper, AdminUser
         // 禁用账号退出登录
         if (dto.getStatus() != null && dto.getStatus() == 2) {
             UserContext.kickoutAndRemoveCache(dto.getId());
+        }
+        if (!dto.getIsStatusChange()) {
+            LambdaUpdateWrapper<AdminUser> updateWrapper = new LambdaUpdateWrapper<>();
+            updateWrapper.set(AdminUser::getDepartmentId, user.getDepartmentId())
+                    .set(AdminUser::getAvatar, user.getAvatar())
+                    .set(user.getName() != null, AdminUser::getName, user.getName())
+                    .set(user.getSex() != null, AdminUser::getSex, user.getSex())
+                    .set(AdminUser::getEmail, user.getEmail())
+                    .set(user.getMobile() != null, AdminUser::getMobile, user.getMobile())
+                    .set(user.getStatus() != null, AdminUser::getStatus, user.getStatus())
+                    .set(user.getSort() != null, AdminUser::getSort, user.getSort())
+                    .eq(BaseEntity::getId, user.getId());
+            return update(updateWrapper);
         }
         return updateById(user);
     }

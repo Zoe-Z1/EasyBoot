@@ -1,6 +1,5 @@
 package com.easy.boot.admin.sysConfigDomain.entity;
 
-import com.baomidou.mybatisplus.annotation.TableField;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -43,19 +42,16 @@ public class SysConfigDomainCreateDTO {
     @NotNull(message = "系统配置域类型不能为空")
     @Range(min = 1, max = 2, message = "系统配置域类型不正确")
     @ApiModelProperty(required = true, value = "系统配置域类型 #1：自定义配置， 2：模板配置")
-    @TableField("type")
     private Integer type;
 
-    @NotBlank(message = "渲染组件名称不能为空")
-    @ApiModelProperty(required = true, value = "渲染组件名称")
-    @TableField("component_name")
-    private String componentName;
+    @ApiModelProperty(required = false, value = "跳转组件路径")
+    private String path;
 
     @ApiModelProperty(required = false, value = "关联模板ID")
-    @TableField("template_id")
     private Long templateId;
 
-    @ApiModelProperty(required = false, value = "排序")
+    @NotNull(message = "排序不能为空")
+    @ApiModelProperty(required = true, value = "排序")
     private Integer sort;
 
     @ApiModelProperty(required = false, value = "备注")
