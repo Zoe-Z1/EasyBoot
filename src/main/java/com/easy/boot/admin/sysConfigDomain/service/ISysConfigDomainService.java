@@ -7,7 +7,6 @@ import com.easy.boot.admin.sysConfigDomain.entity.SysConfigDomain;
 import com.easy.boot.admin.sysConfigDomain.entity.SysConfigDomainCreateDTO;
 import com.easy.boot.admin.sysConfigDomain.entity.SysConfigDomainQuery;
 import com.easy.boot.admin.sysConfigDomain.entity.SysConfigDomainUpdateDTO;
-import com.easy.boot.common.excel.entity.ImportExcelError;
 
 import java.util.List;
 
@@ -73,14 +72,6 @@ public interface ISysConfigDomainService extends IService<SysConfigDomain> {
      * @return
      */
     Boolean deleteById(Long id);
-
-    /**
-     * 导入Excel
-     * @param list 要导入的数据集合
-     * @param errorList 导入错误的数据集合
-     * @param errors 错误标注集合
-     */
-    void importExcel(List<SysConfigDomain> list, List<SysConfigDomain> errorList, List<ImportExcelError> errors);
 
     /**
      * 根据系统配置域编码和系统配置编码获取配置

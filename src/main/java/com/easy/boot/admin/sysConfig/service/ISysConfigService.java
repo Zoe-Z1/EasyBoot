@@ -1,12 +1,11 @@
 package com.easy.boot.admin.sysConfig.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.easy.boot.admin.sysConfig.entity.SysConfig;
-import com.easy.boot.admin.sysConfig.entity.SysConfigQuery;
-import com.easy.boot.admin.sysConfig.entity.SysConfigCreateDTO;
-import com.easy.boot.admin.sysConfig.entity.SysConfigUpdateDTO;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.easy.boot.common.excel.entity.ImportExcelError;
+import com.easy.boot.admin.sysConfig.entity.SysConfig;
+import com.easy.boot.admin.sysConfig.entity.SysConfigCreateDTO;
+import com.easy.boot.admin.sysConfig.entity.SysConfigQuery;
+import com.easy.boot.admin.sysConfig.entity.SysConfigUpdateDTO;
 
 import java.util.List;
 
@@ -95,13 +94,5 @@ public interface ISysConfigService extends IService<SysConfig> {
      * @return
      */
     List<SysConfig> getNotDisabledByDomainId(Long domainId);
-
-    /**
-     * 导入Excel
-     * @param list 要导入的数据集合
-     * @param errorList 导入错误的数据集合
-     * @param errors 错误标注集合
-     */
-    void importExcel(List<SysConfig> list, List<SysConfig> errorList, List<ImportExcelError> errors);
 
 }

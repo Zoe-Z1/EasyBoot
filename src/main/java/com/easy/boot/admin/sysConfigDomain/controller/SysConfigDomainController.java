@@ -45,15 +45,6 @@ public class SysConfigDomainController extends BaseController {
         return Result.success(sysConfigDomainService.selectPage(query));
     }
 
-    @SaCheckPermission(value = "system:sys:config:domain:detail")
-    @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "获取系统配置域详情")
-    @EasyLog(module = "获取系统配置域详情", operateType = OperateTypeEnum.SELECT)
-    @GetMapping("/detail/{id}")
-    public Result<SysConfigDomain> detail(@PathVariable Long id) {
-        return Result.success(sysConfigDomainService.detail(id));
-    }
-
     @EasyNoRepeatSubmit
     @SaCheckPermission(value = "system:sys:config:domain:create")
     @ApiOperationSupport(author = "zoe")
