@@ -74,11 +74,11 @@ public interface ISysConfigDomainService extends IService<SysConfigDomain> {
     Boolean deleteById(Long id);
 
     /**
-     * 根据系统配置域编码和系统配置编码获取配置
+     * 根据系统配置域编码和系统配置编码获取未禁用的配置
      * @param domainCode
      * @param code
      * @return
      */
-    SysConfig getByDomainCodeAndConfigCode(String domainCode, String code);
+    SysConfig getNotDisabledByDomainCodeAndConfigCode(String domainCode, String code);
 
 }

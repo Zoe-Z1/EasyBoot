@@ -74,6 +74,14 @@ public interface ISysConfigService extends IService<SysConfig> {
     SysConfig getByDomainIdAndCode(Long domainId, String code);
 
     /**
+     * 根据域id和配置key获取未禁用的配置
+     * @param domainId
+     * @param code
+     * @return
+     */
+    SysConfig getNotDisabledByDomainIdAndCode(Long domainId, String code);
+
+    /**
      * 根据配置域id和禁用状态获取配置列表
      * @param domainId
      * @param status

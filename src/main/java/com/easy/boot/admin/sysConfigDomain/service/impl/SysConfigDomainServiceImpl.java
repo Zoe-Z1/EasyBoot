@@ -139,12 +139,12 @@ public class SysConfigDomainServiceImpl extends ServiceImpl<SysConfigDomainMappe
     }
 
     @Override
-    public SysConfig getByDomainCodeAndConfigCode(String domainCode, String code) {
+    public SysConfig getNotDisabledByDomainCodeAndConfigCode(String domainCode, String code) {
         SysConfigDomain configDomain = this.getNotDisabledByCode(domainCode);
         if (configDomain == null) {
             return null;
         }
-        return sysConfigService.getByDomainIdAndCode(configDomain.getId(), code);
+        return sysConfigService.getNotDisabledByDomainIdAndCode(configDomain.getId(), code);
     }
 
 }
