@@ -32,13 +32,6 @@ public interface ISysConfigDomainService extends IService<SysConfigDomain> {
     SysConfigDomain detail(Long id);
 
     /**
-     * 根据配置域编码获取配置域
-     * @param code
-     * @return
-     */
-    SysConfigDomain getByCode(String code);
-
-    /**
      * 根据配置域编码获取未被禁用的配置域
      * @param code
      * @return

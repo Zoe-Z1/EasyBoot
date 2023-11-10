@@ -1,12 +1,7 @@
 <#if parentMenuId??>
 -- 菜单 SQL
-    <#if global.enableCache>
 insert into menu (id, parent_id, label, path, name, component, permission, cache, type, status, show_status, sort, create_by, create_username, create_time)
 values(${menuId?c}, ${parentMenuId?c}, '${remarks!}', '${menuPath}', '${className}', '${component}', '${permission}', 1, 2, 1, 1, 0, '${createBy?c}', '${createUsername}', '${createTime?c}');
-    <#else >
-insert into menu (id, parent_id, label, path, component, permission, type, status, show_status, sort, create_by, create_username, create_time)
-values(${menuId?c}, ${parentMenuId?c}, '${remarks!}', '${menuPath}', '${component}', '${permission}', 2, 1, 1, 0, '${createBy?c}', '${createUsername}', '${createTime?c}');
-    </#if>
 
 -- 接口 SQL
 <#if queryEnable>

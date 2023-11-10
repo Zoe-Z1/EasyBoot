@@ -3,6 +3,8 @@ package com.easy.boot.admin.sysConfigDomain.entity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.easy.boot.common.base.BaseEntity;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -45,6 +47,7 @@ public class SysConfigDomain extends BaseEntity {
     @TableField("path")
     private String path;
 
+    @JsonSerialize(using = ToStringSerializer.class)
     @ApiModelProperty("关联模板ID")
     @TableField("template_id")
     private Long templateId;

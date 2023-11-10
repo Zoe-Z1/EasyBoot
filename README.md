@@ -2,7 +2,7 @@
 基于SpringBoot2.7的后台管理项目脚手架
 
 ## 快速体验
-演示地址：http://119.91.136.195
+演示地址：https://www.easyboot.cn
 
 游客账号：visitor 密码：visitor
 
@@ -50,15 +50,15 @@
     <li>调度日志</li>
     <li>代码生成</li>
     <li>接口文档</li>
+    <li>个人中心</li>
+    <li>配置模板</li>
+    <li>配置管理</li>
     
 </ul>
 
 ## 后续功能规划
 <ul>
-    <li>配置管理</li>
-    <li>配置模板</li>
     <li>首页</li>
-    <li>个人中心</li>
     <li>......</li>
 </ul>
 

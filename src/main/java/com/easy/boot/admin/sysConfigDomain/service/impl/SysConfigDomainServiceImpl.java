@@ -59,12 +59,6 @@ public class SysConfigDomainServiceImpl extends ServiceImpl<SysConfigDomainMappe
     }
 
     @Override
-    public SysConfigDomain getByCode(String code) {
-        return lambdaQuery()
-                .eq(SysConfigDomain::getCode, code).one();
-    }
-
-    @Override
     public SysConfigDomain getNotDisabledByCode(String code) {
         return lambdaQuery()
                 .eq(SysConfigDomain::getCode, code)
@@ -83,8 +77,8 @@ public class SysConfigDomainServiceImpl extends ServiceImpl<SysConfigDomainMappe
 
     @Override
     public Boolean create(SysConfigDomainCreateDTO dto) {
-        SysConfigDomain sysConfigDomain = this.getByCode(dto.getCode());
-        if (sysConfigDomain != null) {
+        SysConfigDomain sysConfigDomain = this.getNotDisabledByCode(dto.getCode());
+        if (sysConfigDomain != null && dto.getStatus() != 2) {
             throw new BusinessException("系统配置域编码已存在");
         }
         validateSysConfigDomain(dto);
@@ -110,8 +104,8 @@ public class SysConfigDomainServiceImpl extends ServiceImpl<SysConfigDomainMappe
 
     @Override
     public Boolean updateById(SysConfigDomainUpdateDTO dto) {
-        SysConfigDomain sysConfigDomain = this.getByCode(dto.getCode());
-        if (sysConfigDomain != null && !sysConfigDomain.getId().equals(dto.getId())) {
+        SysConfigDomain sysConfigDomain = this.getNotDisabledByCode(dto.getCode());
+        if (sysConfigDomain != null && !sysConfigDomain.getId().equals(dto.getId()) && dto.getStatus() != 2) {
             throw new BusinessException("系统配置域编码已存在");
         }
         if (SysConfigDomainCodeEnum.GLOBAL.getCode().equals(dto.getCode()) && dto.getStatus() == 2) {
