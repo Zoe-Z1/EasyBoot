@@ -1,5 +1,6 @@
 package com.easy.boot.admin.sysConfig.controller;
 
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.easy.boot.admin.operationLog.enums.OperateTypeEnum;
 import com.easy.boot.admin.sysConfig.entity.*;
@@ -37,6 +38,7 @@ public class SysConfigController extends BaseController {
     private ISysConfigDomainService sysConfigDomainService;
 
 
+    @SaCheckPermission(value = "system:sys:config:page")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "获取系统配置列表")
     @EasyLog(module = "获取系统配置列表", operateType = OperateTypeEnum.SELECT)
@@ -45,23 +47,8 @@ public class SysConfigController extends BaseController {
         return Result.success(sysConfigService.selectPage(query));
     }
 
-    @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "使用编码获取系统配置列表")
-    @EasyLog(module = "使用编码获取系统配置列表", operateType = OperateTypeEnum.SELECT)
-    @GetMapping("/listByCode")
-    public Result<List<SysConfig>> listByCode(@Validated ListQuery query) {
-        return Result.success(sysConfigDomainService.selectListByDomainCode(query.getCode()));
-    }
-
-    @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "获取系统配置详情")
-    @EasyLog(module = "获取系统配置详情", operateType = OperateTypeEnum.SELECT)
-    @GetMapping("/detail/{id}")
-    public Result<SysConfig> detail(@PathVariable Long id) {
-        return Result.success(sysConfigService.detail(id));
-    }
-
     @EasyNoRepeatSubmit
+    @SaCheckPermission(value = "system:sys:config:create")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "创建系统配置")
     @EasyLog(module = "创建系统配置", operateType = OperateTypeEnum.CREATE)
@@ -70,6 +57,7 @@ public class SysConfigController extends BaseController {
         return Result.r(sysConfigService.create(dto));
     }
 
+    @SaCheckPermission(value = "system:sys:config:update")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "编辑系统配置")
     @EasyLog(module = "编辑系统配置", operateType = OperateTypeEnum.UPDATE)
@@ -78,6 +66,7 @@ public class SysConfigController extends BaseController {
         return Result.r(sysConfigService.updateById(dto));
     }
 
+    @SaCheckPermission(value = "system:sys:config:del")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "删除系统配置")
     @EasyLog(module = "删除系统配置", operateType = OperateTypeEnum.DELETE)
@@ -86,6 +75,7 @@ public class SysConfigController extends BaseController {
         return Result.r(sysConfigService.deleteById(id));
     }
 
+    @SaCheckPermission(value = "system:sys:config:batch:del")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "批量删除系统配置")
     @EasyLog(module = "批量删除系统配置", operateType = OperateTypeEnum.DELETE)

@@ -62,7 +62,6 @@ public class DataDictController extends BaseController {
         return Result.success(dataDictService.selectPage(query));
     }
 
-//    @SaCheckPermission(value = "system:data:dict:all")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "获取全部数据字典")
     @EasyLog(module = "获取全部数据字典", operateType = OperateTypeEnum.SELECT)
@@ -72,7 +71,6 @@ public class DataDictController extends BaseController {
         return Result.success(map);
     }
 
-//    @SaCheckPermission(value = "system:data:dict:list:code")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "使用编码获取数据字典列表")
     @EasyLog(module = "使用编码获取数据字典列表", operateType = OperateTypeEnum.SELECT)

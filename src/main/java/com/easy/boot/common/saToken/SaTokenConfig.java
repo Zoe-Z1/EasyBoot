@@ -33,7 +33,7 @@ public class SaTokenConfig implements WebMvcConfigurer {
         }))
                 .addPathPatterns("/**")
                 .excludePathPatterns("/admin/login", "/admin/logout", "/admin/code", "/admin/validate/code/*",
-                        "/admin/test",
+                        "/admin/sysConfigDomain/global/all",
                         "/admin/sse/**",
                         "/favicon.ico",
                         "/doc.html",

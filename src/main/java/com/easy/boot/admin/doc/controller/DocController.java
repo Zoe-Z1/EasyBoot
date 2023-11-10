@@ -49,7 +49,7 @@ public class DocController {
         if (dev.equals(active)) {
             url = "http://localhost:" + port + "/doc.html";
         } else {
-            url = "http://119.91.136.195:" + port + "/doc.html";
+            url = "http://easyboot.cn:" + port + "/doc.html";
         }
         DocVO vo = DocVO.builder()
                 .enable(enable)

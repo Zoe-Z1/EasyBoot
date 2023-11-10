@@ -3,6 +3,7 @@ package com.easy.boot.admin.sysConfigDomain.controller;
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.easy.boot.admin.operationLog.enums.OperateTypeEnum;
+import com.easy.boot.admin.sysConfig.entity.SysConfig;
 import com.easy.boot.admin.sysConfigDomain.entity.SysConfigDomain;
 import com.easy.boot.admin.sysConfigDomain.entity.SysConfigDomainCreateDTO;
 import com.easy.boot.admin.sysConfigDomain.entity.SysConfigDomainQuery;
@@ -20,6 +21,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author zoe
@@ -35,6 +37,14 @@ public class SysConfigDomainController extends BaseController {
     @Resource
     private ISysConfigDomainService sysConfigDomainService;
 
+
+    @ApiOperationSupport(author = "zoe")
+    @ApiOperation(value = "获取全部全局配置")
+    @EasyLog(module = "获取全部全局配置", operateType = OperateTypeEnum.SELECT)
+    @GetMapping("/global/all")
+    public Result<List<SysConfig>> globalAll() {
+        return Result.success(sysConfigDomainService.selectGlobalAll());
+    }
 
     @SaCheckPermission(value = "system:sys:config:domain:page")
     @ApiOperationSupport(author = "zoe")

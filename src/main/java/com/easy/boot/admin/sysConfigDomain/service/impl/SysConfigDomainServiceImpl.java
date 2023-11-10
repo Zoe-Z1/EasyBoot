@@ -141,4 +141,9 @@ public class SysConfigDomainServiceImpl extends ServiceImpl<SysConfigDomainMappe
         return sysConfigService.getNotDisabledByDomainIdAndCode(configDomain.getId(), code);
     }
 
+    @Override
+    public List<SysConfig> selectGlobalAll() {
+        return selectListByDomainCode(SysConfigDomainCodeEnum.GLOBAL.getCode());
+    }
+
 }

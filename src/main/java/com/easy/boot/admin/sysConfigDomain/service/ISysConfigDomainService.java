@@ -74,4 +74,10 @@ public interface ISysConfigDomainService extends IService<SysConfigDomain> {
      */
     SysConfig getNotDisabledByDomainCodeAndConfigCode(String domainCode, String code);
 
+    /**
+     * 获取全部全局配置
+     * @return
+     */
+    List<SysConfig> selectGlobalAll();
+
 }

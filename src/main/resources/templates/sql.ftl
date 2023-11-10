@@ -1,7 +1,7 @@
 <#if parentMenuId??>
 -- 菜单 SQL
 insert into menu (id, parent_id, label, path, name, component, permission, cache, type, status, show_status, sort, create_by, create_username, create_time)
-values(${menuId?c}, ${parentMenuId?c}, '${remarks!}', '${menuPath}', '${className}', '${component}', '${permission}', 1, 2, 1, 1, 0, '${createBy?c}', '${createUsername}', '${createTime?c}');
+values(${menuId?c}, ${parentMenuId?c}, '${remarks!}', '${menuPath}', '${className}', '${component}/index', '${permission}', 1, 2, 1, 1, 0, '${createBy?c}', '${createUsername}', '${createTime?c}');
 
 -- 接口 SQL
 <#if queryEnable>
