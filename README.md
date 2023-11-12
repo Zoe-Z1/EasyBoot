@@ -32,7 +32,7 @@
 
 ## 已有功能
 <ul>
-    <li>验证码登录</li>
+    <li>动态验证码登录</li>
     <li>用户管理</li>
     <li>角色管理</li>
     <li>菜单管理</li>
@@ -51,9 +51,9 @@
     <li>代码生成</li>
     <li>接口文档</li>
     <li>个人中心</li>
-    <li>配置模板</li>
     <li>配置管理</li>
-    
+    <li>配置模板</li>
+
 </ul>
 
 ## 后续功能规划
@@ -63,13 +63,23 @@
 </ul>
 
 ## 页面展示
+![image](doc/login.png)
 ![image](doc/admin-user.png)
 ![image](doc/role.png)
 ![image](doc/menu.png)
 ![image](doc/department.png)
 ![image](doc/post.png)
 ![image](doc/data-dict-domain.png)
+![image](doc/sys-config-domain.png)
+![image](doc/template-config.png)
+![image](doc/notice.png)
+![image](doc/online-user.png)
 ![image](doc/scheduled-task.png)
+![image](doc/server.png)
+![image](doc/redis.png)
+![image](doc/blacklist.png)
 ![image](doc/login-log.png)
 ![image](doc/operation-log.png)
 ![image](doc/gen.png)
+![image](doc/template-param-config.png)
+![image](doc/doc.png)
