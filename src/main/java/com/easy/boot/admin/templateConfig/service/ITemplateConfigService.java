@@ -51,4 +51,11 @@ public interface ITemplateConfigService extends IService<TemplateConfig> {
      */
     Boolean deleteById(Long id);
 
+    /**
+     * 使用ID获取未被禁用的模板配置
+     * @param id
+     * @return
+     */
+    TemplateConfig getNotDisabledById(Long id);
+
 }

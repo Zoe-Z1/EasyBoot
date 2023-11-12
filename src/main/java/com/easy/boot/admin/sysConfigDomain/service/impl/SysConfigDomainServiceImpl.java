@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.easy.boot.admin.sysConfig.entity.SysConfig;
+import com.easy.boot.admin.sysConfig.entity.SysTemplateConfigVO;
 import com.easy.boot.admin.sysConfig.service.ISysConfigService;
 import com.easy.boot.admin.sysConfigDomain.entity.SysConfigDomain;
 import com.easy.boot.admin.sysConfigDomain.entity.SysConfigDomainCreateDTO;
@@ -14,6 +15,10 @@ import com.easy.boot.admin.sysConfigDomain.entity.SysConfigDomainUpdateDTO;
 import com.easy.boot.admin.sysConfigDomain.enums.SysConfigDomainCodeEnum;
 import com.easy.boot.admin.sysConfigDomain.mapper.SysConfigDomainMapper;
 import com.easy.boot.admin.sysConfigDomain.service.ISysConfigDomainService;
+import com.easy.boot.admin.templateConfig.entity.TemplateConfig;
+import com.easy.boot.admin.templateConfig.service.ITemplateConfigService;
+import com.easy.boot.admin.templateParamConfig.entity.TemplateParamConfig;
+import com.easy.boot.admin.templateParamConfig.service.ITemplateParamConfigService;
 import com.easy.boot.common.base.BaseEntity;
 import com.easy.boot.exception.BusinessException;
 import com.easy.boot.utils.BeanUtil;
@@ -22,7 +27,9 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
 * @author zoe
@@ -34,6 +41,12 @@ public class SysConfigDomainServiceImpl extends ServiceImpl<SysConfigDomainMappe
 
     @Resource
     private ISysConfigService sysConfigService;
+
+    @Resource
+    private ITemplateConfigService templateConfigService;
+
+    @Resource
+    private ITemplateParamConfigService templateParamConfigService;
 
     @Override
     public IPage<SysConfigDomain> selectPage(SysConfigDomainQuery query) {
@@ -72,7 +85,7 @@ public class SysConfigDomainServiceImpl extends ServiceImpl<SysConfigDomainMappe
         if (domain == null) {
             return new ArrayList<>();
         }
-        return sysConfigService.getNotDisabledByDomainId(domain.getId());
+        return sysConfigService.selectNotDisabledListByDomainId(domain.getId());
     }
 
     @Override
@@ -125,7 +138,7 @@ public class SysConfigDomainServiceImpl extends ServiceImpl<SysConfigDomainMappe
         if (SysConfigDomainCodeEnum.GLOBAL.getCode().equals(domain.getCode())) {
             throw new BusinessException("当前系统配置域不允许删除");
         }
-        List<SysConfig> list = sysConfigService.getByDomainId(id);
+        List<SysConfig> list = sysConfigService.selectByDomainId(id);
         if (CollUtil.isNotEmpty(list)) {
             throw new BusinessException("存在下级系统配置，不允许删除");
         }
@@ -144,6 +157,48 @@ public class SysConfigDomainServiceImpl extends ServiceImpl<SysConfigDomainMappe
     @Override
     public List<SysConfig> selectGlobalAll() {
         return selectListByDomainCode(SysConfigDomainCodeEnum.GLOBAL.getCode());
+    }
+
+    @Override
+    public List<SysTemplateConfigVO> selectTemplateList(Long domainId) {
+        List<SysTemplateConfigVO> voList = new ArrayList<>();
+        SysConfigDomain sysConfigDomain = detail(domainId);
+        TemplateConfig templateConfig = templateConfigService.getNotDisabledById(sysConfigDomain.getTemplateId());
+        List<TemplateParamConfig> paramConfigs = new ArrayList<>();
+        if (templateConfig != null) {
+            paramConfigs = templateParamConfigService.selectNotDisabledListByTemplateId(sysConfigDomain.getTemplateId());
+        }
+        List<SysConfig> sysConfigs = sysConfigService.selectNotDisabledListByDomainId(domainId);
+        if (CollUtil.isEmpty(sysConfigs)) {
+            for (TemplateParamConfig paramConfig : paramConfigs) {
+                SysTemplateConfigVO vo = new SysTemplateConfigVO();
+                vo.setDomainId(domainId)
+                        .setCode(paramConfig.getCode())
+                        .setName(paramConfig.getName())
+                        .setValue(paramConfig.getDefaultValue())
+                        .setRequired(paramConfig.getRequired())
+                        .setMessage(paramConfig.getMessage())
+                        .setPlaceholder(paramConfig.getPlaceholder());
+                voList.add(vo);
+            }
+        } else {
+            Map<String, TemplateParamConfig> templateParamConfigMap = paramConfigs.stream()
+                    .collect(Collectors.toMap(TemplateParamConfig::getCode, x -> x));
+            // 主要以已经存在的配置为主
+            for (SysConfig sysConfig : sysConfigs) {
+                TemplateParamConfig paramConfig = templateParamConfigMap.get(sysConfig.getCode());
+                SysTemplateConfigVO vo = new SysTemplateConfigVO();
+                vo.setDomainId(domainId)
+                        .setCode(sysConfig.getCode())
+                        .setName(sysConfig.getName())
+                        .setValue(sysConfig.getValue())
+                        .setRequired(paramConfig != null ? paramConfig.getRequired() : 2)
+                        .setMessage(paramConfig != null ? paramConfig.getMessage() : null)
+                        .setPlaceholder(paramConfig != null ? paramConfig.getPlaceholder() : null);
+                voList.add(vo);
+            }
+        }
+        return voList;
     }
 
 }

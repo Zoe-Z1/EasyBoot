@@ -81,5 +81,15 @@ public class TemplateParamConfigServiceImpl extends ServiceImpl<TemplateParamCon
                 .one();
     }
 
+    @Override
+    public List<TemplateParamConfig> selectNotDisabledListByTemplateId(Long templateId) {
+        return lambdaQuery()
+                .eq(TemplateParamConfig::getTemplateId, templateId)
+                .eq(TemplateParamConfig::getStatus, 1)
+                .orderByAsc(TemplateParamConfig::getSort)
+                .orderByDesc(TemplateParamConfig::getCreateTime)
+                .list();
+    }
+
 
 }

@@ -1,5 +1,6 @@
 package com.easy.boot.admin.sysConfig.service.impl;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -15,6 +16,7 @@ import com.easy.boot.common.base.BaseEntity;
 import com.easy.boot.exception.BusinessException;
 import com.easy.boot.utils.BeanUtil;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
@@ -107,9 +109,9 @@ public class SysConfigServiceImpl extends ServiceImpl<SysConfigMapper, SysConfig
     }
 
     @Override
-    public List<SysConfig> getByDomainIdAndStatus(Long domainId, Integer status) {
+    public List<SysConfig> selectByDomainIdAndStatus(Long domainId, Integer status) {
         return lambdaQuery()
-                .select(BaseEntity::getId, SysConfig::getCode, SysConfig::getValue)
+                .select(BaseEntity::getId, SysConfig::getCode, SysConfig::getName, SysConfig::getValue)
                 .eq(status != null, SysConfig::getStatus, status)
                 .eq(SysConfig::getDomainId, domainId)
                 .orderByAsc(SysConfig::getSort)
@@ -118,13 +120,25 @@ public class SysConfigServiceImpl extends ServiceImpl<SysConfigMapper, SysConfig
     }
 
     @Override
-    public List<SysConfig> getByDomainId(Long domainId) {
-        return this.getByDomainIdAndStatus(domainId, null);
+    public List<SysConfig> selectByDomainId(Long domainId) {
+        return this.selectByDomainIdAndStatus(domainId, null);
     }
 
     @Override
-    public List<SysConfig> getNotDisabledByDomainId(Long domainId) {
-        return this.getByDomainIdAndStatus(domainId, 1);
+    public List<SysConfig> selectNotDisabledListByDomainId(Long domainId) {
+        return this.selectByDomainIdAndStatus(domainId, 1);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public Boolean templateBatchSave(List<SysConfigCreateDTO> dtos) {
+        if (CollUtil.isEmpty(dtos)) {
+            return false;
+        }
+        List<SysConfig> sysConfigs = BeanUtil.copyList(dtos, SysConfig.class);
+        Long domainId = sysConfigs.get(0).getDomainId();
+        deleteByDomainId(domainId);
+        return saveBatch(sysConfigs);
     }
 
 }

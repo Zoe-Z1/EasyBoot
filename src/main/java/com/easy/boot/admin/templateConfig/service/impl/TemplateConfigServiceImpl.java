@@ -66,4 +66,12 @@ public class TemplateConfigServiceImpl extends ServiceImpl<TemplateConfigMapper,
         return removeById(id);
     }
 
+    @Override
+    public TemplateConfig getNotDisabledById(Long id) {
+        return lambdaQuery()
+                .eq(BaseEntity::getId, id)
+                .eq(TemplateConfig::getStatus, 1)
+                .one();
+    }
+
 }

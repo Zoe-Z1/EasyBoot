@@ -3,6 +3,7 @@ package com.easy.boot.admin.sysConfigDomain.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.easy.boot.admin.sysConfig.entity.SysConfig;
+import com.easy.boot.admin.sysConfig.entity.SysTemplateConfigVO;
 import com.easy.boot.admin.sysConfigDomain.entity.SysConfigDomain;
 import com.easy.boot.admin.sysConfigDomain.entity.SysConfigDomainCreateDTO;
 import com.easy.boot.admin.sysConfigDomain.entity.SysConfigDomainQuery;
@@ -80,4 +81,10 @@ public interface ISysConfigDomainService extends IService<SysConfigDomain> {
      */
     List<SysConfig> selectGlobalAll();
 
+    /**
+     * 获取系统模板配置列表
+     * @param domainId
+     * @return
+     */
+    List<SysTemplateConfigVO> selectTemplateList(Long domainId);
 }

@@ -57,4 +57,11 @@ public interface ITemplateParamConfigService extends IService<TemplateParamConfi
      * @return
      */
     TemplateParamConfig getByTemplateIdAndCode(Long templateId, String code);
+
+    /**
+     * 根据模板ID获取未被禁用的参数配置列表
+     * @param templateId
+     * @return
+     */
+    List<TemplateParamConfig> selectNotDisabledListByTemplateId(Long templateId);
 }

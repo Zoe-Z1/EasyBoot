@@ -87,20 +87,26 @@ public interface ISysConfigService extends IService<SysConfig> {
      * @param status
      * @return
      */
-    List<SysConfig> getByDomainIdAndStatus(Long domainId, Integer status);
+    List<SysConfig> selectByDomainIdAndStatus(Long domainId, Integer status);
 
     /**
      * 根据配置域id获取配置列表
      * @param domainId
      * @return
      */
-    List<SysConfig> getByDomainId(Long domainId);
+    List<SysConfig> selectByDomainId(Long domainId);
 
     /**
      * 根据配置域id获取未禁用配置列表
      * @param domainId
      * @return
      */
-    List<SysConfig> getNotDisabledByDomainId(Long domainId);
+    List<SysConfig> selectNotDisabledListByDomainId(Long domainId);
 
+    /**
+     * 批量保存系统模板配置
+     * @param dtos
+     * @return
+     */
+    Boolean templateBatchSave(List<SysConfigCreateDTO> dtos);
 }
