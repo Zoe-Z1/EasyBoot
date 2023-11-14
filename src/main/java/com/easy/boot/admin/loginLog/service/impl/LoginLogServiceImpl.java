@@ -39,6 +39,9 @@ public class LoginLogServiceImpl extends ServiceImpl<LoginLogMapper, LoginLog> i
     @Resource
     private IOnlineUserService onlineUserService;
 
+    @Resource
+    private LoginLogMapper loginLogMapper;
+
     @Override
     public IPage<LoginLog> selectPage(LoginLogQuery query) {
         Page<LoginLog> page = new Page<>(query.getPageNum(), query.getPageSize());
@@ -113,6 +116,20 @@ public class LoginLogServiceImpl extends ServiceImpl<LoginLogMapper, LoginLog> i
     public Boolean clear() {
         QueryWrapper<LoginLog> queryWrapper = new QueryWrapper<>();
         return remove(queryWrapper);
+    }
+
+    @Override
+    public Long getLoginNumber(Long startTime, Long endTime) {
+        return lambdaQuery()
+                .ge(startTime != null, BaseEntity::getCreateTime, startTime)
+                .le(endTime != null, BaseEntity::getCreateTime, endTime)
+                .count();
+    }
+
+
+    @Override
+    public Long getIpNumber(Long startTime, Long endTime) {
+        return loginLogMapper.getIpNumber(startTime, endTime);
     }
 
 }

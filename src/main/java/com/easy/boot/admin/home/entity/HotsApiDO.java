@@ -7,22 +7,25 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
-import javax.validation.constraints.NotBlank;
-
 /**
  * @author zoe
- * @date 2023/7/29
+ * @date 2023/11/14
  * @description
  */
-@ApiModel("首页DTO")
+@ApiModel("热点接口实体")
 @Data
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class HomeDTO {
+public class HotsApiDO {
 
-    @NotBlank(message = "类型")
-    @ApiModelProperty(required = true, value = "类型")
-    private Integer type;
+    @ApiModelProperty("请求接口地址")
+    private String requestUrl;
+
+    @ApiModelProperty("请求方法")
+    private String requestWay;
+
+    @ApiModelProperty("请求次数")
+    private Long count;
 
 }

@@ -1,8 +1,10 @@
 package com.easy.boot.admin.home.service;
 
 
-import com.easy.boot.admin.home.entity.HomeDTO;
-import com.easy.boot.admin.home.entity.HomeVO;
+import com.easy.boot.admin.home.entity.HomeHandlerTimeVO;
+import com.easy.boot.admin.home.entity.HomeHotsApiVO;
+import com.easy.boot.admin.home.entity.HomeNumberVO;
+import com.easy.boot.admin.home.entity.HomeUserAnalysisVO;
 
 /**
  * @author zoe
@@ -12,9 +14,26 @@ import com.easy.boot.admin.home.entity.HomeVO;
 public interface HomeService {
 
     /**
-     * 获取首页统计信息
-     * @param dto
+     * 获取数量信息
      * @return
      */
-    HomeVO getStatistics(HomeDTO dto);
+    HomeNumberVO getHomeNumber();
+
+    /**
+     * 获取用户分析
+     * @return
+     */
+    HomeUserAnalysisVO getUserAnalysis();
+
+    /**
+     * 获取热点接口
+     * @return
+     */
+    HomeHotsApiVO getHotsApi();
+
+    /**
+     * 获取接口处理时长
+     * @return
+     */
+    HomeHandlerTimeVO getHandlerTime();
 }

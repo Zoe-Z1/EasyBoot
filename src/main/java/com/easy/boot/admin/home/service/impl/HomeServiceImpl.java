@@ -1,13 +1,19 @@
 package com.easy.boot.admin.home.service.impl;
 
-import com.easy.boot.admin.home.entity.HomeDTO;
-import com.easy.boot.admin.home.entity.HomeVO;
+import cn.hutool.core.date.DateTime;
+import cn.hutool.core.date.DateUtil;
+import com.easy.boot.admin.home.entity.*;
 import com.easy.boot.admin.home.service.HomeService;
-import com.easy.boot.admin.user.service.AdminUserService;
+import com.easy.boot.admin.loginLog.service.ILoginLogService;
+import com.easy.boot.admin.onlineUser.service.IOnlineUserService;
+import com.easy.boot.admin.operationLog.service.IOperationLogService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * @author zoe
@@ -19,11 +25,96 @@ import javax.annotation.Resource;
 public class HomeServiceImpl implements HomeService {
 
     @Resource
-    private AdminUserService adminUserService;
+    private IOnlineUserService onlineUserService;
+
+    @Resource
+    private ILoginLogService loginLogService;
+
+    @Resource
+    private IOperationLogService operationLogService;
 
 
     @Override
-    public HomeVO getStatistics(HomeDTO dto) {
-        return null;
+    public HomeNumberVO getHomeNumber() {
+        long onlineNumber = onlineUserService.getOnlineNumber();
+        long todayBeginTime = DateUtil.beginOfDay(new Date()).getTime();
+        long loginNumber = loginLogService.getLoginNumber(todayBeginTime, null);
+        long ipNumber = loginLogService.getIpNumber(todayBeginTime, null);
+        long operationNumber = operationLogService.getOperationNumber(todayBeginTime, null);
+        HomeNumberVO vo = HomeNumberVO.builder()
+                .onlineNumber(onlineNumber)
+                .loginNumber(loginNumber)
+                .ipNumber(ipNumber)
+                .operationNumber(operationNumber)
+                .build();
+        return vo;
+    }
+
+    @Override
+    public HomeUserAnalysisVO getUserAnalysis() {
+        List<String> dates = new ArrayList<>();
+        List<Long> loginNumbers = new ArrayList<>();
+        List<Long> ipNumbers = new ArrayList<>();
+        List<Long> operationNumbers = new ArrayList<>();
+        Date date = new Date();
+        DateTime begin = DateUtil.beginOfDay(date);
+        while (true) {
+            DateTime end = DateUtil.offsetHour(begin, 1);
+            if (end.getTime() > date.getTime()) {
+                break;
+            }
+            String dateStr = DateUtil.format(end, "HH:mm");
+            long loginNumber = loginLogService.getLoginNumber(begin.getTime(), end.getTime());
+            long ipNumber = loginLogService.getIpNumber(begin.getTime(), end.getTime());
+            long operationNumber = operationLogService.getOperationNumber(begin.getTime(), end.getTime());
+            dates.add(dateStr);
+            loginNumbers.add(loginNumber);
+            ipNumbers.add(ipNumber);
+            operationNumbers.add(operationNumber);
+            begin = end;
+        }
+        HomeUserAnalysisVO vo = HomeUserAnalysisVO.builder()
+                .dates(dates)
+                .loginNumbers(loginNumbers)
+                .ipNumbers(ipNumbers)
+                .operationNumbers(operationNumbers)
+                .build();
+        return vo;
+    }
+
+    @Override
+    public HomeHotsApiVO getHotsApi() {
+        long todayBeginTime = DateUtil.beginOfDay(new Date()).getTime();
+        int limit = 30;
+        List<HotsApiDO> list = operationLogService.getHotsApi(todayBeginTime, limit);
+        List<String> urls = new ArrayList<>();
+        List<Long> counts = new ArrayList<>();
+        for (HotsApiDO hotsApiDO : list) {
+            urls.add(hotsApiDO.getRequestWay() + " " + hotsApiDO.getRequestUrl());
+            counts.add(hotsApiDO.getCount());
+        }
+        HomeHotsApiVO vo = HomeHotsApiVO.builder()
+                .urls(urls)
+                .counts(counts)
+                .build();
+        return vo;
+    }
+
+    @Override
+    public HomeHandlerTimeVO getHandlerTime() {
+        long todayBeginTime = DateUtil.beginOfDay(new Date()).getTime();
+        int limit = 30;
+        List<HandlerTimeDO> list = operationLogService.getHandlerTime(todayBeginTime, limit);
+        List<String> urls = new ArrayList<>();
+        List<Long> times = new ArrayList<>();
+        for (HandlerTimeDO handlerTimeDO : list) {
+            urls.add(handlerTimeDO.getRequestWay() + " " + handlerTimeDO.getRequestUrl());
+            times.add(handlerTimeDO.getHandleTime());
+        }
+        HomeHandlerTimeVO vo = HomeHandlerTimeVO.builder()
+                .urls(urls)
+                .times(times)
+                .build();
+        return vo;
     }
 }

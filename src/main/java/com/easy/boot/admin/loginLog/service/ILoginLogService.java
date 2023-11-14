@@ -57,4 +57,20 @@ public interface ILoginLogService extends IService<LoginLog> {
      */
     Boolean clear();
 
+    /**
+     * 获取登录人数
+     * @param startTime
+     * @param endTime
+     * @return
+     */
+    Long getLoginNumber(Long startTime, Long endTime);
+
+    /**
+     * 获取访问IP数
+     * @param startTime
+     * @param endTime
+     * @return
+     */
+    Long getIpNumber(Long startTime, Long endTime);
+
 }

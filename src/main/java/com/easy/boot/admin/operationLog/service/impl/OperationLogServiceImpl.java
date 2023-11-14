@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.easy.boot.admin.home.entity.HandlerTimeDO;
+import com.easy.boot.admin.home.entity.HotsApiDO;
 import com.easy.boot.admin.operationLog.entity.OperationLog;
 import com.easy.boot.admin.operationLog.entity.OperationLogQuery;
 import com.easy.boot.admin.operationLog.mapper.OperationLogMapper;
@@ -13,6 +15,7 @@ import com.easy.boot.common.base.BaseEntity;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 import java.util.Objects;
 
@@ -24,6 +27,8 @@ import java.util.Objects;
 @Service
 public class OperationLogServiceImpl extends ServiceImpl<OperationLogMapper, OperationLog> implements IOperationLogService {
 
+    @Resource
+    private OperationLogMapper operationLogMapper;
 
     @Override
     public IPage<OperationLog> selectPage(OperationLogQuery query) {
@@ -86,6 +91,24 @@ public class OperationLogServiceImpl extends ServiceImpl<OperationLogMapper, Ope
     public Boolean clear() {
         QueryWrapper<OperationLog> queryWrapper = new QueryWrapper<>();
         return remove(queryWrapper);
+    }
+
+    @Override
+    public Long getOperationNumber(Long startTime, Long endTime) {
+        return lambdaQuery()
+                .ge(startTime != null, BaseEntity::getCreateTime, startTime)
+                .le(endTime != null, BaseEntity::getCreateTime, endTime)
+                .count();
+    }
+
+    @Override
+    public List<HotsApiDO> getHotsApi(long todayBeginTime, int limit) {
+        return operationLogMapper.getHotsApi(todayBeginTime, limit);
+    }
+
+    @Override
+    public List<HandlerTimeDO> getHandlerTime(long todayBeginTime, int limit) {
+        return operationLogMapper.getHandlerTime(todayBeginTime, limit);
     }
 
 }

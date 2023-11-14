@@ -9,19 +9,23 @@ import lombok.experimental.SuperBuilder;
 
 /**
  * @author zoe
- * @date 2023/7/21
+ * @date 2023/11/14
  * @description
  */
-@ApiModel("token返回实体")
+@ApiModel("接口处理时长实体")
 @Data
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class HomeVO {
+public class HandlerTimeDO {
 
-    @ApiModelProperty("token的key")
-    private String tokenName;
+    @ApiModelProperty("请求接口地址")
+    private String requestUrl;
 
-    @ApiModelProperty("鉴权token")
-    private String token;
+    @ApiModelProperty("请求方法")
+    private String requestWay;
+
+    @ApiModelProperty("处理时长")
+    private Long handleTime;
+
 }

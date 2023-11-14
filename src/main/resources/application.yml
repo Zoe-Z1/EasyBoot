@@ -34,7 +34,7 @@ server:
 #spring配置
 spring:
   servlet:
-    # 不在这里不限制最大文件上传大小
+    # 不在这里限制最大文件上传大小
     multipart:
       # 单个文件上传大小限制
       max-file-size: 20MB

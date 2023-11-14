@@ -2,6 +2,8 @@ package com.easy.boot.admin.operationLog.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.easy.boot.admin.home.entity.HandlerTimeDO;
+import com.easy.boot.admin.home.entity.HotsApiDO;
 import com.easy.boot.admin.operationLog.entity.OperationLog;
 import com.easy.boot.admin.operationLog.entity.OperationLogQuery;
 
@@ -53,4 +55,28 @@ public interface IOperationLogService extends IService<OperationLog> {
      * @return
      */
     Boolean clear();
+
+    /**
+     * 获取操作数
+     * @param startTime
+     * @param endTime
+     * @return
+     */
+    Long getOperationNumber(Long startTime, Long endTime);
+
+    /**
+     * 获取热点接口列表
+     * @param todayBeginTime
+     * @param limit
+     * @return
+     */
+    List<HotsApiDO> getHotsApi(long todayBeginTime, int limit);
+
+    /**
+     * 获取接口处理时长列表
+     * @param todayBeginTime
+     * @param limit
+     * @return
+     */
+    List<HandlerTimeDO> getHandlerTime(long todayBeginTime, int limit);
 }

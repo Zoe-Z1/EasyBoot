@@ -97,4 +97,9 @@ public class OnlineUserServiceImpl extends ServiceImpl<OnlineUserMapper, OnlineU
         return removeById(id);
     }
 
+    @Override
+    public Long getOnlineNumber() {
+        return count();
+    }
+
 }

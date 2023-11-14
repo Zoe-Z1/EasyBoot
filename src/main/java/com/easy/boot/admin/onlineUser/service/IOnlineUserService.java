@@ -37,4 +37,9 @@ public interface IOnlineUserService extends IService<OnlineUser> {
      */
     Boolean kickoutById(Long id);
 
+    /**
+     * 获取当前在线人数
+     * @return
+     */
+    Long getOnlineNumber();
 }

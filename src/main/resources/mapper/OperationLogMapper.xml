@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.easy.boot.admin.operationLog.mapper.OperationLogMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.easy.boot.admin.operationLog.entity.OperationLog">
+        <id column="id" property="id" />
+        <result column="ip" property="ip" />
+        <result column="request_method" property="requestMethod" />
+        <result column="request_way" property="requestWay" />
+        <result column="request_url" property="requestUrl" />
+        <result column="request_param" property="requestParam" />
+        <result column="operate_module" property="operateModule" />
+        <result column="operate_type" property="operateType" />
+        <result column="operator_type" property="operatorType" />
+        <result column="start_time" property="startTime" />
+        <result column="end_time" property="endTime" />
+        <result column="handle_time" property="handleTime" />
+        <result column="operate_status" property="operateStatus" />
+        <result column="response_param" property="responseParam" />
+        <result column="error_exception" property="errorException" />
+        <result column="create_by" property="createBy" />
+        <result column="create_username" property="createUsername" />
+        <result column="create_time" property="createTime" />
+        <result column="update_by" property="updateBy" />
+        <result column="update_username" property="updateUsername" />
+        <result column="update_time" property="updateTime" />
+        <result column="is_del" property="isDel" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, ip, request_method, request_way, request_url, request_param, operate_module, operate_type, operator_type, start_time, end_time, handle_time, operate_status, response_param, error_exception, create_by, create_username, create_time, update_by, update_username, update_time, is_del
+    </sql>
+
+    <select id="getHotsApi" resultType="com.easy.boot.admin.home.entity.HotsApiDO">
+        SELECT request_url, request_way, COUNT(*) AS count
+        FROM operation_log
+        WHERE create_time &gt;= #{todayBeginTime}
+        GROUP BY request_url, request_way
+        ORDER BY COUNT(*) DESC
+        LIMIT #{limit}
+    </select>
+
+    <select id="getHandlerTime" resultType="com.easy.boot.admin.home.entity.HandlerTimeDO">
+        SELECT request_url, request_way, handle_time
+        FROM operation_log
+        WHERE create_time &gt;= #{todayBeginTime}
+        ORDER BY handle_time DESC
+        LIMIT #{limit}
+    </select>
+</mapper>
