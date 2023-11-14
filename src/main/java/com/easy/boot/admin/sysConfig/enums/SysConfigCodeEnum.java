@@ -15,6 +15,10 @@ public enum SysConfigCodeEnum {
      * RANDOM (随机),SLIDER (滑块验证码),ROTATE (旋转验证码),CONCAT (滑动还原验证码),WORD_IMAGE_CLICK (文字点选验证码)
      */
     CAPTCHA_TYPE("captcha_type", "验证码类型"),
+    /**
+     * IP解析接口地址
+     */
+    IP_PARSE_URL("ip_parse_url", "IP解析接口地址"),
 
 
 

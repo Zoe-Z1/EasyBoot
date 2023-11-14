@@ -5,7 +5,7 @@
       v-drag
       :title="ruleForm.id ? '编辑${remarks!}' : '新增${remarks!}'"
       :visible.sync="dialogVisible"
-      width="30%"
+      width="450px"
       @closed="closedDialog"
     >
       <el-form

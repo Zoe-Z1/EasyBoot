@@ -15,6 +15,10 @@ import com.easy.boot.admin.loginLog.mapper.LoginLogMapper;
 import com.easy.boot.admin.loginLog.service.ILoginLogService;
 import com.easy.boot.admin.onlineUser.entity.OnlineUser;
 import com.easy.boot.admin.onlineUser.service.IOnlineUserService;
+import com.easy.boot.admin.sysConfig.entity.SysConfig;
+import com.easy.boot.admin.sysConfig.enums.SysConfigCodeEnum;
+import com.easy.boot.admin.sysConfigDomain.enums.SysConfigDomainCodeEnum;
+import com.easy.boot.admin.sysConfigDomain.service.ISysConfigDomainService;
 import com.easy.boot.common.base.BaseEntity;
 import com.easy.boot.utils.BeanUtil;
 import com.easy.boot.utils.JsonUtil;
@@ -38,6 +42,9 @@ public class LoginLogServiceImpl extends ServiceImpl<LoginLogMapper, LoginLog> i
 
     @Resource
     private IOnlineUserService onlineUserService;
+
+    @Resource
+    private ISysConfigDomainService sysConfigDomainService;
 
     @Resource
     private LoginLogMapper loginLogMapper;
@@ -85,7 +92,11 @@ public class LoginLogServiceImpl extends ServiceImpl<LoginLogMapper, LoginLog> i
         Map<String, Object> map = new HashMap<>();
         map.put("json", true);
         map.put("ip", ip);
-        String url = "https://whois.pconline.com.cn/ipJson.jsp";
+//        String url = "https://whois.pconline.com.cn/ipJson.jsp";
+        SysConfig sysConfig = sysConfigDomainService.getNotDisabledByDomainCodeAndConfigCode(
+                SysConfigDomainCodeEnum.GLOBAL.getCode(), SysConfigCodeEnum.IP_PARSE_URL.getCode()
+                );
+        String url = sysConfig.getValue();
         String result = HttpUtil.get(url, map);
         if (StrUtil.isEmpty(result)) {
             return log;
