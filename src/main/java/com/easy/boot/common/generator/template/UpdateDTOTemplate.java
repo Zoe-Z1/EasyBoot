@@ -184,6 +184,7 @@ public class UpdateDTOTemplate extends AbstractTemplate {
             columns.removeIf(item -> !includeFields.contains(item.getJavaName()));
         } else {
             columns.removeIf(item -> filter.getExcludeField().contains(item.getJavaName()) && !getIncludeField().contains(item.getJavaName()));
+            columns.removeIf(item -> item.getIsForm() == 1);
             Class<?> clazz = getSuperClass();
             if (getEnableExcludeSuperField() && clazz != null) {
                 java.lang.reflect.Field[] superFields = clazz.getDeclaredFields();

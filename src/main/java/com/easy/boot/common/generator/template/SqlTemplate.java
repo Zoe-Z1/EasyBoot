@@ -176,7 +176,7 @@ public class SqlTemplate extends AbstractTemplate {
                     continue;
                 }
                 Long domainId = IdWorker.getId();
-                // 解析注释，仅支持 #A：xxx，B：XXX 格式
+                // 解析注释，仅支持 #A：xxx，B：xxx 格式
                 String dictStr = column.getColumnRemarks().substring(index + 1);
                 dictStr = dictStr.replaceAll("，", ",");
                 dictStr = dictStr.replaceAll("：", ":");

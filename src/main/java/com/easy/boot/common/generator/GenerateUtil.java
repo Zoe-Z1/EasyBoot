@@ -13,7 +13,7 @@ public class GenerateUtil {
      * @return
      */
     public static boolean isParseDomainCode(String remarks) {
-        // 解析注释，仅支持 #A：xxx，B：XXX 格式
+        // 解析注释，仅支持 #A：xxx，B：xxx 格式
         int index = remarks.indexOf("#");
         if (index < 0) {
             return false;

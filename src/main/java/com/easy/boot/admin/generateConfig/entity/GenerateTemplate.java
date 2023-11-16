@@ -41,7 +41,7 @@ public class GenerateTemplate {
     private Template createDTO;
 
     @ApiModelProperty("UpdateDTO")
-    private Template updateDTO;
+    private UpdateDTO updateDTO;
 
     @ApiModelProperty("Query")
     private Template query;
@@ -70,7 +70,7 @@ public class GenerateTemplate {
                 .xml(new Template())
                 .entity(new Template())
                 .createDTO(new Template())
-                .updateDTO(new Template())
+                .updateDTO(new UpdateDTO())
                 .query(new Template())
                 .vo(new Template())
                 .sql(new Sql())

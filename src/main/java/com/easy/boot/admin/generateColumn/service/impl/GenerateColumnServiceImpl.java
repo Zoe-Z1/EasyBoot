@@ -26,7 +26,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import javax.sql.DataSource;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -53,17 +54,21 @@ public class GenerateColumnServiceImpl extends ServiceImpl<GenerateColumnMapper,
                 .eq(GenerateColumn::getTableName, query.getTableName())
                 .list();
         if (CollUtil.isEmpty(list)) {
-            GenerateConfigQuery generateConfigQuery = new GenerateConfigQuery(query.getTableName());
-            GenerateConfigVO tableConfig = generateConfigService.getTableConfig(generateConfigQuery);
             FilterConfig filterConfig = new FilterConfig();
             list = DbManager.init(dataSource, filterConfig, ColumnConvertHandler.defaultHandler())
                     .getGenerateColumns(query);
+            GenerateConfigQuery generateConfigQuery = new GenerateConfigQuery(query.getTableName());
+            GenerateConfigVO tableConfig = generateConfigService.getTableConfig(generateConfigQuery);
             // 创建时间特化，默认给定一个日期时间选择框
             String createTime = "createTime";
             list.forEach(item -> {
                 if (createTime.equals(item.getJavaName())) {
                     item.setOptElement(OptElementEnum.DATETIMEPICKER.getValue());
                 }
+                if (tableConfig.getEnableImport() == 1 && tableConfig.getEnableExport() == 1) {
+                    item.setIsExcel(1);
+                }
+                item.setIsRequired(item.getNullable());
             });
         }
         List<String> domainCodes = list.stream()

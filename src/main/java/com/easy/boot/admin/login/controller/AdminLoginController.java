@@ -11,6 +11,7 @@ import com.easy.boot.admin.operationLog.enums.OperateTypeEnum;
 import com.easy.boot.admin.user.entity.AdminUser;
 import com.easy.boot.common.base.Result;
 import com.easy.boot.common.log.EasyLog;
+import com.easy.boot.common.noRepeatSubmit.EasyNoRepeatSubmit;
 import com.easy.boot.common.saToken.UserContext;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.annotations.Api;
@@ -67,6 +68,7 @@ public class AdminLoginController {
         return Result.success(adminLoginService.getCode());
     }
 
+    @EasyNoRepeatSubmit
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "校验验证码")
     @EasyLog(module = "校验验证码", operateType = OperateTypeEnum.OTHER)

@@ -156,7 +156,8 @@ public class GeneratorExecute {
                                 )
                                 .updateDTO(
                                         UpdateDTOTemplate.builder()
-                                                .enableExtendsCreateDTO(false)
+                                                .includeField(CollUtil.newHashSet("id"))
+                                                .enableExtendsCreateDTO(generateTemplate.getUpdateDTO().getEnableExtendsCreateDTO())
                                                 .enable(generateTemplate.getUpdateDTO().getEnable())
                                                 .build()
                                 )

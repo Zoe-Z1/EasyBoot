@@ -15,6 +15,7 @@ import com.easy.boot.admin.loginLog.mapper.LoginLogMapper;
 import com.easy.boot.admin.loginLog.service.ILoginLogService;
 import com.easy.boot.admin.onlineUser.entity.OnlineUser;
 import com.easy.boot.admin.onlineUser.service.IOnlineUserService;
+import com.easy.boot.admin.operationLog.enums.OperateStatusEnum;
 import com.easy.boot.admin.sysConfig.entity.SysConfig;
 import com.easy.boot.admin.sysConfig.enums.SysConfigCodeEnum;
 import com.easy.boot.admin.sysConfigDomain.enums.SysConfigDomainCodeEnum;
@@ -134,6 +135,7 @@ public class LoginLogServiceImpl extends ServiceImpl<LoginLogMapper, LoginLog> i
         return lambdaQuery()
                 .ge(startTime != null, BaseEntity::getCreateTime, startTime)
                 .le(endTime != null, BaseEntity::getCreateTime, endTime)
+                .eq(LoginLog::getStatus, String.valueOf(OperateStatusEnum.SUCCESS))
                 .count();
     }
 

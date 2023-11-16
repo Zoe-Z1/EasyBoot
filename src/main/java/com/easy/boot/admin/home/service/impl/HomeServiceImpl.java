@@ -7,6 +7,7 @@ import com.easy.boot.admin.home.service.HomeService;
 import com.easy.boot.admin.loginLog.service.ILoginLogService;
 import com.easy.boot.admin.onlineUser.service.IOnlineUserService;
 import com.easy.boot.admin.operationLog.service.IOperationLogService;
+import com.easy.boot.utils.Constant;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -63,7 +64,7 @@ public class HomeServiceImpl implements HomeService {
             if (end.getTime() > date.getTime()) {
                 break;
             }
-            String dateStr = DateUtil.format(end, "HH:mm");
+            String dateStr = DateUtil.format(end, Constant.DATA_PARENT_HH_MM);
             long loginNumber = loginLogService.getLoginNumber(begin.getTime(), end.getTime());
             long ipNumber = loginLogService.getIpNumber(begin.getTime(), end.getTime());
             long operationNumber = operationLogService.getOperationNumber(begin.getTime(), end.getTime());

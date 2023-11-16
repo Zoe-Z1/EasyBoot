@@ -159,6 +159,7 @@ public class CreateDTOTemplate extends AbstractTemplate {
         // 不要直接获取处理，会导致其他地方没有数据
         List<GenerateColumn> columns = JsonUtil.copyList(metaTable.getColumns(), GenerateColumn.class);
         columns.removeIf(item -> filter.getExcludeField().contains(item.getJavaName()) && !getIncludeField().contains(item.getJavaName()));
+        columns.removeIf(item -> item.getIsForm() == 1);
         Class<?> clazz = getSuperClass();
         if (getEnableExcludeSuperField() && clazz != null) {
             java.lang.reflect.Field[] superFields = clazz.getDeclaredFields();

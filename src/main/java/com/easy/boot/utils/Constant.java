@@ -13,4 +13,8 @@ public class Constant {
      * admin角色编码
      */
     public static final String ADMIN = "admin";
+    /**
+     * 时间格式话规则
+     */
+    public static final String DATA_PARENT_HH_MM = "HH:mm";
 }
