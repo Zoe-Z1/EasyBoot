@@ -19,7 +19,7 @@ target/
 *.iml
 *.ipr
 /target
-/src/main/resources/application-prod.yml
+**/resources/application-prod.yml
 /script/Dockerfile
 
 ### NetBeans ###
