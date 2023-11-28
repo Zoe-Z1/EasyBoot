@@ -23,11 +23,11 @@ import com.easy.boot.admin.sysConfigDomain.service.ISysConfigDomainService;
 import com.easy.boot.common.base.BaseEntity;
 import com.easy.boot.utils.BeanUtil;
 import com.easy.boot.utils.JsonUtil;
+import jakarta.annotation.Resource;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
-import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

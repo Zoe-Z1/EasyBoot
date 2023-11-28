@@ -14,13 +14,12 @@ import com.easy.boot.common.log.EasyLog;
 import com.easy.boot.common.noRepeatSubmit.EasyNoRepeatSubmit;
 import com.easy.boot.common.saToken.UserContext;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import javax.annotation.Resource;
 
 /**
  * @author zoe
@@ -28,7 +27,7 @@ import javax.annotation.Resource;
  * @description
  */
 @Slf4j
-@Api(tags = "登录接口")
+@Tag(name = "登录接口")
 @Validated
 @RestController
 @RequestMapping("/admin")
@@ -39,7 +38,7 @@ public class AdminLoginController {
 
 
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "登录")
+    @Operation(summary = "登录")
     @EasyLog(module = "登录", operateType = OperateTypeEnum.LOGIN)
     @PostMapping(value = "/login")
     public Result<TokenVO> login(@Validated @RequestBody LoginDTO dto) {
@@ -52,7 +51,7 @@ public class AdminLoginController {
     }
 
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "注销登录")
+    @Operation(summary = "注销登录")
     @EasyLog(module = "注销登录", operateType = OperateTypeEnum.LOGOUT)
     @PostMapping(value = "/logout")
     public Result logout() {
@@ -60,8 +59,9 @@ public class AdminLoginController {
         return Result.success();
     }
 
+    //todo 方法可能不兼容
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "获取验证码")
+    @Operation(summary = "获取验证码")
     @EasyLog(module = "获取验证码", operateType = OperateTypeEnum.SELECT)
     @GetMapping(value = "/code")
     public Result<CaptchaResponse<ImageCaptchaVO>> code() {
@@ -70,7 +70,7 @@ public class AdminLoginController {
 
     @EasyNoRepeatSubmit
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "校验验证码")
+    @Operation(summary = "校验验证码")
     @EasyLog(module = "校验验证码", operateType = OperateTypeEnum.OTHER)
     @PostMapping(value = "/validate/code/{id}")
     public Result<CaptchaResponse<ImageCaptchaVO>> validateCode(@PathVariable String id, @RequestBody ImageCaptchaTrack track) {

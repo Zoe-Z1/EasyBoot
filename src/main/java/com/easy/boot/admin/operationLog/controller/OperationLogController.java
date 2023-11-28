@@ -14,13 +14,13 @@ import com.easy.boot.common.base.Result;
 import com.easy.boot.common.log.EasyLog;
 import com.easy.boot.common.noRepeatSubmit.EasyNoRepeatSubmit;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
 import java.io.IOException;
 import java.util.List;
 
@@ -30,7 +30,7 @@ import java.util.List;
  * @description 操作日志 前端控制器
  */
 @Slf4j
-@Api(tags = "操作日志接口")
+@Tag(name = "操作日志接口")
 @RestController
 @RequestMapping("/admin/operationLog")
 public class OperationLogController extends BaseController {
@@ -42,7 +42,7 @@ public class OperationLogController extends BaseController {
 
     @SaCheckPermission(value = "log:operation:log:page")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "分页获取操作日志列表")
+    @Operation(summary = "分页获取操作日志列表")
     @EasyLog(module = "分页获取操作日志列表", operateType = OperateTypeEnum.SELECT)
     @GetMapping("/page")
     public Result<IPage<OperationLog>> page(@Validated OperationLogQuery query) {
@@ -51,7 +51,7 @@ public class OperationLogController extends BaseController {
 
     @SaCheckPermission(value = "log:operation:log:detail")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "获取操作日志详情")
+    @Operation(summary = "获取操作日志详情")
     @EasyLog(module = "获取操作日志详情", operateType = OperateTypeEnum.SELECT)
     @GetMapping("/detail/{id}")
     public Result<OperationLog> detail(@PathVariable Long id) {
@@ -60,7 +60,7 @@ public class OperationLogController extends BaseController {
 
     @SaCheckPermission(value = "log:operation:log:del")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "删除操作日志")
+    @Operation(summary = "删除操作日志")
     @EasyLog(module = "删除操作日志", operateType = OperateTypeEnum.DELETE)
     @PostMapping("/delete/{id}")
     public Result delete(@PathVariable Long id) {
@@ -69,7 +69,7 @@ public class OperationLogController extends BaseController {
 
     @SaCheckPermission(value = "log:operation:log:batch:del")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "批量删除操作日志")
+    @Operation(summary = "批量删除操作日志")
     @EasyLog(module = "批量删除操作日志", operateType = OperateTypeEnum.DELETE)
     @PostMapping("/batchDel")
     public Result batchDel(@RequestBody List<Long> ids) {
@@ -78,7 +78,7 @@ public class OperationLogController extends BaseController {
 
     @SaCheckPermission(value = "log:operation:log:clear")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "清空操作日志")
+    @Operation(summary = "清空操作日志")
     @EasyLog(module = "清空操作日志", operateType = OperateTypeEnum.CLEAR)
     @PostMapping("/clear")
     public Result clear() {
@@ -88,7 +88,7 @@ public class OperationLogController extends BaseController {
     @EasyNoRepeatSubmit
     @SaCheckPermission(value = "log:operation:log:export")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "导出操作日志")
+    @Operation(summary = "导出操作日志")
     @EasyLog(module = "导出操作日志", operateType = OperateTypeEnum.EXPORT)
     @PostMapping("/export")
     public void exportExcel(@Validated @RequestBody OperationLogQuery query) throws IOException {

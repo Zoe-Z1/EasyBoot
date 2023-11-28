@@ -14,10 +14,10 @@ import com.easy.boot.admin.operationLog.enums.RoleTypeEnum;
 import com.easy.boot.common.base.BaseEntity;
 import com.easy.boot.common.redis.EasyRedisManager;
 import com.easy.boot.exception.BusinessException;
+import jakarta.annotation.Resource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;

@@ -11,10 +11,10 @@ import com.easy.boot.common.base.BaseEntity;
 import com.easy.boot.common.quartz.EasyJobManager;
 import com.easy.boot.exception.BusinessException;
 import com.easy.boot.utils.BeanUtil;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
 import java.util.List;
 import java.util.Objects;
 

@@ -1,10 +1,10 @@
 package com.easy.boot.common.redis;
 
+import jakarta.annotation.Resource;
 import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 

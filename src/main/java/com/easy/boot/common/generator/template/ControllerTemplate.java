@@ -24,13 +24,13 @@ import com.easy.boot.common.log.EasyLog;
 import com.easy.boot.common.noRepeatSubmit.EasyNoRepeatSubmit;
 import com.easy.boot.utils.BeanUtil;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
+import jakarta.annotation.Resource;
 import lombok.*;
 import org.springframework.util.Assert;
 import org.springframework.validation.annotation.Validated;
 
-import javax.annotation.Resource;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.*;
@@ -213,8 +213,8 @@ public class ControllerTemplate extends AbstractTemplate {
         }
         pkgs.add(EasyNoRepeatSubmit.class.getName());
         pkgs.add(SaCheckPermission.class.getName());
-        pkgs.add(Api.class.getName());
-        pkgs.add(ApiOperation.class.getName());
+        pkgs.add(Tag.class.getName());
+        pkgs.add(Operation.class.getName());
         pkgs.add(ApiOperationSupport.class.getName());
         pkgs.add(Validated.class.getName());
         pkgs.add(Resource.class.getName());

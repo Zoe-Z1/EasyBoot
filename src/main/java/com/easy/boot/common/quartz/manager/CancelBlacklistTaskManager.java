@@ -3,10 +3,9 @@ package com.easy.boot.common.quartz.manager;
 import com.easy.boot.admin.blacklist.service.IBlacklistService;
 import com.easy.boot.admin.scheduledTask.entity.ScheduledTask;
 import com.easy.boot.common.quartz.EasyJobTaskInterface;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-
-import javax.annotation.Resource;
 
 /**
  * @author zoe

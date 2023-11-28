@@ -1,7 +1,7 @@
 package com.easy.boot.admin.doc.entity;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,7 +13,7 @@ import lombok.experimental.SuperBuilder;
  * @date 2023/7/21
  * @description
  */
-@ApiModel("文档视图实体")
+@Schema(title = "文档视图实体")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -21,10 +21,10 @@ import lombok.experimental.SuperBuilder;
 @ToString(callSuper = true)
 public class DocVO {
 
-    @ApiModelProperty("是否开启")
+    @Schema(title = "是否开启")
     private Boolean enable;
 
-    @ApiModelProperty("文档地址")
+    @Schema(title = "文档地址")
     private String url;
 
 }

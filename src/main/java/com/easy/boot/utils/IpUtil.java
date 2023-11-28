@@ -2,10 +2,9 @@ package com.easy.boot.utils;
 
 import cn.hutool.core.net.Ipv4Util;
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.extra.servlet.ServletUtil;
 import lombok.extern.slf4j.Slf4j;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author zoe

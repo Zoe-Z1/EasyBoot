@@ -1,7 +1,7 @@
 package com.easy.boot.common.generator.config;
 
 import com.easy.boot.exception.GeneratorException;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
@@ -18,19 +18,19 @@ import lombok.Setter;
 @Builder
 public class GeneratorConfig {
 
-    @ApiModelProperty(value = "全局参数配置")
+    @Schema(title = "全局参数配置")
     private GlobalConfig global;
 
-    @ApiModelProperty(value = "数据库参数配置")
+    @Schema(title = "数据库参数配置")
     private DataSourceConfig dataSource;
 
-    @ApiModelProperty(value = "注解参数配置")
+    @Schema(title = "注解参数配置")
     private AnnotationConfig annotation;
 
-    @ApiModelProperty(value = "模板配置")
+    @Schema(title = "模板配置")
     private TemplateConfig template;
 
-    @ApiModelProperty(value = "过滤配置")
+    @Schema(title = "过滤配置")
     private FilterConfig filter;
 
     public GlobalConfig getGlobalConfig() {

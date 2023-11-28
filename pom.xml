@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.7.17</version>
+        <version>3.2.0</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.easy.boot</groupId>
@@ -18,22 +18,23 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
-        <java.version>1.8</java.version>
-        <spring-boot-starter.version>2.7.17</spring-boot-starter.version>
-        <spring-boot-starter-web.version>2.7.17</spring-boot-starter-web.version>
-        <spring-boot-starter-aop.version>2.7.17</spring-boot-starter-aop.version>
-        <spring-boot-quartz.version>2.7.17</spring-boot-quartz.version>
-        <spring-boot-starter-freemarker.version>2.7.17</spring-boot-starter-freemarker.version>
-        <spring-boot-starter-data-redis.version>2.7.17</spring-boot-starter-data-redis.version>
-        <spring-boot-configuration-processor.version>2.7.17</spring-boot-configuration-processor.version>
-        <spring-boot-configuration-devtools.version>2.7.18</spring-boot-configuration-devtools.version>
-        <spring-boot-maven-plugin.version>2.7.18</spring-boot-maven-plugin.version>
-        <spring-boot-starter-test.version>2.7.17</spring-boot-starter-test.version>
+        <java.version>17</java.version>
+        <spring-boot-starter.version>3.2.0</spring-boot-starter.version>
+        <spring-boot-starter-web.version>3.2.0</spring-boot-starter-web.version>
+        <spring-boot-starter-aop.version>3.2.0</spring-boot-starter-aop.version>
+        <spring-boot-quartz.version>3.2.0</spring-boot-quartz.version>
+        <spring-boot-starter-freemarker.version>3.2.0</spring-boot-starter-freemarker.version>
+        <spring-boot-starter-data-redis.version>3.2.0</spring-boot-starter-data-redis.version>
+        <spring-boot-configuration-processor.version>3.2.0</spring-boot-configuration-processor.version>
+        <spring-boot-configuration-devtools.version>3.2.0</spring-boot-configuration-devtools.version>
+        <spring-boot-maven-plugin.version>3.2.0</spring-boot-maven-plugin.version>
+        <spring-boot-starter-test.version>3.2.0</spring-boot-starter-test.version>
         <lombok.version>1.18.30</lombok.version>
         <hutool.version>5.8.23</hutool.version>
         <mybatis-plus.version>3.5.4.1</mybatis-plus.version>
+        <mybatis-spring.version>3.0.3</mybatis-spring.version>
         <mysql.version>8.0.33</mysql.version>
-        <validator.version>6.2.5.Final</validator.version>
+        <validator.version>8.0.1.Final</validator.version>
         <knife4j.version>4.3.0</knife4j.version>
         <sa-token.version>1.37.0</sa-token.version>
         <commons-pool2.version>2.12.0</commons-pool2.version>
@@ -111,7 +112,7 @@
         <!--knife4j 基于swagger开发的接口文档ui-->
         <dependency>
             <groupId>com.github.xiaoymin</groupId>
-            <artifactId>knife4j-openapi2-spring-boot-starter</artifactId>
+            <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
             <version>${knife4j.version}</version>
         </dependency>
         <!-- Sa-Token 权限认证，在线文档：https://sa-token.cc -->
@@ -176,6 +177,19 @@
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-boot-starter</artifactId>
             <version>${mybatis-plus.version}</version>
+            <!--依赖的版本启动出错，排除使用最新版本-->
+            <exclusions>
+                <exclusion>
+                    <groupId>org.mybatis</groupId>
+                    <artifactId>mybatis-spring</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <!--mybatis-->
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis-spring</artifactId>
+            <version>${mybatis-spring.version}</version>
         </dependency>
         <!--aop切面-->
         <dependency>

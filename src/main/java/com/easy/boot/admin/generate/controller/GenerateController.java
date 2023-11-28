@@ -17,13 +17,13 @@ import com.easy.boot.exception.GeneratorException;
 import com.easy.boot.utils.FileUtil;
 import com.easy.boot.utils.JsonUtil;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +33,7 @@ import java.util.List;
  * @description
  */
 @Slf4j
-@Api(tags = "代码生成接口")
+@Tag(name = "代码生成接口")
 @Validated
 @RestController
 @RequestMapping("/admin/generate")
@@ -45,7 +45,7 @@ public class GenerateController extends BaseController {
 
     @SaCheckPermission(value = "dev:gen:page")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "分页获取代码生成Table列表")
+    @Operation(summary = "分页获取代码生成Table列表")
     @EasyLog(module = "分页获取代码生成Table列表", operateType = OperateTypeEnum.SELECT)
     @GetMapping(value = "/page")
     public Result<Page<DatabaseTable>> page(@Validated GenerateTableQuery query) {
@@ -54,7 +54,7 @@ public class GenerateController extends BaseController {
 
     @SaCheckPermission(value = "dev:gen:batch:del")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "批量重置代码生成配置")
+    @Operation(summary = "批量重置代码生成配置")
     @EasyLog(module = "批量重置代码生成配置", operateType = OperateTypeEnum.DELETE)
     @PostMapping("/batchDel")
     public Result batchDel(@RequestBody List<String> tableNames) {
@@ -64,7 +64,7 @@ public class GenerateController extends BaseController {
 
     @SaCheckPermission(value = "dev:gen:preview")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "代码生成预览")
+    @Operation(summary = "代码生成预览")
     @EasyLog(module = "代码生成预览", operateType = OperateTypeEnum.SELECT)
     @PostMapping(value = "/preview/{tableName}")
     public Result<List<GeneratePreviewVO>> preview(@PathVariable String tableName) throws Exception {
@@ -75,7 +75,7 @@ public class GenerateController extends BaseController {
     @EasyNoRepeatSubmit
     @SaCheckPermission(value = "dev:gen:batch:code")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "批量生成代码")
+    @Operation(summary = "批量生成代码")
     @EasyLog(module = "批量生成代码", operateType = OperateTypeEnum.GENERATE)
     @PostMapping(value = "/batch/code")
     public void batchGenerateCode(@RequestBody List<String> tableNames) throws Exception {

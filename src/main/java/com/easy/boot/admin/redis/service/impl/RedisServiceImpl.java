@@ -5,10 +5,10 @@ import cn.hutool.core.date.DateUtil;
 import com.easy.boot.admin.redis.entity.RedisVO;
 import com.easy.boot.admin.redis.service.RedisService;
 import com.easy.boot.common.redis.EasyRedisManager;
+import jakarta.annotation.Resource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.util.Properties;
 
 /**
@@ -22,7 +22,7 @@ public class RedisServiceImpl implements RedisService {
     @Resource
     private EasyRedisManager redisManager;
 
-    @Value("${spring.redis.database}")
+    @Value("${spring.data.redis.database}")
     private Integer database;
 
     @Override

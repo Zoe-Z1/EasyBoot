@@ -1,7 +1,7 @@
 package com.easy.boot.common.excel.entity;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import lombok.Builder;
 import lombok.Data;
 
@@ -12,15 +12,15 @@ import lombok.Data;
  */
 @Data
 @Builder
-@ApiModel(value = "Excel导入返回对象", description = "Excel导入返回对象")
+@Schema(title = "Excel导入返回对象", description = "Excel导入返回对象")
 public class ImportVO {
 
-    @ApiModelProperty(value = "导入条数")
+    @Schema(title = "导入条数")
     private Integer count;
 
-    @ApiModelProperty(value = "错误条数")
+    @Schema(title = "错误条数")
     private Integer errorCount;
 
-    @ApiModelProperty(value = "错误文件Base64")
+    @Schema(title = "错误文件Base64")
     private String errorBase64;
 }

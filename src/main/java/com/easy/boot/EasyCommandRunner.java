@@ -2,11 +2,10 @@ package com.easy.boot;
 
 import com.easy.boot.common.redis.EasyRedisManager;
 import com.easy.boot.common.redis.RedisKeyConstant;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
-
-import javax.annotation.Resource;
 
 /**
  * @author zoe

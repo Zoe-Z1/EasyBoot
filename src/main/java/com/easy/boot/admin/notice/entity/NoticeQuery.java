@@ -1,8 +1,8 @@
 package com.easy.boot.admin.notice.entity;
 
 import com.easy.boot.common.base.BasePageQuery;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.validator.constraints.Range;
@@ -13,7 +13,7 @@ import org.hibernate.validator.constraints.Range;
  * @date 2023/10/22
  * @description 公告查询实体
  */
-@ApiModel(value = "公告查询实体")
+@Schema(title = "公告查询实体")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -22,13 +22,13 @@ import org.hibernate.validator.constraints.Range;
 @EqualsAndHashCode(callSuper = true)
 public class NoticeQuery extends BasePageQuery {
 
-    @ApiModelProperty("公告状态 #1：正常，2：禁用")
+    @Schema(title = "公告状态 #1：正常，2：禁用")
     private Integer status;
 
-    @ApiModelProperty("开始时间")
+    @Schema(title = "开始时间")
     private Long startTime;
 
-    @ApiModelProperty("结束时间")
+    @Schema(title = "结束时间")
     private Long endTime;
 
 }

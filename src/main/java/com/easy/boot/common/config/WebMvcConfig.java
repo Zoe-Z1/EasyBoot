@@ -1,11 +1,10 @@
 package com.easy.boot.common.config;
 
 import com.easy.boot.common.properties.EasyFile;
+import jakarta.annotation.Resource;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-
-import javax.annotation.Resource;
 
 /**
  * @author zoe

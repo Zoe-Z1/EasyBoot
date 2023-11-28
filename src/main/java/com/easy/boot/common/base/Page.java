@@ -1,6 +1,7 @@
 package com.easy.boot.common.base;
 
-import io.swagger.annotations.ApiModelProperty;
+
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,15 +22,15 @@ import java.util.List;
 @SuperBuilder
 public class Page<T> {
 
-    @ApiModelProperty("当前页码数")
+    @Schema(title = "当前页码数")
     private Long current;
 
-    @ApiModelProperty("每页条数")
+    @Schema(title = "每页条数")
     private Long size;
 
-    @ApiModelProperty("总条数")
+    @Schema(title = "总条数")
     private Long total;
 
-    @ApiModelProperty("分页数据")
+    @Schema(title = "分页数据")
     private List<T> records;
 }

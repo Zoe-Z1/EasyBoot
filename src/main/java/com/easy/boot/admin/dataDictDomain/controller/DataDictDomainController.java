@@ -21,14 +21,14 @@ import com.easy.boot.common.excel.handler.ExportExcelSelectCellWriteHandler;
 import com.easy.boot.common.log.EasyLog;
 import com.easy.boot.common.noRepeatSubmit.EasyNoRepeatSubmit;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.Assert;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -42,7 +42,7 @@ import java.util.List;
  * @description 数据字典域 前端控制器
  */
 @Slf4j
-@Api(tags = "数据字典域接口")
+@Tag(name = "数据字典域接口")
 @RestController
 @RequestMapping("/admin/dataDictDomain")
 public class DataDictDomainController extends BaseController {
@@ -53,7 +53,7 @@ public class DataDictDomainController extends BaseController {
 
     @SaCheckPermission(value = "system:data:dict:domain:page")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "分页获取数据字典域列表")
+    @Operation(summary = "分页获取数据字典域列表")
     @EasyLog(module = "分页获取数据字典域列表", operateType = OperateTypeEnum.SELECT)
     @GetMapping("/page")
     public Result<IPage<DataDictDomain>> page(@Validated DataDictDomainQuery query) {
@@ -62,7 +62,7 @@ public class DataDictDomainController extends BaseController {
 
     @SaCheckPermission(value = "system:data:dict:domain:detail")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "获取数据字典域详情")
+    @Operation(summary = "获取数据字典域详情")
     @EasyLog(module = "获取数据字典域详情", operateType = OperateTypeEnum.SELECT)
     @GetMapping("/detail/{id}")
     public Result<DataDictDomain> detail(@PathVariable Long id) {
@@ -72,7 +72,7 @@ public class DataDictDomainController extends BaseController {
     @EasyNoRepeatSubmit
     @SaCheckPermission(value = "system:data:dict:domain:create")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "创建数据字典域")
+    @Operation(summary = "创建数据字典域")
     @EasyLog(module = "创建数据字典域", operateType = OperateTypeEnum.CREATE)
     @PostMapping(value = "/create")
     public Result create(@Validated @RequestBody DataDictDomainCreateDTO dto) {
@@ -81,7 +81,7 @@ public class DataDictDomainController extends BaseController {
 
     @SaCheckPermission(value = "system:data:dict:domain:update")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "编辑数据字典域")
+    @Operation(summary = "编辑数据字典域")
     @EasyLog(module = "编辑数据字典域", operateType = OperateTypeEnum.UPDATE)
     @PostMapping(value = "/update")
     public Result update(@Validated @RequestBody DataDictDomainUpdateDTO dto) {
@@ -90,7 +90,7 @@ public class DataDictDomainController extends BaseController {
 
     @SaCheckPermission(value = "system:data:dict:domain:del")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "删除数据字典域")
+    @Operation(summary = "删除数据字典域")
     @EasyLog(module = "删除数据字典域", operateType = OperateTypeEnum.DELETE)
     @PostMapping("/delete/{id}")
     public Result delete(@PathVariable Long id) {
@@ -99,7 +99,7 @@ public class DataDictDomainController extends BaseController {
 
     @SaCheckPermission(value = "system:data:dict:domain:batch:del")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "批量删除数据字典域")
+    @Operation(summary = "批量删除数据字典域")
     @EasyLog(module = "批量删除数据字典域", operateType = OperateTypeEnum.DELETE)
     @PostMapping("/batchDel")
     public Result batchDel(@RequestBody List<Long> ids) {
@@ -108,7 +108,7 @@ public class DataDictDomainController extends BaseController {
 
     @SaCheckPermission(value = "system:data:dict:domain:import")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "导入数据字典域")
+    @Operation(summary = "导入数据字典域")
     @EasyLog(module = "导入数据字典域", operateType = OperateTypeEnum.IMPORT)
     @PostMapping("/import")
     public Result<ImportVO> importExcel(UploadDTO dto) throws IOException {
@@ -143,7 +143,7 @@ public class DataDictDomainController extends BaseController {
     @EasyNoRepeatSubmit
     @SaCheckPermission(value = "system:data:dict:domain:export")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "导出数据字典域")
+    @Operation(summary = "导出数据字典域")
     @EasyLog(module = "导出数据字典域", operateType = OperateTypeEnum.EXPORT)
     @PostMapping("/export")
     public void exportExcel(@Validated @RequestBody DataDictDomainQuery query) throws IOException {
@@ -166,7 +166,7 @@ public class DataDictDomainController extends BaseController {
     @EasyNoRepeatSubmit
     @SaCheckPermission(value = "system:data:dict:domain:download")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "下载数据字典域导入模板")
+    @Operation(summary = "下载数据字典域导入模板")
     @EasyLog(module = "下载数据字典域导入模板", operateType = OperateTypeEnum.EXPORT)
     @PostMapping("/download")
     public void downloadTemplate() throws IOException {

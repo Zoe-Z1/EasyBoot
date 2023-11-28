@@ -9,23 +9,24 @@ spring:
     username: root
     password: zz123456
     driver-class-name: com.mysql.cj.jdbc.Driver
-  redis:
-    # redis连接地址
-    host: 127.0.0.1
-    # 使用的db数据库
-    database: 0
-    # redis端口号
-    port: 6379
-    # redis密码
-    password:
-    #Redis连接的超时时间
-    timeout: 1000ms
-    # 连接池配置
-    lettuce:
-      pool:
-        max-idle: 16
-        max-active: 32
-        min-idle: 8
+  data:
+    redis:
+      # redis连接地址
+      host: 127.0.0.1
+      # 使用的db数据库
+      database: 0
+      # redis端口号
+      port: 6379
+      # redis密码
+      password:
+      #Redis连接的超时时间
+      timeout: 1000ms
+      # 连接池配置
+      lettuce:
+        pool:
+          max-idle: 16
+          max-active: 32
+          min-idle: 8
 
 
 logging:

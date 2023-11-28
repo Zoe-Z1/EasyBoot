@@ -6,13 +6,12 @@ import com.easy.boot.admin.blacklist.entity.Blacklist;
 import com.easy.boot.admin.blacklist.service.IBlacklistService;
 import com.easy.boot.admin.login.service.CheckLoginHandler;
 import com.easy.boot.admin.onlineUser.service.IOnlineUserService;
-import com.easy.boot.admin.user.entity.AdminUser;
 import com.easy.boot.common.saToken.UserContext;
 import com.easy.boot.exception.BusinessException;
 import com.easy.boot.exception.enums.SystemErrorEnum;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.util.Objects;
 
 /**

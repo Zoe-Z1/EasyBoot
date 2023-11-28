@@ -1,11 +1,11 @@
 package com.easy.boot.admin.notice.entity;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 
 /**
@@ -13,7 +13,7 @@ import javax.validation.constraints.NotNull;
  * @date 2023/10/22
  * @description 公告编辑实体
  */
-@ApiModel(value = "公告编辑实体")
+@Schema(title = "公告编辑实体")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -22,7 +22,7 @@ import javax.validation.constraints.NotNull;
 @EqualsAndHashCode(callSuper = true)
 public class NoticeUpdateDTO extends NoticeCreateDTO {
 
-    @ApiModelProperty("id")
+    @Schema(title = "id")
     @NotNull(message = "ID不能为空")
     private Long id;
 

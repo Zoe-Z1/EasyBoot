@@ -2,8 +2,8 @@ package com.easy.boot.admin.user.entity;
 
 import com.easy.boot.common.Jackson.ToStringListSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -15,7 +15,7 @@ import java.util.List;
  * @description
  */
 @EqualsAndHashCode(callSuper = true)
-@ApiModel("用户视图实体")
+@Schema(title = "用户视图实体")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -23,15 +23,15 @@ import java.util.List;
 @ToString(callSuper = true)
 public class AdminUserVO extends AdminUser {
 
-    @ApiModelProperty("是否超级管理员")
+    @Schema(title = "是否超级管理员")
     private Boolean isAdmin;
 
     @JsonSerialize(using = ToStringListSerializer.class)
-    @ApiModelProperty("角色ID集合")
+    @Schema(title = "角色ID集合")
     private List<Long> roleIds;
 
     @JsonSerialize(using = ToStringListSerializer.class)
-    @ApiModelProperty("岗位ID集合")
+    @Schema(title = "岗位ID集合")
     private List<Long> postIds;
 
 }

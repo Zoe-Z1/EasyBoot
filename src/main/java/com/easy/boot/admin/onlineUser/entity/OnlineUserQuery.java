@@ -1,8 +1,8 @@
 package com.easy.boot.admin.onlineUser.entity;
 
 import com.easy.boot.common.base.BasePageQuery;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -19,24 +19,24 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel("在线用户查询对象")
+@Schema(title = "在线用户查询对象")
 public class OnlineUserQuery extends BasePageQuery {
 
-    @ApiModelProperty("登录浏览器")
+    @Schema(title = "登录浏览器")
     private String browser;
 
-    @ApiModelProperty("操作系统")
+    @Schema(title = "操作系统")
     private String os;
 
-    @ApiModelProperty("登录状态 SUCCESS：成功 FAIL：失败")
+    @Schema(title = "登录状态 SUCCESS：成功 FAIL：失败")
     private String status;
 
-    @ApiModelProperty("在线状态 # 0：在线 1：不在线")
+    @Schema(title = "在线状态 # 0：在线 1：不在线")
     private Integer isOnline;
 
-    @ApiModelProperty("开始时间")
+    @Schema(title = "开始时间")
     private Long startTime;
 
-    @ApiModelProperty("结束时间")
+    @Schema(title = "结束时间")
     private Long endTime;
 }

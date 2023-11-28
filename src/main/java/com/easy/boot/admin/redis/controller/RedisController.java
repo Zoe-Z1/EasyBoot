@@ -7,14 +7,13 @@ import com.easy.boot.admin.redis.service.RedisService;
 import com.easy.boot.common.base.Result;
 import com.easy.boot.common.log.EasyLog;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.annotation.Resource;
 
 /**
  * @author zoe
@@ -22,7 +21,7 @@ import javax.annotation.Resource;
  * @description 服务器监控接口
  */
 @Slf4j
-@Api(tags = "Redis监控接口")
+@Tag(name = "Redis监控接口")
 @RestController
 @RequestMapping("/admin/redis")
 public class RedisController {
@@ -32,7 +31,7 @@ public class RedisController {
 
     @SaCheckPermission(value = "ops:redis:detail")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "获取Redis详情")
+    @Operation(summary = "获取Redis详情")
     @EasyLog(module = "获取缓存详情", operateType = OperateTypeEnum.SELECT)
     @GetMapping("/detail")
     public Result<RedisVO> detail() {

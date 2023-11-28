@@ -10,7 +10,7 @@ import ${pkg};
  * @description ${remarks!}接口
  */
 @Slf4j
-@Api(tags = "${remarks!}接口")
+@Tag(name = "${remarks!}接口")
 @RestController
 @RequestMapping("${global.requestMappingPrefix!}/${table.moduleName}")
 <#if superClass??>
@@ -26,7 +26,7 @@ public class ${className} {
 <#if queryName??>
     @SaCheckPermission(value = "${permission}:page")
     @ApiOperationSupport(author = "${global.author}")
-    @ApiOperation(value = "分页获取${remarks!}列表")
+    @Operation(summary = "分页获取${remarks!}列表")
     <#if annotation.enableLog>
     @EasyLog(module = "分页获取${remarks!}列表", operateType = OperateTypeEnum.SELECT)
     </#if>
@@ -38,7 +38,7 @@ public class ${className} {
 <#else >
     @SaCheckPermission(value = "${permission}:list")
     @ApiOperationSupport(author = "${global.author}")
-    @ApiOperation(value = "获取${remarks!}列表")
+    @Operation(summary = "获取${remarks!}列表")
     <#if annotation.enableLog>
     @EasyLog(module = "获取${remarks!}列表", operateType = OperateTypeEnum.SELECT)
     </#if>
@@ -50,7 +50,7 @@ public class ${className} {
 </#if>
     @SaCheckPermission(value = "${permission}:detail")
     @ApiOperationSupport(author = "${global.author}")
-    @ApiOperation(value = "获取${remarks!}详情")
+    @Operation(summary = "获取${remarks!}详情")
     <#if annotation.enableLog>
     @EasyLog(module = "获取${remarks!}详情", operateType = OperateTypeEnum.SELECT)
     </#if>
@@ -62,7 +62,7 @@ public class ${className} {
     @EasyNoRepeatSubmit
     @SaCheckPermission(value = "${permission}:create")
     @ApiOperationSupport(author = "${global.author}")
-    @ApiOperation(value = "创建${remarks!}")
+    @Operation(summary = "创建${remarks!}")
     @EasyLog(module = "创建${remarks!}", operateType = OperateTypeEnum.CREATE)
     @PostMapping(value = "/create")
     public Result create(@Validated @RequestBody <#if createDTOName??>${createDTOName} dto<#else >${entityName} ${entityCamelName}</#if>) {
@@ -71,7 +71,7 @@ public class ${className} {
 
     @SaCheckPermission(value = "${permission}:update")
     @ApiOperationSupport(author = "${global.author}")
-    @ApiOperation(value = "编辑${remarks!}")
+    @Operation(summary = "编辑${remarks!}")
     @EasyLog(module = "编辑${remarks!}", operateType = OperateTypeEnum.UPDATE)
     @PostMapping(value = "/update")
     public Result update(@Validated @RequestBody <#if updateDTOName??>${updateDTOName} dto<#else >${entityName} ${entityCamelName}</#if>) {
@@ -84,7 +84,7 @@ public class ${className} {
 
     @SaCheckPermission(value = "${permission}:del")
     @ApiOperationSupport(author = "${global.author}")
-    @ApiOperation(value = "删除${remarks!}")
+    @Operation(summary = "删除${remarks!}")
     @EasyLog(module = "删除${remarks!}", operateType = OperateTypeEnum.DELETE)
     @PostMapping("/delete/{id}")
     public Result delete(@PathVariable Long id) {
@@ -93,7 +93,7 @@ public class ${className} {
 
     @SaCheckPermission(value = "${permission}:batch:del")
     @ApiOperationSupport(author = "${global.author}")
-    @ApiOperation(value = "批量删除${remarks!}")
+    @Operation(summary = "批量删除${remarks!}")
     @EasyLog(module = "批量删除${remarks!}", operateType = OperateTypeEnum.DELETE)
     @PostMapping("/batchDel")
     public Result batchDel(@RequestBody List<Long> ids) {
@@ -103,7 +103,7 @@ public class ${className} {
 <#if global.enableImport>
     @SaCheckPermission(value = "${permission}:import")
     @ApiOperationSupport(author = "${global.author}")
-    @ApiOperation(value = "导入${remarks!}")
+    @Operation(summary = "导入${remarks!}")
     @EasyLog(module = "导入${remarks!}", operateType = OperateTypeEnum.IMPORT)
     @PostMapping("/import")
     public Result<${ImportVO}> importExcel(UploadDTO dto) throws IOException {
@@ -141,7 +141,7 @@ public class ${className} {
     @EasyNoRepeatSubmit
     @SaCheckPermission(value = "${permission}:export")
     @ApiOperationSupport(author = "${global.author}")
-    @ApiOperation(value = "导出${remarks!}")
+    @Operation(summary = "导出${remarks!}")
     @EasyLog(module = "导出${remarks!}", operateType = OperateTypeEnum.EXPORT)
     @PostMapping("/export")
     public void exportExcel(@Validated @RequestBody ${entityName}Query query) throws IOException {
@@ -166,7 +166,7 @@ public class ${className} {
     @EasyNoRepeatSubmit
     @SaCheckPermission(value = "${permission}:download")
     @ApiOperationSupport(author = "${global.author}")
-    @ApiOperation(value = "下载${remarks!}导入模板")
+    @Operation(summary = "下载${remarks!}导入模板")
     @EasyLog(module = "下载${remarks!}导入模板", operateType = OperateTypeEnum.EXPORT)
     @PostMapping("/download")
     public void downloadTemplate() throws IOException {

@@ -15,8 +15,8 @@ import com.easy.boot.common.generator.config.FilterConfig;
 import com.easy.boot.common.generator.config.GlobalConfig;
 import com.easy.boot.common.generator.db.MetaTable;
 import com.easy.boot.utils.JsonUtil;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import lombok.*;
 
 import java.util.*;
@@ -207,8 +207,7 @@ public class EntityTemplate extends AbstractTemplate {
         pkgs.add(TableId.class.getName());
         pkgs.add(TableField.class.getName());
         pkgs.add(TableName.class.getName());
-        pkgs.add(ApiModel.class.getName());
-        pkgs.add(ApiModelProperty.class.getName());
+        pkgs.add(Schema.class.getName());
         List<GenerateColumn> columns = (List<GenerateColumn>) buildDataMap.get(GenConstant.DATA_MAP_KEY_COLUMNS);
         pkgs.addAll(columns.stream().map(GenerateColumn::getJavaTypePackageName).collect(Collectors.toSet()));
         pkgs.add("lombok.*");

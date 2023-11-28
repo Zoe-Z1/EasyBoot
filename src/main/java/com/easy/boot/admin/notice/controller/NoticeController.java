@@ -13,13 +13,13 @@ import com.easy.boot.common.base.Result;
 import com.easy.boot.common.log.EasyLog;
 import com.easy.boot.common.noRepeatSubmit.EasyNoRepeatSubmit;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -28,7 +28,7 @@ import java.util.List;
  * @description 公告接口
  */
 @Slf4j
-@Api(tags = "公告接口")
+@Tag(name = "公告接口")
 @RestController
 @RequestMapping("/admin/notice")
 public class NoticeController extends BaseController {
@@ -38,7 +38,7 @@ public class NoticeController extends BaseController {
 
     @SaCheckPermission(value = "system:notice:new")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "获取最新公告")
+    @Operation(summary = "获取最新公告")
     @EasyLog(module = "获取最新公告", operateType = OperateTypeEnum.SELECT)
     @GetMapping("/new")
     public Result<Notice> news() {
@@ -47,7 +47,7 @@ public class NoticeController extends BaseController {
 
     @SaCheckPermission(value = "system:notice:page")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "分页获取公告列表")
+    @Operation(summary = "分页获取公告列表")
     @EasyLog(module = "分页获取公告列表", operateType = OperateTypeEnum.SELECT)
     @GetMapping("/page")
     public Result<IPage<Notice>> page(@Validated NoticeQuery query) {
@@ -57,7 +57,7 @@ public class NoticeController extends BaseController {
     @EasyNoRepeatSubmit
     @SaCheckPermission(value = "system:notice:create")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "创建公告")
+    @Operation(summary = "创建公告")
     @EasyLog(module = "创建公告", operateType = OperateTypeEnum.CREATE)
     @PostMapping(value = "/create")
     public Result create(@Validated @RequestBody NoticeCreateDTO dto) {
@@ -66,7 +66,7 @@ public class NoticeController extends BaseController {
 
     @SaCheckPermission(value = "system:notice:update")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "编辑公告")
+    @Operation(summary = "编辑公告")
     @EasyLog(module = "编辑公告", operateType = OperateTypeEnum.UPDATE)
     @PostMapping(value = "/update")
     public Result update(@Validated @RequestBody NoticeUpdateDTO dto) {
@@ -75,7 +75,7 @@ public class NoticeController extends BaseController {
 
     @SaCheckPermission(value = "system:notice:del")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "删除公告")
+    @Operation(summary = "删除公告")
     @EasyLog(module = "删除公告", operateType = OperateTypeEnum.DELETE)
     @PostMapping("/delete/{id}")
     public Result delete(@PathVariable Long id) {
@@ -84,7 +84,7 @@ public class NoticeController extends BaseController {
 
     @SaCheckPermission(value = "system:notice:batch:del")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "批量删除公告")
+    @Operation(summary = "批量删除公告")
     @EasyLog(module = "批量删除公告", operateType = OperateTypeEnum.DELETE)
     @PostMapping("/batchDel")
     public Result batchDel(@RequestBody List<Long> ids) {

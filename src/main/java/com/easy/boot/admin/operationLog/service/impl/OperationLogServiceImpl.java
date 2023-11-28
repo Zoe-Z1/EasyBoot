@@ -12,10 +12,10 @@ import com.easy.boot.admin.operationLog.entity.OperationLogQuery;
 import com.easy.boot.admin.operationLog.mapper.OperationLogMapper;
 import com.easy.boot.admin.operationLog.service.IOperationLogService;
 import com.easy.boot.common.base.BaseEntity;
+import jakarta.annotation.Resource;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.util.List;
 import java.util.Objects;
 

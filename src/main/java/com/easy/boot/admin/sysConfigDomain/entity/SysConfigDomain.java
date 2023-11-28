@@ -5,8 +5,8 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.easy.boot.common.base.BaseEntity;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -24,39 +24,39 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @AllArgsConstructor
 @TableName("sys_config_domain")
-@ApiModel(value = "SysConfigDomain对象", description = "系统配置域")
+@Schema(title = "SysConfigDomain对象", description = "系统配置域")
 public class SysConfigDomain extends BaseEntity {
 
-    @ApiModelProperty("系统配置域编码")
+    @Schema(title = "系统配置域编码")
     @TableField("code")
     private String code;
 
-    @ApiModelProperty("系统配置域名称")
+    @Schema(title = "系统配置域名称")
     @TableField("name")
     private String name;
 
-    @ApiModelProperty("系统配置域状态 1：正常 2：禁用")
+    @Schema(title = "系统配置域状态 1：正常 2：禁用")
     @TableField("status")
     private Integer status;
 
-    @ApiModelProperty("配置域类型 #1：自定义配置， 2：模板配置")
+    @Schema(title = "配置域类型 #1：自定义配置， 2：模板配置")
     @TableField("type")
     private Integer type;
 
-    @ApiModelProperty("跳转组件路径")
+    @Schema(title = "跳转组件路径")
     @TableField("path")
     private String path;
 
     @JsonSerialize(using = ToStringSerializer.class)
-    @ApiModelProperty("关联模板ID")
+    @Schema(title = "关联模板ID")
     @TableField("template_id")
     private Long templateId;
 
-    @ApiModelProperty("排序")
+    @Schema(title = "排序")
     @TableField("sort")
     private Integer sort;
 
-    @ApiModelProperty("备注")
+    @Schema(title = "备注")
     @TableField("remarks")
     private String remarks;
 }

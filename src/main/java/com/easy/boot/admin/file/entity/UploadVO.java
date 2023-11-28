@@ -1,7 +1,7 @@
 package com.easy.boot.admin.file.entity;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,9 +16,9 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel(value = "UploadVO对象", description = "文件上传返回VO")
+@Schema(title = "UploadVO对象", description = "文件上传返回VO")
 public class UploadVO {
 
-    @ApiModelProperty("访问路径")
+    @Schema(title = "访问路径")
     private String url;
 }

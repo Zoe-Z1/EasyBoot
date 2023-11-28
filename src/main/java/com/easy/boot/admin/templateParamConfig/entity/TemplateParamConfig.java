@@ -5,8 +5,8 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.easy.boot.common.base.BaseEntity;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -17,7 +17,7 @@ import lombok.experimental.SuperBuilder;
  * @description 模板参数配置实体
  */
 @TableName("template_param_config")
-@ApiModel(value = "模板参数配置实体")
+@Schema(title = "模板参数配置实体")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -28,43 +28,43 @@ public class TemplateParamConfig extends BaseEntity {
 
 
     @JsonSerialize(using = ToStringSerializer.class)
-    @ApiModelProperty("模板ID")
+    @Schema(title = "模板ID")
     @TableField("template_id")
     private Long templateId;
 
-    @ApiModelProperty("模板参数键")
+    @Schema(title = "模板参数键")
     @TableField("code")
     private String code;
 
-    @ApiModelProperty("模板参数名称")
+    @Schema(title = "模板参数名称")
     @TableField("name")
     private String name;
 
-    @ApiModelProperty("默认值")
+    @Schema(title = "默认值")
     @TableField("default_value")
     private String defaultValue;
 
-    @ApiModelProperty("是否必填 # 1：必填，2：非必填")
+    @Schema(title = "是否必填 # 1：必填，2：非必填")
     @TableField("required")
     private Integer required;
 
-    @ApiModelProperty("校验描述")
+    @Schema(title = "校验描述")
     @TableField("message")
     private String message;
 
-    @ApiModelProperty("占位符")
+    @Schema(title = "占位符")
     @TableField("placeholder")
     private String placeholder;
 
-    @ApiModelProperty("模板参数状态 #1：正常， 2：禁用")
+    @Schema(title = "模板参数状态 #1：正常， 2：禁用")
     @TableField("status")
     private Integer status;
 
-    @ApiModelProperty("备注")
+    @Schema(title = "备注")
     @TableField("remarks")
     private String remarks;
 
-    @ApiModelProperty("排序")
+    @Schema(title = "排序")
     @TableField("sort")
     private Integer sort;
 }

@@ -7,10 +7,9 @@ import com.easy.boot.admin.login.service.LoginAfterHandler;
 import com.easy.boot.admin.user.entity.AdminUser;
 import com.easy.boot.common.redis.EasyRedisManager;
 import com.easy.boot.common.redis.RedisKeyEnum;
+import jakarta.annotation.Resource;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
-
-import javax.annotation.Resource;
 
 /**
  * @author zoe

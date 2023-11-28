@@ -1,7 +1,7 @@
 package com.easy.boot.admin.roleMenu.entity;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,12 +16,12 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel(value = "RoleMenuQuery对象", description = "角色菜单关联")
+@Schema(title = "RoleMenuQuery对象", description = "角色菜单关联")
 public class RoleMenuQuery {
 
-    @ApiModelProperty("菜单ID")
+    @Schema(title = "菜单ID")
     private Long menuId;
 
-    @ApiModelProperty("角色ID")
+    @Schema(title = "角色ID")
     private Long roleId;
 }

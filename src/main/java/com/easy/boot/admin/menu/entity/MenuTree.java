@@ -1,7 +1,7 @@
 package com.easy.boot.admin.menu.entity;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -20,9 +20,9 @@ import java.util.List;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel(value = "菜单树形数据对象", description = "菜单")
+@Schema(title = "菜单树形数据对象", description = "菜单")
 public class MenuTree extends Menu {
 
-    @ApiModelProperty("子菜单列表")
+    @Schema(title = "子菜单列表")
     private List<MenuTree> children;
 }

@@ -30,13 +30,13 @@ import com.easy.boot.common.redis.RedisKeyEnum;
 import com.easy.boot.common.saToken.UserContext;
 import com.easy.boot.exception.BusinessException;
 import com.easy.boot.utils.IpUtil;
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import java.util.Collections;
 import java.util.List;
 

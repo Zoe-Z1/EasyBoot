@@ -3,8 +3,8 @@ package com.easy.boot.admin.generate.entity;
 import cn.hutool.core.date.DatePattern;
 import com.easy.boot.common.base.BasePageQuery;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -26,28 +26,28 @@ import java.util.Date;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel("数据库Table查询对象")
+@Schema(title = "数据库Table查询对象")
 public class GenerateTableQuery extends BasePageQuery {
 
-    @ApiModelProperty("表名")
+    @Schema(title = "表名")
     private String tableName;
 
-    @ApiModelProperty("表备注")
+    @Schema(title = "表备注")
     private String comment;
 
-    @ApiModelProperty(hidden = true, value = "数据库名")
+    @Schema(hidden = true, title = "数据库名")
     @JsonIgnore
     private String dbName;
 
-    @ApiModelProperty(hidden = true, value = "表类型")
+    @Schema(hidden = true, title = "表类型")
     @JsonIgnore
     private String tableType;
 
     @DateTimeFormat(pattern = DatePattern.NORM_DATETIME_PATTERN)
-    @ApiModelProperty("开始时间")
+    @Schema(title = "开始时间")
     private Date startTime;
 
     @DateTimeFormat(pattern = DatePattern.NORM_DATETIME_PATTERN)
-    @ApiModelProperty("结束时间")
+    @Schema(title = "结束时间")
     private Date endTime;
 }

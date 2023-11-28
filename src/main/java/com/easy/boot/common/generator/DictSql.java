@@ -1,8 +1,8 @@
 package com.easy.boot.common.generator;
 
 import com.easy.boot.admin.dataDict.entity.DataDict;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -21,21 +21,21 @@ import java.util.List;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel("数据字典Sql生成对象")
+@Schema(title = "数据字典Sql生成对象")
 public class DictSql {
 
-    @ApiModelProperty("数据字典域ID")
+    @Schema(title = "数据字典域ID")
     private Long domainId;
 
-    @ApiModelProperty("数据字典域编码")
+    @Schema(title = "数据字典域编码")
     private String code;
 
-    @ApiModelProperty("数据字典域名称")
+    @Schema(title = "数据字典域名称")
     private String name;
 
-    @ApiModelProperty("数据字典域备注")
+    @Schema(title = "数据字典域备注")
     private String remarks;
 
-    @ApiModelProperty("数据字典列表")
+    @Schema(title = "数据字典列表")
     private List<DataDict> list;
 }

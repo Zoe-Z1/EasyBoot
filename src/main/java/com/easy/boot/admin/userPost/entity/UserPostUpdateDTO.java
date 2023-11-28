@@ -1,7 +1,7 @@
 package com.easy.boot.admin.userPost.entity;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,12 +16,12 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel(value = "UserPost对象", description = "用户岗位关联")
+@Schema(title = "UserPost对象", description = "用户岗位关联")
 public class UserPostUpdateDTO {
 
-    @ApiModelProperty(required = false, value = "用户ID")
+    @Schema(title = "用户ID")
     private Long userId;
 
-    @ApiModelProperty(required = false, value = "岗位ID")
+    @Schema(title = "岗位ID")
     private Long postId;
 }

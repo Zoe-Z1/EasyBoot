@@ -6,8 +6,10 @@ import cn.dev33.satoken.exception.NotRoleException;
 import com.easy.boot.common.base.Result;
 import com.easy.boot.exception.*;
 import com.easy.boot.exception.enums.SystemErrorEnum;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,9 +23,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.ConstraintViolation;
-import javax.validation.ConstraintViolationException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -58,7 +57,7 @@ public class GlobalExceptionHandler {
      * @return
      */
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
-    public Result exceptionHandler(HttpRequestMethodNotSupportedException e,HttpServletRequest request) {
+    public Result exceptionHandler(HttpRequestMethodNotSupportedException e, HttpServletRequest request) {
         log.error("找不到资源异常，异常路径： {} ，请求方式： {} ",request.getRequestURI(),request.getMethod(),e);
         return new Result(new NotFountException(),request.getRequestURI(),request.getMethod());
     }
@@ -240,7 +239,7 @@ public class GlobalExceptionHandler {
         return new Result(new FieldErrorException(fieldErrors),request.getRequestURI(),request.getMethod());
     }
 
-    @ApiModel("字段效验错误视图")
+    @Schema(title = "字段效验错误视图")
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
@@ -249,10 +248,10 @@ public class GlobalExceptionHandler {
 
         private static final long serialVersionUID = 1910555358396027723L;
 
-        @ApiModelProperty(value = "字段名")
+        @Schema(title = "字段名")
         private String field;
 
-        @ApiModelProperty(value = "错误原因")
+        @Schema(title = "错误原因")
         private String message;
     }
 }

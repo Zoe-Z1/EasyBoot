@@ -2,8 +2,8 @@ package com.easy.boot.admin.home.entity;
 
 import com.easy.boot.common.Jackson.ToStringListSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,18 +16,18 @@ import java.util.List;
  * @date 2023/7/21
  * @description
  */
-@ApiModel("热点接口视图实体")
+@Schema(title = "热点接口视图实体")
 @Data
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
 public class HomeHotsApiVO {
 
-    @ApiModelProperty("请求接口地址集合")
+    @Schema(title = "请求接口地址集合")
     private List<String> urls;
 
     @JsonSerialize(using = ToStringListSerializer.class)
-    @ApiModelProperty("请求次数集合")
+    @Schema(title = "请求次数集合")
     private List<Long> counts;
 
 }

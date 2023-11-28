@@ -20,9 +20,9 @@ import com.easy.boot.admin.user.service.AdminUserService;
 import com.easy.boot.common.base.BaseEntity;
 import com.easy.boot.exception.BusinessException;
 import com.easy.boot.utils.BeanUtil;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;

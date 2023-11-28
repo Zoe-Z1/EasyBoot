@@ -1,13 +1,13 @@
 package com.easy.boot.admin.sysConfig.entity;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
-import javax.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotBlank;
 
 /**
  * @author zoe
@@ -18,10 +18,10 @@ import javax.validation.constraints.NotBlank;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel(value = "SysConfigQuery对象", description = "系统配置")
+@Schema(title = "SysConfigQuery对象", description = "系统配置")
 public class ListQuery {
 
     @NotBlank(message = "配置域编码不能为空")
-    @ApiModelProperty(required = true, value = "配置域编码")
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED, title = "配置域编码")
     private String code;
 }

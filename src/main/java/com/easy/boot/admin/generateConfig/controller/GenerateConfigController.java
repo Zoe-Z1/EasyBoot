@@ -11,13 +11,12 @@ import com.easy.boot.common.base.BaseController;
 import com.easy.boot.common.base.Result;
 import com.easy.boot.common.log.EasyLog;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import javax.annotation.Resource;
 
 /**
  * @author zoe
@@ -25,7 +24,7 @@ import javax.annotation.Resource;
  * @description 代码生成参数配置接口
  */
 @Slf4j
-@Api(tags = "代码生成参数配置接口")
+@Tag(name = "代码生成参数配置接口")
 @RestController
 @RequestMapping("/admin/generateConfig")
 public class GenerateConfigController extends BaseController {
@@ -36,7 +35,7 @@ public class GenerateConfigController extends BaseController {
 
     @SaCheckPermission(value = "dev:gen:config:global:config")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "获取代码生成全局参数配置")
+    @Operation(summary = "获取代码生成全局参数配置")
     @EasyLog(module = "获取代码生成全局参数配置", operateType = OperateTypeEnum.SELECT)
     @GetMapping(value = "/globalConfig")
     public Result<GenerateConfigVO> globalConfig() {
@@ -45,7 +44,7 @@ public class GenerateConfigController extends BaseController {
 
     @SaCheckPermission(value = "dev:gen:config:table:config")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "获取代码生成Table参数配置")
+    @Operation(summary = "获取代码生成Table参数配置")
     @EasyLog(module = "获取代码生成Table参数配置", operateType = OperateTypeEnum.SELECT)
     @GetMapping("/tableConfig")
     public Result<GenerateConfigVO> tableConfig(@Validated GenerateConfigQuery query) {
@@ -54,7 +53,7 @@ public class GenerateConfigController extends BaseController {
 
     @SaCheckPermission(value = "dev:gen:config:update:global")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "编辑代码生成全局参数配置")
+    @Operation(summary = "编辑代码生成全局参数配置")
     @EasyLog(module = "编辑代码生成全局参数配置", operateType = OperateTypeEnum.UPDATE)
     @PostMapping(value = "/updateGlobal")
     public Result updateGlobal(@Validated @RequestBody GenerateConfigGlobalUpdateDTO dto) {
@@ -64,7 +63,7 @@ public class GenerateConfigController extends BaseController {
 
     @SaCheckPermission(value = "dev:gen:config:update:table")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "编辑代码生成Table参数配置")
+    @Operation(summary = "编辑代码生成Table参数配置")
     @EasyLog(module = "编辑代码生成Table参数配置", operateType = OperateTypeEnum.UPDATE)
     @PostMapping(value = "/updateTable")
     public Result updateTable(@Validated @RequestBody GenerateConfigUpdateDTO dto) {
@@ -74,7 +73,7 @@ public class GenerateConfigController extends BaseController {
 
     @SaCheckPermission(value = "dev:gen:config:del:global")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "重置代码生成全局参数配置")
+    @Operation(summary = "重置代码生成全局参数配置")
     @EasyLog(module = "重置代码生成全局参数配置", operateType = OperateTypeEnum.DELETE)
     @PostMapping("/deleteGlobal")
     public Result deleteGlobal() {
@@ -84,7 +83,7 @@ public class GenerateConfigController extends BaseController {
 
     @SaCheckPermission(value = "dev:gen:config:del:table")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "重置代码生成Table参数配置")
+    @Operation(summary = "重置代码生成Table参数配置")
     @EasyLog(module = "重置代码生成Table参数配置", operateType = OperateTypeEnum.DELETE)
     @PostMapping("/delete/{tableName}")
     public Result delete(@PathVariable String tableName) {

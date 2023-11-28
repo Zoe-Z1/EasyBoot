@@ -1,8 +1,8 @@
 package com.easy.boot.admin.user.entity;
 
 import com.easy.boot.common.base.BasePageQuery;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -19,28 +19,28 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-@ApiModel("用户查询实体")
+@Schema(title = "用户查询实体")
 public class AdminUserQuery extends BasePageQuery {
 
-    @ApiModelProperty("部门ID")
+    @Schema(title = "部门ID")
     private Long departmentId;
 
-    @ApiModelProperty(value = "账号")
+    @Schema(title = "账号")
     private String username;
 
-    @ApiModelProperty(value = "昵称")
+    @Schema(title = "昵称")
     private String name;
 
-    @ApiModelProperty(value = "性别 0：保密 1：男 2：女")
+    @Schema(title = "性别 0：保密 1：男 2：女")
     private Integer sex;
 
-    @ApiModelProperty(value = "账号状态 1：正常，2：禁用")
+    @Schema(title = "账号状态 1：正常，2：禁用")
     private Integer status;
 
-    @ApiModelProperty("开始时间")
+    @Schema(title = "开始时间")
     private Long startTime;
 
-    @ApiModelProperty("结束时间")
+    @Schema(title = "结束时间")
     private Long endTime;
 
 }

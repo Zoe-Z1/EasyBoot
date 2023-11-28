@@ -8,8 +8,8 @@ import com.easy.boot.common.generator.config.AnnotationConfig;
 import com.easy.boot.common.generator.config.FilterConfig;
 import com.easy.boot.common.generator.db.MetaTable;
 import com.easy.boot.utils.JsonUtil;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import lombok.*;
 
 import java.util.*;
@@ -184,8 +184,7 @@ public class VOTemplate extends AbstractTemplate {
         if (annotation.getEnableBuilder()) {
             pkgs.add("lombok.experimental.SuperBuilder");
         }
-        pkgs.add(ApiModel.class.getName());
-        pkgs.add(ApiModelProperty.class.getName());
+        pkgs.add(Schema.class.getName());
         pkgs.addAll(metaTable.getColumns().stream().map(GenerateColumn::getJavaTypePackageName).collect(Collectors.toSet()));
         pkgs.add("lombok.*");
         List<String> list = new ArrayList<>(pkgs);

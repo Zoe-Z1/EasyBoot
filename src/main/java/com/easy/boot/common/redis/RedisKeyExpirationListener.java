@@ -2,13 +2,12 @@ package com.easy.boot.common.redis;
 
 import com.easy.boot.admin.onlineUser.service.IOnlineUserService;
 import com.easy.boot.admin.operationLog.enums.RoleTypeEnum;
+import jakarta.annotation.Resource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.connection.Message;
 import org.springframework.data.redis.listener.KeyExpirationEventMessageListener;
 import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.stereotype.Component;
-
-import javax.annotation.Resource;
 
 /**
  * @author zoe

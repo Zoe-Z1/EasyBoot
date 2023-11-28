@@ -1,8 +1,8 @@
 package com.easy.boot.admin.templateConfig.entity;
 
 import com.easy.boot.common.base.BasePageQuery;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -12,7 +12,7 @@ import lombok.experimental.SuperBuilder;
  * @date 2023/11/09
  * @description 模板配置查询实体
  */
-@ApiModel(value = "模板配置查询实体")
+@Schema(title = "模板配置查询实体")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -21,7 +21,7 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(callSuper = true)
 public class TemplateConfigQuery extends BasePageQuery {
 
-    @ApiModelProperty("模板配置状态 #1：正常， 2：禁用")
+    @Schema(title = "模板配置状态 #1：正常， 2：禁用")
     private Integer status;
 
 }

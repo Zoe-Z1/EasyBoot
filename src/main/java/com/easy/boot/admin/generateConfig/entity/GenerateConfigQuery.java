@@ -1,11 +1,11 @@
 package com.easy.boot.admin.generateConfig.entity;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-import javax.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotEmpty;
 
 
 /**
@@ -13,7 +13,7 @@ import javax.validation.constraints.NotEmpty;
  * @date 2023/09/10
  * @description 代码生成参数配置查询实体
  */
-@ApiModel(value = "代码生成参数配置查询实体")
+@Schema(title = "代码生成参数配置查询实体")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -24,6 +24,6 @@ public class GenerateConfigQuery {
 
 
     @NotEmpty(message = "表名称不能为空")
-    @ApiModelProperty(required = true, value = "表名称")
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED, title = "表名称")
     private String tableName;
 }

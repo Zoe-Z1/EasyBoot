@@ -2,8 +2,8 @@ package com.easy.boot.admin.generate.entity;
 
 import cn.hutool.core.date.DatePattern;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,23 +20,23 @@ import java.util.Date;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel("数据库Table对象")
+@Schema(title = "数据库Table对象")
 public class DatabaseTable {
 
-    @ApiModelProperty("表名")
+    @Schema(title = "表名")
     private String tableName;
 
-    @ApiModelProperty("表数据行数")
+    @Schema(title = "表数据行数")
     private Long tableRows;
 
-    @ApiModelProperty("表备注")
+    @Schema(title = "表备注")
     private String comment;
 
-    @ApiModelProperty("创建时间")
+    @Schema(title = "创建时间")
     @JsonFormat(pattern = DatePattern.NORM_DATETIME_PATTERN, timezone = "GMT+8")
     private Date createTime;
 
-    @ApiModelProperty("修改时间")
+    @Schema(title = "修改时间")
     @JsonFormat(pattern = DatePattern.NORM_DATETIME_PATTERN, timezone = "GMT+8")
     private Date updateTime;
 }

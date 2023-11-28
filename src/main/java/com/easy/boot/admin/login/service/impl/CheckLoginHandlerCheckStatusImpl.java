@@ -5,10 +5,9 @@ import com.easy.boot.admin.user.entity.AdminUser;
 import com.easy.boot.admin.user.service.AdminUserService;
 import com.easy.boot.exception.BusinessException;
 import com.easy.boot.exception.enums.SystemErrorEnum;
+import jakarta.annotation.Resource;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
-
-import javax.annotation.Resource;
 
 /**
  * @author zoe

@@ -16,10 +16,10 @@ import com.easy.boot.common.excel.entity.ImportExcelError;
 import com.easy.boot.exception.BusinessException;
 import com.easy.boot.utils.BeanUtil;
 import com.easy.boot.utils.Constant;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;

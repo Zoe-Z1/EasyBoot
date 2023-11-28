@@ -1,14 +1,14 @@
 package com.easy.boot.admin.role.entity;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 /**
 * @author zoe
@@ -20,15 +20,15 @@ import javax.validation.constraints.NotNull;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel(value = "Role对象", description = "角色")
+@Schema(title = "Role对象", description = "角色")
 public class RoleUpdateDTO extends RoleCreateDTO {
 
     @NotNull(message = "角色ID不能为空")
-    @ApiModelProperty(required = true, value = "角色ID")
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED, title = "角色ID")
     private Long id;
 
     @NotNull(message = "是否为状态切换不能为空")
-    @ApiModelProperty(required = true, value = "是否为状态切换")
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED, title = "是否为状态切换")
     private Boolean isStatusChange;
 
 }

@@ -1,12 +1,12 @@
 package com.easy.boot.admin.templateParamConfig.entity;
 
 import com.easy.boot.common.base.BasePageQuery;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 
 /**
@@ -14,7 +14,7 @@ import javax.validation.constraints.NotNull;
  * @date 2023/11/09
  * @description 模板参数配置查询实体
  */
-@ApiModel(value = "模板参数配置查询实体")
+@Schema(title = "模板参数配置查询实体")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -23,20 +23,20 @@ import javax.validation.constraints.NotNull;
 @EqualsAndHashCode(callSuper = true)
 public class TemplateParamConfigQuery extends BasePageQuery {
 
-    @ApiModelProperty(required = true, value = "模板ID")
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED, title = "模板ID")
     @NotNull(message = "模板ID不能为空")
     private Long templateId;
 
-    @ApiModelProperty("模板参数键")
+    @Schema(title = "模板参数键")
     private String code;
 
-    @ApiModelProperty("模板参数名称")
+    @Schema(title = "模板参数名称")
     private String name;
 
-    @ApiModelProperty("是否必填 # 1：必填，2：非必填")
+    @Schema(title = "是否必填 # 1：必填，2：非必填")
     private Integer required;
 
-    @ApiModelProperty("模板配置状态 #1：正常， 2：禁用")
+    @Schema(title = "模板配置状态 #1：正常， 2：禁用")
     private Integer status;
 
 }

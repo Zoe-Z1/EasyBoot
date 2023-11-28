@@ -7,8 +7,8 @@ import com.easy.boot.utils.JsonUtil;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import lombok.*;
 import lombok.experimental.Accessors;
 import lombok.experimental.SuperBuilder;
@@ -26,7 +26,7 @@ import java.util.Set;
  * @date 2023/09/10
  * @description 代码生成参数配置返回实体
  */
-@ApiModel(value = "代码生成参数配置返回实体")
+@Schema(title = "代码生成参数配置返回实体")
 @Data
 @Accessors(chain = true)
 @AllArgsConstructor
@@ -37,74 +37,74 @@ import java.util.Set;
 public class GenerateConfigVO {
 
 
-    @ApiModelProperty("配置类型 1：全局配置 2：表配置")
+    @Schema(title = "配置类型 1：全局配置 2：表配置")
     private Integer type;
 
-    @ApiModelProperty("表名称")
+    @Schema(title = "表名称")
     private String tableName;
 
-    @ApiModelProperty("后端模块名称")
+    @Schema(title = "后端模块名称")
     private String moduleName;
 
-    @ApiModelProperty("前端模块名称")
+    @Schema(title = "前端模块名称")
     private String uiModuleName;
 
-    @ApiModelProperty("表描述")
+    @Schema(title = "表描述")
     private String tableRemarks;
 
-    @ApiModelProperty("包名")
+    @Schema(title = "包名")
     private String packageName;
 
-    @ApiModelProperty("RequestMapping 路径前缀")
+    @Schema(title = "RequestMapping 路径前缀")
     private String requestMappingPrefix;
 
     @JsonSerialize(using = ToStringSerializer.class)
-    @ApiModelProperty("所属菜单")
+    @Schema(title = "所属菜单")
     private Long parentMenuId;
 
-    @ApiModelProperty("生成代码路径")
+    @Schema(title = "生成代码路径")
     private String outputPath;
 
-    @ApiModelProperty("生成完代码后是否打开目录	0：打开 1：不打开")
+    @Schema(title = "生成完代码后是否打开目录	0：打开 1：不打开")
     private Integer isOpen;
 
-    @ApiModelProperty("作者")
+    @Schema(title = "作者")
     private String author;
 
-    @ApiModelProperty("表单中占用栅格的列数")
+    @Schema(title = "表单中占用栅格的列数")
     private Integer colSpan;
 
-    @ApiModelProperty("开启路由缓存 #0：开启，1：不开启")
+    @Schema(title = "开启路由缓存 #0：开启，1：不开启")
     private Integer enableCache;
 
-    @ApiModelProperty("生成导入 0：生成 1：不生成")
+    @Schema(title = "生成导入 0：生成 1：不生成")
     private Integer enableImport;
 
-    @ApiModelProperty("生成导出 0：生成 1：不生成")
+    @Schema(title = "生成导出 0：生成 1：不生成")
     private Integer enableExport;
 
-    @ApiModelProperty("生成log注解 0：生成 1：不生成")
+    @Schema(title = "生成log注解 0：生成 1：不生成")
     private Integer enableLog;
 
-    @ApiModelProperty("开启Builder模式 0：开启 1：不开启")
+    @Schema(title = "开启Builder模式 0：开启 1：不开启")
     private Integer enableBuilder;
 
-    @ApiModelProperty("生成模板json配置")
+    @Schema(title = "生成模板json配置")
     private String templateJson;
 
-    @ApiModelProperty("生成模板json配置转list")
+    @Schema(title = "生成模板json配置转list")
     private List<Map<String, Object>> templateList;
 
-    @ApiModelProperty("过滤表前缀")
+    @Schema(title = "过滤表前缀")
     private Set<String> excludeTablePrefix;
 
-    @ApiModelProperty("过滤表后缀")
+    @Schema(title = "过滤表后缀")
     private Set<String> excludeTableSuffix;
 
-    @ApiModelProperty("过滤实体类属性")
+    @Schema(title = "过滤实体类属性")
     private Set<String> excludeField;
 
-    @ApiModelProperty("备注")
+    @Schema(title = "备注")
     private String remarks;
 
 

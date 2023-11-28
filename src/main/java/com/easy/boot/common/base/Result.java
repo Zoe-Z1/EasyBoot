@@ -3,8 +3,8 @@ package com.easy.boot.common.base;
 
 import com.easy.boot.exception.BaseException;
 import com.easy.boot.exception.enums.SystemErrorEnum;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import lombok.Getter;
 
 import java.io.Serializable;
@@ -17,24 +17,24 @@ import java.io.Serializable;
  * @date 2023/7/20
  */
 @Getter
-@ApiModel("统一返回对象")
+@Schema(title = "统一返回对象")
 public class Result<T> implements Serializable {
 
     private static final long serialVersionUID = -8859781532099972534L;
 
-    @ApiModelProperty("响应状态码 200为成功，其他均为失败")
+    @Schema(title = "响应状态码 200为成功，其他均为失败")
     private Integer code;
 
-    @ApiModelProperty("响应描述")
+    @Schema(title = "响应描述")
     private String message;
 
-    @ApiModelProperty("请求路径")
+    @Schema(title = "请求路径")
     private String path;
 
-    @ApiModelProperty("请求方式")
+    @Schema(title = "请求方式")
     private String method;
 
-    @ApiModelProperty("响应内容")
+    @Schema(title = "响应内容")
     private T data;
 
     public Result(SystemErrorEnum systemError) {

@@ -1,7 +1,7 @@
 package com.easy.boot.admin.generateConfig.entity;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,13 +16,13 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel("代码生成Sql参数对象")
+@Schema(title = "代码生成Sql参数对象")
 public class Sql {
 
-    @ApiModelProperty("是否生成")
+    @Schema(title = "是否生成")
     private Boolean enable = true;
 
-    @ApiModelProperty("是否执行")
+    @Schema(title = "是否执行")
     private Boolean execute = false;
 
 }

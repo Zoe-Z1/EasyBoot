@@ -8,9 +8,8 @@ import com.easy.boot.admin.server.service.ServerService;
 import com.easy.boot.common.redis.EasyRedisManager;
 import com.easy.boot.common.redis.RedisKeyConstant;
 import com.easy.boot.utils.ServerUtil;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
-
-import javax.annotation.Resource;
 
 /**
  * @author zoe

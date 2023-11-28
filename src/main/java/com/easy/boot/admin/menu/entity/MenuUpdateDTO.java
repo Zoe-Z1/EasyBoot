@@ -1,14 +1,14 @@
 package com.easy.boot.admin.menu.entity;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 /**
 * @author zoe
@@ -20,11 +20,11 @@ import javax.validation.constraints.NotNull;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel(value = "Menu对象", description = "菜单")
+@Schema(title = "Menu对象", description = "菜单")
 public class MenuUpdateDTO extends MenuCreateDTO {
 
     @NotNull(message = "菜单ID不能为空")
-    @ApiModelProperty(required = true, value = "菜单ID")
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED, title = "菜单ID")
     private Long id;
 
 }

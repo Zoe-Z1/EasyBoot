@@ -8,10 +8,10 @@ import com.easy.boot.admin.loginLog.service.ILoginLogService;
 import com.easy.boot.admin.onlineUser.service.IOnlineUserService;
 import com.easy.boot.admin.operationLog.service.IOperationLogService;
 import com.easy.boot.utils.Constant;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;

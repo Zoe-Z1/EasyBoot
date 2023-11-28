@@ -14,13 +14,13 @@ import com.easy.boot.common.base.Result;
 import com.easy.boot.common.log.EasyLog;
 import com.easy.boot.common.noRepeatSubmit.EasyNoRepeatSubmit;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
  * @description 黑名单 前端控制器
  */
 @Slf4j
-@Api(tags = "黑名单接口")
+@Tag(name = "黑名单接口")
 @RestController
 @RequestMapping("/admin/blacklist")
 public class BlacklistController extends BaseController {
@@ -42,7 +42,7 @@ public class BlacklistController extends BaseController {
 
     @SaCheckPermission(value = "ops:blacklist:page")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "分页获取黑名单列表")
+    @Operation(summary = "分页获取黑名单列表")
     @EasyLog(module = "分页获取黑名单列表", operateType = OperateTypeEnum.SELECT)
     @GetMapping("/page")
     public Result<IPage<Blacklist>> page(@Validated BlacklistQuery query) {
@@ -52,7 +52,7 @@ public class BlacklistController extends BaseController {
     @EasyNoRepeatSubmit
     @SaCheckPermission(value = "ops:blacklist:create")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "创建黑名单")
+    @Operation(summary = "创建黑名单")
     @EasyLog(module = "创建黑名单", operateType = OperateTypeEnum.CREATE)
     @PostMapping(value = "/create")
     public Result create(@Validated @RequestBody BlacklistCreateDTO dto) {
@@ -61,7 +61,7 @@ public class BlacklistController extends BaseController {
 
     @SaCheckPermission(value = "ops:blacklist:update")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "编辑黑名单")
+    @Operation(summary = "编辑黑名单")
     @EasyLog(module = "编辑黑名单", operateType = OperateTypeEnum.UPDATE)
     @PostMapping(value = "/update")
     public Result update(@Validated @RequestBody BlacklistUpdateDTO dto) {
@@ -70,7 +70,7 @@ public class BlacklistController extends BaseController {
 
     @SaCheckPermission(value = "ops:blacklist:del")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "取消拉黑")
+    @Operation(summary = "取消拉黑")
     @EasyLog(module = "取消拉黑", operateType = OperateTypeEnum.DELETE)
     @PostMapping("/delete/{id}")
     public Result delete(@PathVariable Long id) {
@@ -79,7 +79,7 @@ public class BlacklistController extends BaseController {
 
     @SaCheckPermission(value = "ops:blacklist:batch:del")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "批量取消拉黑")
+    @Operation(summary = "批量取消拉黑")
     @EasyLog(module = "批量取消拉黑", operateType = OperateTypeEnum.DELETE)
     @PostMapping("/batchDel")
     public Result batchDel(@RequestBody List<Long> ids) {
@@ -89,7 +89,7 @@ public class BlacklistController extends BaseController {
     @EasyNoRepeatSubmit
     @SaCheckPermission(value = "ops:blacklist:export")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "导出黑名单")
+    @Operation(summary = "导出黑名单")
     @EasyLog(module = "导出黑名单", operateType = OperateTypeEnum.EXPORT)
     @PostMapping("/export")
     public void exportExcel(@Validated @RequestBody BlacklistQuery query) throws IOException {

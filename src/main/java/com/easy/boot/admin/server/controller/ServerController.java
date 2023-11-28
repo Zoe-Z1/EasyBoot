@@ -9,14 +9,13 @@ import com.easy.boot.common.base.Result;
 import com.easy.boot.common.log.EasyLog;
 import com.easy.boot.utils.ServerUtil;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.annotation.Resource;
 
 
 /**
@@ -25,7 +24,7 @@ import javax.annotation.Resource;
  * @description 服务器监控接口
  */
 @Slf4j
-@Api(tags = "服务器监控接口")
+@Tag(name = "服务器监控接口")
 @RestController
 @RequestMapping("/admin/server")
 public class ServerController {
@@ -35,7 +34,7 @@ public class ServerController {
 
     @SaCheckPermission(value = "ops:server:detail")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "获取服务器详情")
+    @Operation(summary = "获取服务器详情")
     @EasyLog(module = "获取服务器详情", operateType = OperateTypeEnum.SELECT)
     @GetMapping("/detail")
     public Result<ServerVO> detail() {

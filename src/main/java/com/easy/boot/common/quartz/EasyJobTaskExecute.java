@@ -11,7 +11,6 @@ import com.easy.boot.admin.taskLog.service.ITaskLogService;
 import com.easy.boot.utils.BeanUtil;
 import com.easy.boot.utils.JsonUtil;
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;

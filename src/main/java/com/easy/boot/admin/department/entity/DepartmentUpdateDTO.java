@@ -1,14 +1,14 @@
 package com.easy.boot.admin.department.entity;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 /**
 * @author zoe
@@ -20,11 +20,11 @@ import javax.validation.constraints.NotNull;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel(value = "Department对象", description = "部门")
+@Schema(title = "Department对象", description = "部门")
 public class DepartmentUpdateDTO extends DepartmentCreateDTO {
 
     @NotNull(message = "部门ID不能为空")
-    @ApiModelProperty(required = true, value = "部门ID")
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED, title = "部门ID")
     private Long id;
 
 }

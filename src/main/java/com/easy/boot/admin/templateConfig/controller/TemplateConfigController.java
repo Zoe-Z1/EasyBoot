@@ -13,13 +13,13 @@ import com.easy.boot.common.base.Result;
 import com.easy.boot.common.log.EasyLog;
 import com.easy.boot.common.noRepeatSubmit.EasyNoRepeatSubmit;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -28,7 +28,7 @@ import java.util.List;
  * @description 模板配置接口
  */
 @Slf4j
-@Api(tags = "模板配置接口")
+@Tag(name = "模板配置接口")
 @RestController
 @RequestMapping("/admin/templateConfig")
 public class TemplateConfigController extends BaseController {
@@ -39,7 +39,7 @@ public class TemplateConfigController extends BaseController {
 
     @SaCheckPermission(value = "system:template:config:all")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "获取全部模板配置")
+    @Operation(summary = "获取全部模板配置")
     @EasyLog(module = "获取全部模板配置", operateType = OperateTypeEnum.SELECT)
     @GetMapping("/all")
     public Result<List<TemplateConfig>> all() {
@@ -48,7 +48,7 @@ public class TemplateConfigController extends BaseController {
 
     @SaCheckPermission(value = "system:template:config:page")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "分页获取模板配置列表")
+    @Operation(summary = "分页获取模板配置列表")
     @EasyLog(module = "分页获取模板配置列表", operateType = OperateTypeEnum.SELECT)
     @GetMapping("/page")
     public Result<IPage<TemplateConfig>> page(@Validated TemplateConfigQuery query) {
@@ -58,7 +58,7 @@ public class TemplateConfigController extends BaseController {
     @EasyNoRepeatSubmit
     @SaCheckPermission(value = "system:template:config:create")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "创建模板配置")
+    @Operation(summary = "创建模板配置")
     @EasyLog(module = "创建模板配置", operateType = OperateTypeEnum.CREATE)
     @PostMapping(value = "/create")
     public Result create(@Validated @RequestBody TemplateConfigCreateDTO dto) {
@@ -67,7 +67,7 @@ public class TemplateConfigController extends BaseController {
 
     @SaCheckPermission(value = "system:template:config:update")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "编辑模板配置")
+    @Operation(summary = "编辑模板配置")
     @EasyLog(module = "编辑模板配置", operateType = OperateTypeEnum.UPDATE)
     @PostMapping(value = "/update")
     public Result update(@Validated @RequestBody TemplateConfigUpdateDTO dto) {
@@ -76,7 +76,7 @@ public class TemplateConfigController extends BaseController {
 
     @SaCheckPermission(value = "system:template:config:del")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "删除模板配置")
+    @Operation(summary = "删除模板配置")
     @EasyLog(module = "删除模板配置", operateType = OperateTypeEnum.DELETE)
     @PostMapping("/delete/{id}")
     public Result delete(@PathVariable Long id) {

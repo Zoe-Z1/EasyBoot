@@ -1,8 +1,8 @@
 package com.easy.boot.admin.sysConfigDomain.entity;
 
 import com.easy.boot.common.base.BasePageQuery;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -19,22 +19,22 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel(value = "SysConfigDomainQuery对象", description = "系统配置域")
+@Schema(title = "SysConfigDomainQuery对象", description = "系统配置域")
 public class SysConfigDomainQuery extends BasePageQuery {
 
-    @ApiModelProperty("域编码")
+    @Schema(title = "域编码")
     private String code;
 
-    @ApiModelProperty("域名称")
+    @Schema(title = "域名称")
     private String name;
 
-    @ApiModelProperty("系统配置域状态 1：正常 2：禁用")
+    @Schema(title = "系统配置域状态 1：正常 2：禁用")
     private Integer status;
 
-    @ApiModelProperty("开始时间")
+    @Schema(title = "开始时间")
     private Long startTime;
 
-    @ApiModelProperty("结束时间")
+    @Schema(title = "结束时间")
     private Long endTime;
 
 }

@@ -1,7 +1,7 @@
 package com.easy.boot.admin.department.entity;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -18,10 +18,10 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel(value = "DepartmentLazy对象", description = "部门懒加载")
+@Schema(title = "DepartmentLazy对象", description = "部门懒加载")
 public class DepartmentLazyVO extends Department {
 
-    @ApiModelProperty("是否为叶子节点")
+    @Schema(title = "是否为叶子节点")
     private Boolean isLeaf;
 
 }

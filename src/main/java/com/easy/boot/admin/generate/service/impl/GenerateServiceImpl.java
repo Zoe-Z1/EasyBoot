@@ -20,10 +20,10 @@ import com.easy.boot.common.generator.db.DbManager;
 import com.easy.boot.common.generator.db.MetaTable;
 import com.easy.boot.common.generator.execute.GeneratorExecute;
 import com.easy.boot.exception.GeneratorException;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;

@@ -3,8 +3,8 @@ package com.easy.boot.admin.onlineUser.entity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.easy.boot.common.base.BaseEntity;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -22,50 +22,50 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @AllArgsConstructor
 @TableName("online_user")
-@ApiModel("在线用户")
+@Schema(title = "在线用户")
 public class OnlineUser extends BaseEntity {
 
-    @ApiModelProperty("登录用户账号")
+    @Schema(title = "登录用户账号")
     @TableField("username")
     private String username;
 
-    @ApiModelProperty("ip地址")
+    @Schema(title = "ip地址")
     @TableField("ip")
     private String ip;
 
-    @ApiModelProperty("登录浏览器")
+    @Schema(title = "登录浏览器")
     @TableField("browser")
     private String browser;
 
-    @ApiModelProperty("操作系统")
+    @Schema(title = "操作系统")
     @TableField("os")
     private String os;
 
-    @ApiModelProperty("浏览器引擎")
+    @Schema(title = "浏览器引擎")
     @TableField("engine")
     private String engine;
 
-    @ApiModelProperty("省")
+    @Schema(title = "省")
     @TableField("pro")
     private String pro;
 
-    @ApiModelProperty("省份编码")
+    @Schema(title = "省份编码")
     @TableField("pro_code")
     private String proCode;
 
-    @ApiModelProperty("市")
+    @Schema(title = "市")
     @TableField("city")
     private String city;
 
-    @ApiModelProperty("市编码")
+    @Schema(title = "市编码")
     @TableField("city_code")
     private String cityCode;
 
-    @ApiModelProperty("地址")
+    @Schema(title = "地址")
     @TableField("addr")
     private String addr;
 
-    @ApiModelProperty("登录token")
+    @Schema(title = "登录token")
     @TableField("token")
     private String token;
 

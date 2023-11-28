@@ -1,12 +1,12 @@
 package com.easy.boot.admin.generateColumn.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-import javax.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotEmpty;
 
 
 /**
@@ -15,7 +15,7 @@ import javax.validation.constraints.NotEmpty;
  * @description 代码生成列配置查询实体
  */
 @TableName("generate_column")
-@ApiModel(value = "代码生成列配置查询实体")
+@Schema(title = "代码生成列配置查询实体")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -26,7 +26,7 @@ public class GenerateColumnQuery {
 
 
     @NotEmpty(message = "表名称不能为空")
-    @ApiModelProperty(required = true, value = "表名称")
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED, title = "表名称")
     private String tableName;
 
 }

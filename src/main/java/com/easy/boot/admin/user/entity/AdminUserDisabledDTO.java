@@ -1,14 +1,14 @@
 package com.easy.boot.admin.user.entity;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.validator.constraints.Range;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 /**
  * @author zoe
@@ -19,16 +19,16 @@ import javax.validation.constraints.NotNull;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel("用户状态变更实体")
+@Schema(title = "用户状态变更实体")
 public class AdminUserDisabledDTO {
 
     @NotNull(message = "ID不能为空")
-    @ApiModelProperty(value = "ID")
+    @Schema(title = "ID")
     private Long id;
 
     @NotNull(message = "账号状态不能为空")
     @Range(min = 1, max = 2, message = "账号状态不正确")
-    @ApiModelProperty(required = true, value = "账号状态 1：正常，2：禁用")
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED, title = "账号状态 1：正常，2：禁用")
     private Integer status;
 
 }

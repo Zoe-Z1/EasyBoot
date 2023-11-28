@@ -21,14 +21,14 @@ import com.easy.boot.common.excel.handler.ExportExcelSelectCellWriteHandler;
 import com.easy.boot.common.log.EasyLog;
 import com.easy.boot.common.noRepeatSubmit.EasyNoRepeatSubmit;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.Assert;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -42,7 +42,7 @@ import java.util.List;
  * @description 岗位 前端控制器
  */
 @Slf4j
-@Api(tags = "岗位接口")
+@Tag(name = "岗位接口")
 @RestController
 @RequestMapping("/admin/post")
 public class PostController extends BaseController {
@@ -54,7 +54,7 @@ public class PostController extends BaseController {
 
     @SaCheckPermission(value = "system:post:all")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "获取全部岗位")
+    @Operation(summary = "获取全部岗位")
     @EasyLog(module = "获取全部岗位", operateType = OperateTypeEnum.SELECT)
     @GetMapping("/all")
     public Result<List<Post>> all() {
@@ -63,7 +63,7 @@ public class PostController extends BaseController {
 
     @SaCheckPermission(value = "system:post:page")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "分页获取岗位列表")
+    @Operation(summary = "分页获取岗位列表")
     @EasyLog(module = "分页获取岗位列表", operateType = OperateTypeEnum.SELECT)
     @GetMapping("/page")
     public Result<IPage<Post>> page(@Validated PostQuery query) {
@@ -72,7 +72,7 @@ public class PostController extends BaseController {
 
     @SaCheckPermission(value = "system:post:detail")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "获取岗位详情")
+    @Operation(summary = "获取岗位详情")
     @EasyLog(module = "获取岗位详情", operateType = OperateTypeEnum.SELECT)
     @GetMapping("/detail/{id}")
     public Result<Post> detail(@PathVariable Long id) {
@@ -82,7 +82,7 @@ public class PostController extends BaseController {
     @EasyNoRepeatSubmit
     @SaCheckPermission(value = "system:post:create")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "创建岗位")
+    @Operation(summary = "创建岗位")
     @EasyLog(module = "创建岗位", operateType = OperateTypeEnum.CREATE)
     @PostMapping(value = "/create")
     public Result create(@Validated @RequestBody PostCreateDTO dto) {
@@ -91,7 +91,7 @@ public class PostController extends BaseController {
 
     @SaCheckPermission(value = "system:post:update")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "编辑岗位")
+    @Operation(summary = "编辑岗位")
     @EasyLog(module = "编辑岗位", operateType = OperateTypeEnum.UPDATE)
     @PostMapping(value = "/update")
     public Result update(@Validated @RequestBody PostUpdateDTO dto) {
@@ -100,7 +100,7 @@ public class PostController extends BaseController {
 
     @SaCheckPermission(value = "system:post:del")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "删除岗位")
+    @Operation(summary = "删除岗位")
     @EasyLog(module = "删除岗位", operateType = OperateTypeEnum.DELETE)
     @PostMapping("/delete/{id}")
     public Result delete(@PathVariable Long id) {
@@ -109,7 +109,7 @@ public class PostController extends BaseController {
 
     @SaCheckPermission(value = "system:post:batch:del")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "批量删除岗位")
+    @Operation(summary = "批量删除岗位")
     @EasyLog(module = "批量删除岗位", operateType = OperateTypeEnum.DELETE)
     @PostMapping("/batchDel")
     public Result batchDel(@RequestBody List<Long> ids) {
@@ -118,7 +118,7 @@ public class PostController extends BaseController {
 
     @SaCheckPermission(value = "system:post:import")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "导入岗位")
+    @Operation(summary = "导入岗位")
     @EasyLog(module = "导入岗位", operateType = OperateTypeEnum.IMPORT)
     @PostMapping("/import")
     public Result<ImportVO> importExcel(UploadDTO dto) throws IOException {
@@ -153,7 +153,7 @@ public class PostController extends BaseController {
     @EasyNoRepeatSubmit
     @SaCheckPermission(value = "system:post:export")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "导出岗位")
+    @Operation(summary = "导出岗位")
     @EasyLog(module = "导出岗位", operateType = OperateTypeEnum.EXPORT)
     @PostMapping("/export")
     public void exportExcel(@Validated @RequestBody PostQuery query) throws IOException {
@@ -176,7 +176,7 @@ public class PostController extends BaseController {
     @EasyNoRepeatSubmit
     @SaCheckPermission(value = "system:post:download")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "下载岗位导入模板")
+    @Operation(summary = "下载岗位导入模板")
     @EasyLog(module = "下载岗位导入模板", operateType = OperateTypeEnum.EXPORT)
     @PostMapping("/download")
     public void downloadTemplate() throws IOException {

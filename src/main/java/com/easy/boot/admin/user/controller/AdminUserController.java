@@ -18,14 +18,14 @@ import com.easy.boot.common.excel.handler.ExportExcelSelectCellWriteHandler;
 import com.easy.boot.common.log.EasyLog;
 import com.easy.boot.common.noRepeatSubmit.EasyNoRepeatSubmit;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.Assert;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -39,7 +39,7 @@ import java.util.List;
  * @description
  */
 @Slf4j
-@Api(tags = "用户接口")
+@Tag(name = "用户接口")
 @RestController
 @RequestMapping("/admin/user")
 public class AdminUserController extends BaseController {
@@ -49,7 +49,7 @@ public class AdminUserController extends BaseController {
 
     @SaCheckPermission(value = "system:admin:user:page")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "分页获取用户列表")
+    @Operation(summary = "分页获取用户列表")
     @EasyLog(module = "分页获取用户列表", operateType = OperateTypeEnum.SELECT)
     @GetMapping("/page")
     public Result<IPage<AdminUser>> page(@Validated AdminUserQuery query) {
@@ -58,7 +58,7 @@ public class AdminUserController extends BaseController {
 
     @SaCheckPermission(value = "system:admin:user:detail")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "获取用户详情")
+    @Operation(summary = "获取用户详情")
     @EasyLog(module = "获取用户详情", operateType = OperateTypeEnum.SELECT)
     @GetMapping("/detail/{id}")
     public Result<AdminUserVO> detail(@PathVariable Long id) {
@@ -66,7 +66,7 @@ public class AdminUserController extends BaseController {
     }
 
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "获取当前用户信息")
+    @Operation(summary = "获取当前用户信息")
     @EasyLog(module = "获取当前用户信息", operateType = OperateTypeEnum.SELECT)
     @GetMapping("/info")
     public Result<AdminUserInfo> info() {
@@ -76,7 +76,7 @@ public class AdminUserController extends BaseController {
     @EasyNoRepeatSubmit
     @SaCheckPermission(value = "system:admin:user:create")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "创建用户")
+    @Operation(summary = "创建用户")
     @EasyLog(module = "创建用户", operateType = OperateTypeEnum.CREATE)
     @PostMapping(value = "/create")
     public Result create(@Validated @RequestBody AdminUserCreateDTO dto) {
@@ -85,7 +85,7 @@ public class AdminUserController extends BaseController {
 
     @SaCheckPermission(value = "system:admin:user:update")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "编辑用户")
+    @Operation(summary = "编辑用户")
     @EasyLog(module = "编辑用户", operateType = OperateTypeEnum.UPDATE)
     @PostMapping(value = "/update")
     public Result update(@Validated @RequestBody AdminUserUpdateDTO dto) {
@@ -94,7 +94,7 @@ public class AdminUserController extends BaseController {
 
     @SaCheckPermission(value = "system:admin:user:edit:password")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "修改密码")
+    @Operation(summary = "修改密码")
     @EasyLog(module = "修改密码", operateType = OperateTypeEnum.UPDATE)
     @PostMapping(value = "/editPassword")
     public Result updatePassword(@Validated @RequestBody EditPasswordDTO dto) {
@@ -103,7 +103,7 @@ public class AdminUserController extends BaseController {
 
     @SaCheckPermission(value = "system:admin:user:reset:password")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "重置密码")
+    @Operation(summary = "重置密码")
     @EasyLog(module = "重置密码", operateType = OperateTypeEnum.UPDATE)
     @PostMapping(value = "/resetPassword")
     public Result resetPassword(@Validated @RequestBody ResetPasswordDTO dto) {
@@ -112,7 +112,7 @@ public class AdminUserController extends BaseController {
 
     @SaCheckPermission(value = "system:admin:user:del")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "删除用户")
+    @Operation(summary = "删除用户")
     @EasyLog(module = "删除用户", operateType = OperateTypeEnum.DELETE)
     @PostMapping("/delete/{id}")
     public Result delete(@PathVariable Long id) {
@@ -121,7 +121,7 @@ public class AdminUserController extends BaseController {
 
     @SaCheckPermission(value = "system:admin:user:batch:del")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "批量删除用户")
+    @Operation(summary = "批量删除用户")
     @EasyLog(module = "批量删除用户", operateType = OperateTypeEnum.DELETE)
     @PostMapping("/batchDel")
     public Result batchDel(@RequestBody List<Long> ids) {
@@ -130,7 +130,7 @@ public class AdminUserController extends BaseController {
 
     @SaCheckPermission(value = "system:admin:user:import")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "导入用户")
+    @Operation(summary = "导入用户")
     @EasyLog(module = "导入用户", operateType = OperateTypeEnum.IMPORT)
     @PostMapping("/import")
     public Result<ImportVO> importExcel(UploadDTO dto) throws IOException {
@@ -165,7 +165,7 @@ public class AdminUserController extends BaseController {
     @EasyNoRepeatSubmit
     @SaCheckPermission(value = "system:admin:user:export")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "导出用户")
+    @Operation(summary = "导出用户")
     @EasyLog(module = "导出用户", operateType = OperateTypeEnum.EXPORT)
     @PostMapping("/export")
     public void exportExcel(@Validated @RequestBody AdminUserQuery query) throws IOException {
@@ -189,7 +189,7 @@ public class AdminUserController extends BaseController {
     @EasyNoRepeatSubmit
     @SaCheckPermission(value = "system:admin:user:download")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "下载用户导入模板")
+    @Operation(summary = "下载用户导入模板")
     @EasyLog(module = "下载用户导入模板", operateType = OperateTypeEnum.EXPORT)
     @PostMapping("/download")
     public void downloadTemplate() throws IOException {

@@ -3,11 +3,10 @@ package com.easy.boot.common.saToken;
 import cn.dev33.satoken.interceptor.SaInterceptor;
 import cn.dev33.satoken.router.SaRouter;
 import com.easy.boot.admin.login.service.AdminLoginService;
+import jakarta.annotation.Resource;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-
-import javax.annotation.Resource;
 
 /**
  * @author zoe
@@ -38,7 +37,7 @@ public class SaTokenConfig implements WebMvcConfigurer {
                         "/favicon.ico",
                         "/doc.html",
                         "/swagger-resources/**",
-                        "/v2/**",
+                        "/v3/api-docs/**",
                         "/webjars/**");
     }
 }

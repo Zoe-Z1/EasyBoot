@@ -13,7 +13,7 @@ import ${pkg};
 <#if entityType == 'entity'>
 @TableName("${table.name}")
 </#if>
-@ApiModel(value = "${remarks!}实体")
+@Schema(title = "${remarks!}实体")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -37,7 +37,7 @@ public class ${className} {
 <#list columns as column>
 
     <#if column.columnRemarks!?length gt 0>
-    @ApiModelProperty("${column.columnRemarks}")
+    @Schema(title = "${column.columnRemarks}")
     </#if>
     <#if enableTableField>
         <#if column.isPrimaryKey == 0>

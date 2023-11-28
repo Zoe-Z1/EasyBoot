@@ -9,12 +9,12 @@ import com.easy.boot.common.base.Result;
 import com.easy.boot.common.log.EasyLog;
 import com.easy.boot.common.noRepeatSubmit.EasyNoRepeatSubmit;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
+import jakarta.annotation.Resource;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -22,7 +22,7 @@ import java.util.List;
  * @date 2023/07/30
  * @description 菜单 前端控制器
  */
-@Api(tags = "菜单接口")
+@Tag(name = "菜单接口")
 @RestController
 @RequestMapping("/admin/menu")
 public class MenuController extends BaseController {
@@ -33,7 +33,7 @@ public class MenuController extends BaseController {
 
     @SaCheckPermission(value = "system:menu:tree")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "获取菜单树")
+    @Operation(summary = "获取菜单树")
     @EasyLog(module = "获取菜单树", operateType = OperateTypeEnum.SELECT)
     @GetMapping("/tree")
     public Result<List<MenuTree>> tree(@Validated MenuTreeQuery query) {
@@ -42,7 +42,7 @@ public class MenuController extends BaseController {
 
     @SaCheckPermission(value = "system:menu:detail")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "获取菜单详情")
+    @Operation(summary = "获取菜单详情")
     @EasyLog(module = "获取菜单详情", operateType = OperateTypeEnum.SELECT)
     @GetMapping("/detail/{id}")
     public Result<Menu> detail(@PathVariable Long id) {
@@ -52,7 +52,7 @@ public class MenuController extends BaseController {
     @EasyNoRepeatSubmit
     @SaCheckPermission(value = "system:menu:create")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "创建菜单")
+    @Operation(summary = "创建菜单")
     @EasyLog(module = "创建菜单", operateType = OperateTypeEnum.CREATE)
     @PostMapping(value = "/create")
     public Result create(@Validated @RequestBody MenuCreateDTO dto) {
@@ -61,7 +61,7 @@ public class MenuController extends BaseController {
 
     @SaCheckPermission(value = "system:menu:update")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "编辑菜单")
+    @Operation(summary = "编辑菜单")
     @EasyLog(module = "编辑菜单", operateType = OperateTypeEnum.UPDATE)
     @PostMapping(value = "/update")
     public Result update(@Validated @RequestBody MenuUpdateDTO dto) {
@@ -70,7 +70,7 @@ public class MenuController extends BaseController {
 
     @SaCheckPermission(value = "system:menu:del")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "删除菜单")
+    @Operation(summary = "删除菜单")
     @EasyLog(module = "删除菜单", operateType = OperateTypeEnum.DELETE)
     @PostMapping("/delete/{id}")
     public Result delete(@PathVariable Long id) {

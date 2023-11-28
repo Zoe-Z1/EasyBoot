@@ -8,8 +8,8 @@ import com.easy.boot.common.excel.entity.UploadDTO;
 import com.easy.boot.common.log.EasyLog;
 import com.easy.boot.utils.FileUtil;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,14 +23,14 @@ import java.io.IOException;
  * @description 文件上传/下载控制器
  */
 @Slf4j
-@Api(tags = "文件相关接口")
+@Tag(name = "文件相关接口")
 @RestController
 @RequestMapping("/common")
 public class FileController extends BaseController {
 
 
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "上传文件")
+    @Operation(summary = "上传文件")
     @EasyLog(module = "上传文件", operateType = OperateTypeEnum.UPLOAD)
     @PostMapping("/uploadFile")
     public Result<UploadVO> upload(UploadDTO dto) throws IOException {
@@ -45,7 +45,7 @@ public class FileController extends BaseController {
     }
 
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "上传图片")
+    @Operation(summary = "上传图片")
     @EasyLog(module = "上传图片", operateType = OperateTypeEnum.UPLOAD)
     @PostMapping("/uploadImage")
     public Result<UploadVO> uploadImage(UploadDTO dto) throws IOException {
@@ -60,7 +60,7 @@ public class FileController extends BaseController {
     }
 
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "下载文件")
+    @Operation(summary = "下载文件")
     @EasyLog(module = "下载文件", operateType = OperateTypeEnum.DOWNLOAD)
     @PostMapping("/download")
     public void download(String path) throws IOException {

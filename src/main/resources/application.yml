@@ -105,24 +105,31 @@ mybatis-plus:
       # 逻辑删除 - 已删除
       logic-delete-value: 1
 
+springdoc:
+  swagger-ui:
+    enabled: true
+    #swagger后端访问地址
+    path: /swagger-ui.html
+    tags-sorter: alpha
+    operations-sorter: alpha
+  api-docs:
+    #是否开启文档功能
+    enabled: ${springdoc.swagger-ui.enabled}
+    path: /v3/api-docs
+  group-configs:
+    - group: 后台管理接口
+      paths-to-match: /**
+      packages-to-scan: com.easy.boot.admin
+  default-flat-param-object: true
+
 # 配置文档 https://doc.xiaominfo.com/docs/features/enhance
 knife4j:
-  enable: true
-  openapi:
-    title: EasyBoot官方文档
-    description: "基于SpringBoot2x的快速启动脚手架"
-    email: 2259965328@qq.com
-    concat: zoe
-    #    url: https://docs.xiaominfo.com
-    version: v1.0
-    group:
-      test1:
-        group-name: 后台管理接口
-        api-rule: package
-        api-rule-resources:
-          - com.easy.boot.admin
+  enable: ${springdoc.swagger-ui.enabled}
   setting:
     enable-footer: false
+    enable-footer-custom: true
+    swagger-model-name: 实体类列表
+    footer-custom-content: Copyright © 2023-2026 easyboot.cn 版权所有.(https://gitee.com/thisZhuMy_admin/easy-boot-v3)
 
 captcha:
   prefix: easy:boot:captcha

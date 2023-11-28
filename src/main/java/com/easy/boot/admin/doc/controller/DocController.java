@@ -6,8 +6,8 @@ import com.easy.boot.admin.operationLog.enums.OperateTypeEnum;
 import com.easy.boot.common.base.Result;
 import com.easy.boot.common.log.EasyLog;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @description 接口文档接口
  */
 @Slf4j
-@Api(tags = "接口文档接口")
+@Tag(name = "接口文档接口")
 @RestController
 @RequestMapping("/admin/doc")
 public class DocController {
@@ -39,7 +39,7 @@ public class DocController {
 
     @SaCheckPermission(value = "dev:doc:detail")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "获取接口文档详情")
+    @Operation(summary = "获取接口文档详情")
     @EasyLog(module = "获取接口文档详情", operateType = OperateTypeEnum.SELECT)
     @GetMapping("/detail")
     public Result<DocVO> detail() {

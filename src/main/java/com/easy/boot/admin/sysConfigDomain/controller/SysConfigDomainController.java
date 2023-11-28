@@ -14,13 +14,13 @@ import com.easy.boot.common.base.Result;
 import com.easy.boot.common.log.EasyLog;
 import com.easy.boot.common.noRepeatSubmit.EasyNoRepeatSubmit;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -29,7 +29,7 @@ import java.util.List;
  * @description 系统配置域 前端控制器
  */
 @Slf4j
-@Api(tags = "系统配置域接口")
+@Tag(name = "系统配置域接口")
 @RestController
 @RequestMapping("/admin/sysConfigDomain")
 public class SysConfigDomainController extends BaseController {
@@ -39,7 +39,7 @@ public class SysConfigDomainController extends BaseController {
 
 
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "获取全部全局配置")
+    @Operation(summary = "获取全部全局配置")
     @EasyLog(module = "获取全部全局配置", operateType = OperateTypeEnum.SELECT)
     @GetMapping("/global/all")
     public Result<List<SysConfig>> globalAll() {
@@ -48,7 +48,7 @@ public class SysConfigDomainController extends BaseController {
 
     @SaCheckPermission(value = "system:sys:config:domain:page")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "分页获取系统配置域列表")
+    @Operation(summary = "分页获取系统配置域列表")
     @EasyLog(module = "分页获取系统配置域列表", operateType = OperateTypeEnum.SELECT)
     @GetMapping("/page")
     public Result<IPage<SysConfigDomain>> page(@Validated SysConfigDomainQuery query) {
@@ -58,7 +58,7 @@ public class SysConfigDomainController extends BaseController {
     @EasyNoRepeatSubmit
     @SaCheckPermission(value = "system:sys:config:domain:create")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "创建系统配置域")
+    @Operation(summary = "创建系统配置域")
     @EasyLog(module = "创建系统配置域", operateType = OperateTypeEnum.CREATE)
     @PostMapping(value = "/create")
     public Result create(@Validated @RequestBody SysConfigDomainCreateDTO dto) {
@@ -67,7 +67,7 @@ public class SysConfigDomainController extends BaseController {
 
     @SaCheckPermission(value = "system:sys:config:domain:update")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "编辑系统配置域")
+    @Operation(summary = "编辑系统配置域")
     @EasyLog(module = "编辑系统配置域", operateType = OperateTypeEnum.UPDATE)
     @PostMapping(value = "/update")
     public Result update(@Validated @RequestBody SysConfigDomainUpdateDTO dto) {
@@ -76,7 +76,7 @@ public class SysConfigDomainController extends BaseController {
 
     @SaCheckPermission(value = "system:sys:config:domain:del")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "删除系统配置域")
+    @Operation(summary = "删除系统配置域")
     @EasyLog(module = "删除系统配置域", operateType = OperateTypeEnum.DELETE)
     @PostMapping("/delete/{id}")
     public Result delete(@PathVariable Long id) {

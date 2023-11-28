@@ -14,13 +14,13 @@ import com.easy.boot.common.base.Result;
 import com.easy.boot.common.log.EasyLog;
 import com.easy.boot.common.noRepeatSubmit.EasyNoRepeatSubmit;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
 import java.io.IOException;
 import java.util.List;
 
@@ -30,7 +30,7 @@ import java.util.List;
  * @description 调度日志 前端控制器
  */
 @Slf4j
-@Api(tags = "调度日志接口")
+@Tag(name = "调度日志接口")
 @RestController
 @RequestMapping("/admin/taskLog")
 public class TaskLogController extends BaseController {
@@ -41,7 +41,7 @@ public class TaskLogController extends BaseController {
 
     @SaCheckPermission(value = "log:task:log:page")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "分页获取调度日志列表")
+    @Operation(summary = "分页获取调度日志列表")
     @EasyLog(module = "分页获取调度日志列表", operateType = OperateTypeEnum.SELECT)
     @GetMapping("/page")
     public Result<IPage<TaskLog>> page(@Validated TaskLogQuery query) {
@@ -50,7 +50,7 @@ public class TaskLogController extends BaseController {
 
     @SaCheckPermission(value = "log:task:log:del")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "删除调度日志")
+    @Operation(summary = "删除调度日志")
     @EasyLog(module = "删除调度日志", operateType = OperateTypeEnum.DELETE)
     @PostMapping("/delete/{id}")
     public Result delete(@PathVariable Long id) {
@@ -59,7 +59,7 @@ public class TaskLogController extends BaseController {
 
     @SaCheckPermission(value = "log:task:log:batch:del")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "批量删除调度日志")
+    @Operation(summary = "批量删除调度日志")
     @EasyLog(module = "批量删除调度日志", operateType = OperateTypeEnum.DELETE)
     @PostMapping("/batchDel")
     public Result batchDel(@RequestBody List<Long> ids) {
@@ -68,7 +68,7 @@ public class TaskLogController extends BaseController {
 
     @SaCheckPermission(value = "log:task:log:clear")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "清空调度日志")
+    @Operation(summary = "清空调度日志")
     @EasyLog(module = "清空调度日志", operateType = OperateTypeEnum.CLEAR)
     @PostMapping("/clear")
     public Result clear() {
@@ -78,7 +78,7 @@ public class TaskLogController extends BaseController {
     @EasyNoRepeatSubmit
     @SaCheckPermission(value = "log:task:log:export")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "导出调度日志")
+    @Operation(summary = "导出调度日志")
     @EasyLog(module = "导出调度日志", operateType = OperateTypeEnum.EXPORT)
     @PostMapping("/export")
     public void exportExcel(@Validated @RequestBody TaskLogQuery query) throws IOException {

@@ -22,14 +22,14 @@ import com.easy.boot.common.noRepeatSubmit.EasyNoRepeatSubmit;
 import com.easy.boot.exception.BusinessException;
 import com.easy.boot.utils.BeanUtil;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.Assert;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.*;
@@ -41,7 +41,7 @@ import java.util.stream.Collectors;
  * @description 数据字典 前端控制器
  */
 @Slf4j
-@Api(tags = "数据字典接口")
+@Tag(name = "数据字典接口")
 @RestController
 @RequestMapping("/admin/dataDict")
 public class DataDictController extends BaseController {
@@ -55,7 +55,7 @@ public class DataDictController extends BaseController {
 
     @SaCheckPermission(value = "system:data:dict:page")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "分页获取数据字典列表")
+    @Operation(summary = "分页获取数据字典列表")
     @EasyLog(module = "分页获取数据字典列表", operateType = OperateTypeEnum.SELECT)
     @GetMapping("/page")
     public Result<IPage<DataDict>> page(@Validated DataDictQuery query) {
@@ -63,7 +63,7 @@ public class DataDictController extends BaseController {
     }
 
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "获取全部数据字典")
+    @Operation(summary = "获取全部数据字典")
     @EasyLog(module = "获取全部数据字典", operateType = OperateTypeEnum.SELECT)
     @GetMapping("/all")
     public Result<Map<String, List<DataDict>>> all() {
@@ -72,7 +72,7 @@ public class DataDictController extends BaseController {
     }
 
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "使用编码获取数据字典列表")
+    @Operation(summary = "使用编码获取数据字典列表")
     @EasyLog(module = "使用编码获取数据字典列表", operateType = OperateTypeEnum.SELECT)
     @GetMapping("/listByCode")
     public Result<List<DataDict>> listByCode(@Validated ListQuery query) {
@@ -81,7 +81,7 @@ public class DataDictController extends BaseController {
 
     @SaCheckPermission(value = "system:data:dict:detail")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "获取数据字典详情")
+    @Operation(summary = "获取数据字典详情")
     @EasyLog(module = "获取数据字典详情", operateType = OperateTypeEnum.SELECT)
     @GetMapping("/detail/{id}")
     public Result<DataDict> detail(@PathVariable Long id) {
@@ -91,7 +91,7 @@ public class DataDictController extends BaseController {
     @EasyNoRepeatSubmit
     @SaCheckPermission(value = "system:data:dict:create")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "创建数据字典")
+    @Operation(summary = "创建数据字典")
     @EasyLog(module = "创建数据字典", operateType = OperateTypeEnum.CREATE)
     @PostMapping(value = "/create")
     public Result create(@Validated @RequestBody DataDictCreateDTO dto) {
@@ -100,7 +100,7 @@ public class DataDictController extends BaseController {
 
     @SaCheckPermission(value = "system:data:dict:update")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "编辑数据字典")
+    @Operation(summary = "编辑数据字典")
     @EasyLog(module = "编辑数据字典", operateType = OperateTypeEnum.UPDATE)
     @PostMapping(value = "/update")
     public Result update(@Validated @RequestBody DataDictUpdateDTO dto) {
@@ -109,7 +109,7 @@ public class DataDictController extends BaseController {
 
     @SaCheckPermission(value = "system:data:dict:del")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "删除数据字典")
+    @Operation(summary = "删除数据字典")
     @EasyLog(module = "删除数据字典", operateType = OperateTypeEnum.DELETE)
     @PostMapping("/delete/{id}")
     public Result delete(@PathVariable Long id) {
@@ -118,7 +118,7 @@ public class DataDictController extends BaseController {
 
     @SaCheckPermission(value = "system:data:dict:batch:del")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "批量删除数据字典")
+    @Operation(summary = "批量删除数据字典")
     @EasyLog(module = "批量删除数据字典", operateType = OperateTypeEnum.DELETE)
     @PostMapping("/batchDel")
     public Result batchDel(@RequestBody List<Long> ids) {
@@ -127,7 +127,7 @@ public class DataDictController extends BaseController {
 
     @SaCheckPermission(value = "system:data:dict:import")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "导入数据字典")
+    @Operation(summary = "导入数据字典")
     @EasyLog(module = "导入数据字典", operateType = OperateTypeEnum.IMPORT)
     @PostMapping("/import")
     public Result<ImportVO> importExcel(UploadDTO dto, Long domainId) throws IOException {
@@ -164,7 +164,7 @@ public class DataDictController extends BaseController {
     @EasyNoRepeatSubmit
     @SaCheckPermission(value = "system:data:dict:export")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "导出数据字典")
+    @Operation(summary = "导出数据字典")
     @EasyLog(module = "导出数据字典", operateType = OperateTypeEnum.EXPORT)
     @PostMapping("/export")
     public void exportExcel(@Validated @RequestBody DataDictQuery query) throws IOException {
@@ -197,7 +197,7 @@ public class DataDictController extends BaseController {
     @EasyNoRepeatSubmit
     @SaCheckPermission(value = "system:data:dict:download")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "下载数据字典导入模板")
+    @Operation(summary = "下载数据字典导入模板")
     @EasyLog(module = "下载数据字典导入模板", operateType = OperateTypeEnum.EXPORT)
     @PostMapping("/download")
     public void downloadTemplate() throws IOException {

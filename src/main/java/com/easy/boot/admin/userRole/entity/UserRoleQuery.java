@@ -1,8 +1,8 @@
 package com.easy.boot.admin.userRole.entity;
 
 import com.easy.boot.common.base.BasePageQuery;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -19,12 +19,12 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel(value = "UserRoleQuery对象", description = "用户角色关联")
+@Schema(title = "UserRoleQuery对象", description = "用户角色关联")
 public class UserRoleQuery extends BasePageQuery {
 
-    @ApiModelProperty("用户ID")
+    @Schema(title = "用户ID")
     private Long userId;
 
-    @ApiModelProperty("角色ID")
+    @Schema(title = "角色ID")
     private Long roleId;
 }

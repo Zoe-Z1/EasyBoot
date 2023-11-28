@@ -1,8 +1,8 @@
 package com.easy.boot.admin.blacklist.entity;
 
 import com.easy.boot.common.base.BasePageQuery;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -19,25 +19,25 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel(value = "BlacklistQuery对象", description = "黑名单")
+@Schema(title = "BlacklistQuery对象", description = "黑名单")
 public class BlacklistQuery extends BasePageQuery {
 
-    @ApiModelProperty("类型 1：账号 2：IP")
+    @Schema(title = "类型 1：账号 2：IP")
     private Integer type;
 
-    @ApiModelProperty("关联数据  IP地址或用户账号")
+    @Schema(title = "关联数据  IP地址或用户账号")
     private String relevanceData;
 
-    @ApiModelProperty("操作人账号")
+    @Schema(title = "操作人账号")
     private String createUsername;
 
-    @ApiModelProperty("开始时间")
+    @Schema(title = "开始时间")
     private Long startTime;
 
-    @ApiModelProperty("结束时间")
+    @Schema(title = "结束时间")
     private Long endTime;
 
-    @ApiModelProperty("拉黑状态 1：拉黑中 2：已失效")
+    @Schema(title = "拉黑状态 1：拉黑中 2：已失效")
     private Integer status;
 
 }

@@ -8,10 +8,10 @@ import com.easy.boot.admin.login.entity.LoginHandlerAfterDO;
 import com.easy.boot.admin.login.service.LoginAfterHandler;
 import com.easy.boot.admin.user.entity.AdminUser;
 import com.easy.boot.utils.IpUtil;
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import java.util.Objects;
 
 /**

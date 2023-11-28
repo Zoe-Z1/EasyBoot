@@ -3,6 +3,7 @@ package com.easy.boot.common.redisson;
 import cn.hutool.core.util.StrUtil;
 import com.easy.boot.common.redis.RedisKeyEnum;
 import com.easy.boot.exception.LockException;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -12,7 +13,7 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
-import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
+import org.springframework.core.StandardReflectionParameterNameDiscoverer;
 import org.springframework.expression.EvaluationContext;
 import org.springframework.expression.Expression;
 import org.springframework.expression.ExpressionParser;
@@ -20,7 +21,6 @@ import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
 import java.lang.reflect.Method;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
@@ -144,7 +144,7 @@ public class EasyLockAspect {
     public String parseSpel(String key, Method method, Object[] args) {
         ExpressionParser parser = new SpelExpressionParser();
         EvaluationContext context = new StandardEvaluationContext();
-        LocalVariableTableParameterNameDiscoverer discoverer = new LocalVariableTableParameterNameDiscoverer();
+        StandardReflectionParameterNameDiscoverer discoverer = new StandardReflectionParameterNameDiscoverer();
         String[] paramNames = discoverer.getParameterNames(method);
         if (Objects.isNull(paramNames)) {
             return key;

@@ -1,7 +1,7 @@
 package com.easy.boot.admin.generateConfig.entity;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,49 +16,49 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel("代码生成模板对象")
+@Schema(title = "代码生成模板对象")
 public class GenerateTemplate {
 
-    @ApiModelProperty("Controller")
+    @Schema(title = "Controller")
     private Template controller;
 
-    @ApiModelProperty("Service")
+    @Schema(title = "Service")
     private Template service;
 
-    @ApiModelProperty("ServiceImpl")
+    @Schema(title = "ServiceImpl")
     private Template serviceImpl;
 
-    @ApiModelProperty("Mapper")
+    @Schema(title = "Mapper")
     private Template mapper;
 
-    @ApiModelProperty("Mapper.xml")
+    @Schema(title = "Mapper.xml")
     private Template xml;
 
-    @ApiModelProperty("Entity")
+    @Schema(title = "Entity")
     private Template entity;
 
-    @ApiModelProperty("CreateDTO")
+    @Schema(title = "CreateDTO")
     private Template createDTO;
 
-    @ApiModelProperty("UpdateDTO")
+    @Schema(title = "UpdateDTO")
     private UpdateDTO updateDTO;
 
-    @ApiModelProperty("Query")
+    @Schema(title = "Query")
     private Template query;
 
-    @ApiModelProperty("VO")
+    @Schema(title = "VO")
     private Template vo;
 
-    @ApiModelProperty("Sql")
+    @Schema(title = "Sql")
     private Sql sql;
 
-    @ApiModelProperty("index.vue")
+    @Schema(title = "index.vue")
     private Template indexVue;
 
-    @ApiModelProperty("save.vue")
+    @Schema(title = "save.vue")
     private Template saveVue;
 
-    @ApiModelProperty("js")
+    @Schema(title = "js")
     private Template js;
 
     public static GenerateTemplate defaultBuild() {

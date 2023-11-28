@@ -14,6 +14,8 @@ import com.easy.boot.common.properties.EasyLogFilter;
 import com.easy.boot.common.saToken.UserContext;
 import com.easy.boot.utils.IpUtil;
 import com.easy.boot.utils.JsonUtil;
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.SneakyThrows;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -23,8 +25,6 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 

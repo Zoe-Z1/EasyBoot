@@ -21,10 +21,10 @@ import com.easy.boot.common.generator.db.convert.ColumnConvertHandler;
 import com.easy.boot.common.generator.db.convert.DbColumnTypeEnum;
 import com.easy.boot.common.redisson.EasyLock;
 import com.easy.boot.utils.JsonUtil;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
 import javax.sql.DataSource;
 import java.util.List;
 import java.util.Map;

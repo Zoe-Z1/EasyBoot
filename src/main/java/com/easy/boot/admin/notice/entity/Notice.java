@@ -3,8 +3,8 @@ package com.easy.boot.admin.notice.entity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.easy.boot.common.base.BaseEntity;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -15,7 +15,7 @@ import lombok.experimental.SuperBuilder;
  * @description 公告实体
  */
 @TableName("notice")
-@ApiModel(value = "公告实体")
+@Schema(title = "公告实体")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -25,27 +25,27 @@ import lombok.experimental.SuperBuilder;
 public class Notice extends BaseEntity {
 
 
-    @ApiModelProperty("公告标题")
+    @Schema(title = "公告标题")
     @TableField("title")
     private String title;
 
-    @ApiModelProperty("公告内容")
+    @Schema(title = "公告内容")
     @TableField("content")
     private String content;
 
-    @ApiModelProperty("公告状态 #1：正常，2：禁用")
+    @Schema(title = "公告状态 #1：正常，2：禁用")
     @TableField("status")
     private Integer status;
 
-    @ApiModelProperty("开始时间")
+    @Schema(title = "开始时间")
     @TableField("startTime")
     private Long startTime;
 
-    @ApiModelProperty("结束时间")
+    @Schema(title = "结束时间")
     @TableField("endTime")
     private Long endTime;
 
-    @ApiModelProperty("排序")
+    @Schema(title = "排序")
     @TableField("sort")
     private Integer sort;
 }

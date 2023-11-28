@@ -19,14 +19,14 @@ import com.easy.boot.common.excel.handler.ExportExcelSelectCellWriteHandler;
 import com.easy.boot.common.log.EasyLog;
 import com.easy.boot.common.noRepeatSubmit.EasyNoRepeatSubmit;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.Assert;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -40,7 +40,7 @@ import java.util.List;
  * @description 角色 前端控制器
  */
 @Slf4j
-@Api(tags = "角色接口")
+@Tag(name = "角色接口")
 @RestController
 @RequestMapping("/admin/role")
 public class RoleController extends BaseController {
@@ -54,7 +54,7 @@ public class RoleController extends BaseController {
 
     @SaCheckPermission(value = "system:role:all")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "获取全部角色")
+    @Operation(summary = "获取全部角色")
     @EasyLog(module = "获取全部角色", operateType = OperateTypeEnum.SELECT)
     @GetMapping("/all")
     public Result<List<Role>> all() {
@@ -63,7 +63,7 @@ public class RoleController extends BaseController {
 
     @SaCheckPermission(value = "system:role:page")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "分页获取角色列表")
+    @Operation(summary = "分页获取角色列表")
     @EasyLog(module = "分页获取角色列表", operateType = OperateTypeEnum.SELECT)
     @GetMapping("/page")
     public Result<IPage<Role>> page(@Validated RoleQuery query) {
@@ -72,7 +72,7 @@ public class RoleController extends BaseController {
 
     @SaCheckPermission(value = "system:role:detail")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "获取角色详情")
+    @Operation(summary = "获取角色详情")
     @EasyLog(module = "获取角色详情", operateType = OperateTypeEnum.SELECT)
     @GetMapping("/detail/{id}")
     public Result<RoleVO> detail(@PathVariable Long id) {
@@ -82,7 +82,7 @@ public class RoleController extends BaseController {
     @EasyNoRepeatSubmit
     @SaCheckPermission(value = "system:role:create")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "创建角色")
+    @Operation(summary = "创建角色")
     @EasyLog(module = "创建角色", operateType = OperateTypeEnum.CREATE)
     @PostMapping(value = "/create")
     public Result create(@Validated @RequestBody RoleCreateDTO dto) {
@@ -91,7 +91,7 @@ public class RoleController extends BaseController {
 
     @SaCheckPermission(value = "system:role:allot:user")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "角色分配用户")
+    @Operation(summary = "角色分配用户")
     @EasyLog(module = "角色分配用户", operateType = OperateTypeEnum.CREATE)
     @PostMapping(value = "/allotUser")
     public Result roleAllotUser(@Validated @RequestBody RoleAllotUserDTO dto) {
@@ -100,7 +100,7 @@ public class RoleController extends BaseController {
 
     @SaCheckPermission(value = "system:role:update")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "编辑角色")
+    @Operation(summary = "编辑角色")
     @EasyLog(module = "编辑角色", operateType = OperateTypeEnum.UPDATE)
     @PostMapping(value = "/update")
     public Result update(@Validated @RequestBody RoleUpdateDTO dto) {
@@ -109,7 +109,7 @@ public class RoleController extends BaseController {
 
     @SaCheckPermission(value = "system:role:del")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "删除角色")
+    @Operation(summary = "删除角色")
     @EasyLog(module = "删除角色", operateType = OperateTypeEnum.DELETE)
     @PostMapping("/delete/{id}")
     public Result delete(@PathVariable Long id) {
@@ -118,7 +118,7 @@ public class RoleController extends BaseController {
 
     @SaCheckPermission(value = "system:role:batch:del")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "批量删除角色")
+    @Operation(summary = "批量删除角色")
     @EasyLog(module = "批量删除角色", operateType = OperateTypeEnum.DELETE)
     @PostMapping("/batchDel")
     public Result batchDel(@RequestBody List<Long> ids) {
@@ -127,7 +127,7 @@ public class RoleController extends BaseController {
 
     @SaCheckPermission(value = "system:role:import")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "导入角色")
+    @Operation(summary = "导入角色")
     @EasyLog(module = "导入角色", operateType = OperateTypeEnum.IMPORT)
     @PostMapping("/import")
     public Result<ImportVO> importExcel(UploadDTO dto) throws IOException {
@@ -162,7 +162,7 @@ public class RoleController extends BaseController {
     @EasyNoRepeatSubmit
     @SaCheckPermission(value = "system:role:export")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "导出角色")
+    @Operation(summary = "导出角色")
     @EasyLog(module = "导出角色", operateType = OperateTypeEnum.EXPORT)
     @PostMapping("/export")
     public void exportExcel(@Validated @RequestBody RoleQuery query) throws IOException {
@@ -185,7 +185,7 @@ public class RoleController extends BaseController {
     @EasyNoRepeatSubmit
     @SaCheckPermission(value = "system:role:download")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "下载角色导入模板")
+    @Operation(summary = "下载角色导入模板")
     @EasyLog(module = "下载角色导入模板", operateType = OperateTypeEnum.EXPORT)
     @PostMapping("/download")
     public void downloadTemplate() throws IOException {

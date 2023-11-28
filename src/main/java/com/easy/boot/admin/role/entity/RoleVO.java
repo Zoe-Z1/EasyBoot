@@ -2,8 +2,8 @@ package com.easy.boot.admin.role.entity;
 
 import com.easy.boot.common.Jackson.ToStringListSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -22,10 +22,10 @@ import java.util.List;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel("角色视图")
+@Schema(title = "角色视图")
 public class RoleVO extends Role {
 
     @JsonSerialize(using = ToStringListSerializer.class)
-    @ApiModelProperty("菜单ID集合")
+    @Schema(title = "菜单ID集合")
     private List<Long> menuIds;
 }

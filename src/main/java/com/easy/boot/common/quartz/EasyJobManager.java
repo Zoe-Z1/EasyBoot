@@ -6,12 +6,12 @@ import com.easy.boot.admin.scheduledTask.entity.StartNowJobDTO;
 import com.easy.boot.admin.scheduledTask.mapper.ScheduledTaskMapper;
 import com.easy.boot.exception.BusinessException;
 import com.easy.boot.exception.JobException;
+import jakarta.annotation.PostConstruct;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.*;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 

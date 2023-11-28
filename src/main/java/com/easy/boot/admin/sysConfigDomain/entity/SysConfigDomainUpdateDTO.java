@@ -1,14 +1,14 @@
 package com.easy.boot.admin.sysConfigDomain.entity;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 /**
 * @author zoe
@@ -20,11 +20,11 @@ import javax.validation.constraints.NotNull;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel(value = "SysConfigDomain对象", description = "系统配置域")
+@Schema(title = "SysConfigDomain对象", description = "系统配置域")
 public class SysConfigDomainUpdateDTO extends SysConfigDomainCreateDTO {
 
     @NotNull(message = "系统配置域ID不能为空")
-    @ApiModelProperty(required = true, value = "系统配置域ID")
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED, title = "系统配置域ID")
     private Long id;
 
 }

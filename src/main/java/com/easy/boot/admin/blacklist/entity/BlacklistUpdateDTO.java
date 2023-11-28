@@ -1,13 +1,13 @@
 package com.easy.boot.admin.blacklist.entity;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 /**
 * @author zoe
@@ -18,15 +18,15 @@ import javax.validation.constraints.NotNull;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel(value = "Blacklist对象", description = "黑名单")
+@Schema(title = "Blacklist对象", description = "黑名单")
 public class BlacklistUpdateDTO {
 
     @NotNull(message = "黑名单ID不能为空")
-    @ApiModelProperty(required = true, value = "黑名单ID")
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED, title = "黑名单ID")
     private Long id;
 
     @NotNull(message = "拉黑结束时间不能为空")
-    @ApiModelProperty(required = true, value = "拉黑结束时间 0代表永久")
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED, title = "拉黑结束时间 0代表永久")
     private Long endTime;
 
 }

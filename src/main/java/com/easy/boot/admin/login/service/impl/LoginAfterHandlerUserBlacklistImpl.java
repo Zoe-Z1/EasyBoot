@@ -7,9 +7,9 @@ import com.easy.boot.admin.login.entity.LoginDTO;
 import com.easy.boot.admin.login.entity.LoginHandlerAfterDO;
 import com.easy.boot.admin.login.service.LoginAfterHandler;
 import com.easy.boot.admin.user.entity.AdminUser;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.util.Objects;
 
 /**

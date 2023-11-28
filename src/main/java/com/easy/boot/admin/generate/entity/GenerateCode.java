@@ -1,7 +1,7 @@
 package com.easy.boot.admin.generate.entity;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -11,7 +11,7 @@ import lombok.experimental.SuperBuilder;
  * @date 2023/09/10
  * @description 代码生成实体
  */
-@ApiModel(value = "代码生成实体")
+@Schema(title = "代码生成实体")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -20,19 +20,19 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode
 public class GenerateCode {
 
-    @ApiModelProperty(value = "作者")
+    @Schema(title = "作者")
     private String author;
 
-    @ApiModelProperty(value = "文件名")
+    @Schema(title = "文件名")
     private String filename;
 
-    @ApiModelProperty(value = "文件生成路径")
+    @Schema(title = "文件生成路径")
     private String genPath;
 
-    @ApiModelProperty(value = "文件内容")
+    @Schema(title = "文件内容")
     private String fileContent;
 
-    @ApiModelProperty(value = "是否执行SQL")
+    @Schema(title = "是否执行SQL")
     private Boolean execute;
 
 }

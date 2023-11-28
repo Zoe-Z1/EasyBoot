@@ -6,9 +6,9 @@ import com.easy.boot.admin.role.entity.Role;
 import com.easy.boot.admin.role.service.IRoleService;
 import com.easy.boot.common.base.BaseEntity;
 import com.easy.boot.utils.Constant;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;

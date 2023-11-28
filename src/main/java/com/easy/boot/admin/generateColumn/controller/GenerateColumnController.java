@@ -10,13 +10,13 @@ import com.easy.boot.common.base.BaseController;
 import com.easy.boot.common.base.Result;
 import com.easy.boot.common.log.EasyLog;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -25,7 +25,7 @@ import java.util.List;
  * @description 代码生成列配置接口
  */
 @Slf4j
-@Api(tags = "代码生成列配置接口")
+@Tag(name = "代码生成列配置接口")
 @RestController
 @RequestMapping("/admin/generateColumn")
 public class GenerateColumnController extends BaseController {
@@ -36,7 +36,7 @@ public class GenerateColumnController extends BaseController {
 
     @SaCheckPermission(value = "dev:gen:column:list")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "获取代码生成Table中的列")
+    @Operation(summary = "获取代码生成Table中的列")
     @EasyLog(module = "获取代码生成Table中的列", operateType = OperateTypeEnum.SELECT)
     @GetMapping("/list")
     public Result<List<GenerateColumn>> list(@Validated GenerateColumnQuery query) {
@@ -45,7 +45,7 @@ public class GenerateColumnController extends BaseController {
 
     @SaCheckPermission(value = "dev:gen:column:update")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "编辑代码生成列配置")
+    @Operation(summary = "编辑代码生成列配置")
     @EasyLog(module = "编辑代码生成列配置", operateType = OperateTypeEnum.UPDATE)
     @PostMapping(value = "/update")
     public Result update(@Validated @RequestBody List<GenerateColumnUpdateDTO> dto) {
@@ -55,7 +55,7 @@ public class GenerateColumnController extends BaseController {
 
     @SaCheckPermission(value = "dev:gen:column:del")
     @ApiOperationSupport(author = "zoe")
-    @ApiOperation(value = "重置代码生成列配置")
+    @Operation(summary = "重置代码生成列配置")
     @EasyLog(module = "重置代码生成列配置", operateType = OperateTypeEnum.DELETE)
     @PostMapping("/delete/{tableName}")
     public Result delete(@PathVariable String tableName) {

@@ -10,10 +10,10 @@ import com.easy.boot.common.saToken.UserContext;
 import com.easy.boot.exception.BusinessException;
 import com.easy.boot.exception.enums.SystemErrorEnum;
 import com.easy.boot.utils.IpUtil;
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import java.util.Objects;
 
 /**
