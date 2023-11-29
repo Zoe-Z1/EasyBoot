@@ -19,16 +19,16 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
         <java.version>1.8</java.version>
-        <spring-boot-starter.version>2.7.17</spring-boot-starter.version>
-        <spring-boot-starter-web.version>2.7.17</spring-boot-starter-web.version>
-        <spring-boot-starter-aop.version>2.7.17</spring-boot-starter-aop.version>
-        <spring-boot-quartz.version>2.7.17</spring-boot-quartz.version>
-        <spring-boot-starter-freemarker.version>2.7.17</spring-boot-starter-freemarker.version>
-        <spring-boot-starter-data-redis.version>2.7.17</spring-boot-starter-data-redis.version>
-        <spring-boot-configuration-processor.version>2.7.17</spring-boot-configuration-processor.version>
+        <spring-boot-starter.version>2.7.18</spring-boot-starter.version>
+        <spring-boot-starter-web.version>2.7.18</spring-boot-starter-web.version>
+        <spring-boot-starter-aop.version>2.7.18</spring-boot-starter-aop.version>
+        <spring-boot-quartz.version>2.7.18</spring-boot-quartz.version>
+        <spring-boot-starter-freemarker.version>2.7.18</spring-boot-starter-freemarker.version>
+        <spring-boot-starter-data-redis.version>2.7.18</spring-boot-starter-data-redis.version>
+        <spring-boot-configuration-processor.version>2.7.18</spring-boot-configuration-processor.version>
         <spring-boot-configuration-devtools.version>2.7.18</spring-boot-configuration-devtools.version>
         <spring-boot-maven-plugin.version>2.7.18</spring-boot-maven-plugin.version>
-        <spring-boot-starter-test.version>2.7.17</spring-boot-starter-test.version>
+        <spring-boot-starter-test.version>2.7.18</spring-boot-starter-test.version>
         <lombok.version>1.18.30</lombok.version>
         <hutool.version>5.8.23</hutool.version>
         <mybatis-plus.version>3.5.4.1</mybatis-plus.version>
