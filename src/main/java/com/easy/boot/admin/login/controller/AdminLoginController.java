@@ -1,8 +1,7 @@
 package com.easy.boot.admin.login.controller;
 
+
 import cloud.tianai.captcha.common.response.ApiResponse;
-import cloud.tianai.captcha.spring.vo.CaptchaResponse;
-import cloud.tianai.captcha.spring.vo.ImageCaptchaVO;
 import cloud.tianai.captcha.validator.common.model.dto.ImageCaptchaTrack;
 import com.easy.boot.admin.login.entity.LoginDTO;
 import com.easy.boot.admin.login.entity.TokenVO;
@@ -10,6 +9,8 @@ import com.easy.boot.admin.login.service.AdminLoginService;
 import com.easy.boot.admin.operationLog.enums.OperateTypeEnum;
 import com.easy.boot.admin.user.entity.AdminUser;
 import com.easy.boot.common.base.Result;
+import com.easy.boot.common.captcha.vo.CaptchaResponse;
+import com.easy.boot.common.captcha.vo.ImageCaptchaVO;
 import com.easy.boot.common.log.EasyLog;
 import com.easy.boot.common.noRepeatSubmit.EasyNoRepeatSubmit;
 import com.easy.boot.common.saToken.UserContext;

@@ -2,11 +2,11 @@ package com.easy.boot.admin.login.service;
 
 
 import cloud.tianai.captcha.common.response.ApiResponse;
-import cloud.tianai.captcha.spring.vo.CaptchaResponse;
-import cloud.tianai.captcha.spring.vo.ImageCaptchaVO;
 import cloud.tianai.captcha.validator.common.model.dto.ImageCaptchaTrack;
 import com.easy.boot.admin.login.entity.LoginDTO;
 import com.easy.boot.admin.user.entity.AdminUser;
+import com.easy.boot.common.captcha.vo.CaptchaResponse;
+import com.easy.boot.common.captcha.vo.ImageCaptchaVO;
 
 /**
  * @author zoe

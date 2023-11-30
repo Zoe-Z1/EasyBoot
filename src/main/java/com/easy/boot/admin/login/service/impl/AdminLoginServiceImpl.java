@@ -1,10 +1,8 @@
 package com.easy.boot.admin.login.service.impl;
 
+
 import cloud.tianai.captcha.common.constant.CaptchaTypeConstant;
 import cloud.tianai.captcha.common.response.ApiResponse;
-import cloud.tianai.captcha.spring.application.ImageCaptchaApplication;
-import cloud.tianai.captcha.spring.vo.CaptchaResponse;
-import cloud.tianai.captcha.spring.vo.ImageCaptchaVO;
 import cloud.tianai.captcha.validator.common.model.dto.ImageCaptchaTrack;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.collection.CollUtil;
@@ -25,6 +23,9 @@ import com.easy.boot.admin.sysConfigDomain.enums.SysConfigDomainCodeEnum;
 import com.easy.boot.admin.sysConfigDomain.service.ISysConfigDomainService;
 import com.easy.boot.admin.user.entity.AdminUser;
 import com.easy.boot.admin.user.service.AdminUserService;
+import com.easy.boot.common.captcha.application.ImageCaptchaApplication;
+import com.easy.boot.common.captcha.vo.CaptchaResponse;
+import com.easy.boot.common.captcha.vo.ImageCaptchaVO;
 import com.easy.boot.common.redis.EasyRedisManager;
 import com.easy.boot.common.redis.RedisKeyEnum;
 import com.easy.boot.common.saToken.UserContext;
