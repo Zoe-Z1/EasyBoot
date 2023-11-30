@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.easy.boot</groupId>
-    <artifactId>easyboot-v3</artifactId>
+    <artifactId>easy-boot3</artifactId>
     <version>1.0.0</version>
-    <name>EasyBoot</name>
-    <description>EasyBoot for Spring Boot</description>
+    <name>EasyBoot3</name>
+    <description>EasyBoot SpringBoot3版本</description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
