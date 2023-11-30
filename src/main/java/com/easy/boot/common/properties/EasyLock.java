@@ -28,11 +28,13 @@ public class EasyLock implements Serializable {
     /**
      * 锁持有时间/s
      */
+    @Builder.Default
     private Long leaseTime = 30L;
 
     /**
      * 获取锁等待时长/s
      */
+    @Builder.Default
     private Long waitTime = 5L;
 
 }
