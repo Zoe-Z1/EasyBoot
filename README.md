@@ -1,20 +1,30 @@
 ## 简介
-一个后端使用Jdk1.8+Springboot2.7x+Mysql8.0+Redis，
-前端使用Vue2+Vite3+Element 的可快速启动的后台管理框架，
-内置自研代码生成器，可一键生成前端Vue页面、后端CRUD和导入导出接口、动态菜单以及数据字典SQL语句等一条龙代码，
-可免费用于商业。项目容易上手，功能丰富，完全开源，一切只为让你的开发更简单
+EasyBoot单模块仓库
 
-该分支为单模块版本，多模块版本分支为：easyboot-multi-module，分支地址：https://gitee.com/thisZhuMy_admin/EasyBoot/tree/easyboot-multi-module/
+一个使用SpringBoot+MyBatis-Plus+Mysql+Lombok的可快速启动的后台管理框架，
+内置自研代码生成器，可一键生成前端Vue页面、后端CRUD和导入导出接口、动态菜单以及数据字典SQL语句等一条龙代码，
+可免费用于商业。
+项目容易上手，功能丰富，完全开源，一切只为让你的开发更简单
+
+## 分支介绍
+master：主分支，v2分支的稳定版本将会推送到主分支
+
+v2：SpringBoot2+Java8版本，开发分支，不保证稳定性
+
+v3：SpringBoot3+Java17版本，开发分支，不保证稳定性
+
+该仓库为单模块版本，多模块版本仓库[点这里](https://github.com/Zoe-Z1/Easy-Boot-Multi-Module)
 
 ## 快速体验
-演示地址：https://www.easyboot.cn
+[演示地址](https://www.easyboot.cn) 游客账号：visitor 密码：visitor
 
-游客账号：visitor 密码：visitor
+## 相关项目
+单模块后端项目[EasyBoot](https://github.com/Zoe-Z1/EasyBoot)
 
-## 仓库地址
-前端地址：https://gitee.com/yunzhongshan/Easy-vue2-vite3
+多模块后端项目[Easy-Boot-Multi-Module](https://github.com/Zoe-Z1/Easy-Boot-Multi-Module)
 
-后端地址：https://gitee.com/thisZhuMy_admin/EasyBoot
+Vue2+Vite3+Element前端项目[Easy-Admin-Vue2](https://gitee.com/yunzhongshan/Easy-vue2-vite3)
+
 
 ## 如何启动
 1.安装Mysql8.0
@@ -25,7 +35,7 @@
 
 4.IDEA插件市场中搜索lombok安装并重启IDEA
 
-5.修改application-dev.yml中的mysql连接配置和redis连接配置
+5.修改[application-dev.yml](https://github.com/Zoe-Z1/EasyBoot/blob/master/src/main/resources/application-dev.yml)中的mysql连接配置和redis连接配置
 
 6.启动后端项目
 
@@ -35,8 +45,7 @@
 
 使用 账号：admin 密码：123456 访问系统
 
-如果使用的是windows系统，还需要将application-dev.yml中的file-path配置和image-path配置修改为本地磁盘文件夹路径
-
+如果使用的是windows系统，还需要将[application-dev.yml](https://github.com/Zoe-Z1/EasyBoot/blob/master/src/main/resources/application-dev.yml)中的file-path配置和image-path配置修改为本地磁盘文件夹路径
 
 ## 已有功能
 <ul>
@@ -67,10 +76,11 @@
 
 ## 后续规划
 <ul>
-    <li>纯单体改造为多模块单体</li>
-    <li>升级到SpringBoot3x，使用Java17</li>
     <li>更多功能尽请期待......</li>
 </ul>
+
+## 交流群
+QQ群号：657214683
 
 ## 页面展示
 ![image](doc/login.png)
@@ -93,3 +103,7 @@
 ![image](doc/gen.png)
 ![image](doc/template-param-config.png)
 ![image](doc/doc.png)
+
+## 鸣谢
+感谢JetBrains的开源许可证
+![JetBrains Logo (Main) logo](https://resources.jetbrains.com/storage/products/company/brand/logos/jb_beam.png)
