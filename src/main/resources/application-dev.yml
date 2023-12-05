@@ -30,7 +30,7 @@ spring:
 
 logging:
   level:
-    com.easy.boot: debug
+    cn.easy.boot: debug
 
 
 mybatis-plus:

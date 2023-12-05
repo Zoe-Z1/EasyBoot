@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.easy.boot.admin.generate.mapper.GenerateMapper">
+<mapper namespace="cn.easy.boot.admin.generate.mapper.GenerateMapper">
 
-	<resultMap type="com.easy.boot.admin.generate.entity.DatabaseTable" id="BaseResultMap">
+	<resultMap type="cn.easy.boot.admin.generate.entity.DatabaseTable" id="BaseResultMap">
 		<result property="tableName"      column="TABLE_NAME"        />
 		<result property="tableRows"      column="TABLE_ROWS"        />
 		<result property="createTime"     column="CREATE_TIME"       />
@@ -16,7 +16,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		TABLE_NAME,TABLE_ROWS,CREATE_TIME,UPDATE_TIME,TABLE_COMMENT
 	</sql>
 
-	<select id="selectCount" parameterType="com.easy.boot.admin.generate.entity.GenerateTableQuery" resultType="java.lang.Long">
+	<select id="selectCount" parameterType="cn.easy.boot.admin.generate.entity.GenerateTableQuery" resultType="java.lang.Long">
 		select
 		count(1)
 		from INFORMATION_SCHEMA.TABLES
@@ -35,7 +35,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		</if>
 	</select>
     
-    <select id="selectPage" parameterType="com.easy.boot.admin.generate.entity.GenerateTableQuery" resultMap="BaseResultMap">
+    <select id="selectPage" parameterType="cn.easy.boot.admin.generate.entity.GenerateTableQuery" resultMap="BaseResultMap">
 		select
 		<include refid="Base_Column_List"/>
 		from INFORMATION_SCHEMA.TABLES
@@ -61,7 +61,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		limit ${pageSize * (pageNum - 1)},#{pageSize}
 	</select>
 
-	<select id="getTableByTableName" parameterType="com.easy.boot.admin.generate.entity.GenerateTableQuery" resultMap="BaseResultMap">
+	<select id="getTableByTableName" parameterType="cn.easy.boot.admin.generate.entity.GenerateTableQuery" resultMap="BaseResultMap">
 		select
 		<include refid="Base_Column_List"/>
 		from INFORMATION_SCHEMA.TABLES

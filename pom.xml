@@ -8,7 +8,7 @@
         <version>2.7.18</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.easy.boot</groupId>
+    <groupId>cn.easy.boot</groupId>
     <artifactId>easyboot</artifactId>
     <version>1.0.0</version>
     <name>EasyBoot</name>
