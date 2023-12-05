@@ -86,7 +86,7 @@ spring:
 
 # 配置文档 https://baomidou.com/#tablename
 mybatis-plus:
-  type-aliases-package: com.easy.boot.admin.user.dos.*
+  type-aliases-package: cn.easy.boot.admin.user.dos.*
   # 配置mapper的扫描，找到所有的mapper.xml映射文件
   mapper-locations: classpath:mapper/*.xml
   configuration:
@@ -119,7 +119,7 @@ springdoc:
   group-configs:
     - group: 后台管理接口
       paths-to-match: /**
-      packages-to-scan: com.easy.boot.admin
+      packages-to-scan: cn.easy.boot.admin
   default-flat-param-object: true
 
 # 配置文档 https://doc.xiaominfo.com/docs/features/enhance

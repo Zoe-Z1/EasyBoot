@@ -80,7 +80,7 @@ Vue2+Vite3+Element前端项目[Easy-Admin-Vue2](https://gitee.com/yunzhongshan/E
 </ul>
 
 ## 交流群
-QQ群号：657214683
+QQ群号：657214683[申请加群](http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=99XM6Oi-9eB062fyuZoQ9bADukkAo5qS&authKey=G7BOLiK3FNL9KlPNFIr0gu5S5LicfNueh9k3th4rBVWTseG3PtUn%2FPm0l3Iw5aJ1&noverify=0&group_code=657214683)
 
 ## 页面展示
 ![image](doc/login.png)
