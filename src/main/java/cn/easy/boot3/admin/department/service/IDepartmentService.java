@@ -2,7 +2,6 @@ package cn.easy.boot3.admin.department.service;
 
 import cn.easy.boot3.admin.department.entity.*;
 import com.baomidou.mybatisplus.extension.service.IService;
-import cn.easy.boot3.admin.department.entity.*;
 import lombok.NonNull;
 
 import java.util.List;
@@ -68,5 +67,14 @@ public interface IDepartmentService extends IService<Department> {
      * @return
      */
     Boolean deleteById(Long id);
+
+    /**
+     * 判断当前父级部门是否自己的子部门
+     * @param id
+     * @param parentId
+     * @return
+     */
+    Boolean isChild(Long id, Long parentId);
+
 
 }
