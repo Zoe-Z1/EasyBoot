@@ -4,13 +4,12 @@ import cn.easy.boot.admin.department.entity.*;
 import cn.easy.boot.admin.department.mapper.DepartmentMapper;
 import cn.easy.boot.admin.department.service.IDepartmentService;
 import cn.easy.boot.common.base.BaseEntity;
+import cn.easy.boot.exception.BusinessException;
 import cn.easy.boot.utils.BeanUtil;
 import cn.easy.boot.utils.JsonUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import cn.easy.boot.admin.department.entity.*;
-import cn.easy.boot.exception.BusinessException;
 import lombok.NonNull;
 import org.springframework.stereotype.Service;
 
@@ -150,6 +149,12 @@ public class DepartmentServiceImpl extends ServiceImpl<DepartmentMapper, Departm
         if (Objects.nonNull(department) && !department.getId().equals(dto.getId())) {
             throw new BusinessException("当前部门下已存在相同名称的部门");
         }
+        if (dto.getId().equals(dto.getParentId())) {
+            throw new BusinessException("上级部门不能是自己");
+        }
+        if (isChild(dto.getId(), dto.getParentId())) {
+            throw new BusinessException("上级部门不能是自己的子部门");
+        }
         Department entity = BeanUtil.copyBean(dto, Department.class);
         return updateById(entity);
     }
@@ -163,4 +168,12 @@ public class DepartmentServiceImpl extends ServiceImpl<DepartmentMapper, Departm
         return removeById(id);
     }
 
+    @Override
+    public Boolean isChild(Long id, Long parentId) {
+        List<Long> ids = getParentIds(parentId);
+        if (ids.isEmpty()) {
+            return false;
+        }
+        return ids.contains(id);
+    }
 }
