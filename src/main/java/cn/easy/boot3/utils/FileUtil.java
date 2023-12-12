@@ -51,6 +51,8 @@ public class FileUtil extends cn.hutool.core.io.FileUtil {
 
 
     static {
+        IMAGE_MIME_TYPE_MAP.put("ico", "image/vnd.microsoft.icon");
+        IMAGE_MIME_TYPE_MAP.put("svg", "image/svg+xml");
         IMAGE_MIME_TYPE_MAP.put("png", "image/png");
         IMAGE_MIME_TYPE_MAP.put("jpg", "image/jpeg");
         IMAGE_MIME_TYPE_MAP.put("jpeg", "image/jpeg");
@@ -76,6 +78,8 @@ public class FileUtil extends cn.hutool.core.io.FileUtil {
         FILE_MAGIC_MAP.put("wps", "d0cf11e0a1b11ae10000");
         FILE_MAGIC_MAP.put("pdf", "255044462D312E");
 
+        IMAGE_MAGIC_MAP.put("ico", "000001000");
+        IMAGE_MAGIC_MAP.put("svg", "3c737667");
         IMAGE_MAGIC_MAP.put("png", "89504E47");
         IMAGE_MAGIC_MAP.put("jpg", "FFD8FF");
         IMAGE_MAGIC_MAP.put("jpeg", "FFD8FF");

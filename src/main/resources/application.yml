@@ -19,7 +19,7 @@ easy:
     max-file-size: 10
     max-image-size: 10
     file-type: doc,docx,ppt,pptx,wps,xls,xlsx,pdf
-    image-type: jpg,jpeg,png,gif
+    image-type: jpg,jpeg,png,gif,ico,svg
 
 
 server:
