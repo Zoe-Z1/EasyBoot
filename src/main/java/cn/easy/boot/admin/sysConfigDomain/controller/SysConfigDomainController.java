@@ -39,6 +39,14 @@ public class SysConfigDomainController extends BaseController {
 
 
     @ApiOperationSupport(author = "zoe")
+    @ApiOperation(value = "获取全部系统配置")
+    @EasyLog(module = "获取全部系统配置", operateType = OperateTypeEnum.SELECT)
+    @GetMapping("/system/all")
+    public Result<List<SysConfig>> systemAll() {
+        return Result.success(sysConfigDomainService.selectSystemAll());
+    }
+
+    @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "获取全部全局配置")
     @EasyLog(module = "获取全部全局配置", operateType = OperateTypeEnum.SELECT)
     @GetMapping("/global/all")

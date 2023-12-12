@@ -7,6 +7,7 @@ import lombok.experimental.SuperBuilder;
 import org.hibernate.validator.constraints.Range;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 
@@ -54,6 +55,13 @@ public class TemplateParamConfigCreateDTO {
     @ApiModelProperty(required = true, value = "模板参数状态 #1：正常， 2：禁用")
     @NotNull(message = "模板参数状态不能为空")
     private Integer status;
+
+    @ApiModelProperty("数据字典域ID")
+    private Long domainId;
+
+    @NotEmpty(message = "操作组件不能为空")
+    @ApiModelProperty(required = true, value = "操作组件 #input：文本框，textarea：文本域，select：下拉框，radio：单选框，checkbox：复选框，datetime：日期控件")
+    private String optElement;
 
     @ApiModelProperty("备注")
     private String remarks;

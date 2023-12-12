@@ -60,6 +60,15 @@ public class TemplateParamConfig extends BaseEntity {
     @TableField("status")
     private Integer status;
 
+    @JsonSerialize(using = ToStringSerializer.class)
+    @ApiModelProperty("数据字典域ID")
+    @TableField("domain_id")
+    private Long domainId;
+
+    @ApiModelProperty("操作组件 #input：文本框，textarea：文本域，select：下拉框，radio：单选框，checkbox：复选框，datetime：日期控件")
+    @TableField("opt_element")
+    private String optElement;
+
     @ApiModelProperty("备注")
     @TableField("remarks")
     private String remarks;

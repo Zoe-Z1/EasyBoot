@@ -51,6 +51,15 @@ public class DataDictDomainController extends BaseController {
     private IDataDictDomainService dataDictDomainService;
 
 
+    @SaCheckPermission(value = "system:data:dict:domain:all")
+    @ApiOperationSupport(author = "zoe")
+    @ApiOperation(value = "获取所有数据字典域")
+    @EasyLog(module = "获取所有数据字典域", operateType = OperateTypeEnum.SELECT)
+    @GetMapping("/all")
+    public Result<List<DataDictDomain>> all() {
+        return Result.success(dataDictDomainService.selectAll());
+    }
+
     @SaCheckPermission(value = "system:data:dict:domain:page")
     @ApiOperationSupport(author = "zoe")
     @ApiOperation(value = "分页获取数据字典域列表")

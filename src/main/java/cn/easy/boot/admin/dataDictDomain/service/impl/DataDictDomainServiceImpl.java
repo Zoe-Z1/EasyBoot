@@ -35,6 +35,15 @@ public class DataDictDomainServiceImpl extends ServiceImpl<DataDictDomainMapper,
     private IDataDictService dataDictService;
 
     @Override
+    public List<DataDictDomain> selectAll() {
+        return lambdaQuery()
+                .select(BaseEntity::getId, DataDictDomain::getCode, DataDictDomain::getName)
+                .orderByAsc(DataDictDomain::getSort)
+                .orderByDesc(BaseEntity::getCreateTime)
+                .list();
+    }
+
+    @Override
     public IPage<DataDictDomain> selectPage(DataDictDomainQuery query) {
         Page<DataDictDomain> page = new Page<>(query.getPageNum(), query.getPageSize());
         return lambdaQuery()
@@ -54,7 +63,7 @@ public class DataDictDomainServiceImpl extends ServiceImpl<DataDictDomainMapper,
 
 
     @Override
-    public Map<String, List<DataDict>> selectAll() {
+    public Map<String, List<DataDict>> selectDictAll() {
         List<DataDictDomain> list = lambdaQuery()
                 .select(DataDictDomain::getId, DataDictDomain::getCode)
                 .eq(DataDictDomain::getStatus, 1)

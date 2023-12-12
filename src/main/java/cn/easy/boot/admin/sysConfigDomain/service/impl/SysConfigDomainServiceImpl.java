@@ -160,6 +160,12 @@ public class SysConfigDomainServiceImpl extends ServiceImpl<SysConfigDomainMappe
     }
 
     @Override
+    public List<SysConfig> selectSystemAll() {
+        return selectListByDomainCode(SysConfigDomainCodeEnum.SYSTEM.getCode());
+    }
+
+
+    @Override
     public List<SysTemplateConfigVO> selectTemplateList(Long domainId) {
         List<SysTemplateConfigVO> voList = new ArrayList<>();
         SysConfigDomain sysConfigDomain = detail(domainId);

@@ -2,26 +2,25 @@ package cn.easy.boot.admin.dataDict.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.easy.boot.admin.dataDict.entity.*;
-import cn.easy.boot.common.base.BaseController;
-import cn.easy.boot.common.base.Result;
-import cn.easy.boot.common.log.EasyLog;
-import cn.easy.boot.common.noRepeatSubmit.EasyNoRepeatSubmit;
-import com.alibaba.excel.EasyExcel;
-import com.alibaba.excel.ExcelWriter;
-import com.alibaba.excel.write.metadata.WriteSheet;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import cn.easy.boot.admin.dataDict.entity.*;
 import cn.easy.boot.admin.dataDict.service.IDataDictService;
 import cn.easy.boot.admin.dataDictDomain.entity.DataDictDomain;
 import cn.easy.boot.admin.dataDictDomain.service.IDataDictDomainService;
 import cn.easy.boot.admin.operationLog.enums.OperateTypeEnum;
+import cn.easy.boot.common.base.BaseController;
+import cn.easy.boot.common.base.Result;
 import cn.easy.boot.common.excel.entity.ImportExcelError;
 import cn.easy.boot.common.excel.entity.ImportVO;
 import cn.easy.boot.common.excel.entity.UploadDTO;
 import cn.easy.boot.common.excel.handler.ExportExcelErrorCellWriteHandler;
 import cn.easy.boot.common.excel.handler.ExportExcelSelectCellWriteHandler;
+import cn.easy.boot.common.log.EasyLog;
+import cn.easy.boot.common.noRepeatSubmit.EasyNoRepeatSubmit;
 import cn.easy.boot.exception.BusinessException;
 import cn.easy.boot.utils.BeanUtil;
+import com.alibaba.excel.EasyExcel;
+import com.alibaba.excel.ExcelWriter;
+import com.alibaba.excel.write.metadata.WriteSheet;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -68,7 +67,7 @@ public class DataDictController extends BaseController {
     @EasyLog(module = "获取全部数据字典", operateType = OperateTypeEnum.SELECT)
     @GetMapping("/all")
     public Result<Map<String, List<DataDict>>> all() {
-        Map<String, List<DataDict>> map = dataDictDomainService.selectAll();
+        Map<String, List<DataDict>> map = dataDictDomainService.selectDictAll();
         return Result.success(map);
     }
 

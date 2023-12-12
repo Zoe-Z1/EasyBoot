@@ -20,6 +20,12 @@ import java.util.Map;
 public interface IDataDictDomainService extends IService<DataDictDomain> {
 
     /**
+     * 获取全部数据字典域
+     * @return
+     */
+    List<DataDictDomain> selectAll();
+
+    /**
     * 查询数据字典域
     * @param query
     * @return
@@ -30,7 +36,7 @@ public interface IDataDictDomainService extends IService<DataDictDomain> {
      * 获取全部数据字典，以字典域编码为key
      * @return
      */
-    Map<String, List<DataDict>> selectAll();
+    Map<String, List<DataDict>> selectDictAll();
 
     /**
      * 获取数据字典域详情

@@ -74,7 +74,7 @@ public class GenerateColumnUpdateDTO {
     @ApiModelProperty("是否必填 #0：必填，1：不必填")
     private Integer isRequired;
 
-    @ApiModelProperty("操作组件 #input：文本框，textarea：文本域")
+    @ApiModelProperty("操作组件 #input：文本框，textarea：文本域，select：下拉框，radio：单选框，checkbox：复选框，datetime：日期控件")
     private String optElement;
 
     @ApiModelProperty("字典域编码")
