@@ -74,7 +74,7 @@ public class GenerateColumnUpdateDTO {
     @Schema(title = "是否必填 #0：必填，1：不必填")
     private Integer isRequired;
 
-    @Schema(title = "操作组件 #input：文本框，textarea：文本域")
+    @Schema(title = "操作组件 #input：文本框，textarea：文本域，select：下拉框，radio：单选框，checkbox：复选框，datetime：日期控件")
     private String optElement;
 
     @Schema(title = "字典域编码")

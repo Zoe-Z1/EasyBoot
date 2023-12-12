@@ -68,7 +68,7 @@ public class DataDictController extends BaseController {
     @EasyLog(module = "获取全部数据字典", operateType = OperateTypeEnum.SELECT)
     @GetMapping("/all")
     public Result<Map<String, List<DataDict>>> all() {
-        Map<String, List<DataDict>> map = dataDictDomainService.selectAll();
+        Map<String, List<DataDict>> map = dataDictDomainService.selectDictAll();
         return Result.success(map);
     }
 

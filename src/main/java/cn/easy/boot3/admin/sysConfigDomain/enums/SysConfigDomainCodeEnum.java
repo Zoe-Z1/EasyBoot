@@ -9,7 +9,7 @@ public enum SysConfigDomainCodeEnum {
 
     GLOBAL("global", "全局参数配置"),
 
-
+    SYSTEM("system", "系统参数配置"),
 
 
     ;

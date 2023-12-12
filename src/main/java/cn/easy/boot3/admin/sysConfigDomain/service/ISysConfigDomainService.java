@@ -82,6 +82,12 @@ public interface ISysConfigDomainService extends IService<SysConfigDomain> {
     List<SysConfig> selectGlobalAll();
 
     /**
+     * 获取全部系统配置
+     * @return
+     */
+    List<SysConfig> selectSystemAll();
+
+    /**
      * 获取系统模板配置列表
      * @param domainId
      * @return
